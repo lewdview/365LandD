@@ -1,0 +1,65 @@
+{
+  "project": {
+    "title": "365 Days of Light and Dark",
+    "artist": "th3scr1b3",
+    "startDate": "2026-01-01",
+    "endDate": "2026-12-31",
+    "description": "A song a day. 365 days. One year of sonic exploration through the spectrum of light and dark.",
+    "totalDays": 365
+  },
+  "socials": {
+    "youtube": "https://youtube.com/@th3scr1b3",
+    "audius": "https://audius.co/th3scr1b3",
+    "instagram": "https://instagram.com/th3scr1b3",
+    "twitter": "https://twitter.com/th3scr1b3",
+    "tiktok": "https://tiktok.com/@th3scr1b3",
+    "spotify": "https://open.spotify.com/artist/th3scr1b3"
+  },
+  "releases": [],
+  "stats": {
+    "totalReleases": 0,
+    "lightTracks": 0,
+    "darkTracks": 0,
+    "totalListens": 0,
+    "lastUpdated": "2025-01-01T00:00:00Z"
+  },
+  "announcements": [
+    {
+      "id": "ann-001",
+      "date": "2025-01-01",
+      "title": "The Journey Begins",
+      "content": "365 days. 365 songs. No breaks. No excuses. Let's go.",
+      "type": "milestone"
+    }
+  ],
+  "upcomingMilestones": [
+    { "day": 1, "title": "Day One" },
+    { "day": 7, "title": "First Week" },
+    { "day": 30, "title": "Month 1 Complete" },
+    { "day": 60, "title": "Month 2 Complete" },
+    { "day": 90, "title": "Month 3 Complete" },
+    { "day": 120, "title": "Month 4 Complete" },
+    { "day": 150, "title": "Month 5 Complete" },
+    { "day": 180, "title": "Halfway Point" },
+    { "day": 210, "title": "Month 7 Complete" },
+    { "day": 240, "title": "Month 8 Complete" },
+    { "day": 270, "title": "Month 9 Complete" },
+    { "day": 301, "title": "Month 10 Complete" },
+    { "day": 331, "title": "Month 11 Complete" },
+    { "day": 365, "title": "The Final Day" }
+  ],
+  "monthThemes": [
+    { "month": 1, "name": "January", "dayStart": 1, "dayEnd": 30, "theme": "New Beginnings", "arc": "LIGHT", "emoji": "🌅", "description": "Fresh starts, hope, and the excitement of a new journey" },
+    { "month": 2, "name": "February", "dayStart": 31, "dayEnd": 60, "theme": "Love & Connection", "arc": "LIGHT", "emoji": "💕", "description": "Bonds, relationships, and the warmth of human connection" },
+    { "month": 3, "name": "March", "dayStart": 61, "dayEnd": 90, "theme": "Awakening & Growth", "arc": "LIGHT", "emoji": "🌱", "description": "Personal evolution, learning, and stepping into potential" },
+    { "month": 4, "name": "April", "dayStart": 91, "dayEnd": 120, "theme": "Reflection & Nostalgia", "arc": "MIXED", "emoji": "🍂", "description": "Looking back, bittersweet memories, and emotional depth" },
+    { "month": 5, "name": "May", "dayStart": 121, "dayEnd": 150, "theme": "Strength & Resilience", "arc": "MIXED", "emoji": "💪", "description": "Overcoming obstacles, inner power, and determination" },
+    { "month": 6, "name": "June", "dayStart": 151, "dayEnd": 180, "theme": "Transition & Truth", "arc": "DARK", "emoji": "🌘", "description": "Facing reality, uncomfortable truths, and necessary change" },
+    { "month": 7, "name": "July", "dayStart": 181, "dayEnd": 210, "theme": "Darkness & Shadow", "arc": "DARK", "emoji": "🌑", "description": "Confronting the void, exploring pain, and raw honesty" },
+    { "month": 8, "name": "August", "dayStart": 211, "dayEnd": 240, "theme": "Descent & Healing", "arc": "DARK", "emoji": "🕯️", "description": "Rock bottom, processing trauma, and beginning to heal" },
+    { "month": 9, "name": "September", "dayStart": 241, "dayEnd": 270, "theme": "Acceptance & Release", "arc": "MIXED→LIGHT", "emoji": "🌗", "description": "Processing pain, letting go, finding peace with the past" },
+    { "month": 10, "name": "October", "dayStart": 271, "dayEnd": 301, "theme": "Rebirth & Renewal", "arc": "LIGHT", "emoji": "🌓", "description": "Rising from the ashes, transformation, new perspective" },
+    { "month": 11, "name": "November", "dayStart": 302, "dayEnd": 331, "theme": "Gratitude & Connection", "arc": "LIGHT", "emoji": "🌔", "description": "Appreciation, community, meaningful relationships" },
+    { "month": 12, "name": "December", "dayStart": 332, "dayEnd": 365, "theme": "Hope & Celebration", "arc": "FULL LIGHT", "emoji": "🌕", "description": "Joy, triumph, looking forward, completing the cycle" }
+  ]
+}

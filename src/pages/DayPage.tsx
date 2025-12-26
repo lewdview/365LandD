@@ -1,0 +1,664 @@
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Play, 
+  Pause, 
+  Volume2, 
+  VolumeX,
+  Clock,
+  Music,
+  Calendar,
+  ExternalLink,
+  Home,
+  Sparkles
+} from 'lucide-react';
+import { useStore } from '../store/useStore';
+import { useThemeStore } from '../store/useThemeStore';
+import { KaraokeLyrics } from '../components/KaraokeLyrics';
+import { Navigation } from '../components/Navigation';
+import { ThemeChanger } from '../components/ThemeChanger';
+import type { Release } from '../types';
+
+// Helper to convert hex to rgba
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+export function DayPage() {
+  const { day } = useParams<{ day: string }>();
+  const navigate = useNavigate();
+  const { data, fetchData } = useStore();
+  const { currentTheme } = useThemeStore();
+  const { primary, accent, background } = currentTheme.colors;
+  
+  const [release, setRelease] = useState<Release | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0.8);
+  const [isMuted, setIsMuted] = useState(false);
+  const [audioError, setAudioError] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const dayNum = parseInt(day || '1', 10);
+  const hasPoetryData = release?.lyricsWords && release.lyricsWords.length > 0;
+
+  // Fetch data if not loaded
+  useEffect(() => {
+    if (!data) {
+      fetchData();
+    }
+  }, [data, fetchData]);
+
+  // Find release for this day
+  useEffect(() => {
+    if (data?.releases) {
+      const found = data.releases.find(r => r.day === dayNum);
+      setRelease(found || null);
+    }
+  }, [data, dayNum]);
+
+  // Audio error handling with fallback to local storage
+  const [fallbackUrl, setFallbackUrl] = useState<string | null>(null);
+  
+  // Try to load local fallback file using actual filename from database
+  useEffect(() => {
+    if (release && !fallbackUrl && release.fileName) {
+      const localPath = `/music/${release.fileName}`;
+      setFallbackUrl(localPath);
+      
+      // Try to set the audio source to fallback immediately
+      if (audioRef.current && release.storedAudioUrl) {
+        audioRef.current.src = release.storedAudioUrl;
+        audioRef.current.load();
+      }
+    }
+  }, [release, dayNum, fallbackUrl]);
+  
+  // Audio event handlers
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const handleDurationChange = () => setDuration(audio.duration);
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
+    const handleError = (e: Event) => {
+      console.error('Audio error:', e);
+      
+      // If we haven't tried fallback yet, try now
+      if (release?.fileName && fallbackUrl && audio.src !== fallbackUrl) {
+        console.log('Attempting fallback to local storage:', fallbackUrl);
+        audio.src = fallbackUrl;
+        audio.load();
+        // Try to play once the fallback is loaded
+        if (isPlaying) {
+          audio.play().catch(err => console.error('Failed to play fallback:', err));
+        }
+      } else {
+        setAudioError(true);
+        setIsPlaying(false);
+      }
+    };
+    const handleCanPlay = () => setAudioError(false);
+
+    // Set initial source
+    if (release?.storedAudioUrl && !audio.src) {
+      audio.src = release.storedAudioUrl;
+    }
+    
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('durationchange', handleDurationChange);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('canplay', handleCanPlay);
+
+    return () => {
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('durationchange', handleDurationChange);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('canplay', handleCanPlay);
+    };
+  }, [release, fallbackUrl]);
+
+  // Volume control
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : volume;
+    }
+  }, [volume, isMuted]);
+
+  const togglePlay = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || audioError) return;
+    
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play().catch(() => setAudioError(true));
+    }
+  }, [isPlaying, audioError]);
+
+  const handleSeek = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const newTime = parseFloat(e.target.value);
+    audio.currentTime = newTime;
+    setCurrentTime(newTime);
+  }, []);
+
+  const handleWordClick = useCallback((time: number) => {
+    const audio = audioRef.current;
+    if (!audio || audioError) return;
+    audio.currentTime = time;
+    audio.play().catch(() => setAudioError(true));
+  }, [audioError]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Navigation
+  const goToDay = (d: number) => {
+    if (d >= 1 && d <= 365) {
+      navigate(`/day/${d}`);
+    }
+  };
+
+  const prevDay = data?.releases.filter(r => r.day < dayNum).sort((a, b) => b.day - a.day)[0];
+  const nextDay = data?.releases.filter(r => r.day > dayNum).sort((a, b) => a.day - b.day)[0];
+
+  const isLight = release?.mood === 'light';
+
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-void-black flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+          className="w-12 h-12 border-4 border-neon-red border-t-transparent rounded-full"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-void-black text-light-cream">
+      <Navigation />
+      <ThemeChanger />
+      
+      {/* Hidden audio element */}
+      <audio ref={audioRef} preload="metadata" />
+
+      {/* Hero section with large day number */}
+      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-20">
+        {/* Background gradient based on mood */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: isLight
+              ? `radial-gradient(ellipse at center, ${hexToRgba(accent, 0.15)} 0%, ${background} 70%)`
+              : `radial-gradient(ellipse at center, ${hexToRgba(primary, 0.15)} 0%, ${background} 70%)`,
+          }}
+        />
+
+        {/* Large day number background */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            className="text-[40vw] md:text-[35vw] font-black leading-none select-none"
+            style={{
+              color: 'transparent',
+              WebkitTextStroke: `3px ${isLight ? accent : primary}`,
+              opacity: 0.1,
+            }}
+          >
+            {String(dayNum).padStart(3, '0')}
+          </motion.span>
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          {/* Navigation breadcrumb */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center justify-center gap-4 mb-8"
+          >
+            <Link 
+              to="/" 
+              className="flex items-center gap-2 text-light-cream/60 hover:text-neon-yellow transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              <span className="font-mono text-sm">HOME</span>
+            </Link>
+            <span className="text-light-cream/30">/</span>
+            <span className="font-mono text-sm text-neon-yellow">DAY {dayNum}</span>
+          </motion.div>
+
+          {/* Day badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mb-6"
+          >
+            <span 
+              className={`inline-block px-6 py-2 text-lg font-mono font-bold ${
+                isLight ? 'bg-neon-yellow text-void-black' : 'bg-neon-red text-light-cream'
+              }`}
+            >
+              DAY {String(dayNum).padStart(3, '0')}
+            </span>
+          </motion.div>
+
+          {release ? (
+            <>
+              {/* Title */}
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-4xl md:text-6xl lg:text-7xl font-black mb-4 uppercase"
+                style={{
+                  textShadow: `0 0 20px ${background}, 0 0 40px rgba(0,0,0,0.5)`,
+                }}
+              >
+                {release.title}
+              </motion.h1>
+
+              {/* Mood indicator */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-xl font-light mb-6"
+              >
+                <span className={isLight ? 'text-neon-yellow' : 'text-neon-red'}>
+                  {release.mood.toUpperCase()}
+                </span>
+                <span className="text-light-cream/50"> • {release.date}</span>
+              </motion.p>
+
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="text-lg text-light-cream/70 max-w-2xl mx-auto"
+              >
+                {release.description}
+              </motion.p>
+            </>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center"
+            >
+              <p className="text-2xl text-light-cream/50">No release for Day {dayNum} yet</p>
+              <p className="text-light-cream/30 mt-2">Check back soon!</p>
+            </motion.div>
+          )}
+        </div>
+
+        {/* Day navigation arrows */}
+        <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20">
+          <motion.button
+            whileHover={{ scale: 1.1, x: -5 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => prevDay && goToDay(prevDay.day)}
+            disabled={!prevDay}
+            className={`p-3 md:p-4 rounded-full transition-all ${
+              prevDay 
+                ? 'bg-void-gray/80 backdrop-blur-sm hover:bg-neon-red/20 text-light-cream' 
+                : 'bg-void-gray/30 text-light-cream/20 cursor-not-allowed'
+            }`}
+            style={{
+              boxShadow: prevDay ? '0 4px 20px rgba(0,0,0,0.3)' : 'none',
+            }}
+          >
+            <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
+          </motion.button>
+          {prevDay && (
+            <p className="text-xs font-mono text-light-cream/40 mt-2 text-center">
+              DAY {prevDay.day}
+            </p>
+          )}
+        </div>
+
+        <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20">
+          <motion.button
+            whileHover={{ scale: 1.1, x: 5 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => nextDay && goToDay(nextDay.day)}
+            disabled={!nextDay}
+            className={`p-3 md:p-4 rounded-full transition-all ${
+              nextDay 
+                ? 'bg-void-gray/80 backdrop-blur-sm hover:bg-neon-yellow/20 text-light-cream' 
+                : 'bg-void-gray/30 text-light-cream/20 cursor-not-allowed'
+            }`}
+            style={{
+              boxShadow: nextDay ? '0 4px 20px rgba(0,0,0,0.3)' : 'none',
+            }}
+          >
+            <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
+          </motion.button>
+          {nextDay && (
+            <p className="text-xs font-mono text-light-cream/40 mt-2 text-center">
+              DAY {nextDay.day}
+            </p>
+          )}
+        </div>
+      </section>
+
+      {release && (
+        <>
+          {/* Audio player section */}
+          {(release.storedAudioUrl || fallbackUrl) && (
+            <section className="py-12 px-4">
+              <div className="max-w-4xl mx-auto">
+                {audioError && (
+                  <div className="mb-4 p-3 bg-void-gray/30 border border-neon-red/50 rounded text-center">
+                    <p className="text-neon-red text-sm font-mono">
+                      {audioRef.current?.src?.includes('/music/')
+                        ? 'Loading from local storage...' 
+                        : 'Audio connection issue. Trying alternative source...'}
+                    </p>
+                  </div>
+                )}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                  className="p-6 md:p-8 rounded-lg"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
+                    backdropFilter: 'blur(12px)',
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                  }}
+                >
+                  {/* Play button and progress */}
+                  <div className="flex items-center gap-6">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={togglePlay}
+                      disabled={audioError}
+                      className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center transition-all ${
+                        audioError 
+                          ? 'bg-void-gray/50 cursor-not-allowed' 
+                          : isLight ? 'bg-neon-yellow hover:shadow-[0_0_30px_var(--color-neon-yellow)]' : 'bg-neon-red hover:shadow-[0_0_30px_var(--color-neon-red)]'
+                      }`}
+                    >
+                      {isPlaying ? (
+                        <Pause className="w-8 h-8 text-void-black" />
+                      ) : (
+                        <Play className="w-8 h-8 text-void-black ml-1" />
+                      )}
+                    </motion.button>
+
+                    <div className="flex-1">
+                      {/* Progress bar */}
+                      <input
+                        type="range"
+                        min={0}
+                        max={duration || 100}
+                        value={currentTime}
+                        onChange={handleSeek}
+                        className="w-full h-2 bg-void-lighter rounded-full appearance-none cursor-pointer"
+                        style={{
+                          background: `linear-gradient(to right, ${isLight ? accent : primary} ${(currentTime / duration) * 100}%, rgba(255,255,255,0.1) ${(currentTime / duration) * 100}%)`,
+                        }}
+                      />
+                      <div className="flex justify-between mt-2 text-xs font-mono text-light-cream/50">
+                        <span>{formatTime(currentTime)}</span>
+                        <span>{formatTime(duration || release.duration)}</span>
+                      </div>
+                    </div>
+
+                    {/* Volume */}
+                    <div className="hidden md:flex items-center gap-2">
+                      <button
+                        onClick={() => setIsMuted(!isMuted)}
+                        className="p-2 hover:text-neon-yellow transition-colors"
+                      >
+                        {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                      </button>
+                      <input
+                        type="range"
+                        min={0}
+                        max={1}
+                        step={0.1}
+                        value={volume}
+                        onChange={(e) => setVolume(parseFloat(e.target.value))}
+                        className="w-20 h-1 bg-void-lighter rounded-full appearance-none cursor-pointer"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Meta info */}
+                  <div className="flex flex-wrap items-center gap-6 mt-6 text-sm font-mono text-light-cream/50">
+                    <span className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      {release.durationFormatted}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Music className="w-4 h-4" />
+                      {release.tempo} BPM
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4" />
+                      {release.key}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      {release.date}
+                    </span>
+                  </div>
+                </motion.div>
+              </div>
+            </section>
+          )}
+
+          {/* Lyrics / Poetry in Motion */}
+          {hasPoetryData && (
+            <section className="py-12 px-4">
+              <div className="max-w-4xl mx-auto">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 }}
+                >
+                  <h3 className="text-xl font-mono text-neon-yellow mb-6 flex items-center justify-center gap-2">
+                    <Sparkles className="w-5 h-5" />
+                    POETRY IN MOTION
+                  </h3>
+                  <KaraokeLyrics
+                    words={release.lyricsWords || []}
+                    segments={release.lyricsSegments}
+                    currentTime={currentTime}
+                    onWordClick={handleWordClick}
+                    isPlaying={isPlaying}
+                    fullHeight
+                  />
+                </motion.div>
+              </div>
+            </section>
+          )}
+
+          {/* Plain lyrics fallback when no word-level sync */}
+          {!hasPoetryData && release.lyrics && release.lyrics.trim().length > 0 && (
+            <section className="py-12 px-4">
+              <div className="max-w-4xl mx-auto">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 }}
+                  className="p-6 md:p-8 rounded-lg"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(45,48,72,0.4) 0%, rgba(26,28,46,0.6) 100%)',
+                    backdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                  }}
+                >
+                  <h3 className="text-xl font-mono text-neon-yellow mb-6 text-center">LYRICS</h3>
+                  <pre className="whitespace-pre-wrap font-mono text-light-cream/80 text-sm leading-relaxed">
+                    {release.lyrics}
+                  </pre>
+                </motion.div>
+              </div>
+            </section>
+          )}
+
+          {/* Tags and links */}
+          <section className="py-12 px-4">
+            <div className="max-w-4xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="p-6 rounded-lg"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(45,48,72,0.3) 0%, rgba(26,28,46,0.5) 100%)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255,255,255,0.05)',
+                }}
+              >
+              <div className="flex flex-col gap-6 items-center text-center">
+                  {/* Tags */}
+                  <div>
+                    <h4 className="text-sm font-mono text-light-cream/40 mb-3 uppercase tracking-wider">Tags</h4>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {release.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className={`px-3 py-1.5 text-sm font-mono ${
+                            isLight
+                              ? 'bg-neon-yellow/10 text-neon-yellow border border-neon-yellow/30 hover:bg-neon-yellow/20'
+                              : 'bg-neon-red/10 text-neon-red border border-neon-red/30 hover:bg-neon-red/20'
+                          } transition-colors cursor-default`}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Genre */}
+                  {release.genre && release.genre.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-mono text-light-cream/40 mb-3 uppercase tracking-wider">Genre</h4>
+                      <div className="flex flex-wrap gap-2 justify-center">
+                        {release.genre.map((g) => (
+                          <span
+                            key={g}
+                            className="px-3 py-1.5 text-sm font-mono bg-void-lighter/50 text-light-cream/70 border border-void-lighter"
+                          >
+                            {g}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* External links */}
+                  {(release.youtubeUrl || release.audiusUrl) && (
+                    <div>
+                      <h4 className="text-sm font-mono text-light-cream/40 mb-3 uppercase tracking-wider">Listen On</h4>
+                      <div className="flex flex-wrap gap-3 justify-center">
+                        {release.youtubeUrl && (
+                          <a
+                            href={release.youtubeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4 py-2 bg-void-gray/80 hover:bg-neon-red/30 transition-all text-sm font-mono hover:scale-105"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            YouTube
+                          </a>
+                        )}
+                        {release.audiusUrl && (
+                          <a
+                            href={release.audiusUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 px-4 py-2 bg-void-gray/80 hover:bg-neon-yellow/30 transition-all text-sm font-mono hover:scale-105"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            Audius
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* Navigation footer */}
+          <section className="py-12 px-4 border-t border-void-lighter">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex justify-between items-center">
+                {prevDay ? (
+                  <button
+                    onClick={() => goToDay(prevDay.day)}
+                    className="group flex items-center gap-4 hover:text-neon-yellow transition-colors"
+                  >
+                    <ChevronLeft className="w-6 h-6 group-hover:-translate-x-2 transition-transform" />
+                    <div className="text-left">
+                      <p className="text-xs font-mono text-light-cream/40">PREVIOUS</p>
+                      <p className="font-bold">Day {prevDay.day}: {prevDay.title}</p>
+                    </div>
+                  </button>
+                ) : <div />}
+
+                <Link
+                  to="/"
+                  className="px-6 py-3 bg-void-gray/50 hover:bg-neon-red/20 transition-colors font-mono text-sm"
+                >
+                  ALL RELEASES
+                </Link>
+
+                {nextDay ? (
+                  <button
+                    onClick={() => goToDay(nextDay.day)}
+                    className="group flex items-center gap-4 hover:text-neon-yellow transition-colors"
+                  >
+                    <div className="text-right">
+                      <p className="text-xs font-mono text-light-cream/40">NEXT</p>
+                      <p className="font-bold">Day {nextDay.day}: {nextDay.title}</p>
+                    </div>
+                    <ChevronRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                  </button>
+                ) : <div />}
+              </div>
+            </div>
+          </section>
+        </>
+      )}
+    </div>
+  );
+}
