@@ -5,7 +5,7 @@ import { useThemeStore } from '../store/useThemeStore';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ChevronLeft, ChevronRight, ChevronDown, Play, Clock, Music, Calendar } from 'lucide-react';
-import type { Release } from '../types';
+import { CoverImage } from './GenerativeCover';
 
 // Custom SVG Icons
 function WaveformIcon({ className = '' }: { className?: string }) {
@@ -124,18 +124,6 @@ function HourglassIcon({ className = '' }: { className?: string }) {
       </path>
     </svg>
   );
-}
-
-// Generate waveform
-function generateWaveform(release: Release): number[] {
-  const bars = 24;
-  const seed = release.id.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-  return Array.from({ length: bars }, (_, i) => {
-    const base = Math.sin((i / bars) * Math.PI) * 60;
-    const variation = ((seed * (i + 1)) % 40) - 20;
-    const energyBoost = release.energy * 20;
-    return Math.max(15, Math.min(95, base + variation + energyBoost));
-  });
 }
 
 export function DayTracker() {
@@ -328,34 +316,21 @@ export function DayTracker() {
               {todaysRelease ? (
                 <div className="p-6">
                   <div className="flex flex-col md:flex-row gap-6">
-                    {/* Cover art / Waveform visualization */}
+                    {/* Cover art with generative fallback */}
                     <div 
                       className="relative w-full md:w-48 h-48 flex-shrink-0 overflow-hidden cursor-pointer group"
                       onClick={() => navigate(`/day/${currentDay}`)}
-                      style={{
-                        background: `linear-gradient(135deg, ${isLight ? accent : primary}20 0%, ${background} 100%)`,
-                      }}
                     >
-                      {/* Waveform */}
-                      <div className="absolute bottom-0 left-0 right-0 h-32 flex items-end justify-center gap-[3px] px-4">
-                        {generateWaveform(todaysRelease).map((height, i) => (
-                          <motion.div
-                            key={i}
-                            className="w-1.5 rounded-t-sm"
-                            style={{ backgroundColor: isLight ? accent : primary }}
-                            initial={{ height: `${height * 0.3}%` }}
-                            animate={{
-                              height: [`${height * 0.3}%`, `${height}%`, `${height * 0.5}%`, `${height * 0.8}%`, `${height * 0.3}%`],
-                            }}
-                            transition={{
-                              duration: 1.5 + (todaysRelease.tempo / 200),
-                              repeat: Infinity,
-                              delay: i * 0.04,
-                              ease: 'easeInOut',
-                            }}
-                          />
-                        ))}
-                      </div>
+                      <CoverImage
+                        day={todaysRelease.day}
+                        title={todaysRelease.title}
+                        mood={todaysRelease.mood}
+                        energy={todaysRelease.energy}
+                        valence={todaysRelease.valence}
+                        tempo={todaysRelease.tempo}
+                        coverUrl={`/releases/covers/january/${String(todaysRelease.day).padStart(2, '0')} - ${todaysRelease.title}.jpg`}
+                        className="w-full h-full object-cover"
+                      />
                       
                       {/* Play overlay */}
                       <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">

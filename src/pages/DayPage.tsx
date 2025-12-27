@@ -18,6 +18,7 @@ import {
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { KaraokeLyrics } from '../components/KaraokeLyrics';
+import { CoverImage } from '../components/GenerativeCover';
 import { Navigation } from '../components/Navigation';
 import { ThemeChanger } from '../components/ThemeChanger';
 import type { Release } from '../types';
@@ -391,7 +392,7 @@ export function DayPage() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
-                  className="p-6 md:p-8 rounded-lg"
+                  className="rounded-lg overflow-hidden"
                   style={{
                     background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
                     backdropFilter: 'blur(12px)',
@@ -399,8 +400,48 @@ export function DayPage() {
                     border: '1px solid rgba(255,255,255,0.08)',
                   }}
                 >
-                  {/* Play button and progress */}
-                  <div className="flex items-center gap-6">
+                  {/* Cover art + controls layout */}
+                  <div className="flex flex-col md:flex-row">
+                    {/* Cover art */}
+                    <div className="w-full md:w-64 h-48 md:h-64 flex-shrink-0 relative">
+                      <CoverImage
+                        day={release.day}
+                        title={release.title}
+                        mood={release.mood}
+                        energy={release.energy}
+                        valence={release.valence}
+                        tempo={release.tempo}
+                        coverUrl={`/releases/covers/january/${String(release.day).padStart(2, '0')} - ${release.title}.jpg`}
+                        className="w-full h-full object-cover"
+                      />
+                      {/* Play button overlay on cover */}
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={togglePlay}
+                        disabled={audioError}
+                        className={`absolute inset-0 flex items-center justify-center bg-void-black/30 hover:bg-void-black/50 transition-all md:hidden ${
+                          audioError ? 'cursor-not-allowed' : ''
+                        }`}
+                      >
+                        <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                          audioError 
+                            ? 'bg-void-gray/50' 
+                            : isLight ? 'bg-neon-yellow' : 'bg-neon-red'
+                        }`}>
+                          {isPlaying ? (
+                            <Pause className="w-8 h-8 text-void-black" />
+                          ) : (
+                            <Play className="w-8 h-8 text-void-black ml-1" />
+                          )}
+                        </div>
+                      </motion.button>
+                    </div>
+                    
+                    {/* Controls */}
+                    <div className="flex-1 p-6 md:p-8">
+                      {/* Play button and progress */}
+                      <div className="flex items-center gap-6">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
@@ -458,24 +499,26 @@ export function DayPage() {
                     </div>
                   </div>
 
-                  {/* Meta info */}
-                  <div className="flex flex-wrap items-center gap-6 mt-6 text-sm font-mono text-light-cream/50">
-                    <span className="flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      {release.durationFormatted}
-                    </span>
-                    <span className="flex items-center gap-2">
-                      <Music className="w-4 h-4" />
-                      {release.tempo} BPM
-                    </span>
-                    <span className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4" />
-                      {release.key}
-                    </span>
-                    <span className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      {release.date}
-                    </span>
+                      {/* Meta info */}
+                      <div className="flex flex-wrap items-center gap-6 mt-6 text-sm font-mono text-light-cream/50">
+                        <span className="flex items-center gap-2">
+                          <Clock className="w-4 h-4" />
+                          {release.durationFormatted}
+                        </span>
+                        <span className="flex items-center gap-2">
+                          <Music className="w-4 h-4" />
+                          {release.tempo} BPM
+                        </span>
+                        <span className="flex items-center gap-2">
+                          <Sparkles className="w-4 h-4" />
+                          {release.key}
+                        </span>
+                        <span className="flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          {release.date}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               </div>

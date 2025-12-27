@@ -3,57 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { Play, ExternalLink, Clock, Music, ChevronLeft, ChevronRight, FileText, ChevronDown, ChevronUp, Volume2, Sparkles } from 'lucide-react';
 import { KaraokeLyrics } from './KaraokeLyrics';
+import { CoverImage } from './GenerativeCover';
 import type { Release } from '../types';
 
 const INITIAL_ITEMS = 12;
 const ITEMS_PER_PAGE = 30;
-const WAVEFORM_BARS = 24;
-
-// Generate a unique waveform pattern based on song characteristics
-function generateWaveform(release: Release): number[] {
-  // Use song properties to seed the pattern
-  const seed = release.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const energy = release.energy;
-  const valence = release.valence;
-  const tempo = release.tempo;
-  
-  // Pseudo-random generator based on seed
-  const seededRandom = (index: number) => {
-    const x = Math.sin(seed + index * 9999) * 10000;
-    return x - Math.floor(x);
-  };
-  
-  const bars: number[] = [];
-  
-  for (let i = 0; i < WAVEFORM_BARS; i++) {
-    // Base height influenced by energy (higher energy = taller average bars)
-    const baseHeight = 15 + (energy * 35);
-    
-    // Variation influenced by valence (higher valence = more dynamic range)
-    const variation = 10 + (valence * 40);
-    
-    // Create wave pattern - tempo affects frequency
-    const tempoFactor = (tempo / 120); // normalized around 120 BPM
-    const waveFreq = 0.3 * tempoFactor;
-    const wave = Math.sin(i * waveFreq + seed * 0.1) * 0.5 + 0.5;
-    
-    // Add controlled randomness
-    const random = seededRandom(i);
-    
-    // Combine factors for final height
-    let height = baseHeight + (wave * variation * 0.6) + (random * variation * 0.4);
-    
-    // Create peaks at certain intervals based on energy
-    if (i % Math.max(2, Math.floor(6 - energy * 4)) === 0) {
-      height += 15 * energy;
-    }
-    
-    // Clamp between 10% and 95%
-    bars.push(Math.min(95, Math.max(10, height)));
-  }
-  
-  return bars;
-}
 
 export function ReleasesFeed() {
   const { data, selectedRelease, setSelectedRelease } = useStore();
@@ -287,34 +241,18 @@ function ReleaseCard({
         </span>
       </div>
 
-      {/* Cover art placeholder */}
-      <div className="relative h-48 bg-void-lighter overflow-hidden">
-        <div
-          className={`absolute inset-0 ${
-            isLight
-              ? 'bg-gradient-to-br from-neon-yellow/20 via-neon-orange/10 to-transparent'
-              : 'bg-gradient-to-br from-neon-red/20 via-neon-red-dark/10 to-transparent'
-          }`}
+      {/* Cover art with generative fallback */}
+      <div className="relative h-48 overflow-hidden">
+        <CoverImage
+          day={release.day}
+          title={release.title}
+          mood={release.mood}
+          energy={release.energy}
+          valence={release.valence}
+          tempo={release.tempo}
+          coverUrl={`/releases/covers/january/${String(release.day).padStart(2, '0')} - ${release.title}.jpg`}
+          className="w-full h-full object-cover"
         />
-        {/* Unique animated waveform visualization based on song characteristics */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 flex items-end justify-center gap-[2px] px-4">
-          {useMemo(() => generateWaveform(release), [release.id]).map((height, i) => (
-            <motion.div
-              key={i}
-              className={`w-1.5 rounded-t-sm ${isLight ? 'bg-neon-yellow' : 'bg-neon-red'}`}
-              initial={{ height: `${height * 0.3}%` }}
-              animate={{
-                height: [`${height * 0.3}%`, `${height}%`, `${height * 0.5}%`, `${height * 0.8}%`, `${height * 0.3}%`],
-              }}
-              transition={{
-                duration: 1.5 + (release.tempo / 200),
-                repeat: Infinity,
-                delay: i * 0.04,
-                ease: 'easeInOut',
-              }}
-            />
-          ))}
-        </div>
         {/* Play overlay */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -429,27 +367,18 @@ function ReleaseCardSimple({
         </span>
       </div>
 
-      {/* Cover art placeholder - static unique waveform */}
-      <div className="relative h-48 bg-void-lighter overflow-hidden">
-        <div
-          className={`absolute inset-0 ${
-            isLight
-              ? 'bg-gradient-to-br from-neon-yellow/20 via-neon-orange/10 to-transparent'
-              : 'bg-gradient-to-br from-neon-red/20 via-neon-red-dark/10 to-transparent'
-          }`}
+      {/* Cover art with generative fallback */}
+      <div className="relative h-48 overflow-hidden">
+        <CoverImage
+          day={release.day}
+          title={release.title}
+          mood={release.mood}
+          energy={release.energy}
+          valence={release.valence}
+          tempo={release.tempo}
+          coverUrl={`/releases/covers/january/${String(release.day).padStart(2, '0')} - ${release.title}.jpg`}
+          className="w-full h-full object-cover"
         />
-        {/* Static unique waveform based on song characteristics */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 flex items-end justify-center gap-[2px] px-4">
-          {generateWaveform(release).map((height, i) => (
-            <div
-              key={i}
-              className={`w-1.5 rounded-t-sm transition-all duration-300 group-hover:opacity-100 ${
-                isLight ? 'bg-neon-yellow/70' : 'bg-neon-red/70'
-              }`}
-              style={{ height: `${height}%` }}
-            />
-          ))}
-        </div>
         {/* Play overlay */}
         <div className="absolute inset-0 flex items-center justify-center bg-void-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
           <div
