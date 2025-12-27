@@ -21,6 +21,7 @@ import { KaraokeLyrics } from '../components/KaraokeLyrics';
 import { CoverImage } from '../components/GenerativeCover';
 import { Navigation } from '../components/Navigation';
 import { ThemeChanger } from '../components/ThemeChanger';
+import { getCoverUrl, getAudioUrl, getLocalAudioUrl } from '../services/releaseStorage';
 import type { Release } from '../types';
 
 // Helper to convert hex to rgba
@@ -68,19 +69,21 @@ export function DayPage() {
   // Audio error handling with fallback to local storage
   const [fallbackUrl, setFallbackUrl] = useState<string | null>(null);
   
-  // Try to load local fallback file using actual filename from database
+  // Set up audio URLs - try releaseready bucket first, then local fallback
   useEffect(() => {
-    if (release && !fallbackUrl && release.fileName) {
-      const localPath = `/music/${release.fileName}`;
+    if (release && !fallbackUrl) {
+      // Local fallback uses the new naming convention
+      const localPath = getLocalAudioUrl(release.day, release.title);
       setFallbackUrl(localPath);
       
-      // Try to set the audio source to fallback immediately
-      if (audioRef.current && release.storedAudioUrl) {
-        audioRef.current.src = release.storedAudioUrl;
+      // Try to set the audio source to releaseready bucket first
+      if (audioRef.current) {
+        const primaryUrl = getAudioUrl(release.day, release.title);
+        audioRef.current.src = primaryUrl;
         audioRef.current.load();
       }
     }
-  }, [release, dayNum, fallbackUrl]);
+  }, [release, fallbackUrl]);
   
   // Audio event handlers
   useEffect(() => {
@@ -114,9 +117,9 @@ export function DayPage() {
     };
     const handleCanPlay = () => setAudioError(false);
 
-    // Set initial source
-    if (release?.storedAudioUrl && !audio.src) {
-      audio.src = release.storedAudioUrl;
+    // Set initial source from releaseready bucket
+    if (release && !audio.src) {
+      audio.src = getAudioUrl(release.day, release.title);
     }
     
     audio.addEventListener('timeupdate', handleTimeUpdate);
@@ -411,7 +414,7 @@ export function DayPage() {
                         energy={release.energy}
                         valence={release.valence}
                         tempo={release.tempo}
-                        coverUrl={`/releases/covers/january/${String(release.day).padStart(2, '0')} - ${release.title}.jpg`}
+                        coverUrl={getCoverUrl(release.day, release.title)}
                         className="w-full h-full object-cover"
                       />
                       {/* Play button overlay on cover */}

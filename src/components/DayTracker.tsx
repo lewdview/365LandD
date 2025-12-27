@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ChevronLeft, ChevronRight, ChevronDown, Play, Clock, Music, Calendar } from 'lucide-react';
 import { CoverImage } from './GenerativeCover';
+import { getCoverUrl } from '../services/releaseStorage';
 
 // Custom SVG Icons
 function WaveformIcon({ className = '' }: { className?: string }) {
@@ -328,7 +329,7 @@ export function DayTracker() {
                         energy={todaysRelease.energy}
                         valence={todaysRelease.valence}
                         tempo={todaysRelease.tempo}
-                        coverUrl={`/releases/covers/january/${String(todaysRelease.day).padStart(2, '0')} - ${todaysRelease.title}.jpg`}
+                        coverUrl={getCoverUrl(todaysRelease.day, todaysRelease.title)}
                         className="w-full h-full object-cover"
                       />
                       

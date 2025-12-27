@@ -4,6 +4,7 @@ import { useStore } from '../store/useStore';
 import { Play, ExternalLink, Clock, Music, ChevronLeft, ChevronRight, FileText, ChevronDown, ChevronUp, Volume2, Sparkles } from 'lucide-react';
 import { KaraokeLyrics } from './KaraokeLyrics';
 import { CoverImage } from './GenerativeCover';
+import { getCoverUrl } from '../services/releaseStorage';
 import type { Release } from '../types';
 
 const INITIAL_ITEMS = 12;
@@ -250,7 +251,7 @@ function ReleaseCard({
           energy={release.energy}
           valence={release.valence}
           tempo={release.tempo}
-          coverUrl={`/releases/covers/january/${String(release.day).padStart(2, '0')} - ${release.title}.jpg`}
+          coverUrl={getCoverUrl(release.day, release.title)}
           className="w-full h-full object-cover"
         />
         {/* Play overlay */}
@@ -376,7 +377,7 @@ function ReleaseCardSimple({
           energy={release.energy}
           valence={release.valence}
           tempo={release.tempo}
-          coverUrl={`/releases/covers/january/${String(release.day).padStart(2, '0')} - ${release.title}.jpg`}
+          coverUrl={getCoverUrl(release.day, release.title)}
           className="w-full h-full object-cover"
         />
         {/* Play overlay */}
