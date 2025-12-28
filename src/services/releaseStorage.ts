@@ -5,13 +5,18 @@ const BUCKET_NAME = 'releaseready';
 // Base URL for the releaseready bucket
 const STORAGE_BASE = `https://${SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/${BUCKET_NAME}`;
 
+// Days that use .mp3 instead of .wav (in January)
+const MP3_DAYS = [13, 18, 21, 26];
+
 /**
  * Get the audio URL for a release from the releaseready bucket
- * Format: /audio/january/01 - Dream.wav
+ * Format: /audio/january/01 - Dream.wav (or .mp3 for specific tracks)
  */
-export function getReleaseAudioUrl(day: number, title: string, month: string = 'january'): string {
+export function getReleaseAudioUrl(day: number, title: string, month: string = 'january', ext?: string): string {
   const paddedDay = String(day).padStart(2, '0');
-  const fileName = `${paddedDay} - ${title}.wav`;
+  // Use provided extension, or check if it's a known mp3 day, otherwise default to wav
+  const extension = ext || (MP3_DAYS.includes(day) ? 'mp3' : 'wav');
+  const fileName = `${paddedDay} - ${title}.${extension}`;
   return `${STORAGE_BASE}/audio/${month.toLowerCase()}/${encodeURIComponent(fileName)}`;
 }
 
