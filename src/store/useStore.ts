@@ -26,45 +26,31 @@ export const useStore = create<AppState>((set, get) => ({
     try {
       set({ loading: true, error: null });
       
-      console.log('[Store] Fetching data from Supabase...');
+      console.log('[Store] Fetching data from releases.json...');
       
-      // Fetch directly from Supabase
-      const data = await buildReleaseData();
-      
-      console.log('[Store] Received data:', { 
-        releases: data.releases?.length || 0,
-        project: data.project?.title
-      });
-      
-      if (!data.releases || data.releases.length === 0) {
-        console.log('[Store] No releases from Supabase, trying fallback...');
-        // Fallback to static JSON if Supabase fails
-        const response = await fetch('/releases.json');
-        if (response.ok) {
-          const fallbackData: ReleaseData = await response.json();
-          console.log('[Store] Fallback data:', fallbackData.releases?.length || 0);
-          set({ data: fallbackData, loading: false });
-          get().calculateCurrentDay();
-          return;
-        }
+      // Use releases.json as primary source (contains curated 365-day track list)
+      const response = await fetch('/releases.json');
+      if (response.ok) {
+        const data: ReleaseData = await response.json();
+        console.log('[Store] Loaded releases:', data.releases?.length || 0);
+        set({ data, loading: false });
+        get().calculateCurrentDay();
+        return;
       }
       
-      set({ data, loading: false });
-      get().calculateCurrentDay();
+      // Fallback to Supabase if releases.json fails
+      console.log('[Store] releases.json failed, trying Supabase...');
+      const supabaseData = await buildReleaseData();
+      
+      if (supabaseData.releases && supabaseData.releases.length > 0) {
+        set({ data: supabaseData, loading: false });
+        get().calculateCurrentDay();
+        return;
+      }
+      
+      throw new Error('No data available');
     } catch (error) {
       console.error('Error fetching data:', error);
-      // Try fallback to static JSON
-      try {
-        const response = await fetch('/releases.json');
-        if (response.ok) {
-          const fallbackData: ReleaseData = await response.json();
-          set({ data: fallbackData, loading: false });
-          get().calculateCurrentDay();
-          return;
-        }
-      } catch {
-        // Ignore fallback error
-      }
       set({ 
         error: error instanceof Error ? error.message : 'Unknown error', 
         loading: false 

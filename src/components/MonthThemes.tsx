@@ -18,7 +18,7 @@ export function MonthThemes() {
   return (
     <section 
       id="themes" 
-      className="py-24 px-4 relative overflow-hidden"
+      className="py-24 px-6 md:px-12 lg:px-16 relative overflow-hidden"
     >
       {/* Scanlines overlay */}
       <div 
@@ -70,7 +70,7 @@ export function MonthThemes() {
         </motion.p>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto">
+      <div className="relative z-10 w-full">
         {/* Header with code-style comment */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

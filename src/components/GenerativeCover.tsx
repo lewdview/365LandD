@@ -352,6 +352,7 @@ interface CoverImageProps {
   tempo?: number;
   coverUrl?: string;
   className?: string;
+  showColorVeil?: boolean;
 }
 
 export function CoverImage({
@@ -363,19 +364,34 @@ export function CoverImage({
   tempo,
   coverUrl,
   className = '',
+  showColorVeil = false,
 }: CoverImageProps) {
+  const { currentTheme } = useThemeStore();
+  const veilColor = mood === 'light' ? currentTheme.colors.accent : currentTheme.colors.primary;
+
   // If no cover URL provided, use generative
   if (!coverUrl) {
     return (
-      <GenerativeCover
-        day={day}
-        title={title}
-        mood={mood}
-        energy={energy}
-        valence={valence}
-        tempo={tempo}
-        className={className}
-      />
+      <div className={`relative ${className}`}>
+        <GenerativeCover
+          day={day}
+          title={title}
+          mood={mood}
+          energy={energy}
+          valence={valence}
+          tempo={tempo}
+          className="w-full h-full"
+        />
+        {showColorVeil && (
+          <div 
+            className="absolute inset-0 z-10 pointer-events-none"
+            style={{ 
+              background: `linear-gradient(135deg, ${veilColor}25 0%, ${veilColor}10 50%, ${veilColor}20 100%)`,
+              mixBlendMode: 'overlay',
+            }}
+          />
+        )}
+      </div>
     );
   }
 
@@ -400,6 +416,15 @@ export function CoverImage({
           (e.target as HTMLImageElement).style.display = 'none';
         }}
       />
+      {showColorVeil && (
+        <div 
+          className="absolute inset-0 z-20 pointer-events-none"
+          style={{ 
+            background: `linear-gradient(135deg, ${veilColor}25 0%, ${veilColor}10 50%, ${veilColor}20 100%)`,
+            mixBlendMode: 'overlay',
+          }}
+        />
+      )}
     </div>
   );
 }

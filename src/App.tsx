@@ -4,6 +4,7 @@ import { useStore } from './store/useStore';
 import { Loader } from './components/Loader';
 import { HomePage } from './pages/HomePage';
 import { DayPage } from './pages/DayPage';
+import { GlobalAudioPlayer } from './components/GlobalAudioPlayer';
 
 function App() {
   const { fetchData } = useStore();
@@ -22,6 +23,9 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/day/:day" element={<DayPage />} />
       </Routes>
+      
+      {/* Global audio player - persists across navigation */}
+      <GlobalAudioPlayer />
     </BrowserRouter>
   );
 }

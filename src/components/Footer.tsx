@@ -5,7 +5,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative py-16 px-4 border-t border-void-lighter overflow-hidden">
+    <footer className="relative py-16 px-6 md:px-12 lg:px-16 border-t border-void-lighter overflow-hidden">
       {/* Glitch lines decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {Array.from({ length: 5 }).map((_, i) => (
@@ -31,7 +31,7 @@ export function Footer() {
         ))}
       </div>
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div className="w-full relative z-10">
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>

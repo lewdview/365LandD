@@ -272,7 +272,7 @@ export function About() {
         {/* THE COMMITMENT - Staggered cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-32">
           {[
-            { num: "365", label: "SONGS", sub: "One every day" },
+            { num: "365", label: "ENTRIES", sub: "One every day" },
             { num: "RAW", label: "HONEST", sub: "Unfiltered expression" },
             { num: "∞", label: "SPECTRUM", sub: "Light to dark" },
           ].map((item, i) => (
@@ -475,7 +475,7 @@ export function About() {
               <span className="text-xs font-mono tracking-[0.3em] uppercase block mb-4" style={{ color: primary }}>Early Access</span>
               <h4 className="text-2xl font-bold text-light-cream mb-4">Unlock All 365</h4>
               <p className="text-light-cream/60 leading-relaxed mb-6">
-                Get access to all songs as they're completed—plus alternate versions, demos, unreleased cuts, and behind-the-scenes context.
+                Get access to all poetic entries as they're completed—plus alternate versions, demos, unreleased cuts, and behind-the-scenes context.
               </p>
               <div className="flex flex-wrap gap-3">
                 {["Full Catalog", "Demos", "Unreleased", "BTS Content"].map((tag) => (
@@ -516,7 +516,7 @@ export function About() {
             both tell the truth.
           </p>
           <p className="text-lg text-light-cream/40 mb-8">
-            This year, I'm sharing both—one song at a time.
+            This year, I'm sharing both—one poetic entry at a time.
           </p>
           <p className="text-sm font-mono" style={{ color: accent }}>— th3scr1b3</p>
         </motion.div>

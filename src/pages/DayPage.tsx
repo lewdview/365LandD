@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -6,8 +6,6 @@ import {
   ChevronRight, 
   Play, 
   Pause, 
-  Volume2, 
-  VolumeX,
   Clock,
   Music,
   Calendar,
@@ -17,11 +15,12 @@ import {
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
+import { useAudioStore } from '../store/useAudioStore';
 import { KaraokeLyrics } from '../components/KaraokeLyrics';
 import { CoverImage } from '../components/GenerativeCover';
 import { Navigation } from '../components/Navigation';
 import { ThemeChanger } from '../components/ThemeChanger';
-import { getCoverUrl, getAudioUrl, getLocalAudioUrl } from '../services/releaseStorage';
+import { getCoverUrl } from '../services/releaseStorage';
 import type { Release } from '../types';
 
 // Helper to convert hex to rgba
@@ -39,17 +38,33 @@ export function DayPage() {
   const { currentTheme } = useThemeStore();
   const { primary, accent, background } = currentTheme.colors;
   
+  // Global audio store
+  const {
+    currentRelease: playingRelease,
+    isPlaying,
+    currentTime,
+    duration,
+    hasError: audioError,
+    isLoading,
+    loadAndPlay,
+    togglePlay: globalTogglePlay,
+    seek,
+  } = useAudioStore();
+  
   const [release, setRelease] = useState<Release | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(0.8);
-  const [isMuted, setIsMuted] = useState(false);
-  const [audioError, setAudioError] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
 
   const dayNum = parseInt(day || '1', 10);
   const hasPoetryData = release?.lyricsWords && release.lyricsWords.length > 0;
+  
+  // Check if THIS release is the one currently playing
+  const isThisPlaying = playingRelease?.day === release?.day && playingRelease?.title === release?.title;
+  const isThisReleaseActive = isThisPlaying && isPlaying;
+  
+  // Poetry in Motion should show the PLAYING release's lyrics, not the page's release
+  const playingHasPoetryData = playingRelease?.lyricsWords && playingRelease.lyricsWords.length > 0;
+  const lyricsWordsToShow = playingHasPoetryData ? playingRelease!.lyricsWords : (hasPoetryData ? release!.lyricsWords : []);
+  const lyricsSegmentsToShow = playingHasPoetryData ? playingRelease!.lyricsSegments : (hasPoetryData ? release!.lyricsSegments : undefined);
+  const currentTimeForLyrics = playingHasPoetryData ? currentTime : (isThisPlaying ? currentTime : 0);
 
   // Fetch data if not loaded
   useEffect(() => {
@@ -66,113 +81,34 @@ export function DayPage() {
     }
   }, [data, dayNum]);
 
-  // Audio error handling with fallback to local storage
-  const [fallbackUrl, setFallbackUrl] = useState<string | null>(null);
-  
-  // Set up audio URLs - try releaseready bucket first, then local fallback
-  useEffect(() => {
-    if (release && !fallbackUrl) {
-      // Local fallback uses the new naming convention
-      const localPath = getLocalAudioUrl(release.day, release.title);
-      setFallbackUrl(localPath);
-      
-      // Try to set the audio source to releaseready bucket first
-      if (audioRef.current) {
-        const primaryUrl = getAudioUrl(release.day, release.title);
-        audioRef.current.src = primaryUrl;
-        audioRef.current.load();
-      }
-    }
-  }, [release, fallbackUrl]);
-  
-  // Audio event handlers
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
-    const handleDurationChange = () => setDuration(audio.duration);
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-    const handleEnded = () => {
-      setIsPlaying(false);
-      setCurrentTime(0);
-    };
-    const handleError = (e: Event) => {
-      console.error('Audio error:', e);
-      
-      // If we haven't tried fallback yet, try now
-      if (release?.fileName && fallbackUrl && audio.src !== fallbackUrl) {
-        console.log('Attempting fallback to local storage:', fallbackUrl);
-        audio.src = fallbackUrl;
-        audio.load();
-        // Try to play once the fallback is loaded
-        if (isPlaying) {
-          audio.play().catch(err => console.error('Failed to play fallback:', err));
-        }
-      } else {
-        setAudioError(true);
-        setIsPlaying(false);
-      }
-    };
-    const handleCanPlay = () => setAudioError(false);
-
-    // Set initial source from releaseready bucket
-    if (release && !audio.src) {
-      audio.src = getAudioUrl(release.day, release.title);
-    }
+  // Play this release via global player
+  const handlePlay = useCallback(() => {
+    if (!release) return;
     
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('durationchange', handleDurationChange);
-    audio.addEventListener('play', handlePlay);
-    audio.addEventListener('pause', handlePause);
-    audio.addEventListener('ended', handleEnded);
-    audio.addEventListener('error', handleError);
-    audio.addEventListener('canplay', handleCanPlay);
-
-    return () => {
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('durationchange', handleDurationChange);
-      audio.removeEventListener('play', handlePlay);
-      audio.removeEventListener('pause', handlePause);
-      audio.removeEventListener('ended', handleEnded);
-      audio.removeEventListener('error', handleError);
-      audio.removeEventListener('canplay', handleCanPlay);
-    };
-  }, [release, fallbackUrl]);
-
-  // Volume control
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume;
-    }
-  }, [volume, isMuted]);
-
-  const togglePlay = useCallback(() => {
-    const audio = audioRef.current;
-    if (!audio || audioError) return;
-    
-    if (isPlaying) {
-      audio.pause();
+    if (isThisPlaying) {
+      // Same track - just toggle play/pause
+      globalTogglePlay();
     } else {
-      audio.play().catch(() => setAudioError(true));
+      // Different track - load and play
+      loadAndPlay(release);
     }
-  }, [isPlaying, audioError]);
+  }, [release, isThisPlaying, globalTogglePlay, loadAndPlay]);
 
   const handleSeek = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const audio = audioRef.current;
-    if (!audio) return;
     const newTime = parseFloat(e.target.value);
-    audio.currentTime = newTime;
-    setCurrentTime(newTime);
-  }, []);
+    seek(newTime);
+  }, [seek]);
 
   const handleWordClick = useCallback((time: number) => {
-    const audio = audioRef.current;
-    if (!audio || audioError) return;
-    audio.currentTime = time;
-    audio.play().catch(() => setAudioError(true));
-  }, [audioError]);
+    if (!release) return;
+    
+    // If this release isn't playing, start it first
+    if (!isThisPlaying) {
+      loadAndPlay(release);
+    }
+    // Seek to the word time (with small delay if we just started playback)
+    setTimeout(() => seek(time), isThisPlaying ? 0 : 100);
+  }, [release, isThisPlaying, loadAndPlay, seek]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -205,27 +141,50 @@ export function DayPage() {
   }
 
   return (
-    <div className="min-h-screen bg-void-black text-light-cream">
+    <div className="min-h-screen bg-void-black text-light-cream pb-40 md:pb-36">
       <Navigation />
       <ThemeChanger />
-      
-      {/* Hidden audio element */}
-      <audio ref={audioRef} preload="metadata" />
 
       {/* Hero section with large day number */}
       <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-20">
-        {/* Background gradient based on mood */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: isLight
-              ? `radial-gradient(ellipse at center, ${hexToRgba(accent, 0.15)} 0%, ${background} 70%)`
-              : `radial-gradient(ellipse at center, ${hexToRgba(primary, 0.15)} 0%, ${background} 70%)`,
-          }}
-        />
+        {/* Generative cover art as background */}
+        {release && (
+          <div className="absolute inset-0 z-0">
+            <CoverImage
+              day={release.day}
+              title={release.title}
+              mood={release.mood}
+              energy={release.energy}
+              valence={release.valence}
+              tempo={release.tempo}
+              coverUrl={getCoverUrl(release.day, release.title)}
+              className="w-full h-full object-cover"
+              showColorVeil
+            />
+            {/* Overlay to darken the cover */}
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(to bottom, ${background}90 0%, ${background}70 40%, ${background}95 100%)`,
+              }}
+            />
+          </div>
+        )}
+
+        {/* Background gradient based on mood (fallback when no release) */}
+        {!release && (
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: isLight
+                ? `radial-gradient(ellipse at center, ${hexToRgba(accent, 0.15)} 0%, ${background} 70%)`
+                : `radial-gradient(ellipse at center, ${hexToRgba(primary, 0.15)} 0%, ${background} 70%)`,
+            }}
+          />
+        )}
 
         {/* Large day number background */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[1]">
           <motion.span
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -242,22 +201,23 @@ export function DayPage() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+        <div className="relative z-[2] text-center px-4 max-w-4xl mx-auto">
           {/* Navigation breadcrumb */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center justify-center gap-4 mb-8"
+            style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)' }}
           >
             <Link 
               to="/" 
-              className="flex items-center gap-2 text-light-cream/60 hover:text-neon-yellow transition-colors"
+              className="flex items-center gap-2 text-light-cream/80 hover:text-neon-yellow transition-colors"
             >
               <Home className="w-4 h-4" />
-              <span className="font-mono text-sm">HOME</span>
+              <span className="font-mono text-sm font-semibold">HOME</span>
             </Link>
-            <span className="text-light-cream/30">/</span>
-            <span className="font-mono text-sm text-neon-yellow">DAY {dayNum}</span>
+            <span className="text-light-cream/50">/</span>
+            <span className="font-mono text-sm font-semibold text-neon-yellow">DAY {dayNum}</span>
           </motion.div>
 
           {/* Day badge */}
@@ -285,7 +245,15 @@ export function DayPage() {
                 transition={{ delay: 0.3 }}
                 className="text-4xl md:text-6xl lg:text-7xl font-black mb-4 uppercase"
                 style={{
-                  textShadow: `0 0 20px ${background}, 0 0 40px rgba(0,0,0,0.5)`,
+                  textShadow: `
+                    0 0 20px ${background},
+                    0 0 40px rgba(0,0,0,0.8),
+                    0 4px 12px rgba(0,0,0,0.9),
+                    2px 2px 0 rgba(0,0,0,0.5),
+                    -2px -2px 0 rgba(0,0,0,0.5),
+                    2px -2px 0 rgba(0,0,0,0.5),
+                    -2px 2px 0 rgba(0,0,0,0.5)
+                  `,
                 }}
               >
                 {release.title}
@@ -296,12 +264,13 @@ export function DayPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="text-xl font-light mb-6"
+                className="text-xl font-semibold mb-6"
+                style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)' }}
               >
                 <span className={isLight ? 'text-neon-yellow' : 'text-neon-red'}>
                   {release.mood.toUpperCase()}
                 </span>
-                <span className="text-light-cream/50"> • {release.date}</span>
+                <span className="text-light-cream/70"> • {release.date}</span>
               </motion.p>
 
               {/* Description */}
@@ -309,7 +278,8 @@ export function DayPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="text-lg text-light-cream/70 max-w-2xl mx-auto"
+                className="text-lg text-light-cream max-w-2xl mx-auto font-medium"
+                style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.6)' }}
               >
                 {release.description}
               </motion.p>
@@ -327,7 +297,7 @@ export function DayPage() {
         </div>
 
         {/* Day navigation arrows */}
-        <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20">
+        <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-[5]">
           <motion.button
             whileHover={{ scale: 1.1, x: -5 }}
             whileTap={{ scale: 0.9 }}
@@ -345,13 +315,13 @@ export function DayPage() {
             <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
           </motion.button>
           {prevDay && (
-            <p className="text-xs font-mono text-light-cream/40 mt-2 text-center">
+            <p className="text-xs font-mono text-light-cream/60 mt-2 text-center font-semibold" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
               DAY {prevDay.day}
             </p>
           )}
         </div>
 
-        <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20">
+        <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-[5]">
           <motion.button
             whileHover={{ scale: 1.1, x: 5 }}
             whileTap={{ scale: 0.9 }}
@@ -369,7 +339,7 @@ export function DayPage() {
             <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
           </motion.button>
           {nextDay && (
-            <p className="text-xs font-mono text-light-cream/40 mt-2 text-center">
+            <p className="text-xs font-mono text-light-cream/60 mt-2 text-center font-semibold" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
               DAY {nextDay.day}
             </p>
           )}
@@ -379,84 +349,49 @@ export function DayPage() {
       {release && (
         <>
           {/* Audio player section */}
-          {(release.storedAudioUrl || fallbackUrl) && (
-            <section className="py-12 px-4">
-              <div className="max-w-4xl mx-auto">
-                {audioError && (
-                  <div className="mb-4 p-3 bg-void-gray/30 border border-neon-red/50 rounded text-center">
-                    <p className="text-neon-red text-sm font-mono">
-                      {audioRef.current?.src?.includes('/music/')
-                        ? 'Loading from local storage...' 
-                        : 'Audio connection issue. Trying alternative source...'}
-                    </p>
-                  </div>
-                )}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
-                  className="rounded-lg overflow-hidden"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
-                    backdropFilter: 'blur(12px)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                  }}
-                >
-                  {/* Cover art + controls layout */}
-                  <div className="flex flex-col md:flex-row">
-                    {/* Cover art */}
-                    <div className="w-full md:w-64 h-48 md:h-64 flex-shrink-0 relative">
-                      <CoverImage
-                        day={release.day}
-                        title={release.title}
-                        mood={release.mood}
-                        energy={release.energy}
-                        valence={release.valence}
-                        tempo={release.tempo}
-                        coverUrl={getCoverUrl(release.day, release.title)}
-                        className="w-full h-full object-cover"
-                      />
-                      {/* Play button overlay on cover */}
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={togglePlay}
-                        disabled={audioError}
-                        className={`absolute inset-0 flex items-center justify-center bg-void-black/30 hover:bg-void-black/50 transition-all md:hidden ${
-                          audioError ? 'cursor-not-allowed' : ''
-                        }`}
-                      >
-                        <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
-                          audioError 
-                            ? 'bg-void-gray/50' 
-                            : isLight ? 'bg-neon-yellow' : 'bg-neon-red'
-                        }`}>
-                          {isPlaying ? (
-                            <Pause className="w-8 h-8 text-void-black" />
-                          ) : (
-                            <Play className="w-8 h-8 text-void-black ml-1" />
-                          )}
-                        </div>
-                      </motion.button>
-                    </div>
-                    
-                    {/* Controls */}
-                    <div className="flex-1 p-6 md:p-8">
-                      {/* Play button and progress */}
-                      <div className="flex items-center gap-6">
+          <section className="py-12 px-6 md:px-12 lg:px-16">
+            <div className="w-full">
+              {audioError && isThisPlaying && (
+                <div className="mb-4 p-3 bg-void-gray/30 border border-neon-red/50 rounded text-center">
+                  <p className="text-neon-red text-sm font-mono">
+                    Audio connection issue. Trying alternative source...
+                  </p>
+                </div>
+              )}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="rounded-lg overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
+                  backdropFilter: 'blur(12px)',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                }}
+              >
+                {/* Controls - no cover art in player, it's now in hero background */}
+                <div className="p-6 md:p-8">
+                  {/* Play button and progress */}
+                  <div className="flex items-center gap-6">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      onClick={togglePlay}
-                      disabled={audioError}
-                      className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center transition-all ${
-                        audioError 
+                      onClick={handlePlay}
+                      disabled={audioError && isThisPlaying}
+                      className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
+                        audioError && isThisPlaying
                           ? 'bg-void-gray/50 cursor-not-allowed' 
                           : isLight ? 'bg-neon-yellow hover:shadow-[0_0_30px_var(--color-neon-yellow)]' : 'bg-neon-red hover:shadow-[0_0_30px_var(--color-neon-red)]'
                       }`}
                     >
-                      {isPlaying ? (
+                      {isLoading && isThisPlaying ? (
+                        <motion.div
+                          className="w-8 h-8 border-4 border-void-black border-t-transparent rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                        />
+                      ) : isThisReleaseActive ? (
                         <Pause className="w-8 h-8 text-void-black" />
                       ) : (
                         <Play className="w-8 h-8 text-void-black ml-1" />
@@ -468,70 +403,52 @@ export function DayPage() {
                       <input
                         type="range"
                         min={0}
-                        max={duration || 100}
-                        value={currentTime}
+                        max={(isThisPlaying && duration) || release.duration || 100}
+                        value={isThisPlaying ? currentTime : 0}
                         onChange={handleSeek}
-                        className="w-full h-2 bg-void-lighter rounded-full appearance-none cursor-pointer"
+                        disabled={!isThisPlaying}
+                        className="w-full h-2 bg-void-lighter rounded-full appearance-none cursor-pointer disabled:opacity-50"
                         style={{
-                          background: `linear-gradient(to right, ${isLight ? accent : primary} ${(currentTime / duration) * 100}%, rgba(255,255,255,0.1) ${(currentTime / duration) * 100}%)`,
+                          background: isThisPlaying 
+                            ? `linear-gradient(to right, ${isLight ? accent : primary} ${(currentTime / (duration || 1)) * 100}%, rgba(255,255,255,0.1) ${(currentTime / (duration || 1)) * 100}%)`
+                            : 'rgba(255,255,255,0.1)',
                         }}
                       />
                       <div className="flex justify-between mt-2 text-xs font-mono text-light-cream/50">
-                        <span>{formatTime(currentTime)}</span>
-                        <span>{formatTime(duration || release.duration)}</span>
-                      </div>
-                    </div>
-
-                    {/* Volume */}
-                    <div className="hidden md:flex items-center gap-2">
-                      <button
-                        onClick={() => setIsMuted(!isMuted)}
-                        className="p-2 hover:text-neon-yellow transition-colors"
-                      >
-                        {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-                      </button>
-                      <input
-                        type="range"
-                        min={0}
-                        max={1}
-                        step={0.1}
-                        value={volume}
-                        onChange={(e) => setVolume(parseFloat(e.target.value))}
-                        className="w-20 h-1 bg-void-lighter rounded-full appearance-none cursor-pointer"
-                      />
-                    </div>
-                  </div>
-
-                      {/* Meta info */}
-                      <div className="flex flex-wrap items-center gap-6 mt-6 text-sm font-mono text-light-cream/50">
-                        <span className="flex items-center gap-2">
-                          <Clock className="w-4 h-4" />
-                          {release.durationFormatted}
-                        </span>
-                        <span className="flex items-center gap-2">
-                          <Music className="w-4 h-4" />
-                          {release.tempo} BPM
-                        </span>
-                        <span className="flex items-center gap-2">
-                          <Sparkles className="w-4 h-4" />
-                          {release.key}
-                        </span>
-                        <span className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4" />
-                          {release.date}
-                        </span>
+                        <span>{isThisPlaying ? formatTime(currentTime) : '0:00'}</span>
+                        <span>{formatTime((isThisPlaying && duration) || release.duration)}</span>
                       </div>
                     </div>
                   </div>
-                </motion.div>
-              </div>
-            </section>
-          )}
 
-          {/* Lyrics / Poetry in Motion */}
-          {hasPoetryData && (
-            <section className="py-12 px-4">
-              <div className="max-w-4xl mx-auto">
+                  {/* Meta info */}
+                  <div className="flex flex-wrap items-center gap-6 mt-6 text-sm font-mono text-light-cream/50">
+                    <span className="flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      {release.durationFormatted}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Music className="w-4 h-4" />
+                      {release.tempo} BPM
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4" />
+                      {release.key}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      {release.date}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* Lyrics / Poetry in Motion - shows for PLAYING release or current page release */}
+          {(playingHasPoetryData || hasPoetryData) && (
+            <section className="py-12 px-6 md:px-12 lg:px-16">
+              <div className="w-full">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -540,13 +457,18 @@ export function DayPage() {
                   <h3 className="text-xl font-mono text-neon-yellow mb-6 flex items-center justify-center gap-2">
                     <Sparkles className="w-5 h-5" />
                     POETRY IN MOTION
+                    {playingHasPoetryData && !isThisPlaying && playingRelease && (
+                      <span className="text-xs text-light-cream/50 ml-2">
+                        (Day {playingRelease.day})
+                      </span>
+                    )}
                   </h3>
                   <KaraokeLyrics
-                    words={release.lyricsWords || []}
-                    segments={release.lyricsSegments}
-                    currentTime={currentTime}
+                    words={lyricsWordsToShow || []}
+                    segments={lyricsSegmentsToShow}
+                    currentTime={currentTimeForLyrics}
                     onWordClick={handleWordClick}
-                    isPlaying={isPlaying}
+                    isPlaying={isPlaying && playingHasPoetryData}
                     fullHeight
                   />
                 </motion.div>
@@ -556,8 +478,8 @@ export function DayPage() {
 
           {/* Plain lyrics fallback when no word-level sync */}
           {!hasPoetryData && release.lyrics && release.lyrics.trim().length > 0 && (
-            <section className="py-12 px-4">
-              <div className="max-w-4xl mx-auto">
+            <section className="py-12 px-6 md:px-12 lg:px-16">
+              <div className="w-full">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -579,8 +501,8 @@ export function DayPage() {
           )}
 
           {/* Tags and links */}
-          <section className="py-12 px-4">
-            <div className="max-w-4xl mx-auto">
+          <section className="py-12 px-6 md:px-12 lg:px-16">
+            <div className="w-full">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -665,8 +587,8 @@ export function DayPage() {
           </section>
 
           {/* Navigation footer */}
-          <section className="py-12 px-4 border-t border-void-lighter">
-            <div className="max-w-4xl mx-auto">
+          <section className="py-12 px-6 md:px-12 lg:px-16 border-t border-void-lighter">
+            <div className="w-full">
               <div className="flex justify-between items-center">
                 {prevDay ? (
                   <button

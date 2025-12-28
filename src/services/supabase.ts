@@ -162,11 +162,11 @@ export async function buildReleaseData(): Promise<ReleaseData> {
   
   return {
     project: {
-      title: '365 Days of Light and Dark',
+      title: '365 Days of Light and Dark: Poetry in Motion',
       artist: 'th3scr1b3',
       startDate: '2026-01-01',
       endDate: '2026-12-31',
-      description: 'A song a day. 365 days. One year of sonic exploration through the spectrum of light and dark.',
+      description: 'One poetic entry a day. 365 days. One year of sonic exploration through the spectrum of light and dark.',
       totalDays: 365,
     },
     socials: {
@@ -191,8 +191,8 @@ export async function buildReleaseData(): Promise<ReleaseData> {
         date: '2026-01-01',
         title: 'The Journey Begins',
         content: releases.length > 0 
-          ? `${releases.length} songs and counting. The journey continues.`
-          : '365 days. 365 songs. No breaks. No excuses. Day 1 starts now.',
+          ? `${releases.length} poetic entries and counting. The journey continues.`
+          : '365 days. 365 poetic entries. No breaks. No excuses. Day 1 starts now.',
         type: 'milestone',
       },
     ],

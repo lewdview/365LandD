@@ -177,8 +177,8 @@ export function DayTracker() {
   const isLight = todaysRelease?.mood === 'light';
 
   return (
-    <section id="tracker" className="py-16 md:py-24 px-4 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+    <section id="tracker" className="py-16 md:py-24 px-6 md:px-12 lg:px-16 relative overflow-hidden">
+      <div className="w-full">
         {/* Section title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -331,6 +331,7 @@ export function DayTracker() {
                         tempo={todaysRelease.tempo}
                         coverUrl={getCoverUrl(todaysRelease.day, todaysRelease.title)}
                         className="w-full h-full object-cover"
+                        showColorVeil
                       />
                       
                       {/* Play overlay */}

@@ -36,7 +36,7 @@ export function HomePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-void-black text-light-cream noise-overlay">
+    <div className="min-h-screen bg-void-black text-light-cream noise-overlay pb-40 md:pb-36">
       {/* Custom cursor effect */}
       <CursorEffect />
 
@@ -55,8 +55,8 @@ export function HomePage() {
         <DayTracker />
 
         {/* Quick access buttons - Manifesto & Releases */}
-        <section className="py-16 px-4">
-          <div className="max-w-6xl mx-auto">
+        <section className="py-16 px-6 md:px-12 lg:px-16">
+          <div className="w-full">
             <div className="grid md:grid-cols-2 gap-6">
               {/* Manifesto Button */}
               <motion.button

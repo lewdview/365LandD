@@ -1,7 +1,9 @@
-import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
-import { Play, ExternalLink, Clock, Music, ChevronLeft, ChevronRight, FileText, ChevronDown, ChevronUp, Volume2, Sparkles } from 'lucide-react';
+import { useThemeStore } from '../store/useThemeStore';
+import { useAudioStore } from '../store/useAudioStore';
+import { Play, Pause, ExternalLink, Clock, Music, ChevronLeft, ChevronRight, FileText, ChevronDown, ChevronUp, Sparkles, Volume2 } from 'lucide-react';
 import { KaraokeLyrics } from './KaraokeLyrics';
 import { CoverImage } from './GenerativeCover';
 import { getCoverUrl } from '../services/releaseStorage';
@@ -441,79 +443,64 @@ function ReleaseCardSimple({
 
 function ReleaseModal({ release, onClose }: { release: Release; onClose: () => void }) {
   const isLight = release.mood === 'light';
+  const { currentTheme } = useThemeStore();
+  const { primary, accent } = currentTheme.colors;
   const [showLyrics, setShowLyrics] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [audioError, setAudioError] = useState(false);
-  const [fallbackUrl, setFallbackUrl] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
   
-  // Set up local fallback for audio
-  useEffect(() => {
-    if (release && release.fileName && !fallbackUrl) {
-      setFallbackUrl(`/music/${release.fileName}`);
-    }
-  }, [release, fallbackUrl]);
+  // Global audio store
+  const {
+    currentRelease: playingRelease,
+    isPlaying,
+    currentTime,
+    duration,
+    hasError: audioError,
+    isLoading,
+    loadAndPlay,
+    togglePlay: globalTogglePlay,
+    seek,
+  } = useAudioStore();
   
   const hasLyrics = release.lyrics && release.lyrics.trim().length > 0;
   const hasPoetryData = release.lyricsWords && release.lyricsWords.length > 0;
   // Poetry in Motion enabled by default when data available
   const [showPoetry, setShowPoetry] = useState(hasPoetryData);
+  
+  // Check if THIS release is the one currently playing
+  const isThisPlaying = playingRelease?.day === release.day && playingRelease?.title === release.title;
+  const isThisReleaseActive = isThisPlaying && isPlaying;
+  const currentTimeForLyrics = isThisPlaying ? currentTime : 0;
 
-  // Audio event handlers
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+  // Play this release via global player
+  const handlePlay = useCallback(() => {
+    if (isThisPlaying) {
+      // Same track - just toggle play/pause
+      globalTogglePlay();
+    } else {
+      // Different track - load and play
+      loadAndPlay(release);
+    }
+  }, [release, isThisPlaying, globalTogglePlay, loadAndPlay]);
 
-    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-    const handleEnded = () => {
-      setIsPlaying(false);
-      setCurrentTime(0);
-    };
-    const handleError = (_e: Event) => {
-      // If we haven't tried fallback yet, try now
-      if (release?.fileName && fallbackUrl && audioRef.current && audioRef.current.src !== fallbackUrl) {
-        console.log('Attempting fallback to local storage:', fallbackUrl);
-        audioRef.current.src = fallbackUrl;
-        audioRef.current.load();
-        // Try to play once the fallback is loaded
-        if (isPlaying) {
-          audioRef.current.play().catch(err => console.error('Failed to play fallback:', err));
-        }
-      } else {
-        setAudioError(true);
-        setIsPlaying(false);
-      }
-    };
-    const handleCanPlay = () => setAudioError(false);
+  const handleSeek = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTime = parseFloat(e.target.value);
+    seek(newTime);
+  }, [seek]);
 
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('play', handlePlay);
-    audio.addEventListener('pause', handlePause);
-    audio.addEventListener('ended', handleEnded);
-    audio.addEventListener('error', handleError);
-    audio.addEventListener('canplay', handleCanPlay);
-
-    return () => {
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('play', handlePlay);
-      audio.removeEventListener('pause', handlePause);
-      audio.removeEventListener('ended', handleEnded);
-      audio.removeEventListener('error', handleError);
-      audio.removeEventListener('canplay', handleCanPlay);
-    };
-  }, []);
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   // Seek to word when clicked in poetry view
   const handleWordClick = useCallback((time: number) => {
-    const audio = audioRef.current;
-    if (!audio || audioError) return;
-    
-    audio.currentTime = time;
-    audio.play().catch(() => setAudioError(true));
-  }, [audioError]);
+    // If this release isn't playing, start it first
+    if (!isThisPlaying) {
+      loadAndPlay(release);
+    }
+    // Seek to the word time (with small delay if we just started playback)
+    setTimeout(() => seek(time), isThisPlaying ? 0 : 100);
+  }, [release, isThisPlaying, loadAndPlay, seek]);
 
   return (
     <motion.div
@@ -644,51 +631,86 @@ function ReleaseModal({ release, onClose }: { release: Release; onClose: () => v
 
         {/* Content */}
         <div className="p-6">
-          {/* Audio Player */}
-          {(release.storedAudioUrl || fallbackUrl) && (
-            <div className="mb-6">
-              {/* Native audio element with custom styling wrapper */}
-              <div className={`p-4 rounded-lg ${
-                isLight ? 'bg-neon-yellow/10 border border-neon-yellow/30' : 'bg-neon-red/10 border border-neon-red/30'
-              }`}>
-                {audioError ? (
-                  <div className="text-center py-2 text-light-cream/50 text-sm font-mono">
-                    AUDIO UNAVAILABLE FOR THIS TRACK
-                  </div>
-                ) : (
-                  <audio
-                    ref={audioRef}
-                    src={release.storedAudioUrl || fallbackUrl || undefined}
-                    controls
-                    preload="metadata"
-                    className="w-full h-10"
-                    style={{
-                      filter: isLight 
-                        ? 'sepia(50%) saturate(200%) hue-rotate(10deg)' 
-                        : 'sepia(50%) saturate(200%) hue-rotate(-20deg)',
-                    }}
-                  />
-                )}
-                
-                {/* Poetry in Motion toggle */}
-                {hasPoetryData && !audioError && (
-                  <button
-                    onClick={() => setShowPoetry(!showPoetry)}
-                    className={`mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-mono transition-all rounded ${
-                      showPoetry
-                        ? isLight
-                          ? 'bg-neon-yellow text-void-black'
-                          : 'bg-neon-red text-light-cream'
-                        : 'bg-void-black/50 text-light-cream/70 hover:text-light-cream'
+          {/* Custom Audio Player */}
+          <div className="mb-6">
+            <div className={`p-4 md:p-6 rounded-lg ${
+              isLight ? 'bg-neon-yellow/10 border border-neon-yellow/30' : 'bg-neon-red/10 border border-neon-red/30'
+            }`}>
+              {audioError && isThisPlaying ? (
+                <div className="text-center py-4 text-light-cream/50 text-sm font-mono">
+                  AUDIO UNAVAILABLE FOR THIS TRACK
+                </div>
+              ) : (
+                <div className="flex items-center gap-4">
+                  {/* Play button */}
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={handlePlay}
+                    disabled={audioError && isThisPlaying}
+                    className={`w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
+                      audioError && isThisPlaying
+                        ? 'bg-void-gray/50 cursor-not-allowed'
+                        : isLight 
+                          ? 'bg-neon-yellow hover:shadow-[0_0_20px_var(--color-neon-yellow)]' 
+                          : 'bg-neon-red hover:shadow-[0_0_20px_var(--color-neon-red)]'
                     }`}
                   >
-                    <Sparkles className="w-4 h-4" />
-                    {showPoetry ? 'HIDE POETRY IN MOTION' : 'POETRY IN MOTION'}
-                  </button>
-                )}
-              </div>
+                    {isLoading && isThisPlaying ? (
+                      <motion.div
+                        className="w-6 h-6 border-3 border-void-black border-t-transparent rounded-full"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                      />
+                    ) : isThisReleaseActive ? (
+                      <Pause className="w-6 h-6 text-void-black" />
+                    ) : (
+                      <Play className="w-6 h-6 text-void-black ml-0.5" />
+                    )}
+                  </motion.button>
+
+                  {/* Progress section */}
+                  <div className="flex-1 min-w-0">
+                    <input
+                      type="range"
+                      min={0}
+                      max={(isThisPlaying && duration) || release.duration || 100}
+                      value={isThisPlaying ? currentTime : 0}
+                      onChange={handleSeek}
+                      disabled={!isThisPlaying}
+                      className="w-full h-2 bg-void-lighter rounded-full appearance-none cursor-pointer disabled:opacity-50"
+                      style={{
+                        background: isThisPlaying 
+                          ? `linear-gradient(to right, ${isLight ? accent : primary} ${(currentTime / (duration || 1)) * 100}%, rgba(255,255,255,0.1) ${(currentTime / (duration || 1)) * 100}%)`
+                          : 'rgba(255,255,255,0.1)',
+                      }}
+                    />
+                    <div className="flex justify-between mt-1 text-xs font-mono text-light-cream/50">
+                      <span>{isThisPlaying ? formatTime(currentTime) : '0:00'}</span>
+                      <span>{formatTime((isThisPlaying && duration) || release.duration)}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Poetry in Motion toggle */}
+              {hasPoetryData && !(audioError && isThisPlaying) && (
+                <button
+                  onClick={() => setShowPoetry(!showPoetry)}
+                  className={`mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-mono transition-all rounded ${
+                    showPoetry
+                      ? isLight
+                        ? 'bg-neon-yellow text-void-black'
+                        : 'bg-neon-red text-light-cream'
+                      : 'bg-void-black/50 text-light-cream/70 hover:text-light-cream'
+                  }`}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  {showPoetry ? 'HIDE POETRY IN MOTION' : 'POETRY IN MOTION'}
+                </button>
+              )}
             </div>
-          )}
+          </div>
           
           {/* Poetry in Motion Lyrics Display */}
           {showPoetry && hasPoetryData && (
@@ -696,9 +718,9 @@ function ReleaseModal({ release, onClose }: { release: Release; onClose: () => v
               <KaraokeLyrics
                 words={release.lyricsWords!}
                 segments={release.lyricsSegments}
-                currentTime={currentTime}
+                currentTime={currentTimeForLyrics}
                 onWordClick={handleWordClick}
-                isPlaying={isPlaying}
+                isPlaying={isThisReleaseActive}
               />
             </div>
           )}

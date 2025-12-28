@@ -19,8 +19,8 @@ export function SocialLinks() {
   const socialEntries = Object.entries(socials);
 
   return (
-    <section id="connect" className="py-24 px-4 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+    <section id="connect" className="py-24 px-6 md:px-12 lg:px-16 relative overflow-hidden">
+      <div className="w-full">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

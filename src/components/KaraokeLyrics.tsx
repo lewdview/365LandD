@@ -228,6 +228,10 @@ export function KaraokeLyrics({
   // Progress percentage
   const progress = currentIndex >= 0 ? ((currentIndex + 1) / words.length) * 100 : 0;
 
+  // Check if lyrics have started (with 0.5s lead-in)
+  const firstWordStart = words.length > 0 ? words[0].start : 0;
+  const hasStarted = words.length > 0 && currentTime >= firstWordStart - 0.5;
+
   return (
     <div className="relative w-full">
       {/* Main container with bold border */}
@@ -447,8 +451,8 @@ export function KaraokeLyrics({
           ref={containerRef}
           className={`relative z-10 overflow-y-auto overflow-x-hidden scroll-smooth px-8 ${
             fullHeight 
-              ? 'h-[60vh] md:h-[65vh] lg:h-[70vh]' 
-              : 'h-96 md:h-[28rem] lg:h-[32rem]'
+              ? 'h-[20vh] md:h-[22vh] lg:h-[24vh]' 
+              : 'h-32 md:h-36 lg:h-40'
           }`}
           style={{
             maskImage: 'linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)',
@@ -458,73 +462,99 @@ export function KaraokeLyrics({
           {/* Top spacer to center first line */}
           <div className="h-[45%]" />
           
-          <AnimatePresence mode="sync">
-            {lines.map((lineWords, li) => {
-              const isCurrentLine = li === currentLineIndex;
-              const isPastLine = currentLineIndex >= 0 && li < currentLineIndex;
-              const isFutureLine = currentLineIndex >= 0 && li > currentLineIndex + 2;
+          {/* Waiting state - show before lyrics start */}
+          {words.length > 0 && !hasStarted && (
+            <motion.div 
+              className="flex flex-col items-center justify-center h-[50%] gap-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <motion.div
+                className="text-5xl"
+                animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                🎧
+              </motion.div>
+              <span className="font-mono text-light-cream/50 uppercase tracking-widest text-sm">
+                Waiting for lyrics...
+              </span>
+              <span className="font-mono text-light-cream/30 text-xs">
+                Press play to begin
+              </span>
+            </motion.div>
+          )}
 
-              return (
-                <motion.div
-                  key={li}
-                  className="mb-6 text-center"
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{
-                    opacity: isFutureLine ? 0.2 : isCurrentLine ? 1 : isPastLine ? 0.3 : 0.5,
-                    x: 0,
-                    scale: isCurrentLine ? 1 : 0.9,
-                    filter: isPastLine ? 'blur(1px)' : 'none',
-                    y: isCurrentLine ? 0 : isPastLine ? -5 : 5,
-                  }}
-                  transition={{ 
-                    duration: 0.5, 
-                    ease: 'easeOut',
-                  }}
-                >
-                  {/* Line accent for current line */}
-                  {isCurrentLine && (
-                    <motion.div
-                      className="absolute left-0 w-1 bg-gradient-to-b from-neon-red via-neon-yellow to-neon-red"
-                      style={{ height: '100%', top: 0 }}
-                      layoutId="lineAccent"
-                      transition={{ duration: 0.3 }}
-                    />
-                  )}
+          {/* Actual lyrics - only show after hasStarted */}
+          {hasStarted && (
+            <AnimatePresence mode="sync">
+              {lines.map((lineWords, li) => {
+                const isCurrentLine = li === currentLineIndex;
+                const isPastLine = currentLineIndex >= 0 && li < currentLineIndex;
+                const isFutureLine = currentLineIndex >= 0 && li > currentLineIndex + 2;
 
-                  <span className="inline leading-relaxed">
-                    {lineWords.map((w, wi) => {
-                      const gi = words.indexOf(w);
-                      const isActive = currentTime >= w.start && currentTime < w.end;
-                      const isPast = currentTime >= w.end;
+                return (
+                  <motion.div
+                    key={li}
+                    className="mb-6 text-center"
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{
+                      opacity: isFutureLine ? 0.2 : isCurrentLine ? 1 : isPastLine ? 0.3 : 0.5,
+                      x: 0,
+                      scale: isCurrentLine ? 1 : 0.9,
+                      filter: isPastLine ? 'blur(1px)' : 'none',
+                      y: isCurrentLine ? 0 : isPastLine ? -5 : 5,
+                    }}
+                    transition={{ 
+                      duration: 0.5, 
+                      ease: 'easeOut',
+                    }}
+                  >
+                    {/* Line accent for current line */}
+                    {isCurrentLine && (
+                      <motion.div
+                        className="absolute left-0 w-1 bg-gradient-to-b from-neon-red via-neon-yellow to-neon-red"
+                        style={{ height: '100%', top: 0 }}
+                        layoutId="lineAccent"
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
 
-                      return (
-                        <Fragment key={`word-${li}-${wi}-${gi}`}>
-                          <AnimatedLyricWord
-                            word={w}
-                            isActive={isActive}
-                            isPast={isPast}
-                            currentTime={currentTime}
-                            onClick={() => onWordClick?.(w.start)}
-                            refCallback={(el) => (wordRefs.current[gi] = el)}
-                            wordIndex={wi}
-                            colors={{ active: ACTIVE_COLOR, past: PAST_COLOR, activeGlow: ACTIVE_GLOW, pastGlow: PAST_GLOW }}
-                          />
-                          {wi < lineWords.length - 1 && (
-                            <span className="inline-block w-2 md:w-3" />
-                          )}
-                        </Fragment>
-                      );
-                    })}
-                  </span>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
+                    <span className="inline leading-relaxed">
+                      {lineWords.map((w, wi) => {
+                        const gi = words.indexOf(w);
+                        const isActive = currentTime >= w.start && currentTime < w.end;
+                        const isPast = currentTime >= w.end;
+
+                        return (
+                          <Fragment key={`word-${li}-${wi}-${gi}`}>
+                            <AnimatedLyricWord
+                              word={w}
+                              isActive={isActive}
+                              isPast={isPast}
+                              currentTime={currentTime}
+                              onClick={() => onWordClick?.(w.start)}
+                              refCallback={(el) => (wordRefs.current[gi] = el)}
+                              wordIndex={wi}
+                              colors={{ active: ACTIVE_COLOR, past: PAST_COLOR, activeGlow: ACTIVE_GLOW, pastGlow: PAST_GLOW }}
+                            />
+                            {wi < lineWords.length - 1 && (
+                              <span className="inline-block w-2 md:w-3" />
+                            )}
+                          </Fragment>
+                        );
+                      })}
+                    </span>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          )}
 
           {/* Bottom spacer to allow last line to center */}
-          {words.length > 0 && <div className="h-[45%]" />}
+          {words.length > 0 && hasStarted && <div className="h-[45%]" />}
 
-          {/* Empty state */}
+          {/* Empty state - no lyrics data at all */}
           {words.length === 0 && (
             <motion.div 
               className="flex flex-col items-center justify-center h-full gap-4"

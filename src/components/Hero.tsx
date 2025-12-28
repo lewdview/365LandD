@@ -199,7 +199,7 @@ export function Hero() {
       </div>
       
       {/* Container for centered and constrained content */}
-      <div className="relative z-20 w-full max-w-6xl mx-auto px-4 flex items-center justify-center min-h-screen">
+      <div className="relative z-20 w-full px-6 md:px-12 lg:px-16 flex items-center justify-center min-h-screen">
       
       {/* Large day number in background with sheen effect */}
       <div className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none overflow-hidden">
@@ -283,8 +283,8 @@ export function Hero() {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="mb-8"
         >
-          <span className="text-sm md:text-base font-mono text-neon-yellow tracking-[0.5em] uppercase">
-            Presenting
+          <span className="text-sm md:text-base font-mono text-neon-yellow tracking-[0.3em] uppercase">
+            backBEATS PRESENTS
           </span>
         </motion.div>
 
@@ -387,6 +387,15 @@ export function Hero() {
               }}
             >Dark</span>
           </h2>
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="text-lg md:text-xl text-neon-red font-mono tracking-wider mt-4"
+          >
+            Poetry in Motion
+          </motion.p>
         </motion.div>
 
         {/* Tagline */}
@@ -396,7 +405,7 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.9 }}
           className="text-lg md:text-xl text-light-cream/70 max-w-2xl mx-auto mb-12 font-light"
         >
-          {data?.project.description || 'A song a day. 365 days. One year of sonic exploration through the spectrum of light and dark.'}
+          One Take. One Moment. Preserved.
         </motion.p>
 
         {/* CTA Buttons */}

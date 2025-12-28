@@ -83,7 +83,7 @@ export function ThemeChanger() {
         onClick={() => setIsOpen(!isOpen)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[9998] w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-colors"
+        className="fixed bottom-20 right-4 md:bottom-24 md:right-6 z-[9998] w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-colors"
         style={{
           background: `linear-gradient(135deg, ${currentTheme.colors.primary}dd, ${currentTheme.colors.secondary}dd)`,
           backdropFilter: 'blur(10px)',

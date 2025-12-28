@@ -20,2480 +20,2328 @@
       "id": "release-001",
       "day": 1,
       "date": "2026-01-01",
-      "fileName": "dreams shattered.wav",
+      "fileName": "01 - Dream.wav",
       "title": "Dream",
-      "mood": "dark",
-      "description": "Melancholic, frustrated, heartbreak.",
-      "storedAudioUrl": "https://pznmptudgicrmljjafex.supabase.co/storage/v1/object/public/song-audio/1766433036427-0.8952834965275946.wav",
-      "duration": 270,
-      "durationFormatted": "4:30",
-      "tempo": 128,
-      "key": "C# major",
-      "energy": 0.26068112554391726,
-      "valence": 0.28524906173272724,
+      "mood": "light",
+      "description": "Hopeful, introspective, conflicted. Dreams of personal growth and self-discovery.",
+      "storedAudioUrl": "https://pznmptudgicrmljjafex.supabase.co/storage/v1/object/public/song-audio/1765976322686-0.15603116846805187.wav",
+      "duration": 202,
+      "durationFormatted": "3:22",
+      "tempo": 83,
+      "key": "C major",
+      "energy": 0.88,
+      "valence": 0.467,
       "genre": [
-        "Alternative",
-        "Indie"
+        "Rock",
+        "Metal"
       ],
       "tags": [
-        "melancholic",
-        "frustrated",
-        "reflective",
-        "Alternative",
-        "Indie"
+        "hopeful",
+        "introspective",
+        "dreams",
+        "Rock",
+        "Metal"
       ],
-      "lyrics": "I've been looking for reasons to quit, yeah I've been no more than pulling my head down I've been walking through these shadows in my nights and I wanna find Reasons to search for your light, but I know that you're keeping this negative view Of you, of us and what we know and all we'll be I just know there's a brighter way, we could find a way And it could be your day, but you can't get past the mistakes that we each have made And I just know that we could, if you just let it go, cause All these nights, all these dreams that are shattered between you and me All the times you put us right in the mud All these nights, all these dreams that are shattered between me and you All you ever did was keep me low, to the ground With a brown head I know our heart can't get better But your love feels like an ocean that I'm drowning in I'm falling and I wanna run from your fake cruelty And I don't know if you can even see the way you affect me And I've said here so much, wanting you to be better Giving you a chance to give me trust But you won't touch that cause you can't be truthful with me With your shame I just want you to know we could have been more than you Never ever thought you'd be a part of, but you just couldn't let go All these nights, all these dreams that are shattered between me and you All the times you kept me away from the love that was meant for me The love that was there for me All these dreams that are shattered baby All you ever did was keep us low But there's more to compromise There's more to compromise For you and me to be better than we can You could turn us all around If you let go you'll hate it, hate it too But All these nights, all these dreams that are shattered between me and you They haunt us daily and we can't get past them What will these lights of the night that are broken between me and you You keep me lower than I ever knew you could All these nights, all these dreams that are shattered between me and you You put my heart in the ground and I know you'd never look back Yeah, you took my soul and you took it all away So I'd give you everything, now I would call that low Very low Fucking bitch, I was low",
+      "lyrics": "Oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh Can you feel that dream alive again? Oh yeah, I don't know what it takes here Have you been what I know, dear? Are you here for me forever? Are you dreaming real? But my dreams, they are coming back Thanks for no one trying Makes me wanna be here We were getting our dreams out I got more than you Inside of me, you'll hear I'm all about it here all the time And I got these dreams I know that I find I don't know if they're right When you know that you're right there Dreaming with me These are dreams that you don't know I said all day, all day, all day Till it gets, till it gets Oh, these dreams keep me up at night These wants make me wanna fight off An intellectual part of me I said these dreams keep me up at night These hearts always take me the wrong way Hard way, every which way But my home is some simple instance of my mind And I don't wanna think about all the times That I broke your heart And took your dreams away, baby But I know these dreams are taking with me And another chance it will be What we want to see, oh baby These dreams, they be coming up right Yeah, they be making me fight Yeah, they be making me fuck my life up all the way But I know that you can dream with me A little brighter and be more than we see Come on now, be more than you ever thought could be With these dreams in your night Yeah, these dreams, they fight you But do they haunt you? Or do they just make you start at the beginning again? Is it that bad to get exploited as me? These faces of people appear that I've never seen And I know that these dreams, they come at night I don't care, I'm not scared anymore Of what you'll say to my only thoughts Just know that I am coming in time Say another look To write another book Who you wanna see on the hook? Baby, with my dreams at night You know I rock this shit all right No fighting, fussing, fuck the fighting, yeah You know",
       "lyricsSegments": [
         {
-          "end": 23.459999084472656,
-          "text": "I've been looking for reasons to quit, yeah I've been no more than pulling my head down",
-          "start": 14.119999885559082
+          "end": 7,
+          "text": "Oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh",
+          "start": 1.159999966621399
         },
         {
-          "end": 35.459999084472656,
-          "text": "I've been walking through these shadows in my nights and I wanna find",
-          "start": 27.420000076293945
+          "end": 11.140000343322754,
+          "text": "Can you feel that dream alive again?",
+          "start": 8.300000190734863
         },
         {
-          "end": 46.68000030517578,
-          "text": "Reasons to search for your light, but I know that you're keeping this negative view",
-          "start": 36.41999816894531
+          "end": 15.65999984741211,
+          "text": "Oh yeah, I don't know what it takes here",
+          "start": 11.579999923706055
         },
         {
-          "end": 52.619998931884766,
-          "text": "Of you, of us and what we know and all we'll be",
-          "start": 46.68000030517578
+          "end": 18.559999465942383,
+          "text": "Have you been what I know, dear?",
+          "start": 15.65999984741211
         },
         {
-          "end": 60.099998474121094,
-          "text": "I just know there's a brighter way, we could find a way",
-          "start": 52.97999954223633
+          "end": 21.200000762939453,
+          "text": "Are you here for me forever?",
+          "start": 18.739999771118164
         },
         {
-          "end": 68.4800033569336,
-          "text": "And it could be your day, but you can't get past the mistakes that we each have made",
-          "start": 60.099998474121094
+          "end": 22.780000686645508,
+          "text": "Are you dreaming real?",
+          "start": 21.420000076293945
         },
         {
-          "end": 77.41999816894531,
-          "text": "And I just know that we could, if you just let it go, cause",
-          "start": 68.4800033569336
+          "end": 26.440000534057617,
+          "text": "But my dreams, they are coming back",
+          "start": 22.81999969482422
         },
         {
-          "end": 85.4800033569336,
-          "text": "All these nights, all these dreams that are shattered between you and me",
-          "start": 78.05999755859375
+          "end": 29.559999465942383,
+          "text": "Thanks for no one trying",
+          "start": 27.100000381469727
         },
         {
-          "end": 91.16000366210938,
-          "text": "All the times you put us right in the mud",
-          "start": 86.36000061035156
+          "end": 32.439998626708984,
+          "text": "Makes me wanna be here",
+          "start": 29.559999465942383
         },
         {
-          "end": 98.83999633789062,
-          "text": "All these nights, all these dreams that are shattered between me and you",
-          "start": 91.16000366210938
+          "end": 35.560001373291016,
+          "text": "We were getting our dreams out",
+          "start": 32.47999954223633
         },
         {
-          "end": 108.76000213623047,
-          "text": "All you ever did was keep me low, to the ground",
-          "start": 99.94000244140625
+          "end": 37.560001373291016,
+          "text": "I got more than you",
+          "start": 36.13999938964844
         },
         {
-          "end": 114.0999984741211,
-          "text": "With a brown head I know our heart can't get better",
-          "start": 109.08000183105469
+          "end": 41.939998626708984,
+          "text": "Inside of me, you'll hear",
+          "start": 38.31999969482422
         },
         {
-          "end": 119.0999984741211,
-          "text": "But your love feels like an ocean that I'm drowning in",
-          "start": 114.0999984741211
+          "end": 45.779998779296875,
+          "text": "I'm all about it here all the time",
+          "start": 42.380001068115234
         },
         {
-          "end": 124.4000015258789,
-          "text": "I'm falling and I wanna run from your fake cruelty",
-          "start": 119.66000366210938
+          "end": 49.81999969482422,
+          "text": "And I got these dreams I know that I find",
+          "start": 45.779998779296875
         },
         {
-          "end": 129.55999755859375,
-          "text": "And I don't know if you can even see the way you affect me",
-          "start": 124.4000015258789
+          "end": 52.560001373291016,
+          "text": "I don't know if they're right",
+          "start": 49.939998626708984
         },
         {
-          "end": 134.1999969482422,
-          "text": "And I've said here so much, wanting you to be better",
-          "start": 129.63999938964844
+          "end": 55.560001373291016,
+          "text": "When you know that you're right there",
+          "start": 53.119998931884766
         },
         {
-          "end": 136.72000122070312,
-          "text": "Giving you a chance to give me trust",
-          "start": 134.1999969482422
+          "end": 57.86000061035156,
+          "text": "Dreaming with me",
+          "start": 56.13999938964844
         },
         {
-          "end": 140.97999572753906,
-          "text": "But you won't touch that cause you can't be truthful with me",
-          "start": 136.72000122070312
+          "end": 60.119998931884766,
+          "text": "These are dreams that you don't know",
+          "start": 57.86000061035156
         },
         {
-          "end": 148.4199981689453,
-          "text": "With your shame I just want you to know we could have been more than you",
-          "start": 140.97999572753906
+          "end": 62.97999954223633,
+          "text": "I said all day, all day, all day",
+          "start": 60.119998931884766
         },
         {
-          "end": 154.8800048828125,
-          "text": "Never ever thought you'd be a part of, but you just couldn't let go",
-          "start": 148.4199981689453
+          "end": 68.9000015258789,
+          "text": "Till it gets, till it gets",
+          "start": 63.81999969482422
         },
         {
-          "end": 162.74000549316406,
-          "text": "All these nights, all these dreams that are shattered between me and you",
-          "start": 155.05999755859375
+          "end": 72.27999877929688,
+          "text": "Oh, these dreams keep me up at night",
+          "start": 68.9000015258789
         },
         {
-          "end": 170.22000122070312,
-          "text": "All the times you kept me away from the love that was meant for me",
-          "start": 163.10000610351562
+          "end": 76.69999694824219,
+          "text": "These wants make me wanna fight off",
+          "start": 72.27999877929688
         },
         {
-          "end": 173.3800048828125,
-          "text": "The love that was there for me",
-          "start": 170.22000122070312
+          "end": 80.41999816894531,
+          "text": "An intellectual part of me",
+          "start": 77.55999755859375
         },
         {
-          "end": 176.22000122070312,
-          "text": "All these dreams that are shattered baby",
-          "start": 173.3800048828125
+          "end": 83.87999725341797,
+          "text": "I said these dreams keep me up at night",
+          "start": 80.41999816894531
         },
         {
-          "end": 182.0800018310547,
-          "text": "All you ever did was keep us low",
-          "start": 176.86000061035156
+          "end": 87.41999816894531,
+          "text": "These hearts always take me the wrong way",
+          "start": 83.87999725341797
         },
         {
-          "end": 184.86000061035156,
-          "text": "But there's more to compromise",
-          "start": 182.0800018310547
+          "end": 89.27999877929688,
+          "text": "Hard way, every which way",
+          "start": 87.41999816894531
         },
         {
-          "end": 188.17999267578125,
-          "text": "There's more to compromise",
-          "start": 185.25999450683594
+          "end": 93.81999969482422,
+          "text": "But my home is some simple instance of my mind",
+          "start": 89.27999877929688
         },
         {
-          "end": 192.94000244140625,
-          "text": "For you and me to be better than we can",
-          "start": 188.17999267578125
+          "end": 96.86000061035156,
+          "text": "And I don't wanna think about all the times",
+          "start": 93.81999969482422
         },
         {
-          "end": 198.25999450683594,
-          "text": "You could turn us all around",
-          "start": 193.24000549316406
+          "end": 98.87999725341797,
+          "text": "That I broke your heart",
+          "start": 96.86000061035156
         },
         {
-          "end": 204.72000122070312,
-          "text": "If you let go you'll hate it, hate it too",
-          "start": 198.25999450683594
+          "end": 103.63999938964844,
+          "text": "And took your dreams away, baby",
+          "start": 100.44000244140625
         },
         {
-          "end": 205.9600067138672,
-          "text": "But",
-          "start": 204.9600067138672
+          "end": 107.5,
+          "text": "But I know these dreams are taking with me",
+          "start": 103.63999938964844
         },
         {
-          "end": 214.0399932861328,
-          "text": "All these nights, all these dreams that are shattered between me and you",
-          "start": 206.1199951171875
+          "end": 110.36000061035156,
+          "text": "And another chance it will be",
+          "start": 107.5
         },
         {
-          "end": 219.44000244140625,
-          "text": "They haunt us daily and we can't get past them",
-          "start": 214.17999267578125
+          "end": 115.26000213623047,
+          "text": "What we want to see, oh baby",
+          "start": 111.81999969482422
         },
         {
-          "end": 226.5399932861328,
-          "text": "What will these lights of the night that are broken between me and you",
-          "start": 219.44000244140625
+          "end": 119.31999969482422,
+          "text": "These dreams, they be coming up right",
+          "start": 115.26000213623047
         },
         {
-          "end": 231.9600067138672,
-          "text": "You keep me lower than I ever knew you could",
-          "start": 226.5399932861328
+          "end": 122.18000030517578,
+          "text": "Yeah, they be making me fight",
+          "start": 119.44000244140625
         },
         {
-          "end": 239.5399932861328,
-          "text": "All these nights, all these dreams that are shattered between me and you",
-          "start": 231.9600067138672
+          "end": 126.73999786376953,
+          "text": "Yeah, they be making me fuck my life up all the way",
+          "start": 122.30000305175781
         },
         {
-          "end": 246.44000244140625,
-          "text": "You put my heart in the ground and I know you'd never look back",
-          "start": 239.67999267578125
+          "end": 129.5800018310547,
+          "text": "But I know that you can dream with me",
+          "start": 126.73999786376953
         },
         {
-          "end": 252.67999267578125,
-          "text": "Yeah, you took my soul and you took it all away",
-          "start": 246.44000244140625
+          "end": 133.66000366210938,
+          "text": "A little brighter and be more than we see",
+          "start": 129.5800018310547
         },
         {
-          "end": 258.8999938964844,
-          "text": "So I'd give you everything, now I would call that low",
-          "start": 252.67999267578125
+          "end": 139.16000366210938,
+          "text": "Come on now, be more than you ever thought could be",
+          "start": 134.3000030517578
         },
         {
-          "end": 262.32000732421875,
-          "text": "Very low",
-          "start": 260.67999267578125
+          "end": 142.17999267578125,
+          "text": "With these dreams in your night",
+          "start": 139.16000366210938
         },
         {
-          "end": 266.8800048828125,
-          "text": "Fucking bitch, I was low",
-          "start": 263.8599853515625
+          "end": 146.36000061035156,
+          "text": "Yeah, these dreams, they fight you",
+          "start": 142.25999450683594
+        },
+        {
+          "end": 148.94000244140625,
+          "text": "But do they haunt you?",
+          "start": 146.36000061035156
+        },
+        {
+          "end": 152.8800048828125,
+          "text": "Or do they just make you start at the beginning again?",
+          "start": 149.3000030517578
+        },
+        {
+          "end": 157.52000427246094,
+          "text": "Is it that bad to get exploited as me?",
+          "start": 153
+        },
+        {
+          "end": 161.63999938964844,
+          "text": "These faces of people appear that I've never seen",
+          "start": 157.75999450683594
+        },
+        {
+          "end": 164.75999450683594,
+          "text": "And I know that these dreams, they come at night",
+          "start": 161.63999938964844
+        },
+        {
+          "end": 168.0800018310547,
+          "text": "I don't care, I'm not scared anymore",
+          "start": 164.75999450683594
+        },
+        {
+          "end": 173.9199981689453,
+          "text": "Of what you'll say to my only thoughts",
+          "start": 169.16000366210938
+        },
+        {
+          "end": 177.52000427246094,
+          "text": "Just know that I am coming in time",
+          "start": 173.9199981689453
+        },
+        {
+          "end": 179.9199981689453,
+          "text": "Say another look",
+          "start": 178
+        },
+        {
+          "end": 182.75999450683594,
+          "text": "To write another book",
+          "start": 180.4600067138672
+        },
+        {
+          "end": 185.77999877929688,
+          "text": "Who you wanna see on the hook?",
+          "start": 183.3000030517578
+        },
+        {
+          "end": 187.36000061035156,
+          "text": "Baby, with my dreams at night",
+          "start": 185.77999877929688
+        },
+        {
+          "end": 191.16000366210938,
+          "text": "You know I rock this shit all right",
+          "start": 187.36000061035156
+        },
+        {
+          "end": 196.9600067138672,
+          "text": "No fighting, fussing, fuck the fighting, yeah",
+          "start": 192.89999389648438
+        },
+        {
+          "end": 198.89999389648438,
+          "text": "You know",
+          "start": 196.9600067138672
         }
       ],
       "lyricsWords": [
         {
-          "end": 14.960000038146973,
-          "word": "I've",
-          "start": 14.119999885559082
+          "end": 1.9199999570846558,
+          "word": "Oh",
+          "start": 1.159999966621399
+        },
+        {
+          "end": 2.180000066757202,
+          "word": "oh",
+          "start": 1.9199999570846558
+        },
+        {
+          "end": 2.9200000762939453,
+          "word": "oh",
+          "start": 2.180000066757202
+        },
+        {
+          "end": 3.619999885559082,
+          "word": "oh",
+          "start": 2.9200000762939453
+        },
+        {
+          "end": 3.880000114440918,
+          "word": "oh",
+          "start": 3.619999885559082
+        },
+        {
+          "end": 4.400000095367432,
+          "word": "oh",
+          "start": 3.880000114440918
+        },
+        {
+          "end": 4.519999980926514,
+          "word": "oh",
+          "start": 4.400000095367432
+        },
+        {
+          "end": 4.679999828338623,
+          "word": "oh",
+          "start": 4.539999961853027
+        },
+        {
+          "end": 5.139999866485596,
+          "word": "oh",
+          "start": 4.679999828338623
+        },
+        {
+          "end": 5.440000057220459,
+          "word": "oh",
+          "start": 5.139999866485596
+        },
+        {
+          "end": 5.820000171661377,
+          "word": "oh",
+          "start": 5.440000057220459
+        },
+        {
+          "end": 5.900000095367432,
+          "word": "oh",
+          "start": 5.820000171661377
+        },
+        {
+          "end": 6.440000057220459,
+          "word": "oh",
+          "start": 5.900000095367432
+        },
+        {
+          "end": 7,
+          "word": "oh",
+          "start": 6.440000057220459
+        },
+        {
+          "end": 8.5,
+          "word": "Can",
+          "start": 8.300000190734863
+        },
+        {
+          "end": 8.699999809265137,
+          "word": "you",
+          "start": 8.5
+        },
+        {
+          "end": 9.0600004196167,
+          "word": "feel",
+          "start": 8.699999809265137
+        },
+        {
+          "end": 9.5,
+          "word": "that",
+          "start": 9.0600004196167
+        },
+        {
+          "end": 9.859999656677246,
+          "word": "dream",
+          "start": 9.5
+        },
+        {
+          "end": 10.460000038146973,
+          "word": "alive",
+          "start": 9.859999656677246
+        },
+        {
+          "end": 11.140000343322754,
+          "word": "again",
+          "start": 10.460000038146973
+        },
+        {
+          "end": 12.0600004196167,
+          "word": "Oh",
+          "start": 11.579999923706055
+        },
+        {
+          "end": 12.680000305175781,
+          "word": "yeah",
+          "start": 12.0600004196167
+        },
+        {
+          "end": 13.279999732971191,
+          "word": "I",
+          "start": 12.699999809265137
+        },
+        {
+          "end": 13.520000457763672,
+          "word": "don't",
+          "start": 13.279999732971191
+        },
+        {
+          "end": 13.899999618530273,
+          "word": "know",
+          "start": 13.520000457763672
+        },
+        {
+          "end": 14.140000343322754,
+          "word": "what",
+          "start": 13.899999618530273
+        },
+        {
+          "end": 14.899999618530273,
+          "word": "it",
+          "start": 14.140000343322754
         },
         {
           "end": 14.979999542236328,
-          "word": "been",
-          "start": 14.960000038146973
+          "word": "takes",
+          "start": 14.899999618530273
         },
         {
-          "end": 15.9399995803833,
-          "word": "looking",
+          "end": 15.65999984741211,
+          "word": "here",
           "start": 14.979999542236328
         },
         {
-          "end": 18.139999389648438,
+          "end": 16.239999771118164,
+          "word": "Have",
+          "start": 15.65999984741211
+        },
+        {
+          "end": 16.440000534057617,
+          "word": "you",
+          "start": 16.239999771118164
+        },
+        {
+          "end": 16.81999969482422,
+          "word": "been",
+          "start": 16.440000534057617
+        },
+        {
+          "end": 17.020000457763672,
+          "word": "what",
+          "start": 16.81999969482422
+        },
+        {
+          "end": 17.3799991607666,
+          "word": "I",
+          "start": 17.020000457763672
+        },
+        {
+          "end": 17.899999618530273,
+          "word": "know",
+          "start": 17.3799991607666
+        },
+        {
+          "end": 18.559999465942383,
+          "word": "dear",
+          "start": 18.020000457763672
+        },
+        {
+          "end": 19.040000915527344,
+          "word": "Are",
+          "start": 18.739999771118164
+        },
+        {
+          "end": 19.31999969482422,
+          "word": "you",
+          "start": 19.040000915527344
+        },
+        {
+          "end": 19.81999969482422,
+          "word": "here",
+          "start": 19.31999969482422
+        },
+        {
+          "end": 20.200000762939453,
           "word": "for",
-          "start": 15.9399995803833
+          "start": 19.81999969482422
         },
         {
-          "end": 18.260000228881836,
-          "word": "reasons",
-          "start": 18.139999389648438
-        },
-        {
-          "end": 18.68000030517578,
-          "word": "to",
-          "start": 18.260000228881836
-        },
-        {
-          "end": 19.34000015258789,
-          "word": "quit",
-          "start": 18.68000030517578
-        },
-        {
-          "end": 20.65999984741211,
-          "word": "yeah",
-          "start": 19.34000015258789
+          "end": 20.600000381469727,
+          "word": "me",
+          "start": 20.200000762939453
         },
         {
           "end": 21.200000762939453,
-          "word": "I've",
-          "start": 20.65999984741211
+          "word": "forever",
+          "start": 20.600000381469727
         },
         {
-          "end": 21.31999969482422,
-          "word": "been",
-          "start": 21.200000762939453
+          "end": 21.600000381469727,
+          "word": "Are",
+          "start": 21.420000076293945
         },
         {
-          "end": 21.700000762939453,
+          "end": 21.739999771118164,
+          "word": "you",
+          "start": 21.600000381469727
+        },
+        {
+          "end": 22.139999389648438,
+          "word": "dreaming",
+          "start": 21.739999771118164
+        },
+        {
+          "end": 22.780000686645508,
+          "word": "real",
+          "start": 22.139999389648438
+        },
+        {
+          "end": 23.15999984741211,
+          "word": "But",
+          "start": 22.81999969482422
+        },
+        {
+          "end": 23.68000030517578,
+          "word": "my",
+          "start": 23.15999984741211
+        },
+        {
+          "end": 24.31999969482422,
+          "word": "dreams",
+          "start": 23.68000030517578
+        },
+        {
+          "end": 24.8799991607666,
+          "word": "they",
+          "start": 24.540000915527344
+        },
+        {
+          "end": 25.139999389648438,
+          "word": "are",
+          "start": 24.8799991607666
+        },
+        {
+          "end": 25.700000762939453,
+          "word": "coming",
+          "start": 25.139999389648438
+        },
+        {
+          "end": 26.440000534057617,
+          "word": "back",
+          "start": 25.700000762939453
+        },
+        {
+          "end": 27.860000610351562,
+          "word": "Thanks",
+          "start": 27.100000381469727
+        },
+        {
+          "end": 28.079999923706055,
+          "word": "for",
+          "start": 27.860000610351562
+        },
+        {
+          "end": 28.65999984741211,
           "word": "no",
-          "start": 21.31999969482422
+          "start": 28.079999923706055
         },
         {
-          "end": 21.780000686645508,
-          "word": "more",
-          "start": 21.700000762939453
+          "end": 28.940000534057617,
+          "word": "one",
+          "start": 28.65999984741211
         },
         {
-          "end": 21.979999542236328,
-          "word": "than",
-          "start": 21.780000686645508
+          "end": 29.559999465942383,
+          "word": "trying",
+          "start": 28.940000534057617
         },
         {
-          "end": 22.280000686645508,
-          "word": "pulling",
-          "start": 21.979999542236328
+          "end": 30.639999389648438,
+          "word": "Makes",
+          "start": 29.559999465942383
         },
         {
-          "end": 22.739999771118164,
-          "word": "my",
-          "start": 22.280000686645508
+          "end": 31.219999313354492,
+          "word": "me",
+          "start": 30.639999389648438
         },
         {
-          "end": 23.020000457763672,
-          "word": "head",
-          "start": 22.739999771118164
-        },
-        {
-          "end": 23.459999084472656,
-          "word": "down",
-          "start": 23.020000457763672
-        },
-        {
-          "end": 28.520000457763672,
-          "word": "I've",
-          "start": 27.420000076293945
-        },
-        {
-          "end": 28.6200008392334,
-          "word": "been",
-          "start": 28.520000457763672
-        },
-        {
-          "end": 29.18000030517578,
-          "word": "walking",
-          "start": 28.6200008392334
-        },
-        {
-          "end": 29.940000534057617,
-          "word": "through",
-          "start": 29.18000030517578
-        },
-        {
-          "end": 31.139999389648438,
-          "word": "these",
-          "start": 29.940000534057617
-        },
-        {
-          "end": 31.139999389648438,
-          "word": "shadows",
-          "start": 31.139999389648438
-        },
-        {
-          "end": 31.600000381469727,
-          "word": "in",
-          "start": 31.139999389648438
-        },
-        {
-          "end": 31.959999084472656,
-          "word": "my",
-          "start": 31.600000381469727
-        },
-        {
-          "end": 32.41999816894531,
-          "word": "nights",
-          "start": 31.959999084472656
-        },
-        {
-          "end": 32.81999969482422,
-          "word": "and",
-          "start": 32.41999816894531
-        },
-        {
-          "end": 33.13999938964844,
-          "word": "I",
-          "start": 32.81999969482422
-        },
-        {
-          "end": 33.63999938964844,
+          "end": 31.360000610351562,
           "word": "wanna",
-          "start": 33.13999938964844
+          "start": 31.219999313354492
         },
         {
-          "end": 35.459999084472656,
-          "word": "find",
-          "start": 33.63999938964844
+          "end": 31.860000610351562,
+          "word": "be",
+          "start": 31.360000610351562
+        },
+        {
+          "end": 32.439998626708984,
+          "word": "here",
+          "start": 31.860000610351562
+        },
+        {
+          "end": 33.36000061035156,
+          "word": "We",
+          "start": 32.47999954223633
+        },
+        {
+          "end": 33.7400016784668,
+          "word": "were",
+          "start": 33.36000061035156
+        },
+        {
+          "end": 34.18000030517578,
+          "word": "getting",
+          "start": 33.7400016784668
+        },
+        {
+          "end": 34.7400016784668,
+          "word": "our",
+          "start": 34.18000030517578
+        },
+        {
+          "end": 35.34000015258789,
+          "word": "dreams",
+          "start": 34.7400016784668
+        },
+        {
+          "end": 35.779998779296875,
+          "word": "out",
+          "start": 35.34000015258789
+        },
+        {
+          "end": 36.380001068115234,
+          "word": "I",
+          "start": 36.13999938964844
+        },
+        {
+          "end": 36.599998474121094,
+          "word": "got",
+          "start": 36.380001068115234
+        },
+        {
+          "end": 37.15999984741211,
+          "word": "more",
+          "start": 36.599998474121094
         },
         {
           "end": 37.52000045776367,
-          "word": "Reasons",
-          "start": 36.41999816894531
+          "word": "than",
+          "start": 37.15999984741211
         },
         {
-          "end": 38.619998931884766,
-          "word": "to",
+          "end": 37.959999084472656,
+          "word": "you",
           "start": 37.52000045776367
         },
         {
-          "end": 38.619998931884766,
-          "word": "search",
-          "start": 38.619998931884766
+          "end": 39.20000076293945,
+          "word": "Inside",
+          "start": 38.31999969482422
         },
         {
-          "end": 39.15999984741211,
-          "word": "for",
-          "start": 38.619998931884766
+          "end": 39.58000183105469,
+          "word": "of",
+          "start": 39.20000076293945
         },
         {
-          "end": 39.540000915527344,
-          "word": "your",
-          "start": 39.15999984741211
+          "end": 40.13999938964844,
+          "word": "me",
+          "start": 39.58000183105469
         },
         {
-          "end": 40.040000915527344,
-          "word": "light",
-          "start": 39.540000915527344
+          "end": 41.880001068115234,
+          "word": "you'll",
+          "start": 40.13999938964844
         },
         {
-          "end": 40.720001220703125,
-          "word": "but",
-          "start": 40.040000915527344
+          "end": 41.939998626708984,
+          "word": "hear",
+          "start": 41.880001068115234
         },
         {
-          "end": 41.18000030517578,
-          "word": "I",
-          "start": 40.720001220703125
+          "end": 43.2599983215332,
+          "word": "I'm",
+          "start": 42.380001068115234
         },
         {
-          "end": 41.779998779296875,
-          "word": "know",
-          "start": 41.18000030517578
-        },
-        {
-          "end": 42.84000015258789,
-          "word": "that",
-          "start": 41.779998779296875
-        },
-        {
-          "end": 43.13999938964844,
-          "word": "you're",
-          "start": 42.84000015258789
-        },
-        {
-          "end": 43.619998931884766,
-          "word": "keeping",
-          "start": 43.13999938964844
+          "end": 43.7400016784668,
+          "word": "all",
+          "start": 43.2599983215332
         },
         {
           "end": 44.31999969482422,
-          "word": "this",
-          "start": 43.619998931884766
+          "word": "about",
+          "start": 43.7400016784668
         },
         {
-          "end": 45.41999816894531,
-          "word": "negative",
+          "end": 44.7400016784668,
+          "word": "it",
           "start": 44.31999969482422
         },
         {
-          "end": 46.68000030517578,
-          "word": "view",
-          "start": 45.41999816894531
+          "end": 45.060001373291016,
+          "word": "here",
+          "start": 44.7400016784668
         },
         {
-          "end": 47.18000030517578,
-          "word": "Of",
-          "start": 46.68000030517578
+          "end": 45.220001220703125,
+          "word": "all",
+          "start": 45.060001373291016
         },
         {
-          "end": 48,
-          "word": "you",
-          "start": 47.18000030517578
+          "end": 45.459999084472656,
+          "word": "the",
+          "start": 45.220001220703125
         },
         {
-          "end": 48.720001220703125,
-          "word": "of",
-          "start": 48.2599983215332
+          "end": 45.779998779296875,
+          "word": "time",
+          "start": 45.459999084472656
         },
         {
-          "end": 49.119998931884766,
-          "word": "us",
-          "start": 48.720001220703125
+          "end": 46.060001373291016,
+          "word": "And",
+          "start": 45.779998779296875
         },
         {
-          "end": 49.560001373291016,
-          "word": "and",
-          "start": 49.119998931884766
+          "end": 46.31999969482422,
+          "word": "I",
+          "start": 46.060001373291016
         },
         {
-          "end": 49.939998626708984,
-          "word": "what",
-          "start": 49.560001373291016
+          "end": 46.900001525878906,
+          "word": "got",
+          "start": 46.31999969482422
         },
         {
-          "end": 50.31999969482422,
-          "word": "we",
+          "end": 47.52000045776367,
+          "word": "these",
+          "start": 46.900001525878906
+        },
+        {
+          "end": 47.97999954223633,
+          "word": "dreams",
+          "start": 47.52000045776367
+        },
+        {
+          "end": 48.279998779296875,
+          "word": "I",
+          "start": 47.97999954223633
+        },
+        {
+          "end": 48.619998931884766,
+          "word": "know",
+          "start": 48.279998779296875
+        },
+        {
+          "end": 48.880001068115234,
+          "word": "that",
+          "start": 48.619998931884766
+        },
+        {
+          "end": 49.47999954223633,
+          "word": "I",
+          "start": 48.880001068115234
+        },
+        {
+          "end": 49.81999969482422,
+          "word": "find",
+          "start": 49.47999954223633
+        },
+        {
+          "end": 50.81999969482422,
+          "word": "I",
           "start": 49.939998626708984
         },
         {
-          "end": 50.7599983215332,
+          "end": 51.119998931884766,
+          "word": "don't",
+          "start": 50.81999969482422
+        },
+        {
+          "end": 51.65999984741211,
           "word": "know",
-          "start": 50.31999969482422
+          "start": 51.119998931884766
         },
         {
-          "end": 51.18000030517578,
-          "word": "and",
-          "start": 50.7599983215332
+          "end": 52.060001373291016,
+          "word": "if",
+          "start": 51.65999984741211
         },
         {
-          "end": 51.599998474121094,
-          "word": "all",
-          "start": 51.18000030517578
+          "end": 52.099998474121094,
+          "word": "they're",
+          "start": 52.060001373291016
         },
         {
-          "end": 51.959999084472656,
-          "word": "we'll",
-          "start": 51.599998474121094
+          "end": 52.560001373291016,
+          "word": "right",
+          "start": 52.099998474121094
         },
         {
-          "end": 52.619998931884766,
-          "word": "be",
-          "start": 51.959999084472656
+          "end": 53.86000061035156,
+          "word": "When",
+          "start": 53.119998931884766
         },
         {
-          "end": 53.880001068115234,
-          "word": "I",
-          "start": 52.97999954223633
+          "end": 54.060001373291016,
+          "word": "you",
+          "start": 53.86000061035156
         },
         {
-          "end": 54.34000015258789,
-          "word": "just",
-          "start": 53.880001068115234
-        },
-        {
-          "end": 54.720001220703125,
+          "end": 54.380001068115234,
           "word": "know",
-          "start": 54.34000015258789
+          "start": 54.060001373291016
         },
         {
-          "end": 55.18000030517578,
-          "word": "there's",
-          "start": 54.720001220703125
+          "end": 54.65999984741211,
+          "word": "that",
+          "start": 54.380001068115234
         },
         {
-          "end": 55.58000183105469,
-          "word": "a",
-          "start": 55.18000030517578
+          "end": 54.959999084472656,
+          "word": "you're",
+          "start": 54.65999984741211
         },
         {
-          "end": 56.279998779296875,
-          "word": "brighter",
-          "start": 55.58000183105469
+          "end": 55.400001525878906,
+          "word": "right",
+          "start": 54.959999084472656
         },
         {
-          "end": 57.02000045776367,
-          "word": "way",
-          "start": 56.279998779296875
+          "end": 55.84000015258789,
+          "word": "there",
+          "start": 55.400001525878906
         },
         {
-          "end": 57.939998626708984,
-          "word": "we",
-          "start": 57.880001068115234
+          "end": 56.939998626708984,
+          "word": "Dreaming",
+          "start": 56.13999938964844
         },
         {
-          "end": 58.439998626708984,
-          "word": "could",
-          "start": 57.939998626708984
+          "end": 57.34000015258789,
+          "word": "with",
+          "start": 56.939998626708984
+        },
+        {
+          "end": 57.86000061035156,
+          "word": "me",
+          "start": 57.34000015258789
+        },
+        {
+          "end": 58.2400016784668,
+          "word": "These",
+          "start": 57.86000061035156
+        },
+        {
+          "end": 58.540000915527344,
+          "word": "are",
+          "start": 58.2400016784668
+        },
+        {
+          "end": 58.84000015258789,
+          "word": "dreams",
+          "start": 58.540000915527344
+        },
+        {
+          "end": 59.2400016784668,
+          "word": "that",
+          "start": 58.84000015258789
         },
         {
           "end": 59.41999816894531,
-          "word": "find",
-          "start": 58.439998626708984
+          "word": "you",
+          "start": 59.2400016784668
         },
         {
-          "end": 59.79999923706055,
-          "word": "a",
+          "end": 59.70000076293945,
+          "word": "don't",
           "start": 59.41999816894531
         },
         {
-          "end": 60.099998474121094,
-          "word": "way",
-          "start": 59.79999923706055
-        },
-        {
-          "end": 60.84000015258789,
-          "word": "And",
-          "start": 60.099998474121094
-        },
-        {
-          "end": 61.18000030517578,
-          "word": "it",
-          "start": 60.84000015258789
-        },
-        {
-          "end": 61.47999954223633,
-          "word": "could",
-          "start": 61.18000030517578
-        },
-        {
-          "end": 61.959999084472656,
-          "word": "be",
-          "start": 61.47999954223633
-        },
-        {
-          "end": 62.41999816894531,
-          "word": "your",
-          "start": 61.959999084472656
-        },
-        {
-          "end": 63.15999984741211,
-          "word": "day",
-          "start": 62.41999816894531
-        },
-        {
-          "end": 63.560001373291016,
-          "word": "but",
-          "start": 63.20000076293945
-        },
-        {
-          "end": 64,
-          "word": "you",
-          "start": 63.560001373291016
-        },
-        {
-          "end": 64.4000015258789,
-          "word": "can't",
-          "start": 64
-        },
-        {
-          "end": 65.13999938964844,
-          "word": "get",
-          "start": 64.4000015258789
-        },
-        {
-          "end": 65.13999938964844,
-          "word": "past",
-          "start": 65.13999938964844
-        },
-        {
-          "end": 65.62000274658203,
-          "word": "the",
-          "start": 65.13999938964844
-        },
-        {
-          "end": 66.22000122070312,
-          "word": "mistakes",
-          "start": 65.62000274658203
-        },
-        {
-          "end": 66.72000122070312,
-          "word": "that",
-          "start": 66.22000122070312
-        },
-        {
-          "end": 67.12000274658203,
-          "word": "we",
-          "start": 66.72000122070312
-        },
-        {
-          "end": 67.5199966430664,
-          "word": "each",
-          "start": 67.12000274658203
-        },
-        {
-          "end": 68,
-          "word": "have",
-          "start": 67.5199966430664
-        },
-        {
-          "end": 68.4800033569336,
-          "word": "made",
-          "start": 68
-        },
-        {
-          "end": 69.22000122070312,
-          "word": "And",
-          "start": 68.4800033569336
-        },
-        {
-          "end": 69.94000244140625,
-          "word": "I",
-          "start": 69.22000122070312
-        },
-        {
-          "end": 70.36000061035156,
-          "word": "just",
-          "start": 69.94000244140625
-        },
-        {
-          "end": 70.9000015258789,
+          "end": 60.119998931884766,
           "word": "know",
-          "start": 70.36000061035156
+          "start": 59.70000076293945
         },
         {
-          "end": 71.66000366210938,
-          "word": "that",
-          "start": 70.9000015258789
+          "end": 60.380001068115234,
+          "word": "I",
+          "start": 60.119998931884766
         },
         {
-          "end": 72.33999633789062,
-          "word": "we",
-          "start": 71.66000366210938
+          "end": 60.720001220703125,
+          "word": "said",
+          "start": 60.380001068115234
         },
         {
-          "end": 72.77999877929688,
-          "word": "could",
-          "start": 72.33999633789062
+          "end": 61.13999938964844,
+          "word": "all",
+          "start": 60.720001220703125
         },
         {
-          "end": 73.31999969482422,
-          "word": "if",
-          "start": 73.30000305175781
+          "end": 61.52000045776367,
+          "word": "day",
+          "start": 61.13999938964844
         },
         {
-          "end": 73.72000122070312,
-          "word": "you",
-          "start": 73.31999969482422
+          "end": 61.900001525878906,
+          "word": "all",
+          "start": 61.52000045776367
         },
         {
-          "end": 74.04000091552734,
-          "word": "just",
-          "start": 73.72000122070312
+          "end": 62.279998779296875,
+          "word": "day",
+          "start": 61.900001525878906
         },
         {
-          "end": 74.33999633789062,
-          "word": "let",
-          "start": 74.04000091552734
+          "end": 62.58000183105469,
+          "word": "all",
+          "start": 62.279998779296875
         },
         {
-          "end": 74.72000122070312,
+          "end": 62.97999954223633,
+          "word": "day",
+          "start": 62.58000183105469
+        },
+        {
+          "end": 64.66000366210938,
+          "word": "Till",
+          "start": 63.81999969482422
+        },
+        {
+          "end": 65.5,
           "word": "it",
-          "start": 74.33999633789062
+          "start": 64.66000366210938
+        },
+        {
+          "end": 65.95999908447266,
+          "word": "gets",
+          "start": 65.5
+        },
+        {
+          "end": 67.66000366210938,
+          "word": "till",
+          "start": 65.9800033569336
+        },
+        {
+          "end": 68.31999969482422,
+          "word": "it",
+          "start": 67.66000366210938
+        },
+        {
+          "end": 68.9000015258789,
+          "word": "gets",
+          "start": 68.31999969482422
+        },
+        {
+          "end": 69.44000244140625,
+          "word": "Oh",
+          "start": 68.9000015258789
+        },
+        {
+          "end": 69.9800033569336,
+          "word": "these",
+          "start": 69.44000244140625
+        },
+        {
+          "end": 70.55999755859375,
+          "word": "dreams",
+          "start": 69.9800033569336
+        },
+        {
+          "end": 71.08000183105469,
+          "word": "keep",
+          "start": 70.55999755859375
+        },
+        {
+          "end": 71.5199966430664,
+          "word": "me",
+          "start": 71.08000183105469
+        },
+        {
+          "end": 71.80000305175781,
+          "word": "up",
+          "start": 71.5199966430664
+        },
+        {
+          "end": 72.27999877929688,
+          "word": "at",
+          "start": 71.80000305175781
+        },
+        {
+          "end": 72.27999877929688,
+          "word": "night",
+          "start": 72.27999877929688
+        },
+        {
+          "end": 73.04000091552734,
+          "word": "These",
+          "start": 72.27999877929688
+        },
+        {
+          "end": 73.73999786376953,
+          "word": "wants",
+          "start": 73.04000091552734
+        },
+        {
+          "end": 73.95999908447266,
+          "word": "make",
+          "start": 73.73999786376953
+        },
+        {
+          "end": 74.37999725341797,
+          "word": "me",
+          "start": 73.95999908447266
+        },
+        {
+          "end": 74.80000305175781,
+          "word": "wanna",
+          "start": 74.37999725341797
         },
         {
           "end": 75.30000305175781,
-          "word": "go",
-          "start": 74.72000122070312
+          "word": "fight",
+          "start": 74.80000305175781
         },
         {
-          "end": 77.41999816894531,
-          "word": "cause",
+          "end": 76.69999694824219,
+          "word": "off",
           "start": 75.30000305175781
         },
         {
-          "end": 79.0999984741211,
-          "word": "All",
-          "start": 78.05999755859375
+          "end": 78.4000015258789,
+          "word": "An",
+          "start": 77.55999755859375
         },
         {
-          "end": 79.5199966430664,
-          "word": "these",
-          "start": 79.0999984741211
+          "end": 79.04000091552734,
+          "word": "intellectual",
+          "start": 78.4000015258789
         },
         {
-          "end": 80.27999877929688,
-          "word": "nights",
-          "start": 79.5199966430664
+          "end": 79.9000015258789,
+          "word": "part",
+          "start": 79.04000091552734
         },
         {
-          "end": 81,
-          "word": "all",
+          "end": 80.13999938964844,
+          "word": "of",
+          "start": 79.9000015258789
+        },
+        {
+          "end": 80.41999816894531,
+          "word": "me",
+          "start": 80.13999938964844
+        },
+        {
+          "end": 80.68000030517578,
+          "word": "I",
           "start": 80.41999816894531
         },
         {
-          "end": 81.5,
-          "word": "these",
-          "start": 81
+          "end": 80.94000244140625,
+          "word": "said",
+          "start": 80.68000030517578
         },
         {
-          "end": 82.30000305175781,
+          "end": 81.5199966430664,
+          "word": "these",
+          "start": 80.94000244140625
+        },
+        {
+          "end": 82.18000030517578,
           "word": "dreams",
-          "start": 81.5
+          "start": 81.5199966430664
         },
         {
-          "end": 82.77999877929688,
-          "word": "that",
-          "start": 82.30000305175781
-        },
-        {
-          "end": 83.81999969482422,
-          "word": "are",
-          "start": 82.77999877929688
-        },
-        {
-          "end": 83.81999969482422,
-          "word": "shattered",
-          "start": 83.81999969482422
-        },
-        {
-          "end": 84.44000244140625,
-          "word": "between",
-          "start": 83.81999969482422
-        },
-        {
-          "end": 85.0999984741211,
-          "word": "you",
-          "start": 84.44000244140625
-        },
-        {
-          "end": 85.0999984741211,
-          "word": "and",
-          "start": 85.0999984741211
-        },
-        {
-          "end": 85.62000274658203,
-          "word": "me",
-          "start": 85.0999984741211
-        },
-        {
-          "end": 87.19999694824219,
-          "word": "All",
-          "start": 86.36000061035156
-        },
-        {
-          "end": 87.5,
-          "word": "the",
-          "start": 87.19999694824219
-        },
-        {
-          "end": 88.26000213623047,
-          "word": "times",
-          "start": 87.5
-        },
-        {
-          "end": 88.73999786376953,
-          "word": "you",
-          "start": 88.26000213623047
-        },
-        {
-          "end": 89.19999694824219,
-          "word": "put",
-          "start": 88.73999786376953
-        },
-        {
-          "end": 89.58000183105469,
-          "word": "us",
-          "start": 89.19999694824219
-        },
-        {
-          "end": 90,
-          "word": "right",
-          "start": 89.58000183105469
-        },
-        {
-          "end": 90.54000091552734,
-          "word": "in",
-          "start": 90
-        },
-        {
-          "end": 90.83999633789062,
-          "word": "the",
-          "start": 90.54000091552734
-        },
-        {
-          "end": 91.16000366210938,
-          "word": "mud",
-          "start": 90.83999633789062
-        },
-        {
-          "end": 91.76000213623047,
-          "word": "All",
-          "start": 91.16000366210938
-        },
-        {
-          "end": 92.26000213623047,
-          "word": "these",
-          "start": 91.76000213623047
-        },
-        {
-          "end": 93.12000274658203,
-          "word": "nights",
-          "start": 92.26000213623047
-        },
-        {
-          "end": 93.83999633789062,
-          "word": "all",
-          "start": 93.45999908447266
-        },
-        {
-          "end": 94.23999786376953,
-          "word": "these",
-          "start": 93.83999633789062
-        },
-        {
-          "end": 95.0199966430664,
-          "word": "dreams",
-          "start": 94.23999786376953
-        },
-        {
-          "end": 95.5999984741211,
-          "word": "that",
-          "start": 95.0199966430664
-        },
-        {
-          "end": 95.94000244140625,
-          "word": "are",
-          "start": 95.5999984741211
-        },
-        {
-          "end": 96.55999755859375,
-          "word": "shattered",
-          "start": 95.94000244140625
-        },
-        {
-          "end": 97.36000061035156,
-          "word": "between",
-          "start": 96.55999755859375
-        },
-        {
-          "end": 98.04000091552734,
-          "word": "me",
-          "start": 97.36000061035156
-        },
-        {
-          "end": 98.08000183105469,
-          "word": "and",
-          "start": 98.04000091552734
-        },
-        {
-          "end": 98.83999633789062,
-          "word": "you",
-          "start": 98.08000183105469
-        },
-        {
-          "end": 100.94000244140625,
-          "word": "All",
-          "start": 99.94000244140625
-        },
-        {
-          "end": 101.37999725341797,
-          "word": "you",
-          "start": 100.94000244140625
-        },
-        {
-          "end": 101.86000061035156,
-          "word": "ever",
-          "start": 101.37999725341797
-        },
-        {
-          "end": 102.4000015258789,
-          "word": "did",
-          "start": 101.86000061035156
-        },
-        {
-          "end": 103.05999755859375,
-          "word": "was",
-          "start": 102.4000015258789
-        },
-        {
-          "end": 103.41999816894531,
+          "end": 82.62000274658203,
           "word": "keep",
-          "start": 103.05999755859375
+          "start": 82.18000030517578
         },
         {
-          "end": 103.91999816894531,
+          "end": 83.23999786376953,
           "word": "me",
-          "start": 103.41999816894531
+          "start": 82.62000274658203
         },
         {
-          "end": 105.0199966430664,
-          "word": "low",
-          "start": 103.91999816894531
+          "end": 83.31999969482422,
+          "word": "up",
+          "start": 83.23999786376953
         },
         {
-          "end": 106.76000213623047,
-          "word": "to",
+          "end": 83.87999725341797,
+          "word": "at",
+          "start": 83.31999969482422
+        },
+        {
+          "end": 83.87999725341797,
+          "word": "night",
+          "start": 83.87999725341797
+        },
+        {
+          "end": 84.4000015258789,
+          "word": "These",
+          "start": 83.87999725341797
+        },
+        {
+          "end": 85.08000183105469,
+          "word": "hearts",
+          "start": 84.4000015258789
+        },
+        {
+          "end": 85.83999633789062,
+          "word": "always",
+          "start": 85.08000183105469
+        },
+        {
+          "end": 86.18000030517578,
+          "word": "take",
+          "start": 85.83999633789062
+        },
+        {
+          "end": 86.5,
+          "word": "me",
+          "start": 86.18000030517578
+        },
+        {
+          "end": 86.76000213623047,
+          "word": "the",
+          "start": 86.5
+        },
+        {
+          "end": 87.13999938964844,
+          "word": "wrong",
+          "start": 86.76000213623047
+        },
+        {
+          "end": 87.41999816894531,
+          "word": "way",
+          "start": 87.13999938964844
+        },
+        {
+          "end": 87.87999725341797,
+          "word": "Hard",
+          "start": 87.41999816894531
+        },
+        {
+          "end": 88.18000030517578,
+          "word": "way",
+          "start": 87.87999725341797
+        },
+        {
+          "end": 88.62000274658203,
+          "word": "every",
+          "start": 88.23999786376953
+        },
+        {
+          "end": 88.87999725341797,
+          "word": "which",
+          "start": 88.62000274658203
+        },
+        {
+          "end": 89.27999877929688,
+          "word": "way",
+          "start": 88.87999725341797
+        },
+        {
+          "end": 89.63999938964844,
+          "word": "But",
+          "start": 89.27999877929688
+        },
+        {
+          "end": 90.12000274658203,
+          "word": "my",
+          "start": 89.63999938964844
+        },
+        {
+          "end": 91.77999877929688,
+          "word": "home",
+          "start": 90.12000274658203
+        },
+        {
+          "end": 92.22000122070312,
+          "word": "is",
+          "start": 91.77999877929688
+        },
+        {
+          "end": 92.58000183105469,
+          "word": "some",
+          "start": 92.22000122070312
+        },
+        {
+          "end": 92.91999816894531,
+          "word": "simple",
+          "start": 92.58000183105469
+        },
+        {
+          "end": 93.19999694824219,
+          "word": "instance",
+          "start": 92.91999816894531
+        },
+        {
+          "end": 93.44000244140625,
+          "word": "of",
+          "start": 93.19999694824219
+        },
+        {
+          "end": 93.66000366210938,
+          "word": "my",
+          "start": 93.44000244140625
+        },
+        {
+          "end": 93.81999969482422,
+          "word": "mind",
+          "start": 93.66000366210938
+        },
+        {
+          "end": 94.04000091552734,
+          "word": "And",
+          "start": 93.81999969482422
+        },
+        {
+          "end": 94.31999969482422,
+          "word": "I",
+          "start": 94.04000091552734
+        },
+        {
+          "end": 94.5999984741211,
+          "word": "don't",
+          "start": 94.31999969482422
+        },
+        {
+          "end": 94.9800033569336,
+          "word": "wanna",
+          "start": 94.5999984741211
+        },
+        {
+          "end": 95.27999877929688,
+          "word": "think",
+          "start": 94.9800033569336
+        },
+        {
+          "end": 95.76000213623047,
+          "word": "about",
+          "start": 95.27999877929688
+        },
+        {
+          "end": 96.19999694824219,
+          "word": "all",
+          "start": 95.76000213623047
+        },
+        {
+          "end": 96.5,
+          "word": "the",
+          "start": 96.19999694824219
+        },
+        {
+          "end": 96.86000061035156,
+          "word": "times",
+          "start": 96.5
+        },
+        {
+          "end": 97.22000122070312,
+          "word": "That",
+          "start": 96.86000061035156
+        },
+        {
+          "end": 97.45999908447266,
+          "word": "I",
+          "start": 97.22000122070312
+        },
+        {
+          "end": 97.73999786376953,
+          "word": "broke",
+          "start": 97.45999908447266
+        },
+        {
+          "end": 98.30000305175781,
+          "word": "your",
+          "start": 97.73999786376953
+        },
+        {
+          "end": 98.87999725341797,
+          "word": "heart",
+          "start": 98.30000305175781
+        },
+        {
+          "end": 101.19999694824219,
+          "word": "And",
+          "start": 100.44000244140625
+        },
+        {
+          "end": 101.58000183105469,
+          "word": "took",
+          "start": 101.19999694824219
+        },
+        {
+          "end": 102,
+          "word": "your",
+          "start": 101.58000183105469
+        },
+        {
+          "end": 102.37999725341797,
+          "word": "dreams",
+          "start": 102
+        },
+        {
+          "end": 103.18000030517578,
+          "word": "away",
+          "start": 102.37999725341797
+        },
+        {
+          "end": 103.63999938964844,
+          "word": "baby",
+          "start": 103.63999938964844
+        },
+        {
+          "end": 104.04000091552734,
+          "word": "But",
+          "start": 103.63999938964844
+        },
+        {
+          "end": 104.87999725341797,
+          "word": "I",
+          "start": 104.04000091552734
+        },
+        {
+          "end": 105.13999938964844,
+          "word": "know",
+          "start": 104.87999725341797
+        },
+        {
+          "end": 105.54000091552734,
+          "word": "these",
+          "start": 105.13999938964844
+        },
+        {
+          "end": 105.77999877929688,
+          "word": "dreams",
           "start": 105.54000091552734
         },
         {
-          "end": 107.22000122070312,
-          "word": "the",
-          "start": 106.76000213623047
+          "end": 106.0999984741211,
+          "word": "are",
+          "start": 105.77999877929688
         },
         {
-          "end": 108.76000213623047,
-          "word": "ground",
-          "start": 107.22000122070312
+          "end": 106.5,
+          "word": "taking",
+          "start": 106.0999984741211
         },
         {
-          "end": 110.08000183105469,
-          "word": "With",
-          "start": 109.08000183105469
+          "end": 107.04000091552734,
+          "word": "with",
+          "start": 106.5
         },
         {
-          "end": 110.4000015258789,
-          "word": "a",
-          "start": 110.08000183105469
+          "end": 107.5,
+          "word": "me",
+          "start": 107.04000091552734
         },
         {
-          "end": 110.80000305175781,
-          "word": "brown",
-          "start": 110.4000015258789
-        },
-        {
-          "end": 111.12000274658203,
-          "word": "head",
-          "start": 110.80000305175781
-        },
-        {
-          "end": 111.54000091552734,
-          "word": "I",
-          "start": 111.12000274658203
-        },
-        {
-          "end": 111.94000244140625,
-          "word": "know",
-          "start": 111.54000091552734
-        },
-        {
-          "end": 112.36000061035156,
-          "word": "our",
-          "start": 111.94000244140625
-        },
-        {
-          "end": 112.72000122070312,
-          "word": "heart",
-          "start": 112.36000061035156
-        },
-        {
-          "end": 113.23999786376953,
-          "word": "can't",
-          "start": 112.72000122070312
-        },
-        {
-          "end": 113.5,
-          "word": "get",
-          "start": 113.23999786376953
-        },
-        {
-          "end": 114.0999984741211,
-          "word": "better",
-          "start": 113.5
-        },
-        {
-          "end": 114.66000366210938,
-          "word": "But",
-          "start": 114.0999984741211
-        },
-        {
-          "end": 115,
-          "word": "your",
-          "start": 114.66000366210938
-        },
-        {
-          "end": 115.54000091552734,
-          "word": "love",
-          "start": 115
-        },
-        {
-          "end": 115.95999908447266,
-          "word": "feels",
-          "start": 115.54000091552734
-        },
-        {
-          "end": 116.41999816894531,
-          "word": "like",
-          "start": 115.95999908447266
-        },
-        {
-          "end": 117.13999938964844,
-          "word": "an",
-          "start": 116.41999816894531
-        },
-        {
-          "end": 117.33999633789062,
-          "word": "ocean",
-          "start": 117.13999938964844
-        },
-        {
-          "end": 118.04000091552734,
-          "word": "that",
-          "start": 117.33999633789062
-        },
-        {
-          "end": 118.36000061035156,
-          "word": "I'm",
-          "start": 118.04000091552734
-        },
-        {
-          "end": 118.87999725341797,
-          "word": "drowning",
-          "start": 118.36000061035156
-        },
-        {
-          "end": 119.23999786376953,
-          "word": "in",
-          "start": 118.87999725341797
-        },
-        {
-          "end": 120.18000030517578,
-          "word": "I'm",
-          "start": 119.66000366210938
-        },
-        {
-          "end": 120.72000122070312,
-          "word": "falling",
-          "start": 120.18000030517578
-        },
-        {
-          "end": 121.19999694824219,
-          "word": "and",
-          "start": 120.72000122070312
-        },
-        {
-          "end": 121.76000213623047,
-          "word": "I",
-          "start": 121.19999694824219
-        },
-        {
-          "end": 122.12000274658203,
-          "word": "wanna",
-          "start": 121.76000213623047
-        },
-        {
-          "end": 122.66000366210938,
-          "word": "run",
-          "start": 122.12000274658203
-        },
-        {
-          "end": 123.0199966430664,
-          "word": "from",
-          "start": 122.66000366210938
-        },
-        {
-          "end": 123.31999969482422,
-          "word": "your",
-          "start": 123.0199966430664
-        },
-        {
-          "end": 123.63999938964844,
-          "word": "fake",
-          "start": 123.31999969482422
-        },
-        {
-          "end": 124.4000015258789,
-          "word": "cruelty",
-          "start": 123.63999938964844
-        },
-        {
-          "end": 124.80000305175781,
+          "end": 108.08000183105469,
           "word": "And",
-          "start": 124.4000015258789
+          "start": 107.5
         },
         {
-          "end": 125.0199966430664,
-          "word": "I",
-          "start": 124.80000305175781
+          "end": 108.77999877929688,
+          "word": "another",
+          "start": 108.08000183105469
         },
         {
-          "end": 125.22000122070312,
-          "word": "don't",
-          "start": 125.0199966430664
+          "end": 109.37999725341797,
+          "word": "chance",
+          "start": 108.77999877929688
         },
         {
-          "end": 125.55999755859375,
-          "word": "know",
-          "start": 125.22000122070312
+          "end": 109.69999694824219,
+          "word": "it",
+          "start": 109.37999725341797
+        },
+        {
+          "end": 109.9000015258789,
+          "word": "will",
+          "start": 109.69999694824219
+        },
+        {
+          "end": 110.36000061035156,
+          "word": "be",
+          "start": 109.9000015258789
+        },
+        {
+          "end": 112.62000274658203,
+          "word": "What",
+          "start": 111.81999969482422
+        },
+        {
+          "end": 113,
+          "word": "we",
+          "start": 112.62000274658203
+        },
+        {
+          "end": 113.4800033569336,
+          "word": "want",
+          "start": 113
+        },
+        {
+          "end": 113.83999633789062,
+          "word": "to",
+          "start": 113.4800033569336
+        },
+        {
+          "end": 114.23999786376953,
+          "word": "see",
+          "start": 113.83999633789062
+        },
+        {
+          "end": 114.80000305175781,
+          "word": "oh",
+          "start": 114.23999786376953
+        },
+        {
+          "end": 115.26000213623047,
+          "word": "baby",
+          "start": 114.80000305175781
+        },
+        {
+          "end": 115.68000030517578,
+          "word": "These",
+          "start": 115.26000213623047
+        },
+        {
+          "end": 116.27999877929688,
+          "word": "dreams",
+          "start": 115.68000030517578
+        },
+        {
+          "end": 116.80000305175781,
+          "word": "they",
+          "start": 116.37999725341797
+        },
+        {
+          "end": 117.62000274658203,
+          "word": "be",
+          "start": 116.80000305175781
+        },
+        {
+          "end": 118.16000366210938,
+          "word": "coming",
+          "start": 117.62000274658203
+        },
+        {
+          "end": 118.5999984741211,
+          "word": "up",
+          "start": 118.16000366210938
+        },
+        {
+          "end": 119.31999969482422,
+          "word": "right",
+          "start": 118.5999984741211
+        },
+        {
+          "end": 120.23999786376953,
+          "word": "Yeah",
+          "start": 119.44000244140625
+        },
+        {
+          "end": 120.27999877929688,
+          "word": "they",
+          "start": 120.23999786376953
+        },
+        {
+          "end": 120.55999755859375,
+          "word": "be",
+          "start": 120.27999877929688
+        },
+        {
+          "end": 120.94000244140625,
+          "word": "making",
+          "start": 120.55999755859375
+        },
+        {
+          "end": 121.4800033569336,
+          "word": "me",
+          "start": 120.94000244140625
+        },
+        {
+          "end": 122.18000030517578,
+          "word": "fight",
+          "start": 121.4800033569336
+        },
+        {
+          "end": 123.0999984741211,
+          "word": "Yeah",
+          "start": 122.30000305175781
+        },
+        {
+          "end": 123.16000366210938,
+          "word": "they",
+          "start": 123.0999984741211
+        },
+        {
+          "end": 123.45999908447266,
+          "word": "be",
+          "start": 123.16000366210938
+        },
+        {
+          "end": 123.86000061035156,
+          "word": "making",
+          "start": 123.45999908447266
+        },
+        {
+          "end": 124.66000366210938,
+          "word": "me",
+          "start": 123.86000061035156
+        },
+        {
+          "end": 124.66000366210938,
+          "word": "fuck",
+          "start": 124.66000366210938
+        },
+        {
+          "end": 125.0999984741211,
+          "word": "my",
+          "start": 124.66000366210938
+        },
+        {
+          "end": 125.4800033569336,
+          "word": "life",
+          "start": 125.0999984741211
+        },
+        {
+          "end": 125.91999816894531,
+          "word": "up",
+          "start": 125.4800033569336
         },
         {
           "end": 126.27999877929688,
-          "word": "if",
-          "start": 125.55999755859375
+          "word": "all",
+          "start": 125.91999816894531
         },
         {
-          "end": 126.5199966430664,
-          "word": "you",
+          "end": 126.45999908447266,
+          "word": "the",
           "start": 126.27999877929688
         },
         {
-          "end": 126.77999877929688,
-          "word": "can",
-          "start": 126.5199966430664
-        },
-        {
-          "end": 127.18000030517578,
-          "word": "even",
-          "start": 126.77999877929688
-        },
-        {
-          "end": 127.4000015258789,
-          "word": "see",
-          "start": 127.18000030517578
-        },
-        {
-          "end": 127.77999877929688,
-          "word": "the",
-          "start": 127.4000015258789
-        },
-        {
-          "end": 128.10000610351562,
+          "end": 126.73999786376953,
           "word": "way",
-          "start": 127.77999877929688
+          "start": 126.45999908447266
         },
         {
-          "end": 128.39999389648438,
+          "end": 126.91999816894531,
+          "word": "But",
+          "start": 126.73999786376953
+        },
+        {
+          "end": 127.26000213623047,
+          "word": "I",
+          "start": 126.91999816894531
+        },
+        {
+          "end": 127.5999984741211,
+          "word": "know",
+          "start": 127.26000213623047
+        },
+        {
+          "end": 128.0800018310547,
+          "word": "that",
+          "start": 127.5999984741211
+        },
+        {
+          "end": 128.32000732421875,
           "word": "you",
-          "start": 128.10000610351562
+          "start": 128.0800018310547
         },
         {
-          "end": 128.97999572753906,
-          "word": "affect",
-          "start": 128.39999389648438
+          "end": 128.6199951171875,
+          "word": "can",
+          "start": 128.32000732421875
         },
         {
-          "end": 129.55999755859375,
+          "end": 128.83999633789062,
+          "word": "dream",
+          "start": 128.6199951171875
+        },
+        {
+          "end": 129.22000122070312,
+          "word": "with",
+          "start": 128.83999633789062
+        },
+        {
+          "end": 129.5800018310547,
           "word": "me",
-          "start": 128.97999572753906
+          "start": 129.22000122070312
         },
         {
-          "end": 130.36000061035156,
-          "word": "And",
-          "start": 129.63999938964844
+          "end": 129.83999633789062,
+          "word": "A",
+          "start": 129.5800018310547
         },
         {
-          "end": 131.0800018310547,
-          "word": "I've",
-          "start": 130.36000061035156
+          "end": 130.0800018310547,
+          "word": "little",
+          "start": 129.83999633789062
         },
         {
-          "end": 131.0800018310547,
-          "word": "said",
-          "start": 131.0800018310547
+          "end": 130.77999877929688,
+          "word": "brighter",
+          "start": 130.0800018310547
         },
         {
-          "end": 131.5399932861328,
-          "word": "here",
-          "start": 131.0800018310547
+          "end": 131.47999572753906,
+          "word": "and",
+          "start": 130.77999877929688
         },
         {
-          "end": 131.9199981689453,
-          "word": "so",
-          "start": 131.5399932861328
-        },
-        {
-          "end": 132.33999633789062,
-          "word": "much",
-          "start": 131.9199981689453
-        },
-        {
-          "end": 133.02000427246094,
-          "word": "wanting",
-          "start": 132.63999938964844
-        },
-        {
-          "end": 133.3000030517578,
-          "word": "you",
-          "start": 133.02000427246094
-        },
-        {
-          "end": 133.5399932861328,
-          "word": "to",
-          "start": 133.3000030517578
-        },
-        {
-          "end": 133.8800048828125,
+          "end": 132.05999755859375,
           "word": "be",
-          "start": 133.5399932861328
+          "start": 131.47999572753906
         },
         {
-          "end": 134.1999969482422,
-          "word": "better",
-          "start": 133.8800048828125
+          "end": 132.44000244140625,
+          "word": "more",
+          "start": 132.05999755859375
         },
         {
-          "end": 134.52000427246094,
-          "word": "Giving",
-          "start": 134.1999969482422
+          "end": 132.6199951171875,
+          "word": "than",
+          "start": 132.44000244140625
         },
         {
-          "end": 134.82000732421875,
-          "word": "you",
-          "start": 134.52000427246094
+          "end": 133.4199981689453,
+          "word": "we",
+          "start": 132.6199951171875
         },
         {
-          "end": 135.13999938964844,
-          "word": "a",
-          "start": 134.82000732421875
+          "end": 133.66000366210938,
+          "word": "see",
+          "start": 133.4199981689453
+        },
+        {
+          "end": 135.10000610351562,
+          "word": "Come",
+          "start": 134.3000030517578
         },
         {
           "end": 135.52000427246094,
-          "word": "chance",
-          "start": 135.13999938964844
+          "word": "on",
+          "start": 135.10000610351562
         },
         {
-          "end": 135.6999969482422,
-          "word": "to",
+          "end": 135.94000244140625,
+          "word": "now",
           "start": 135.52000427246094
         },
         {
-          "end": 136.0399932861328,
-          "word": "give",
-          "start": 135.6999969482422
-        },
-        {
-          "end": 136.33999633789062,
-          "word": "me",
-          "start": 136.0399932861328
-        },
-        {
-          "end": 136.72000122070312,
-          "word": "trust",
-          "start": 136.33999633789062
-        },
-        {
-          "end": 137.02000427246094,
-          "word": "But",
-          "start": 136.72000122070312
-        },
-        {
-          "end": 137.22000122070312,
-          "word": "you",
-          "start": 137.02000427246094
-        },
-        {
-          "end": 137.5,
-          "word": "won't",
-          "start": 137.22000122070312
-        },
-        {
-          "end": 137.8000030517578,
-          "word": "touch",
-          "start": 137.5
-        },
-        {
-          "end": 138.10000610351562,
-          "word": "that",
-          "start": 137.8000030517578
-        },
-        {
-          "end": 138.27999877929688,
-          "word": "cause",
-          "start": 138.10000610351562
-        },
-        {
-          "end": 138.52000427246094,
-          "word": "you",
-          "start": 138.27999877929688
-        },
-        {
-          "end": 138.9600067138672,
-          "word": "can't",
-          "start": 138.52000427246094
-        },
-        {
-          "end": 139.4600067138672,
+          "end": 136.3000030517578,
           "word": "be",
-          "start": 138.9600067138672
+          "start": 135.94000244140625
         },
         {
-          "end": 139.97999572753906,
-          "word": "truthful",
-          "start": 139.4600067138672
+          "end": 136.63999938964844,
+          "word": "more",
+          "start": 136.3000030517578
         },
         {
-          "end": 140.66000366210938,
-          "word": "with",
-          "start": 139.97999572753906
+          "end": 136.97999572753906,
+          "word": "than",
+          "start": 136.63999938964844
         },
         {
-          "end": 140.97999572753906,
-          "word": "me",
-          "start": 140.66000366210938
-        },
-        {
-          "end": 141.1999969482422,
-          "word": "With",
-          "start": 140.97999572753906
-        },
-        {
-          "end": 141.9199981689453,
-          "word": "your",
-          "start": 141.1999969482422
-        },
-        {
-          "end": 142.32000732421875,
-          "word": "shame",
-          "start": 141.9199981689453
-        },
-        {
-          "end": 142.6999969482422,
-          "word": "I",
-          "start": 142.32000732421875
-        },
-        {
-          "end": 143.02000427246094,
-          "word": "just",
-          "start": 142.6999969482422
-        },
-        {
-          "end": 143.5399932861328,
-          "word": "want",
-          "start": 143.02000427246094
-        },
-        {
-          "end": 143.8800048828125,
+          "end": 137.67999267578125,
           "word": "you",
-          "start": 143.5399932861328
+          "start": 136.97999572753906
         },
         {
-          "end": 144.32000732421875,
-          "word": "to",
-          "start": 143.8800048828125
+          "end": 137.83999633789062,
+          "word": "ever",
+          "start": 137.67999267578125
         },
         {
-          "end": 144.67999267578125,
-          "word": "know",
-          "start": 144.32000732421875
+          "end": 138.39999389648438,
+          "word": "thought",
+          "start": 137.83999633789062
         },
         {
-          "end": 145.0800018310547,
-          "word": "we",
-          "start": 144.67999267578125
-        },
-        {
-          "end": 145.39999389648438,
+          "end": 138.9199981689453,
           "word": "could",
-          "start": 145.0800018310547
+          "start": 138.39999389648438
         },
         {
-          "end": 145.8800048828125,
-          "word": "have",
-          "start": 145.39999389648438
+          "end": 139.16000366210938,
+          "word": "be",
+          "start": 138.9199981689453
         },
         {
-          "end": 146.1999969482422,
-          "word": "been",
-          "start": 145.8800048828125
+          "end": 139.83999633789062,
+          "word": "With",
+          "start": 139.16000366210938
+        },
+        {
+          "end": 140.5399932861328,
+          "word": "these",
+          "start": 139.83999633789062
+        },
+        {
+          "end": 141.13999938964844,
+          "word": "dreams",
+          "start": 140.5399932861328
+        },
+        {
+          "end": 141.4199981689453,
+          "word": "in",
+          "start": 141.13999938964844
+        },
+        {
+          "end": 141.72000122070312,
+          "word": "your",
+          "start": 141.4199981689453
+        },
+        {
+          "end": 142.17999267578125,
+          "word": "night",
+          "start": 141.72000122070312
+        },
+        {
+          "end": 142.97999572753906,
+          "word": "Yeah",
+          "start": 142.25999450683594
+        },
+        {
+          "end": 143.6999969482422,
+          "word": "these",
+          "start": 142.97999572753906
+        },
+        {
+          "end": 144.02000427246094,
+          "word": "dreams",
+          "start": 143.6999969482422
+        },
+        {
+          "end": 144.5,
+          "word": "they",
+          "start": 144.5
+        },
+        {
+          "end": 145.24000549316406,
+          "word": "fight",
+          "start": 144.5
+        },
+        {
+          "end": 146.36000061035156,
+          "word": "you",
+          "start": 145.24000549316406
+        },
+        {
+          "end": 147.0800018310547,
+          "word": "But",
+          "start": 146.36000061035156
+        },
+        {
+          "end": 147.24000549316406,
+          "word": "do",
+          "start": 147.0800018310547
         },
         {
           "end": 147.4600067138672,
-          "word": "more",
-          "start": 146.1999969482422
+          "word": "they",
+          "start": 147.24000549316406
         },
         {
-          "end": 147.83999633789062,
-          "word": "than",
+          "end": 148.24000549316406,
+          "word": "haunt",
           "start": 147.4600067138672
         },
         {
-          "end": 148.4199981689453,
+          "end": 148.94000244140625,
           "word": "you",
-          "start": 147.83999633789062
+          "start": 148.24000549316406
         },
         {
-          "end": 149.0800018310547,
-          "word": "Never",
-          "start": 148.4199981689453
+          "end": 149.39999389648438,
+          "word": "Or",
+          "start": 149.3000030517578
         },
         {
-          "end": 149.47999572753906,
-          "word": "ever",
-          "start": 149.0800018310547
+          "end": 149.4600067138672,
+          "word": "do",
+          "start": 149.39999389648438
         },
         {
-          "end": 149.8000030517578,
-          "word": "thought",
-          "start": 149.47999572753906
+          "end": 149.97999572753906,
+          "word": "they",
+          "start": 149.4600067138672
         },
         {
-          "end": 150,
-          "word": "you'd",
-          "start": 149.8000030517578
-        },
-        {
-          "end": 150.16000366210938,
-          "word": "be",
-          "start": 150
-        },
-        {
-          "end": 150.6199951171875,
-          "word": "a",
-          "start": 150.16000366210938
-        },
-        {
-          "end": 150.6199951171875,
-          "word": "part",
-          "start": 150.6199951171875
-        },
-        {
-          "end": 150.86000061035156,
-          "word": "of",
-          "start": 150.6199951171875
-        },
-        {
-          "end": 151.36000061035156,
-          "word": "but",
-          "start": 151.33999633789062
-        },
-        {
-          "end": 151.60000610351562,
-          "word": "you",
-          "start": 151.36000061035156
-        },
-        {
-          "end": 152.3800048828125,
+          "end": 150.3800048828125,
           "word": "just",
-          "start": 151.60000610351562
+          "start": 149.97999572753906
         },
         {
-          "end": 153.3800048828125,
-          "word": "couldn't",
-          "start": 152.3800048828125
+          "end": 150.74000549316406,
+          "word": "make",
+          "start": 150.3800048828125
         },
         {
-          "end": 153.75999450683594,
-          "word": "let",
-          "start": 153.3800048828125
+          "end": 151.44000244140625,
+          "word": "you",
+          "start": 150.74000549316406
         },
         {
-          "end": 154.8800048828125,
-          "word": "go",
-          "start": 153.75999450683594
+          "end": 151.4600067138672,
+          "word": "start",
+          "start": 151.44000244140625
         },
         {
-          "end": 155.94000244140625,
-          "word": "All",
-          "start": 155.05999755859375
+          "end": 151.72000122070312,
+          "word": "at",
+          "start": 151.4600067138672
         },
         {
-          "end": 156.27999877929688,
-          "word": "these",
-          "start": 155.94000244140625
+          "end": 151.9600067138672,
+          "word": "the",
+          "start": 151.72000122070312
         },
         {
-          "end": 157.16000366210938,
-          "word": "nights",
-          "start": 156.27999877929688
+          "end": 152.22000122070312,
+          "word": "beginning",
+          "start": 151.9600067138672
         },
         {
-          "end": 157.83999633789062,
-          "word": "all",
-          "start": 157.25999450683594
+          "end": 152.8800048828125,
+          "word": "again",
+          "start": 152.22000122070312
+        },
+        {
+          "end": 153.0800018310547,
+          "word": "Is",
+          "start": 153
+        },
+        {
+          "end": 153.3000030517578,
+          "word": "it",
+          "start": 153.0800018310547
+        },
+        {
+          "end": 153.66000366210938,
+          "word": "that",
+          "start": 153.3000030517578
+        },
+        {
+          "end": 153.97999572753906,
+          "word": "bad",
+          "start": 153.66000366210938
+        },
+        {
+          "end": 154.36000061035156,
+          "word": "to",
+          "start": 153.97999572753906
+        },
+        {
+          "end": 154.72000122070312,
+          "word": "get",
+          "start": 154.36000061035156
+        },
+        {
+          "end": 155.72000122070312,
+          "word": "exploited",
+          "start": 154.72000122070312
+        },
+        {
+          "end": 156.3000030517578,
+          "word": "as",
+          "start": 155.72000122070312
+        },
+        {
+          "end": 157.52000427246094,
+          "word": "me",
+          "start": 156.3000030517578
         },
         {
           "end": 158.32000732421875,
-          "word": "these",
-          "start": 157.83999633789062
+          "word": "These",
+          "start": 157.75999450683594
         },
         {
-          "end": 159.05999755859375,
-          "word": "dreams",
+          "end": 158.8000030517578,
+          "word": "faces",
           "start": 158.32000732421875
         },
         {
-          "end": 159.5800018310547,
+          "end": 159.10000610351562,
+          "word": "of",
+          "start": 158.8000030517578
+        },
+        {
+          "end": 159.4600067138672,
+          "word": "people",
+          "start": 159.10000610351562
+        },
+        {
+          "end": 160.0800018310547,
+          "word": "appear",
+          "start": 159.4600067138672
+        },
+        {
+          "end": 160.3800048828125,
           "word": "that",
-          "start": 159.05999755859375
+          "start": 160.0800018310547
         },
         {
-          "end": 159.8800048828125,
-          "word": "are",
-          "start": 159.5800018310547
+          "end": 160.55999755859375,
+          "word": "I've",
+          "start": 160.3800048828125
         },
         {
-          "end": 160.52000427246094,
-          "word": "shattered",
-          "start": 159.8800048828125
+          "end": 161.05999755859375,
+          "word": "never",
+          "start": 160.55999755859375
         },
         {
-          "end": 161.25999450683594,
-          "word": "between",
-          "start": 160.52000427246094
+          "end": 161.63999938964844,
+          "word": "seen",
+          "start": 161.05999755859375
         },
         {
-          "end": 162.10000610351562,
-          "word": "me",
-          "start": 161.25999450683594
+          "end": 161.97999572753906,
+          "word": "And",
+          "start": 161.63999938964844
         },
         {
-          "end": 162.1199951171875,
-          "word": "and",
-          "start": 162.10000610351562
+          "end": 162.27999877929688,
+          "word": "I",
+          "start": 161.97999572753906
         },
         {
-          "end": 162.74000549316406,
-          "word": "you",
-          "start": 162.1199951171875
+          "end": 162.66000366210938,
+          "word": "know",
+          "start": 162.27999877929688
         },
         {
-          "end": 163.97999572753906,
-          "word": "All",
-          "start": 163.10000610351562
+          "end": 163.0399932861328,
+          "word": "that",
+          "start": 162.66000366210938
         },
         {
-          "end": 164.33999633789062,
-          "word": "the",
-          "start": 163.97999572753906
+          "end": 163.36000061035156,
+          "word": "these",
+          "start": 163.0399932861328
         },
         {
-          "end": 165.1199951171875,
-          "word": "times",
-          "start": 164.33999633789062
+          "end": 163.67999267578125,
+          "word": "dreams",
+          "start": 163.36000061035156
+        },
+        {
+          "end": 163.9600067138672,
+          "word": "they",
+          "start": 163.9600067138672
+        },
+        {
+          "end": 164.27999877929688,
+          "word": "come",
+          "start": 163.9600067138672
+        },
+        {
+          "end": 164.67999267578125,
+          "word": "at",
+          "start": 164.27999877929688
+        },
+        {
+          "end": 164.75999450683594,
+          "word": "night",
+          "start": 164.67999267578125
+        },
+        {
+          "end": 165.17999267578125,
+          "word": "I",
+          "start": 164.75999450683594
         },
         {
           "end": 165.5800018310547,
-          "word": "you",
-          "start": 165.1199951171875
+          "word": "don't",
+          "start": 165.17999267578125
         },
         {
-          "end": 165.86000061035156,
-          "word": "kept",
+          "end": 165.94000244140625,
+          "word": "care",
           "start": 165.5800018310547
         },
         {
-          "end": 166.5800018310547,
-          "word": "me",
-          "start": 165.86000061035156
+          "end": 166.3000030517578,
+          "word": "I'm",
+          "start": 165.9600067138672
         },
         {
-          "end": 167.1199951171875,
-          "word": "away",
-          "start": 166.5800018310547
+          "end": 166.75999450683594,
+          "word": "not",
+          "start": 166.3000030517578
         },
         {
-          "end": 167.5800018310547,
-          "word": "from",
-          "start": 167.1199951171875
+          "end": 167.22000122070312,
+          "word": "scared",
+          "start": 166.75999450683594
         },
         {
-          "end": 167.8800048828125,
-          "word": "the",
-          "start": 167.5800018310547
+          "end": 168.0800018310547,
+          "word": "anymore",
+          "start": 167.22000122070312
         },
         {
-          "end": 168.36000061035156,
-          "word": "love",
-          "start": 167.8800048828125
-        },
-        {
-          "end": 168.77999877929688,
-          "word": "that",
-          "start": 168.36000061035156
-        },
-        {
-          "end": 169.16000366210938,
-          "word": "was",
-          "start": 168.77999877929688
-        },
-        {
-          "end": 169.75999450683594,
-          "word": "meant",
+          "end": 169.8800048828125,
+          "word": "Of",
           "start": 169.16000366210938
         },
         {
-          "end": 170,
-          "word": "for",
-          "start": 169.75999450683594
-        },
-        {
           "end": 170.22000122070312,
-          "word": "me",
-          "start": 170
+          "word": "what",
+          "start": 169.8800048828125
         },
         {
-          "end": 170.75999450683594,
-          "word": "The",
+          "end": 170.6199951171875,
+          "word": "you'll",
           "start": 170.22000122070312
         },
         {
-          "end": 171.47999572753906,
-          "word": "love",
-          "start": 170.75999450683594
+          "end": 171.13999938964844,
+          "word": "say",
+          "start": 170.6199951171875
         },
         {
-          "end": 171.86000061035156,
-          "word": "that",
-          "start": 171.47999572753906
-        },
-        {
-          "end": 172.22000122070312,
-          "word": "was",
-          "start": 171.86000061035156
-        },
-        {
-          "end": 172.8800048828125,
-          "word": "there",
-          "start": 172.22000122070312
-        },
-        {
-          "end": 173.10000610351562,
-          "word": "for",
-          "start": 172.8800048828125
-        },
-        {
-          "end": 173.3800048828125,
-          "word": "me",
-          "start": 173.10000610351562
-        },
-        {
-          "end": 173.89999389648438,
-          "word": "All",
-          "start": 173.3800048828125
-        },
-        {
-          "end": 174.22000122070312,
-          "word": "these",
-          "start": 173.89999389648438
-        },
-        {
-          "end": 174.83999633789062,
-          "word": "dreams",
-          "start": 174.22000122070312
-        },
-        {
-          "end": 175.02000427246094,
-          "word": "that",
-          "start": 174.83999633789062
-        },
-        {
-          "end": 175.25999450683594,
-          "word": "are",
-          "start": 175.02000427246094
-        },
-        {
-          "end": 175.83999633789062,
-          "word": "shattered",
-          "start": 175.25999450683594
-        },
-        {
-          "end": 176.3800048828125,
-          "word": "baby",
-          "start": 175.83999633789062
-        },
-        {
-          "end": 177.94000244140625,
-          "word": "All",
-          "start": 176.86000061035156
-        },
-        {
-          "end": 178.13999938964844,
-          "word": "you",
-          "start": 177.94000244140625
-        },
-        {
-          "end": 178.6199951171875,
-          "word": "ever",
-          "start": 178.13999938964844
-        },
-        {
-          "end": 179.05999755859375,
-          "word": "did",
-          "start": 178.6199951171875
-        },
-        {
-          "end": 179.75999450683594,
-          "word": "was",
-          "start": 179.05999755859375
-        },
-        {
-          "end": 180.3000030517578,
-          "word": "keep",
-          "start": 179.75999450683594
-        },
-        {
-          "end": 180.94000244140625,
-          "word": "us",
-          "start": 180.3000030517578
-        },
-        {
-          "end": 182.0800018310547,
-          "word": "low",
-          "start": 180.94000244140625
-        },
-        {
-          "end": 182.77999877929688,
-          "word": "But",
-          "start": 182.0800018310547
-        },
-        {
-          "end": 183.1199951171875,
-          "word": "there's",
-          "start": 182.77999877929688
-        },
-        {
-          "end": 183.55999755859375,
-          "word": "more",
-          "start": 183.1199951171875
-        },
-        {
-          "end": 183.8800048828125,
+          "end": 171.67999267578125,
           "word": "to",
-          "start": 183.55999755859375
+          "start": 171.13999938964844
         },
         {
-          "end": 184.86000061035156,
-          "word": "compromise",
-          "start": 183.8800048828125
-        },
-        {
-          "end": 186.33999633789062,
-          "word": "There's",
-          "start": 185.25999450683594
-        },
-        {
-          "end": 186.82000732421875,
-          "word": "more",
-          "start": 186.33999633789062
-        },
-        {
-          "end": 188.17999267578125,
-          "word": "to",
-          "start": 186.82000732421875
-        },
-        {
-          "end": 188.17999267578125,
-          "word": "compromise",
-          "start": 188.17999267578125
-        },
-        {
-          "end": 188.63999938964844,
-          "word": "For",
-          "start": 188.17999267578125
-        },
-        {
-          "end": 189.05999755859375,
-          "word": "you",
-          "start": 188.63999938964844
-        },
-        {
-          "end": 189.6199951171875,
-          "word": "and",
-          "start": 189.05999755859375
-        },
-        {
-          "end": 189.82000732421875,
-          "word": "me",
-          "start": 189.6199951171875
-        },
-        {
-          "end": 190.17999267578125,
-          "word": "to",
-          "start": 189.82000732421875
-        },
-        {
-          "end": 191.0399932861328,
-          "word": "be",
-          "start": 190.17999267578125
-        },
-        {
-          "end": 191.8800048828125,
-          "word": "better",
-          "start": 191.0399932861328
-        },
-        {
-          "end": 192.0800018310547,
-          "word": "than",
-          "start": 191.8800048828125
-        },
-        {
-          "end": 192.74000549316406,
-          "word": "we",
-          "start": 192.0800018310547
-        },
-        {
-          "end": 192.94000244140625,
-          "word": "can",
-          "start": 192.74000549316406
-        },
-        {
-          "end": 194.32000732421875,
-          "word": "You",
-          "start": 193.24000549316406
-        },
-        {
-          "end": 195.32000732421875,
-          "word": "could",
-          "start": 194.32000732421875
-        },
-        {
-          "end": 196.05999755859375,
-          "word": "turn",
-          "start": 195.32000732421875
-        },
-        {
-          "end": 196.3800048828125,
-          "word": "us",
-          "start": 196.05999755859375
-        },
-        {
-          "end": 197.10000610351562,
-          "word": "all",
-          "start": 196.3800048828125
-        },
-        {
-          "end": 198.25999450683594,
-          "word": "around",
-          "start": 197.10000610351562
-        },
-        {
-          "end": 199.0399932861328,
-          "word": "If",
-          "start": 198.25999450683594
-        },
-        {
-          "end": 199.5399932861328,
-          "word": "you",
-          "start": 199.0399932861328
-        },
-        {
-          "end": 199.8800048828125,
-          "word": "let",
-          "start": 199.5399932861328
-        },
-        {
-          "end": 200.36000061035156,
-          "word": "go",
-          "start": 199.8800048828125
-        },
-        {
-          "end": 201.17999267578125,
-          "word": "you'll",
-          "start": 200.36000061035156
-        },
-        {
-          "end": 201.24000549316406,
-          "word": "hate",
-          "start": 201.17999267578125
-        },
-        {
-          "end": 201.6999969482422,
-          "word": "it",
-          "start": 201.24000549316406
-        },
-        {
-          "end": 203.0399932861328,
-          "word": "hate",
-          "start": 201.83999633789062
-        },
-        {
-          "end": 203.3000030517578,
-          "word": "it",
-          "start": 203.0399932861328
-        },
-        {
-          "end": 204.72000122070312,
-          "word": "too",
-          "start": 203.3000030517578
-        },
-        {
-          "end": 205.9600067138672,
-          "word": "But",
-          "start": 204.9600067138672
-        },
-        {
-          "end": 207.1199951171875,
-          "word": "All",
-          "start": 206.1199951171875
-        },
-        {
-          "end": 207.52000427246094,
-          "word": "these",
-          "start": 207.1199951171875
-        },
-        {
-          "end": 208.3000030517578,
-          "word": "nights",
-          "start": 207.52000427246094
-        },
-        {
-          "end": 209.05999755859375,
-          "word": "all",
-          "start": 208.5
-        },
-        {
-          "end": 209.44000244140625,
-          "word": "these",
-          "start": 209.05999755859375
-        },
-        {
-          "end": 210.3000030517578,
-          "word": "dreams",
-          "start": 209.44000244140625
-        },
-        {
-          "end": 210.83999633789062,
-          "word": "that",
-          "start": 210.3000030517578
-        },
-        {
-          "end": 211.13999938964844,
-          "word": "are",
-          "start": 210.83999633789062
-        },
-        {
-          "end": 211.8000030517578,
-          "word": "shattered",
-          "start": 211.13999938964844
-        },
-        {
-          "end": 212.4199981689453,
-          "word": "between",
-          "start": 211.8000030517578
-        },
-        {
-          "end": 213.3000030517578,
-          "word": "me",
-          "start": 212.4199981689453
-        },
-        {
-          "end": 213.3000030517578,
-          "word": "and",
-          "start": 213.3000030517578
-        },
-        {
-          "end": 214.0399932861328,
-          "word": "you",
-          "start": 213.3000030517578
-        },
-        {
-          "end": 215.17999267578125,
-          "word": "They",
-          "start": 214.17999267578125
-        },
-        {
-          "end": 215.5800018310547,
-          "word": "haunt",
-          "start": 215.17999267578125
-        },
-        {
-          "end": 216.4199981689453,
-          "word": "us",
-          "start": 215.5800018310547
-        },
-        {
-          "end": 216.6199951171875,
-          "word": "daily",
-          "start": 216.4199981689453
-        },
-        {
-          "end": 217.1199951171875,
-          "word": "and",
-          "start": 216.6199951171875
-        },
-        {
-          "end": 217.94000244140625,
-          "word": "we",
-          "start": 217.1199951171875
-        },
-        {
-          "end": 218,
-          "word": "can't",
-          "start": 217.94000244140625
-        },
-        {
-          "end": 218.44000244140625,
-          "word": "get",
-          "start": 218
-        },
-        {
-          "end": 218.8000030517578,
-          "word": "past",
-          "start": 218.44000244140625
-        },
-        {
-          "end": 219.44000244140625,
-          "word": "them",
-          "start": 218.8000030517578
-        },
-        {
-          "end": 219.67999267578125,
-          "word": "What",
-          "start": 219.44000244140625
-        },
-        {
-          "end": 219.8800048828125,
-          "word": "will",
-          "start": 219.67999267578125
-        },
-        {
-          "end": 220.3000030517578,
-          "word": "these",
-          "start": 219.8800048828125
-        },
-        {
-          "end": 221,
-          "word": "lights",
-          "start": 220.3000030517578
-        },
-        {
-          "end": 221.75999450683594,
-          "word": "of",
-          "start": 221
-        },
-        {
-          "end": 222.3000030517578,
-          "word": "the",
-          "start": 221.75999450683594
-        },
-        {
-          "end": 222.75999450683594,
-          "word": "night",
-          "start": 222.3000030517578
-        },
-        {
-          "end": 223.52000427246094,
-          "word": "that",
-          "start": 222.75999450683594
-        },
-        {
-          "end": 223.89999389648438,
-          "word": "are",
-          "start": 223.52000427246094
-        },
-        {
-          "end": 224.39999389648438,
-          "word": "broken",
-          "start": 223.89999389648438
-        },
-        {
-          "end": 225.44000244140625,
-          "word": "between",
-          "start": 224.39999389648438
-        },
-        {
-          "end": 226.02000427246094,
-          "word": "me",
-          "start": 225.44000244140625
-        },
-        {
-          "end": 226.1999969482422,
-          "word": "and",
-          "start": 226.02000427246094
-        },
-        {
-          "end": 226.5399932861328,
-          "word": "you",
-          "start": 226.1999969482422
-        },
-        {
-          "end": 227.67999267578125,
-          "word": "You",
-          "start": 226.5399932861328
-        },
-        {
-          "end": 228.27999877929688,
-          "word": "keep",
-          "start": 227.67999267578125
-        },
-        {
-          "end": 228.74000549316406,
-          "word": "me",
-          "start": 228.27999877929688
-        },
-        {
-          "end": 229.32000732421875,
-          "word": "lower",
-          "start": 228.74000549316406
-        },
-        {
-          "end": 229.94000244140625,
-          "word": "than",
-          "start": 229.32000732421875
-        },
-        {
-          "end": 230.83999633789062,
-          "word": "I",
-          "start": 229.94000244140625
-        },
-        {
-          "end": 230.83999633789062,
-          "word": "ever",
-          "start": 230.83999633789062
-        },
-        {
-          "end": 231.05999755859375,
-          "word": "knew",
-          "start": 230.83999633789062
-        },
-        {
-          "end": 231.5,
-          "word": "you",
-          "start": 231.05999755859375
-        },
-        {
-          "end": 231.9600067138672,
-          "word": "could",
-          "start": 231.5
-        },
-        {
-          "end": 232.6999969482422,
-          "word": "All",
-          "start": 231.9600067138672
-        },
-        {
-          "end": 233.10000610351562,
-          "word": "these",
-          "start": 232.6999969482422
-        },
-        {
-          "end": 233.83999633789062,
-          "word": "nights",
-          "start": 233.10000610351562
-        },
-        {
-          "end": 234.5800018310547,
-          "word": "all",
-          "start": 233.9600067138672
-        },
-        {
-          "end": 235.05999755859375,
-          "word": "these",
-          "start": 234.5800018310547
-        },
-        {
-          "end": 235.82000732421875,
-          "word": "dreams",
-          "start": 235.05999755859375
-        },
-        {
-          "end": 236.3800048828125,
-          "word": "that",
-          "start": 235.82000732421875
-        },
-        {
-          "end": 236.72000122070312,
-          "word": "are",
-          "start": 236.3800048828125
-        },
-        {
-          "end": 237.27999877929688,
-          "word": "shattered",
-          "start": 236.72000122070312
-        },
-        {
-          "end": 238.0800018310547,
-          "word": "between",
-          "start": 237.27999877929688
-        },
-        {
-          "end": 238.8800048828125,
-          "word": "me",
-          "start": 238.0800018310547
-        },
-        {
-          "end": 238.8800048828125,
-          "word": "and",
-          "start": 238.8800048828125
-        },
-        {
-          "end": 239.5399932861328,
-          "word": "you",
-          "start": 238.8800048828125
-        },
-        {
-          "end": 240.77999877929688,
-          "word": "You",
-          "start": 239.67999267578125
-        },
-        {
-          "end": 241.0800018310547,
-          "word": "put",
-          "start": 240.77999877929688
-        },
-        {
-          "end": 241.5800018310547,
+          "end": 172.24000549316406,
           "word": "my",
-          "start": 241.0800018310547
+          "start": 171.67999267578125
         },
         {
-          "end": 242.02000427246094,
-          "word": "heart",
-          "start": 241.5800018310547
+          "end": 173.3000030517578,
+          "word": "only",
+          "start": 172.24000549316406
         },
         {
-          "end": 242.3800048828125,
-          "word": "in",
-          "start": 242.02000427246094
+          "end": 173.9199981689453,
+          "word": "thoughts",
+          "start": 173.3000030517578
         },
         {
-          "end": 242.82000732421875,
-          "word": "the",
-          "start": 242.3800048828125
+          "end": 174.16000366210938,
+          "word": "Just",
+          "start": 173.9199981689453
         },
         {
-          "end": 243.17999267578125,
-          "word": "ground",
-          "start": 242.82000732421875
-        },
-        {
-          "end": 243.5399932861328,
-          "word": "and",
-          "start": 243.17999267578125
-        },
-        {
-          "end": 244,
-          "word": "I",
-          "start": 243.5399932861328
-        },
-        {
-          "end": 244.3000030517578,
+          "end": 174.60000610351562,
           "word": "know",
-          "start": 244
+          "start": 174.16000366210938
         },
         {
-          "end": 245.32000732421875,
-          "word": "you'd",
-          "start": 244.3000030517578
-        },
-        {
-          "end": 245.32000732421875,
-          "word": "never",
-          "start": 245.32000732421875
-        },
-        {
-          "end": 246,
-          "word": "look",
-          "start": 245.32000732421875
-        },
-        {
-          "end": 246.44000244140625,
-          "word": "back",
-          "start": 246
-        },
-        {
-          "end": 247.05999755859375,
-          "word": "Yeah",
-          "start": 246.44000244140625
-        },
-        {
-          "end": 247.55999755859375,
-          "word": "you",
-          "start": 247.05999755859375
-        },
-        {
-          "end": 248.25999450683594,
-          "word": "took",
-          "start": 247.55999755859375
-        },
-        {
-          "end": 249.05999755859375,
-          "word": "my",
-          "start": 248.25999450683594
-        },
-        {
-          "end": 249.83999633789062,
-          "word": "soul",
-          "start": 249.05999755859375
-        },
-        {
-          "end": 250.3800048828125,
-          "word": "and",
-          "start": 249.83999633789062
-        },
-        {
-          "end": 250.67999267578125,
-          "word": "you",
-          "start": 250.3800048828125
-        },
-        {
-          "end": 251.44000244140625,
-          "word": "took",
-          "start": 250.67999267578125
-        },
-        {
-          "end": 251.8800048828125,
-          "word": "it",
-          "start": 251.44000244140625
-        },
-        {
-          "end": 252.02000427246094,
-          "word": "all",
-          "start": 251.8800048828125
-        },
-        {
-          "end": 252.67999267578125,
-          "word": "away",
-          "start": 252.02000427246094
-        },
-        {
-          "end": 253.52000427246094,
-          "word": "So",
-          "start": 252.67999267578125
-        },
-        {
-          "end": 253.83999633789062,
-          "word": "I'd",
-          "start": 253.52000427246094
-        },
-        {
-          "end": 254.02000427246094,
-          "word": "give",
-          "start": 253.83999633789062
-        },
-        {
-          "end": 254.3000030517578,
-          "word": "you",
-          "start": 254.02000427246094
-        },
-        {
-          "end": 255.1199951171875,
-          "word": "everything",
-          "start": 254.3000030517578
-        },
-        {
-          "end": 255.47999572753906,
-          "word": "now",
-          "start": 255.25999450683594
-        },
-        {
-          "end": 255.8000030517578,
-          "word": "I",
-          "start": 255.47999572753906
-        },
-        {
-          "end": 256.20001220703125,
-          "word": "would",
-          "start": 255.8000030517578
-        },
-        {
-          "end": 256.760009765625,
-          "word": "call",
-          "start": 256.20001220703125
-        },
-        {
-          "end": 257.29998779296875,
+          "end": 174.94000244140625,
           "word": "that",
-          "start": 256.760009765625
+          "start": 174.60000610351562
         },
         {
-          "end": 258.8999938964844,
-          "word": "low",
-          "start": 257.29998779296875
-        },
-        {
-          "end": 261.5,
-          "word": "Very",
-          "start": 260.67999267578125
-        },
-        {
-          "end": 262.32000732421875,
-          "word": "low",
-          "start": 261.5
-        },
-        {
-          "end": 264.67999267578125,
-          "word": "Fucking",
-          "start": 263.8599853515625
-        },
-        {
-          "end": 265.1000061035156,
-          "word": "bitch",
-          "start": 264.67999267578125
-        },
-        {
-          "end": 265.4800109863281,
+          "end": 175.27999877929688,
           "word": "I",
-          "start": 265.17999267578125
+          "start": 174.94000244140625
         },
         {
-          "end": 265.739990234375,
-          "word": "was",
-          "start": 265.4800109863281
+          "end": 175.52000427246094,
+          "word": "am",
+          "start": 175.27999877929688
         },
         {
-          "end": 266.8800048828125,
-          "word": "low",
-          "start": 265.739990234375
+          "end": 176.13999938964844,
+          "word": "coming",
+          "start": 175.52000427246094
+        },
+        {
+          "end": 176.9600067138672,
+          "word": "in",
+          "start": 176.13999938964844
+        },
+        {
+          "end": 177.52000427246094,
+          "word": "time",
+          "start": 176.9600067138672
+        },
+        {
+          "end": 178.8000030517578,
+          "word": "Say",
+          "start": 178
+        },
+        {
+          "end": 179.13999938964844,
+          "word": "another",
+          "start": 178.8000030517578
+        },
+        {
+          "end": 179.9199981689453,
+          "word": "look",
+          "start": 179.13999938964844
+        },
+        {
+          "end": 181.25999450683594,
+          "word": "To",
+          "start": 180.4600067138672
+        },
+        {
+          "end": 181.63999938964844,
+          "word": "write",
+          "start": 181.25999450683594
+        },
+        {
+          "end": 182.0399932861328,
+          "word": "another",
+          "start": 181.63999938964844
+        },
+        {
+          "end": 182.75999450683594,
+          "word": "book",
+          "start": 182.0399932861328
+        },
+        {
+          "end": 184.10000610351562,
+          "word": "Who",
+          "start": 183.3000030517578
+        },
+        {
+          "end": 184.17999267578125,
+          "word": "you",
+          "start": 184.10000610351562
+        },
+        {
+          "end": 184.60000610351562,
+          "word": "wanna",
+          "start": 184.17999267578125
+        },
+        {
+          "end": 184.9199981689453,
+          "word": "see",
+          "start": 184.60000610351562
+        },
+        {
+          "end": 185.13999938964844,
+          "word": "on",
+          "start": 184.9199981689453
+        },
+        {
+          "end": 185.67999267578125,
+          "word": "the",
+          "start": 185.13999938964844
+        },
+        {
+          "end": 185.77999877929688,
+          "word": "hook",
+          "start": 185.67999267578125
+        },
+        {
+          "end": 186.13999938964844,
+          "word": "Baby",
+          "start": 185.77999877929688
+        },
+        {
+          "end": 186.3000030517578,
+          "word": "with",
+          "start": 186.24000549316406
+        },
+        {
+          "end": 186.60000610351562,
+          "word": "my",
+          "start": 186.3000030517578
+        },
+        {
+          "end": 186.83999633789062,
+          "word": "dreams",
+          "start": 186.60000610351562
+        },
+        {
+          "end": 187.17999267578125,
+          "word": "at",
+          "start": 186.83999633789062
+        },
+        {
+          "end": 187.36000061035156,
+          "word": "night",
+          "start": 187.17999267578125
+        },
+        {
+          "end": 187.6999969482422,
+          "word": "You",
+          "start": 187.36000061035156
+        },
+        {
+          "end": 187.89999389648438,
+          "word": "know",
+          "start": 187.6999969482422
+        },
+        {
+          "end": 188.6199951171875,
+          "word": "I",
+          "start": 187.89999389648438
+        },
+        {
+          "end": 188.67999267578125,
+          "word": "rock",
+          "start": 188.6199951171875
+        },
+        {
+          "end": 189.0399932861328,
+          "word": "this",
+          "start": 188.67999267578125
+        },
+        {
+          "end": 189.47999572753906,
+          "word": "shit",
+          "start": 189.0399932861328
+        },
+        {
+          "end": 190.83999633789062,
+          "word": "all",
+          "start": 189.47999572753906
+        },
+        {
+          "end": 191.24000549316406,
+          "word": "right",
+          "start": 190.83999633789062
+        },
+        {
+          "end": 193.6999969482422,
+          "word": "No",
+          "start": 192.89999389648438
+        },
+        {
+          "end": 194.44000244140625,
+          "word": "fighting",
+          "start": 193.6999969482422
+        },
+        {
+          "end": 195.16000366210938,
+          "word": "fussing",
+          "start": 194.8800048828125
+        },
+        {
+          "end": 195.5,
+          "word": "fuck",
+          "start": 195.16000366210938
+        },
+        {
+          "end": 195.74000549316406,
+          "word": "the",
+          "start": 195.5
+        },
+        {
+          "end": 196.24000549316406,
+          "word": "fighting",
+          "start": 195.74000549316406
+        },
+        {
+          "end": 196.9600067138672,
+          "word": "yeah",
+          "start": 196.24000549316406
+        },
+        {
+          "end": 198.36000061035156,
+          "word": "You",
+          "start": 196.9600067138672
+        },
+        {
+          "end": 198.89999389648438,
+          "word": "know",
+          "start": 198.36000061035156
         }
       ],
       "lyricsAnalysis": {
         "mood": [
-          "melancholic",
-          "frustrated",
-          "reflective"
+          "hopeful",
+          "introspective",
+          "conflicted"
         ],
         "themes": [
-          "heartbreak",
-          "personal struggle",
-          "trust issues",
-          "compromise"
+          "dreams",
+          "personal growth",
+          "relationships",
+          "self-discovery"
         ],
         "emotion": [
-          "sadness",
-          "disappointment",
           "longing",
-          "frustration"
+          "determination",
+          "frustration",
+          "love"
         ],
-        "sentiment": "negative",
-        "sentimentScore": -0.7,
-        "energyFromLyrics": 0.4,
-        "valenceFromLyrics": 0.2
+        "sentiment": "mixed",
+        "sentimentScore": 0.2
       }
     },
     {
@@ -13516,7 +13364,7 @@
         "Ballad",
         "Ambient"
       ],
-      "lyrics": "Are we just friends or are we enemies, are we friends or are we turning into one, it's so obvious this can happen just for a minute. To be wanted men are meant for brush the neat and for abstract thoughts that you fake it in, know it's no commune and I thought you would hit my belief. Purposefully. Come and show me how to be friends and not enemies. Are we friends or are we friends turning into enemies enemies, enemies with abilities enemies tell me what you see, capitalists you ride, capitalists you try, I'm a local guy and I'm a motherfuckin' liar. Enemies, enemies with abilities, enemies with abilities, enemies with abilities, give me something of yours or mine, even now you know someone's a liar. Are we friends or are we friends turning into enemies enemies, enemies with abilities enemies, enemies with abilities, enemies with abilities, enemies with abilities, enemies with abilities, Notены, feminitems, not buildin' by and y'all. Enemies, enemies with abilities, enemies with abilities, what sorta shit y'all talkin' about for these, for these, law for these, law for these, law for these enemies what is your fuckin' name name of this. You get it thoe, got it thoe, you got the MATRIX this hell speculate, slow, shot down and shot up and killed and you know it's over.",
+      "lyrics": "Are we just friends or are we enemies, are we friends or are we turning into one, it's so obvious this can happen just for a minute. To be wanted men are meant for brush the neat and for abstract thoughts that you fake it in, know it's no commune and I thought you would hit my belief. Purposefully. Come and show me how to be friends and not enemies. Are we friends or are we friends turning into enemies enemies, enemies with abilities enemies tell me what you see, capitalists you ride, capitalists you try, I'm a local guy and I'm a motherfuckin' liar. Enemies, enemies with abilities, enemies with abilities, enemies with abilities, give me something of yours or mine, even now you know someone's a liar. Are we friends or are we friends turning into enemies enemies, enemies with abilities enemies, enemies with abilities, enemies with abilities, enemies with abilities, enemies with abilities, Not\u0435\u043d\u044b, feminitems, not buildin' by and y'all. Enemies, enemies with abilities, enemies with abilities, what sorta shit y'all talkin' about for these, for these, law for these, law for these, law for these enemies what is your fuckin' name name of this. You get it thoe, got it thoe, you got the MATRIX this hell speculate, slow, shot down and shot up and killed and you know it's over.",
       "lyricsSegments": [
         {
           "end": 29.899999618530273,
@@ -13580,7 +13428,7 @@
         },
         {
           "end": 123.55999755859375,
-          "text": "Notены, feminitems, not buildin' by and y'all.",
+          "text": "Not\u0435\u043d\u044b, feminitems, not buildin' by and y'all.",
           "start": 117.05999755859375
         },
         {
@@ -14392,7 +14240,7 @@
         },
         {
           "end": 117.5199966430664,
-          "word": "Notены",
+          "word": "Not\u0435\u043d\u044b",
           "start": 117.05999755859375
         },
         {
@@ -26199,16 +26047,16 @@
         "Ballad",
         "Ambient"
       ],
-      "lyrics": "♪ ♪  ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪  ♪ ♪ ♪ ♪  ♪ ♪ ♪ ♪ ♪ ♪   ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪ ♪  ♪ ♪ ♪ ",
+      "lyrics": "\u266a \u266a  \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a  \u266a \u266a \u266a \u266a  \u266a \u266a \u266a \u266a \u266a \u266a   \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a \u266a  \u266a \u266a \u266a ",
       "lyricsSegments": [
         {
           "end": 4.559999942779541,
-          "text": "♪",
+          "text": "\u266a",
           "start": 3.1600000858306885
         },
         {
           "end": 10,
-          "text": "♪",
+          "text": "\u266a",
           "start": 9.119999885559082
         },
         {
@@ -26218,82 +26066,82 @@
         },
         {
           "end": 17.040000915527344,
-          "text": "♪",
+          "text": "\u266a",
           "start": 15.640000343322754
         },
         {
           "end": 19.760000228881836,
-          "text": "♪",
+          "text": "\u266a",
           "start": 18.360000610351562
         },
         {
           "end": 32.36000061035156,
-          "text": "♪",
+          "text": "\u266a",
           "start": 30.959999084472656
         },
         {
           "end": 33.08000183105469,
-          "text": "♪",
+          "text": "\u266a",
           "start": 32.36000061035156
         },
         {
           "end": 33.13999938964844,
-          "text": "♪",
+          "text": "\u266a",
           "start": 33.08000183105469
         },
         {
           "end": 37.119998931884766,
-          "text": "♪",
+          "text": "\u266a",
           "start": 35.720001220703125
         },
         {
           "end": 37.540000915527344,
-          "text": "♪",
+          "text": "\u266a",
           "start": 37.119998931884766
         },
         {
           "end": 46.02000045776367,
-          "text": "♪",
+          "text": "\u266a",
           "start": 44.619998931884766
         },
         {
           "end": 50.86000061035156,
-          "text": "♪",
+          "text": "\u266a",
           "start": 49.459999084472656
         },
         {
           "end": 51.099998474121094,
-          "text": "♪",
+          "text": "\u266a",
           "start": 50.86000061035156
         },
         {
           "end": 54.91999816894531,
-          "text": "♪",
+          "text": "\u266a",
           "start": 53.52000045776367
         },
         {
           "end": 54.939998626708984,
-          "text": "♪",
+          "text": "\u266a",
           "start": 54.91999816894531
         },
         {
           "end": 61.720001220703125,
-          "text": "♪",
+          "text": "\u266a",
           "start": 60.31999969482422
         },
         {
           "end": 69.72000122070312,
-          "text": "♪",
+          "text": "\u266a",
           "start": 68.31999969482422
         },
         {
           "end": 72.5,
-          "text": "♪",
+          "text": "\u266a",
           "start": 71.0999984741211
         },
         {
           "end": 72.9000015258789,
-          "text": "♪",
+          "text": "\u266a",
           "start": 72.5
         },
         {
@@ -26303,22 +26151,22 @@
         },
         {
           "end": 76.69999694824219,
-          "text": "♪",
+          "text": "\u266a",
           "start": 75.30000305175781
         },
         {
           "end": 86.19999694824219,
-          "text": "♪",
+          "text": "\u266a",
           "start": 84.80000305175781
         },
         {
           "end": 90.54000091552734,
-          "text": "♪",
+          "text": "\u266a",
           "start": 89.13999938964844
         },
         {
           "end": 91.0999984741211,
-          "text": "♪",
+          "text": "\u266a",
           "start": 90.54000091552734
         },
         {
@@ -26328,32 +26176,32 @@
         },
         {
           "end": 103.83999633789062,
-          "text": "♪",
+          "text": "\u266a",
           "start": 102.44000244140625
         },
         {
           "end": 106.08000183105469,
-          "text": "♪",
+          "text": "\u266a",
           "start": 104.68000030517578
         },
         {
           "end": 107.63999938964844,
-          "text": "♪",
+          "text": "\u266a",
           "start": 106.23999786376953
         },
         {
           "end": 111.12000274658203,
-          "text": "♪",
+          "text": "\u266a",
           "start": 110.37999725341797
         },
         {
           "end": 111.80000305175781,
-          "text": "♪",
+          "text": "\u266a",
           "start": 111.77999877929688
         },
         {
           "end": 126.30000305175781,
-          "text": "♪",
+          "text": "\u266a",
           "start": 124.9000015258789
         },
         {
@@ -26368,57 +26216,57 @@
         },
         {
           "end": 130.44000244140625,
-          "text": "♪",
+          "text": "\u266a",
           "start": 129.0399932861328
         },
         {
           "end": 130.4600067138672,
-          "text": "♪",
+          "text": "\u266a",
           "start": 130.44000244140625
         },
         {
           "end": 138.67999267578125,
-          "text": "♪",
+          "text": "\u266a",
           "start": 137.27999877929688
         },
         {
           "end": 144.16000366210938,
-          "text": "♪",
+          "text": "\u266a",
           "start": 142.75999450683594
         },
         {
           "end": 145.4600067138672,
-          "text": "♪",
+          "text": "\u266a",
           "start": 144.8800048828125
         },
         {
           "end": 150.25999450683594,
-          "text": "♪",
+          "text": "\u266a",
           "start": 148.86000061035156
         },
         {
           "end": 150.8800048828125,
-          "text": "♪",
+          "text": "\u266a",
           "start": 150.25999450683594
         },
         {
           "end": 155,
-          "text": "♪",
+          "text": "\u266a",
           "start": 153.60000610351562
         },
         {
           "end": 164,
-          "text": "♪",
+          "text": "\u266a",
           "start": 162.60000610351562
         },
         {
           "end": 168.5800018310547,
-          "text": "♪",
+          "text": "\u266a",
           "start": 167.17999267578125
         },
         {
           "end": 170.27999877929688,
-          "text": "♪",
+          "text": "\u266a",
           "start": 168.8800048828125
         },
         {
@@ -26428,17 +26276,17 @@
         },
         {
           "end": 192.52000427246094,
-          "text": "♪",
+          "text": "\u266a",
           "start": 192.36000061035156
         },
         {
           "end": 192.60000610351562,
-          "text": "♪",
+          "text": "\u266a",
           "start": 192.52000427246094
         },
         {
           "end": 192.6199951171875,
-          "text": "♪",
+          "text": "\u266a",
           "start": 192.60000610351562
         },
         {
@@ -26450,212 +26298,212 @@
       "lyricsWords": [
         {
           "end": 4.559999942779541,
-          "word": "♪",
+          "word": "\u266a",
           "start": 3.1600000858306885
         },
         {
           "end": 10,
-          "word": "♪",
+          "word": "\u266a",
           "start": 9.119999885559082
         },
         {
           "end": 17.040000915527344,
-          "word": "♪",
+          "word": "\u266a",
           "start": 15.640000343322754
         },
         {
           "end": 19.760000228881836,
-          "word": "♪",
+          "word": "\u266a",
           "start": 18.360000610351562
         },
         {
           "end": 32.36000061035156,
-          "word": "♪",
+          "word": "\u266a",
           "start": 30.959999084472656
         },
         {
           "end": 33.08000183105469,
-          "word": "♪",
+          "word": "\u266a",
           "start": 32.36000061035156
         },
         {
           "end": 33.13999938964844,
-          "word": "♪",
+          "word": "\u266a",
           "start": 33.08000183105469
         },
         {
           "end": 37.119998931884766,
-          "word": "♪",
+          "word": "\u266a",
           "start": 35.720001220703125
         },
         {
           "end": 37.540000915527344,
-          "word": "♪",
+          "word": "\u266a",
           "start": 37.119998931884766
         },
         {
           "end": 46.02000045776367,
-          "word": "♪",
+          "word": "\u266a",
           "start": 44.619998931884766
         },
         {
           "end": 50.86000061035156,
-          "word": "♪",
+          "word": "\u266a",
           "start": 49.459999084472656
         },
         {
           "end": 51.099998474121094,
-          "word": "♪",
+          "word": "\u266a",
           "start": 50.86000061035156
         },
         {
           "end": 54.91999816894531,
-          "word": "♪",
+          "word": "\u266a",
           "start": 53.52000045776367
         },
         {
           "end": 54.939998626708984,
-          "word": "♪",
+          "word": "\u266a",
           "start": 54.91999816894531
         },
         {
           "end": 61.720001220703125,
-          "word": "♪",
+          "word": "\u266a",
           "start": 60.31999969482422
         },
         {
           "end": 69.72000122070312,
-          "word": "♪",
+          "word": "\u266a",
           "start": 68.31999969482422
         },
         {
           "end": 72.5,
-          "word": "♪",
+          "word": "\u266a",
           "start": 71.0999984741211
         },
         {
           "end": 72.9000015258789,
-          "word": "♪",
+          "word": "\u266a",
           "start": 72.5
         },
         {
           "end": 76.69999694824219,
-          "word": "♪",
+          "word": "\u266a",
           "start": 75.30000305175781
         },
         {
           "end": 86.19999694824219,
-          "word": "♪",
+          "word": "\u266a",
           "start": 84.80000305175781
         },
         {
           "end": 90.54000091552734,
-          "word": "♪",
+          "word": "\u266a",
           "start": 89.13999938964844
         },
         {
           "end": 91.0999984741211,
-          "word": "♪",
+          "word": "\u266a",
           "start": 90.54000091552734
         },
         {
           "end": 103.83999633789062,
-          "word": "♪",
+          "word": "\u266a",
           "start": 102.44000244140625
         },
         {
           "end": 106.08000183105469,
-          "word": "♪",
+          "word": "\u266a",
           "start": 104.68000030517578
         },
         {
           "end": 107.63999938964844,
-          "word": "♪",
+          "word": "\u266a",
           "start": 106.23999786376953
         },
         {
           "end": 111.12000274658203,
-          "word": "♪",
+          "word": "\u266a",
           "start": 110.37999725341797
         },
         {
           "end": 111.80000305175781,
-          "word": "♪",
+          "word": "\u266a",
           "start": 111.77999877929688
         },
         {
           "end": 126.30000305175781,
-          "word": "♪",
+          "word": "\u266a",
           "start": 124.9000015258789
         },
         {
           "end": 130.44000244140625,
-          "word": "♪",
+          "word": "\u266a",
           "start": 129.0399932861328
         },
         {
           "end": 130.4600067138672,
-          "word": "♪",
+          "word": "\u266a",
           "start": 130.44000244140625
         },
         {
           "end": 138.67999267578125,
-          "word": "♪",
+          "word": "\u266a",
           "start": 137.27999877929688
         },
         {
           "end": 144.16000366210938,
-          "word": "♪",
+          "word": "\u266a",
           "start": 142.75999450683594
         },
         {
           "end": 145.5800018310547,
-          "word": "♪",
+          "word": "\u266a",
           "start": 144.8800048828125
         },
         {
           "end": 150.25999450683594,
-          "word": "♪",
+          "word": "\u266a",
           "start": 148.86000061035156
         },
         {
           "end": 150.8800048828125,
-          "word": "♪",
+          "word": "\u266a",
           "start": 150.25999450683594
         },
         {
           "end": 155,
-          "word": "♪",
+          "word": "\u266a",
           "start": 153.60000610351562
         },
         {
           "end": 164,
-          "word": "♪",
+          "word": "\u266a",
           "start": 162.60000610351562
         },
         {
           "end": 168.5800018310547,
-          "word": "♪",
+          "word": "\u266a",
           "start": 167.17999267578125
         },
         {
           "end": 170.27999877929688,
-          "word": "♪",
+          "word": "\u266a",
           "start": 168.8800048828125
         },
         {
           "end": 192.52000427246094,
-          "word": "♪",
+          "word": "\u266a",
           "start": 192.36000061035156
         },
         {
           "end": 192.60000610351562,
-          "word": "♪",
+          "word": "\u266a",
           "start": 192.52000427246094
         },
         {
           "end": 192.6199951171875,
-          "word": "♪",
+          "word": "\u266a",
           "start": 192.60000610351562
         }
       ],
@@ -67725,8 +67573,8 @@
   ],
   "stats": {
     "totalReleases": 365,
-    "lightTracks": 194,
-    "darkTracks": 171,
+    "lightTracks": 195,
+    "darkTracks": 170,
     "totalListens": 0,
     "lastUpdated": "2025-12-27T04:56:13.785Z"
   },
@@ -67805,7 +67653,7 @@
       "dayEnd": 31,
       "theme": "New Beginnings",
       "arc": "LIGHT",
-      "emoji": "🌅",
+      "emoji": "\ud83c\udf05",
       "description": "Fresh starts, hope, and the excitement of a new journey"
     },
     {
@@ -67815,7 +67663,7 @@
       "dayEnd": 59,
       "theme": "Love & Connection",
       "arc": "LIGHT",
-      "emoji": "💕",
+      "emoji": "\ud83d\udc95",
       "description": "Bonds, relationships, and the warmth of human connection"
     },
     {
@@ -67825,7 +67673,7 @@
       "dayEnd": 90,
       "theme": "Awakening & Growth",
       "arc": "LIGHT",
-      "emoji": "🌱",
+      "emoji": "\ud83c\udf31",
       "description": "Personal evolution, learning, and stepping into potential"
     },
     {
@@ -67835,7 +67683,7 @@
       "dayEnd": 120,
       "theme": "Reflection & Nostalgia",
       "arc": "MIXED",
-      "emoji": "🍂",
+      "emoji": "\ud83c\udf42",
       "description": "Looking back, bittersweet memories, and emotional depth"
     },
     {
@@ -67845,7 +67693,7 @@
       "dayEnd": 151,
       "theme": "Strength & Resilience",
       "arc": "MIXED",
-      "emoji": "💪",
+      "emoji": "\ud83d\udcaa",
       "description": "Overcoming obstacles, inner power, and determination"
     },
     {
@@ -67855,7 +67703,7 @@
       "dayEnd": 181,
       "theme": "Transition & Truth",
       "arc": "DARK",
-      "emoji": "🌘",
+      "emoji": "\ud83c\udf18",
       "description": "Facing reality, uncomfortable truths, and necessary change"
     },
     {
@@ -67865,7 +67713,7 @@
       "dayEnd": 212,
       "theme": "Darkness & Shadow",
       "arc": "DARK",
-      "emoji": "🌑",
+      "emoji": "\ud83c\udf11",
       "description": "Confronting the void, exploring pain, and raw honesty"
     },
     {
@@ -67875,7 +67723,7 @@
       "dayEnd": 243,
       "theme": "Descent & Healing",
       "arc": "DARK",
-      "emoji": "🕯️",
+      "emoji": "\ud83d\udd6f\ufe0f",
       "description": "Rock bottom, processing trauma, and beginning to heal"
     },
     {
@@ -67885,7 +67733,7 @@
       "dayEnd": 273,
       "theme": "Acceptance & Release",
       "arc": "MIXED",
-      "emoji": "🌗",
+      "emoji": "\ud83c\udf17",
       "description": "Processing pain, letting go, finding peace with the past"
     },
     {
@@ -67895,7 +67743,7 @@
       "dayEnd": 304,
       "theme": "Rebirth & Renewal",
       "arc": "LIGHT",
-      "emoji": "🌓",
+      "emoji": "\ud83c\udf13",
       "description": "Rising from the ashes, transformation, new perspective"
     },
     {
@@ -67905,7 +67753,7 @@
       "dayEnd": 334,
       "theme": "Gratitude & Connection",
       "arc": "LIGHT",
-      "emoji": "🌔",
+      "emoji": "\ud83c\udf14",
       "description": "Appreciation, community, meaningful relationships"
     },
     {
@@ -67915,7 +67763,7 @@
       "dayEnd": 365,
       "theme": "Hope & Celebration",
       "arc": "LIGHT",
-      "emoji": "🌕",
+      "emoji": "\ud83c\udf15",
       "description": "Joy, triumph, looking forward, completing the cycle"
     }
   ]
