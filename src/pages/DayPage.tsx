@@ -20,6 +20,7 @@ import { KaraokeLyrics } from '../components/KaraokeLyrics';
 import { CoverImage } from '../components/GenerativeCover';
 import { Navigation } from '../components/Navigation';
 import { ThemeChanger } from '../components/ThemeChanger';
+import { ManifestoModal } from '../components/ManifestoModal';
 import { getCoverUrl } from '../services/releaseStorage';
 import type { Release } from '../types';
 
@@ -52,6 +53,7 @@ export function DayPage() {
   } = useAudioStore();
   
   const [release, setRelease] = useState<Release | null>(null);
+  const [showManifesto, setShowManifesto] = useState(false);
 
   const dayNum = parseInt(day || '1', 10);
   const hasPoetryData = release?.lyricsWords && release.lyricsWords.length > 0;
@@ -80,6 +82,13 @@ export function DayPage() {
       setRelease(found || null);
     }
   }, [data, dayNum]);
+
+  // Listen for manifesto modal event
+  useEffect(() => {
+    const handleOpenManifesto = () => setShowManifesto(true);
+    window.addEventListener('openManifesto', handleOpenManifesto);
+    return () => window.removeEventListener('openManifesto', handleOpenManifesto);
+  }, []);
 
   // Play this release via global player
   const handlePlay = useCallback(() => {
@@ -589,7 +598,7 @@ export function DayPage() {
           {/* Navigation footer */}
           <section className="py-12 px-6 md:px-12 lg:px-16 border-t border-void-lighter">
             <div className="w-full">
-              <div className="flex justify-between items-center">
+              <div className="flex flex-wrap justify-between items-center gap-4">
                 {prevDay ? (
                   <button
                     onClick={() => goToDay(prevDay.day)}
@@ -603,12 +612,20 @@ export function DayPage() {
                   </button>
                 ) : <div />}
 
-                <Link
-                  to="/"
-                  className="px-6 py-3 bg-void-gray/50 hover:bg-neon-red/20 transition-colors font-mono text-sm"
-                >
-                  ALL RELEASES
-                </Link>
+                <div className="flex items-center gap-3">
+                  <Link
+                    to="/"
+                    className="px-4 py-2 bg-void-gray/50 hover:bg-neon-red/20 transition-colors font-mono text-sm"
+                  >
+                    ALL RELEASES
+                  </Link>
+                  <button
+                    onClick={() => window.dispatchEvent(new CustomEvent('openManifesto'))}
+                    className="px-4 py-2 bg-void-gray/50 hover:bg-neon-yellow/20 transition-colors font-mono text-sm"
+                  >
+                    MANIFESTO
+                  </button>
+                </div>
 
                 {nextDay ? (
                   <button
@@ -627,6 +644,9 @@ export function DayPage() {
           </section>
         </>
       )}
+
+      {/* Manifesto Modal */}
+      <ManifestoModal isOpen={showManifesto} onClose={() => setShowManifesto(false)} />
     </div>
   );
 }

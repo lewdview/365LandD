@@ -185,7 +185,7 @@ function EmotionParticle({ index, primaryColor, accentColor }: { index: number; 
 }
 
 export function Hero() {
-  const { currentDay } = useStore();
+  const { data, currentDay } = useStore();
   const { currentTheme } = useThemeStore();
   const primaryColor = currentTheme.colors.primary;
   const accentColor = currentTheme.colors.accent;
@@ -393,6 +393,18 @@ export function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
             className="text-lg md:text-xl text-neon-red font-mono tracking-wider mt-4"
+            style={{
+              textShadow: `
+                -2px -2px 0 ${backgroundColor},
+                2px -2px 0 ${backgroundColor},
+                -2px 2px 0 ${backgroundColor},
+                2px 2px 0 ${backgroundColor},
+                -3px 0 0 ${backgroundColor},
+                3px 0 0 ${backgroundColor},
+                0 -3px 0 ${backgroundColor},
+                0 3px 0 ${backgroundColor}
+              `,
+            }}
           >
             Poetry in Motion
           </motion.p>
@@ -404,6 +416,18 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.9 }}
           className="text-lg md:text-xl text-light-cream/70 max-w-2xl mx-auto mb-12 font-light"
+          style={{
+            textShadow: `
+              -2px -2px 0 ${backgroundColor},
+              2px -2px 0 ${backgroundColor},
+              -2px 2px 0 ${backgroundColor},
+              2px 2px 0 ${backgroundColor},
+              -3px 0 0 ${backgroundColor},
+              3px 0 0 ${backgroundColor},
+              0 -3px 0 ${backgroundColor},
+              0 3px 0 ${backgroundColor}
+            `,
+          }}
         >
           One Take. One Moment. Preserved.
         </motion.p>
@@ -416,21 +440,21 @@ export function Hero() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <motion.a
-            href="#releases"
+            href={data?.releases?.[0] ? `/day/${data.releases[data.releases.length - 1]?.day || 1}` : '/day/1'}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 bg-neon-red-matte text-void-black font-bold text-lg uppercase tracking-wider matte-border-thick transition-all duration-300 hover:bg-neon-red hover:shadow-[0_0_30px_var(--color-neon-red)]"
           >
-            Explore Releases
+            Today's Entry
           </motion.a>
-          <motion.a
-            href="#about"
+          <motion.button
+            onClick={() => window.dispatchEvent(new CustomEvent('openManifesto'))}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 bg-transparent text-light-cream font-bold text-lg uppercase tracking-wider border-3 border-neon-yellow-matte transition-all duration-300 hover:bg-neon-yellow-matte hover:text-void-black"
           >
-            The Journey
-          </motion.a>
+            The Manifesto
+          </motion.button>
         </motion.div>
 
         {/* Decorative elements */}
