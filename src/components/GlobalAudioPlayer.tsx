@@ -12,7 +12,15 @@ export function GlobalAudioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const { data } = useStore();
   const { currentTheme } = useThemeStore();
-  const { primary, secondary } = currentTheme.colors;
+  const { primary, secondary, background } = currentTheme.colors;
+  
+  // Text shadow for visibility across themes
+  const textShadow = `
+    -1px -1px 0 ${background},
+    1px -1px 0 ${background},
+    -1px 1px 0 ${background},
+    1px 1px 0 ${background}
+  `;
   
   const {
     currentRelease,
@@ -188,12 +196,15 @@ export function GlobalAudioPlayer() {
                   >
                     <p 
                       className="font-bold text-sm md:text-base truncate"
-                      style={{ color: currentTheme.colors.text }}
+                      style={{ color: currentTheme.colors.text, textShadow }}
                     >
                       {currentRelease.title}
                     </p>
                   </Link>
-                  <p className="text-xs md:text-sm truncate" style={{ color: `${currentTheme.colors.text}80` }}>
+                  <p 
+                    className="text-xs md:text-sm truncate" 
+                    style={{ color: `${currentTheme.colors.text}99`, textShadow }}
+                  >
                     Day {currentRelease.day} • {formatTime(currentTime)} / {formatTime(duration)}
                   </p>
                 </div>
