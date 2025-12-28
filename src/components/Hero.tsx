@@ -185,7 +185,7 @@ function EmotionParticle({ index, primaryColor, accentColor }: { index: number; 
 }
 
 export function Hero() {
-  const { data, currentDay } = useStore();
+  const { currentDay } = useStore();
   const { currentTheme } = useThemeStore();
   const primaryColor = currentTheme.colors.primary;
   const accentColor = currentTheme.colors.accent;
