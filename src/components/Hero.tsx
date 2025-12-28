@@ -191,6 +191,22 @@ export function Hero() {
   const accentColor = currentTheme.colors.accent;
   const backgroundColor = currentTheme.colors.background;
 
+  // Responsive text shadow - smaller on mobile to prevent fragmentation
+  const getTextShadow = (size: 'sm' | 'md' | 'lg' = 'md') => {
+    const px = size === 'sm' ? 1 : size === 'md' ? 2 : 3;
+    const px2 = size === 'sm' ? 1 : size === 'md' ? 2 : 3;
+    return `
+      -${px}px -${px}px 0 ${backgroundColor},
+      ${px}px -${px}px 0 ${backgroundColor},
+      -${px}px ${px}px 0 ${backgroundColor},
+      ${px}px ${px}px 0 ${backgroundColor},
+      -${px2}px 0 0 ${backgroundColor},
+      ${px2}px 0 0 ${backgroundColor},
+      0 -${px2}px 0 ${backgroundColor},
+      0 ${px2}px 0 ${backgroundColor}
+    `;
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* 3D Background - contained within hero */}
@@ -297,18 +313,7 @@ export function Hero() {
         >
           <span 
             className="relative z-10"
-            style={{
-              textShadow: `
-                -3px -3px 0 ${backgroundColor},
-                3px -3px 0 ${backgroundColor},
-                -3px 3px 0 ${backgroundColor},
-                3px 3px 0 ${backgroundColor},
-                -4px 0 0 ${backgroundColor},
-                4px 0 0 ${backgroundColor},
-                0 -4px 0 ${backgroundColor},
-                0 4px 0 ${backgroundColor}
-              `,
-            }}
+            style={{ textShadow: getTextShadow('md') }}
           >
             <GlitchText 
               text="th3scr1b3" 
@@ -327,64 +332,20 @@ export function Hero() {
         >
           <h2 
             className="text-2xl md:text-4xl lg:text-5xl font-light text-light-cream"
-            style={{
-              textShadow: `
-                -2px -2px 0 ${backgroundColor},
-                2px -2px 0 ${backgroundColor},
-                -2px 2px 0 ${backgroundColor},
-                2px 2px 0 ${backgroundColor},
-                -3px 0 0 ${backgroundColor},
-                3px 0 0 ${backgroundColor},
-                0 -3px 0 ${backgroundColor},
-                0 3px 0 ${backgroundColor}
-              `,
-            }}
+            style={{ textShadow: getTextShadow('sm') }}
           >
             <span 
               className="text-glow-red font-bold"
-              style={{
-                textShadow: `
-                  -2px -2px 0 ${backgroundColor},
-                  2px -2px 0 ${backgroundColor},
-                  -2px 2px 0 ${backgroundColor},
-                  2px 2px 0 ${backgroundColor},
-                  -3px 0 0 ${backgroundColor},
-                  3px 0 0 ${backgroundColor},
-                  0 -3px 0 ${backgroundColor},
-                  0 3px 0 ${backgroundColor}
-                `,
-              }}
+              style={{ textShadow: getTextShadow('sm') }}
             >365</span> Days of{' '}
             <span 
               className="text-neon-yellow text-glow-yellow font-bold"
-              style={{
-                textShadow: `
-                  -2px -2px 0 ${backgroundColor},
-                  2px -2px 0 ${backgroundColor},
-                  -2px 2px 0 ${backgroundColor},
-                  2px 2px 0 ${backgroundColor},
-                  -3px 0 0 ${backgroundColor},
-                  3px 0 0 ${backgroundColor},
-                  0 -3px 0 ${backgroundColor},
-                  0 3px 0 ${backgroundColor}
-                `,
-              }}
+              style={{ textShadow: getTextShadow('sm') }}
             >Light</span>
             {' & '}
             <span 
               className="text-neon-red text-glow-red font-bold"
-              style={{
-                textShadow: `
-                  -2px -2px 0 ${backgroundColor},
-                  2px -2px 0 ${backgroundColor},
-                  -2px 2px 0 ${backgroundColor},
-                  2px 2px 0 ${backgroundColor},
-                  -3px 0 0 ${backgroundColor},
-                  3px 0 0 ${backgroundColor},
-                  0 -3px 0 ${backgroundColor},
-                  0 3px 0 ${backgroundColor}
-                `,
-              }}
+              style={{ textShadow: getTextShadow('sm') }}
             >Dark</span>
           </h2>
           {/* Subtitle */}
@@ -393,18 +354,7 @@ export function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
             className="text-lg md:text-xl text-neon-red font-mono tracking-wider mt-4"
-            style={{
-              textShadow: `
-                -2px -2px 0 ${backgroundColor},
-                2px -2px 0 ${backgroundColor},
-                -2px 2px 0 ${backgroundColor},
-                2px 2px 0 ${backgroundColor},
-                -3px 0 0 ${backgroundColor},
-                3px 0 0 ${backgroundColor},
-                0 -3px 0 ${backgroundColor},
-                0 3px 0 ${backgroundColor}
-              `,
-            }}
+            style={{ textShadow: getTextShadow('sm') }}
           >
             Poetry in Motion
           </motion.p>
@@ -416,18 +366,7 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.9 }}
           className="text-lg md:text-xl text-light-cream/70 max-w-2xl mx-auto mb-12 font-light"
-          style={{
-            textShadow: `
-              -2px -2px 0 ${backgroundColor},
-              2px -2px 0 ${backgroundColor},
-              -2px 2px 0 ${backgroundColor},
-              2px 2px 0 ${backgroundColor},
-              -3px 0 0 ${backgroundColor},
-              3px 0 0 ${backgroundColor},
-              0 -3px 0 ${backgroundColor},
-              0 3px 0 ${backgroundColor}
-            `,
-          }}
+          style={{ textShadow: getTextShadow('sm') }}
         >
           One Take. One Moment. Preserved.
         </motion.p>

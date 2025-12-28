@@ -61,11 +61,10 @@ export function getAudioUrl(day: number, title: string): string {
 
 /**
  * Get cover URL using day number and title (auto-detects month)
- * Uses local covers from /covers/ directory
+ * Uses releaseready bucket from Supabase
  */
 export function getCoverUrl(day: number, title: string): string {
-  const paddedDay = String(day).padStart(2, '0');
-  return `/covers/${paddedDay} - ${title}.jpg`;
+  return getReleaseCoverUrl(day, title, getMonthFromDay(day));
 }
 
 /**
