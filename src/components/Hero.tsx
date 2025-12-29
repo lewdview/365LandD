@@ -247,30 +247,77 @@ export function Hero() {
             {String(currentDay).padStart(3, '0')}
           </span>
           
-          {/* Sheen layer - uses text as clip mask */}
-          <motion.span
-            className="absolute inset-0 text-[30vw] md:text-[35vw] lg:text-[40vw] font-black leading-none"
-            style={{
-              backgroundImage: `linear-gradient(105deg, transparent 0%, transparent 30%, ${accentColor} 50%, transparent 70%, transparent 100%)`,
-              backgroundSize: '300% 100%',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-              opacity: 0.25,
-              willChange: 'background-position',
-            }}
-            animate={{
-              backgroundPosition: ['300% 0%', '-200% 0%'],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              repeatDelay: 4,
-              ease: 'easeInOut',
-            }}
-          >
-            {String(currentDay).padStart(3, '0')}
-          </motion.span>
+          {/* Sheen layer with glinting asterisk */}
+          <motion.div className="absolute inset-0">
+            {/* Sheen gradient */}
+            <motion.span
+              className="absolute inset-0 text-[30vw] md:text-[35vw] lg:text-[40vw] font-black leading-none"
+              style={{
+                backgroundImage: `linear-gradient(105deg, transparent 0%, transparent 30%, ${accentColor} 50%, transparent 70%, transparent 100%)`,
+                backgroundSize: '300% 100%',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+                opacity: 0.25,
+                willChange: 'background-position',
+              }}
+              animate={{
+                backgroundPosition: ['300% 0%', '-200% 0%'],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                repeatDelay: 4,
+                ease: (t) => {
+                  // Fast for first third, slow in middle third, fast for last third
+                  if (t < 0.33) {
+                    return t * 1.5; // Fast
+                  } else if (t < 0.66) {
+                    return 0.495 + (t - 0.33) * 0.3; // Slow
+                  } else {
+                    return 0.693 + (t - 0.66) * 1.5; // Fast
+                  }
+                },
+              }}
+            >
+              {String(currentDay).padStart(3, '0')}
+            </motion.span>
+            
+            {/* Glinting asterisk at trailing edge */}
+            <motion.span
+              className="absolute text-[30vw] md:text-[35vw] lg:text-[40vw] font-black leading-none pointer-events-none"
+              style={{
+                color: accentColor,
+                right: '5%',
+                top: '50%',
+                transform: 'translateY(-50%)',
+              }}
+              animate={{
+                left: ['300%', '-200%'],
+                opacity: [0, 0, 0, 0.9, 0.6, 0],
+                textShadow: [
+                  'none',
+                  'none',
+                  'none',
+                  `0 0 20px ${accentColor}, 0 0 40px ${accentColor}`,
+                  `0 0 10px ${accentColor}`,
+                  'none',
+                ],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                repeatDelay: 4,
+                ease: (t) => {
+                  if (t < 0.33) return t * 1.5;
+                  else if (t < 0.66) return 0.495 + (t - 0.33) * 0.3;
+                  else return 0.693 + (t - 0.66) * 1.5;
+                },
+              }}
+            >
+              *
+            </motion.span>
+          </motion.div>
         </motion.div>
       </div>
       
