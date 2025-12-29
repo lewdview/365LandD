@@ -251,15 +251,16 @@ export function Hero() {
           <motion.span
             className="absolute inset-0 text-[30vw] md:text-[35vw] lg:text-[40vw] font-black leading-none"
             style={{
-              backgroundImage: `linear-gradient(105deg, transparent 0%, transparent 40%, ${accentColor} 50%, transparent 60%, transparent 100%)`,
-              backgroundSize: '200% 100%',
+              backgroundImage: `linear-gradient(105deg, transparent 0%, transparent 30%, ${accentColor} 50%, transparent 70%, transparent 100%)`,
+              backgroundSize: '300% 100%',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
               color: 'transparent',
               opacity: 0.25,
+              willChange: 'background-position',
             }}
             animate={{
-              backgroundPosition: ['200% 0%', '-100% 0%'],
+              backgroundPosition: ['300% 0%', '-200% 0%'],
             }}
             transition={{
               duration: 3,
