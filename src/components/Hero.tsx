@@ -283,7 +283,7 @@ export function Hero() {
               {String(currentDay).padStart(3, '0')}
             </motion.span>
             
-            {/* Glinting asterisk at trailing edge */}
+            {/* Glinting day number at trailing edge */}
             <motion.span
               className="absolute text-[30vw] md:text-[35vw] lg:text-[40vw] font-black leading-none pointer-events-none"
               style={{
@@ -315,7 +315,7 @@ export function Hero() {
                 },
               }}
             >
-              *
+              {String(currentDay).padStart(3, '0')}
             </motion.span>
           </motion.div>
         </motion.div>
