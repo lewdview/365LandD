@@ -285,12 +285,11 @@ export function Hero() {
             
             {/* Glinting day number at trailing edge */}
             <motion.span
-              className="absolute text-[30vw] md:text-[35vw] lg:text-[40vw] font-black leading-none pointer-events-none"
+              className="absolute text-[7.5vw] md:text-[8.75vw] lg:text-[10vw] font-black leading-none pointer-events-none"
               style={{
                 color: accentColor,
                 right: '5%',
-                top: '50%',
-                transform: 'translateY(-50%)',
+                top: '10%',
               }}
               animate={{
                 left: ['300%', '-200%'],
