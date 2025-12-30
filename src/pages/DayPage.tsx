@@ -299,6 +299,37 @@ export function DayPage() {
               >
                 {release.description}
               </motion.p>
+              
+              {/* Mobile play button - permanent on small screens */}
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handlePlay}
+                className="md:hidden mt-8 relative"
+              >
+                <div 
+                  className="w-20 h-20 rounded-full flex items-center justify-center transition-all"
+                  style={{
+                    backgroundColor: isLight ? accent : primary,
+                    boxShadow: `0 0 30px ${isLight ? accent : primary}80`,
+                  }}
+                >
+                  {isLoading && isThisPlaying ? (
+                    <motion.div
+                      className="w-8 h-8 border-4 border-void-black border-t-transparent rounded-full"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                    />
+                  ) : isThisReleaseActive ? (
+                    <Pause className="w-10 h-10 text-void-black" />
+                  ) : (
+                    <Play className="w-10 h-10 text-void-black ml-1" />
+                  )}
+                </div>
+              </motion.button>
             </>
           ) : (
             <motion.div
