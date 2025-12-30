@@ -345,18 +345,18 @@ export function DayTracker() {
                         showColorVeil
                       />
                       
-                      {/* Overlay background - hidden by default, shown on hover */}
+                      {/* Overlay background - hidden on desktop (hover), visible on mobile */}
                       <motion.div 
-                        className="absolute inset-0 z-20 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                        className="absolute inset-0 z-20 bg-black/30 opacity-30 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200"
                         initial={{ opacity: 0 }}
                       />
                       
-                      {/* Play button */}
+                      {/* Play button - permanent on mobile, hover on desktop */}
                       <motion.button
                         whileHover={{ scale: 1.15 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={handlePlayClick}
-                        className="absolute inset-0 z-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto"
+                        className="absolute inset-0 z-30 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200"
                       >
                         <motion.div 
                           className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
