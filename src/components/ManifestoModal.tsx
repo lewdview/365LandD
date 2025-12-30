@@ -471,23 +471,39 @@ export function ManifestoModal({ isOpen, onClose }: ManifestoModalProps) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                 >
-                  <div 
-                    className="h-full p-8 relative overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
-                      borderLeft: `4px solid ${accent}`,
-                    }}
+                  <motion.a
+                    href="https://ko-fi.com" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.02, y: -5 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="block h-full"
                   >
-                    <div className="absolute top-4 right-4 text-8xl font-black opacity-10" style={{ color: accent }}>$</div>
-                    <span className="text-xs font-mono tracking-[0.3em] uppercase block mb-4" style={{ color: accent }}>Support</span>
-                    <h4 className="text-2xl font-bold text-light-cream mb-4">Fund the Journey</h4>
-                    <p className="text-light-cream/60 leading-relaxed mb-6">
-                      This project is self-funded. Every contribution helps cover production tools, distribution, and the time required to sustain a daily release for an entire year.
-                    </p>
-                    <p className="text-sm font-medium" style={{ color: accent }}>
-                      Donations are a vote for independent creation without compromise.
-                    </p>
-                  </div>
+                    <div 
+                      className="h-full p-8 relative overflow-hidden cursor-pointer transition-all hover:border-l-8"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
+                        borderLeft: `4px solid ${accent}`,
+                      }}
+                    >
+                      <div className="absolute top-4 right-4 text-8xl font-black opacity-10" style={{ color: accent }}>$</div>
+                      <span className="text-xs font-mono tracking-[0.3em] uppercase block mb-4" style={{ color: accent }}>Support</span>
+                      <h4 className="text-2xl font-bold text-light-cream mb-4">Fund the Journey</h4>
+                      <p className="text-light-cream/60 leading-relaxed mb-6">
+                        This project is self-funded. Every contribution helps cover production tools, distribution, and the time required to sustain a daily release for an entire year.
+                      </p>
+                      <p className="text-sm font-medium" style={{ color: accent }}>
+                        Donations are a vote for independent creation without compromise.
+                      </p>
+                      <motion.div 
+                        className="mt-6 inline-block px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider"
+                        style={{ background: `${accent}30`, color: accent }}
+                        whileHover={{ background: `${accent}50` }}
+                      >
+                        Donate Now →
+                      </motion.div>
+                    </div>
+                  </motion.a>
                 </motion.div>
                 
                 <motion.div 
@@ -497,31 +513,47 @@ export function ManifestoModal({ isOpen, onClose }: ManifestoModalProps) {
                   viewport={{ once: true }}
                   transition={{ delay: 0.2 }}
                 >
-                  <div 
-                    className="h-full p-8 relative overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
-                      borderLeft: `4px solid ${primary}`,
-                    }}
+                  <motion.a
+                    href="https://gumroad.com" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.02, y: -5 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="block h-full"
                   >
-                    <div className="absolute top-4 right-4 text-8xl font-black opacity-10" style={{ color: primary }}>∞</div>
-                    <span className="text-xs font-mono tracking-[0.3em] uppercase block mb-4" style={{ color: primary }}>Early Access</span>
-                    <h4 className="text-2xl font-bold text-light-cream mb-4">Unlock All 365</h4>
-                    <p className="text-light-cream/60 leading-relaxed mb-6">
-                      Get access to all poetic entries as they're completed—plus alternate versions, demos, unreleased cuts, and behind-the-scenes context.
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      {["Full Catalog", "Demos", "Unreleased", "BTS Content"].map((tag) => (
-                        <span 
-                          key={tag}
-                          className="px-3 py-1 text-xs font-mono uppercase"
-                          style={{ background: `${primary}30`, color: primary }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                    <div 
+                      className="h-full p-8 relative overflow-hidden cursor-pointer transition-all hover:border-l-8"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
+                        borderLeft: `4px solid ${primary}`,
+                      }}
+                    >
+                      <div className="absolute top-4 right-4 text-8xl font-black opacity-10" style={{ color: primary }}>∞</div>
+                      <span className="text-xs font-mono tracking-[0.3em] uppercase block mb-4" style={{ color: primary }}>Early Access</span>
+                      <h4 className="text-2xl font-bold text-light-cream mb-4">Unlock All 365</h4>
+                      <p className="text-light-cream/60 leading-relaxed mb-6">
+                        Get access to all poetic entries as they're completed—plus alternate versions, demos, unreleased cuts, and behind-the-scenes context.
+                      </p>
+                      <div className="flex flex-wrap gap-3">
+                        {["Full Catalog", "Demos", "Unreleased", "BTS Content"].map((tag) => (
+                          <span 
+                            key={tag}
+                            className="px-3 py-1 text-xs font-mono uppercase"
+                            style={{ background: `${primary}30`, color: primary }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <motion.div 
+                        className="mt-6 inline-block px-6 py-3 font-mono text-sm font-bold uppercase tracking-wider"
+                        style={{ background: `${primary}30`, color: primary }}
+                        whileHover={{ background: `${primary}50` }}
+                      >
+                        Unlock Access →
+                      </motion.div>
                     </div>
-                  </div>
+                  </motion.a>
                 </motion.div>
               </div>
 

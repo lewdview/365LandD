@@ -1,8 +1,24 @@
 import { motion } from 'framer-motion';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { GlitchText } from './GlitchText';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
+  const handleNavClick = (section: string) => {
+    if (section === 'manifesto') {
+      window.dispatchEvent(new CustomEvent('openManifesto'));
+    } else if (section === 'releases') {
+      window.dispatchEvent(new CustomEvent('openReleases'));
+    } else if (section === 'connect') {
+      window.dispatchEvent(new CustomEvent('openConnect'));
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
     <footer className="relative py-16 px-6 md:px-12 lg:px-16 border-t border-void-lighter overflow-hidden">
@@ -52,19 +68,74 @@ export function Footer() {
               // NAVIGATION
             </h4>
             <ul className="space-y-2">
-              {['Journey', 'Releases', 'Connect'].map((item, i) => (
-                <motion.li key={item}>
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-light-cream/50 hover:text-neon-yellow transition-colors inline-flex items-center gap-2 group"
-                  >
-                    <span className="text-neon-red font-mono text-xs">0{i + 1}</span>
-                    <span className="group-hover:translate-x-1 transition-transform">
-                      {item}
-                    </span>
-                  </a>
-                </motion.li>
-              ))}
+              {!isHomePage ? (
+                <>
+                  <motion.li>
+                    <button
+                      onClick={() => handleNavClick('home')}
+                      className="text-light-cream/50 hover:text-neon-yellow transition-colors inline-flex items-center gap-2 group cursor-pointer bg-none border-none"
+                    >
+                      <span className="text-neon-red font-mono text-xs">01</span>
+                      <span className="group-hover:translate-x-1 transition-transform">
+                        Home
+                      </span>
+                    </button>
+                  </motion.li>
+                  <motion.li>
+                    <button
+                      onClick={() => handleNavClick('manifesto')}
+                      className="text-light-cream/50 hover:text-neon-yellow transition-colors inline-flex items-center gap-2 group cursor-pointer bg-none border-none"
+                    >
+                      <span className="text-neon-red font-mono text-xs">02</span>
+                      <span className="group-hover:translate-x-1 transition-transform">
+                        Manifesto
+                      </span>
+                    </button>
+                  </motion.li>
+                  <motion.li>
+                    <button
+                      onClick={() => handleNavClick('connect')}
+                      className="text-light-cream/50 hover:text-neon-yellow transition-colors inline-flex items-center gap-2 group cursor-pointer bg-none border-none"
+                    >
+                      <span className="text-neon-red font-mono text-xs">03</span>
+                      <span className="group-hover:translate-x-1 transition-transform">
+                        Connect
+                      </span>
+                    </button>
+                  </motion.li>
+                </>
+              ) : (
+                [
+                  { label: 'Journey', href: '#tracker' },
+                  { label: 'Manifesto', href: '#manifesto', isModal: true },
+                  { label: 'Releases', href: '#releases', isModal: true },
+                  { label: 'Connect', href: '#connect', isModal: true },
+                ].map((item, i) => (
+                  <motion.li key={item.label}>
+                    {item.isModal ? (
+                      <button
+                        onClick={() => handleNavClick(item.label.toLowerCase())}
+                        className="text-light-cream/50 hover:text-neon-yellow transition-colors inline-flex items-center gap-2 group cursor-pointer bg-none border-none"
+                      >
+                        <span className="text-neon-red font-mono text-xs">0{i + 1}</span>
+                        <span className="group-hover:translate-x-1 transition-transform">
+                          {item.label}
+                        </span>
+                      </button>
+                    ) : (
+                      <a
+                        href={item.href}
+                        className="text-light-cream/50 hover:text-neon-yellow transition-colors inline-flex items-center gap-2 group"
+                      >
+                        <span className="text-neon-red font-mono text-xs">0{i + 1}</span>
+                        <span className="group-hover:translate-x-1 transition-transform">
+                          {item.label}
+                        </span>
+                      </a>
+                    )}
+                  </motion.li>
+                ))
+              )}
             </ul>
           </div>
 

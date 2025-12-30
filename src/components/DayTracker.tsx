@@ -2,7 +2,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
-import { useEffect, useRef, useState } from 'react';
+import { useAudioStore } from '../store/useAudioStore';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ChevronLeft, ChevronRight, ChevronDown, Play, Clock, Music, Calendar } from 'lucide-react';
 import { CoverImage } from './GenerativeCover';
@@ -130,9 +131,20 @@ function HourglassIcon({ className = '' }: { className?: string }) {
 export function DayTracker() {
   const { data, currentDay } = useStore();
   const { currentTheme } = useThemeStore();
+  const { loadAndPlay } = useAudioStore();
   const navigate = useNavigate();
   const progressRef = useRef<SVGCircleElement>(null);
   const [expandedInfo, setExpandedInfo] = useState(false);
+  
+  const handlePlayClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (data?.releases && currentDay) {
+      const release = data.releases.find(r => r.day === currentDay);
+      if (release) {
+        loadAndPlay(release);
+      }
+    }
+  }, [data, currentDay, loadAndPlay]);
   
   const { primary, accent, background } = currentTheme.colors;
   const totalDays = data?.project.totalDays || 365;
@@ -320,7 +332,6 @@ export function DayTracker() {
                     {/* Cover art with generative fallback */}
                     <div 
                       className="relative w-full md:w-48 h-48 flex-shrink-0 overflow-hidden cursor-pointer group"
-                      onClick={() => navigate(`/day/${currentDay}`)}
                     >
                       <CoverImage
                         day={todaysRelease.day}
@@ -334,19 +345,30 @@ export function DayTracker() {
                         showColorVeil
                       />
                       
-                      {/* Play overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div 
-                          className="w-16 h-16 rounded-full flex items-center justify-center"
+                      {/* Overlay background - hidden by default, shown on hover */}
+                      <motion.div 
+                        className="absolute inset-0 z-20 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                        initial={{ opacity: 0 }}
+                      />
+                      
+                      {/* Play button */}
+                      <motion.button
+                        whileHover={{ scale: 1.15 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={handlePlayClick}
+                        className="absolute inset-0 z-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto"
+                      >
+                        <motion.div 
+                          className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
                           style={{ backgroundColor: isLight ? accent : primary }}
                         >
                           <Play className="w-8 h-8 ml-1" style={{ color: background }} />
-                        </div>
-                      </div>
+                        </motion.div>
+                      </motion.button>
 
                       {/* Mood badge */}
                       <span 
-                        className="absolute top-3 right-3 px-2 py-1 text-xs font-mono font-bold"
+                        className="absolute top-3 right-3 px-2 py-1 text-xs font-mono font-bold z-40"
                         style={{ 
                           backgroundColor: isLight ? accent : primary,
                           color: background,

@@ -9,6 +9,7 @@ import { Navigation } from '../components/Navigation';
 import { ThemeChanger } from '../components/ThemeChanger';
 import { CursorEffect } from '../components/CursorEffect';
 import { ManifestoModal } from '../components/ManifestoModal';
+import { ConnectModal } from '../components/ConnectModal';
 import { ReleasesModal } from '../components/ReleasesModal';
 import { useThemeStore } from '../store/useThemeStore';
 import { useStore } from '../store/useStore';
@@ -16,6 +17,7 @@ import { FileText, Music, ChevronRight } from 'lucide-react';
 
 export function HomePage() {
   const [showManifesto, setShowManifesto] = useState(false);
+  const [showConnect, setShowConnect] = useState(false);
   const [showReleases, setShowReleases] = useState(false);
   const { currentTheme } = useThemeStore();
   const { data } = useStore();
@@ -24,13 +26,16 @@ export function HomePage() {
   // Listen for navigation events to open modals
   useEffect(() => {
     const handleOpenManifesto = () => setShowManifesto(true);
+    const handleOpenConnect = () => setShowConnect(true);
     const handleOpenReleases = () => setShowReleases(true);
     
     window.addEventListener('openManifesto', handleOpenManifesto);
+    window.addEventListener('openConnect', handleOpenConnect);
     window.addEventListener('openReleases', handleOpenReleases);
     
     return () => {
       window.removeEventListener('openManifesto', handleOpenManifesto);
+      window.removeEventListener('openConnect', handleOpenConnect);
       window.removeEventListener('openReleases', handleOpenReleases);
     };
   }, []);
@@ -165,6 +170,7 @@ export function HomePage() {
 
       {/* Modals */}
       <ManifestoModal isOpen={showManifesto} onClose={() => setShowManifesto(false)} />
+      <ConnectModal isOpen={showConnect} onClose={() => setShowConnect(false)} />
       <ReleasesModal isOpen={showReleases} onClose={() => setShowReleases(false)} />
     </div>
   );

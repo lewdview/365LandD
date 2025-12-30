@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
@@ -12,6 +13,8 @@ const navLinks = [
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +23,13 @@ export function Navigation() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const isHomePage = location.pathname === '/';
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate('/');
+  };
 
   return (
     <>
@@ -36,10 +46,10 @@ export function Navigation() {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <motion.a
-              href="#"
+            <motion.button
+              onClick={handleLogoClick}
               whileHover={{ scale: 1.05 }}
-              className="relative group"
+              className="relative group cursor-pointer bg-none border-none"
             >
               <span className="text-2xl md:text-3xl font-bold gradient-text">
                 th3scr1b3
@@ -51,32 +61,42 @@ export function Navigation() {
                 whileHover={{ width: '100%' }}
                 transition={{ duration: 0.3 }}
               />
-            </motion.a>
+            </motion.button>
 
             {/* Desktop navigation */}
             <div className="hidden md:flex items-center gap-8">
-              {navLinks.map((link, index) => (
-                <NavLink key={link.href} {...link} index={index} isModal={link.isModal} />
-              ))}
-              {/* CTA */}
-              <motion.button
-                onClick={() => window.dispatchEvent(new CustomEvent('openReleases'))}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-5 py-2 bg-neon-red-matte text-void-black font-bold text-sm uppercase tracking-wider transition-all hover:bg-neon-red"
-              >
-                Listen Now
-              </motion.button>
+              {navLinks.map((link, index) => {
+                // Only show Journey and Releases on home page
+                if (!isHomePage && (link.label === 'Journey' || link.label === 'Releases')) {
+                  return null;
+                }
+                return (
+                  <NavLink key={link.href} {...link} index={index} isModal={link.isModal} />
+                );
+              })}
+              {/* CTA - only show on home page */}
+              {isHomePage && (
+                <motion.button
+                  onClick={() => window.dispatchEvent(new CustomEvent('openReleases'))}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-5 py-2 bg-neon-red-matte text-void-black font-bold text-sm uppercase tracking-wider transition-all hover:bg-neon-red"
+                >
+                  Listen Now
+                </motion.button>
+              )}
             </div>
 
             {/* Mobile menu button */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-light-cream"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </motion.button>
+            {isHomePage && (
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 text-light-cream"
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </motion.button>
+            )}
           </div>
         </div>
 
@@ -114,7 +134,9 @@ function NavLink({
     if (isModal) {
       e.preventDefault();
       // Dispatch custom event to open modal
-      const eventName = href === '#manifesto' ? 'openManifesto' : 'openReleases';
+      let eventName = 'openReleases';
+      if (href === '#manifesto') eventName = 'openManifesto';
+      else if (href === '#connect') eventName = 'openConnect';
       window.dispatchEvent(new CustomEvent(eventName));
       onClick?.();
     }
@@ -177,7 +199,9 @@ function MobileMenu({
 }) {
   const handleLinkClick = (link: typeof navLinks[0]) => {
     if (link.isModal) {
-      const eventName = link.href === '#manifesto' ? 'openManifesto' : 'openReleases';
+      let eventName = 'openReleases';
+      if (link.href === '#manifesto') eventName = 'openManifesto';
+      else if (link.href === '#connect') eventName = 'openConnect';
       window.dispatchEvent(new CustomEvent(eventName));
     }
     onClose();

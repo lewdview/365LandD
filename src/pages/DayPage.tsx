@@ -21,6 +21,7 @@ import { CoverImage } from '../components/GenerativeCover';
 import { Navigation } from '../components/Navigation';
 import { ThemeChanger } from '../components/ThemeChanger';
 import { ManifestoModal } from '../components/ManifestoModal';
+import { ConnectModal } from '../components/ConnectModal';
 import { getCoverUrl } from '../services/releaseStorage';
 import type { Release } from '../types';
 
@@ -54,6 +55,7 @@ export function DayPage() {
   
   const [release, setRelease] = useState<Release | null>(null);
   const [showManifesto, setShowManifesto] = useState(false);
+  const [showConnect, setShowConnect] = useState(false);
 
   const dayNum = parseInt(day || '1', 10);
   const hasPoetryData = release?.lyricsWords && release.lyricsWords.length > 0;
@@ -83,11 +85,16 @@ export function DayPage() {
     }
   }, [data, dayNum]);
 
-  // Listen for manifesto modal event
+  // Listen for manifesto and connect modal events
   useEffect(() => {
     const handleOpenManifesto = () => setShowManifesto(true);
+    const handleOpenConnect = () => setShowConnect(true);
     window.addEventListener('openManifesto', handleOpenManifesto);
-    return () => window.removeEventListener('openManifesto', handleOpenManifesto);
+    window.addEventListener('openConnect', handleOpenConnect);
+    return () => {
+      window.removeEventListener('openManifesto', handleOpenManifesto);
+      window.removeEventListener('openConnect', handleOpenConnect);
+    };
   }, []);
 
   // Play this release via global player
@@ -477,7 +484,7 @@ export function DayPage() {
                     segments={lyricsSegmentsToShow}
                     currentTime={currentTimeForLyrics}
                     onWordClick={handleWordClick}
-                    isPlaying={isPlaying && playingHasPoetryData}
+                    isPlaying={isPlaying}
                     fullHeight
                   />
                 </motion.div>
@@ -619,12 +626,6 @@ export function DayPage() {
                   >
                     ALL RELEASES
                   </Link>
-                  <button
-                    onClick={() => window.dispatchEvent(new CustomEvent('openManifesto'))}
-                    className="px-4 py-2 bg-void-gray/50 hover:bg-neon-yellow/20 transition-colors font-mono text-sm"
-                  >
-                    MANIFESTO
-                  </button>
                 </div>
 
                 {nextDay ? (
@@ -645,8 +646,9 @@ export function DayPage() {
         </>
       )}
 
-      {/* Manifesto Modal */}
+      {/* Modals */}
       <ManifestoModal isOpen={showManifesto} onClose={() => setShowManifesto(false)} />
+      <ConnectModal isOpen={showConnect} onClose={() => setShowConnect(false)} />
     </div>
   );
 }
