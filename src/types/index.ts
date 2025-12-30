@@ -32,12 +32,20 @@ export interface Release {
   audiusUrl?: string;
   storedAudioUrl?: string;
   coverArt?: string;
+  videoUrl?: string;
   duration: number; // seconds
   durationFormatted: string;
   tempo: number;
   key: string;
   energy: number;
   valence: number;
+  danceability?: number;
+  acousticness?: number;
+  instrumentalness?: number;
+  loudness?: number;
+  speechiness?: number;
+  liveness?: number;
+  timeSignature?: string;
   genre: string[];
   tags: string[];
   lyrics?: string;

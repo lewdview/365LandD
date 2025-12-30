@@ -299,37 +299,6 @@ export function DayPage() {
               >
                 {release.description}
               </motion.p>
-              
-              {/* Mobile play button - permanent on small screens */}
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handlePlay}
-                className="md:hidden mt-8 relative"
-              >
-                <div 
-                  className="w-20 h-20 rounded-full flex items-center justify-center transition-all"
-                  style={{
-                    backgroundColor: isLight ? accent : primary,
-                    boxShadow: `0 0 30px ${isLight ? accent : primary}80`,
-                  }}
-                >
-                  {isLoading && isThisPlaying ? (
-                    <motion.div
-                      className="w-8 h-8 border-4 border-void-black border-t-transparent rounded-full"
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                    />
-                  ) : isThisReleaseActive ? (
-                    <Pause className="w-10 h-10 text-void-black" />
-                  ) : (
-                    <Play className="w-10 h-10 text-void-black ml-1" />
-                  )}
-                </div>
-              </motion.button>
             </>
           ) : (
             <motion.div
@@ -487,6 +456,175 @@ export function DayPage() {
                       {release.date}
                     </span>
                   </div>
+                </div>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* Comprehensive Audio Stats Section */}
+          <section className="py-12 px-6 md:px-12 lg:px-16">
+            <div className="w-full">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+              >
+                <h3 className="text-2xl font-mono text-neon-yellow mb-8 text-center uppercase tracking-wider">
+                  Audio Analysis
+                </h3>
+                
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+                  {/* Energy */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="p-4 rounded-lg"
+                    style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
+                  >
+                    <span className="text-xs font-mono text-light-cream/50 block mb-2">ENERGY</span>
+                    <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
+                      <motion.div className="h-full bg-gradient-to-r from-neon-red to-neon-orange" style={{ width: `${release.energy * 100}%` }} />
+                    </div>
+                    <span className="text-lg font-bold" style={{ color: primary }}>{Math.round(release.energy * 100)}%</span>
+                  </motion.div>
+
+                  {/* Valence */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.05 }}
+                    className="p-4 rounded-lg"
+                    style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
+                  >
+                    <span className="text-xs font-mono text-light-cream/50 block mb-2">VALENCE</span>
+                    <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
+                      <motion.div className="h-full bg-gradient-to-r from-neon-yellow to-neon-orange" style={{ width: `${release.valence * 100}%` }} />
+                    </div>
+                    <span className="text-lg font-bold" style={{ color: accent }}>{Math.round(release.valence * 100)}%</span>
+                  </motion.div>
+
+                  {/* Danceability */}
+                  {release.danceability !== undefined && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.1 }}
+                      className="p-4 rounded-lg"
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
+                    >
+                      <span className="text-xs font-mono text-light-cream/50 block mb-2">DANCE</span>
+                      <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
+                        <motion.div className="h-full bg-gradient-to-r from-pink-500 to-pink-400" style={{ width: `${(release.danceability || 0) * 100}%` }} />
+                      </div>
+                      <span className="text-lg font-bold text-pink-400">{Math.round((release.danceability || 0) * 100)}%</span>
+                    </motion.div>
+                  )}
+
+                  {/* Acousticness */}
+                  {release.acousticness !== undefined && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.15 }}
+                      className="p-4 rounded-lg"
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
+                    >
+                      <span className="text-xs font-mono text-light-cream/50 block mb-2">ACOUSTIC</span>
+                      <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
+                        <motion.div className="h-full bg-gradient-to-r from-green-500 to-green-400" style={{ width: `${(release.acousticness || 0) * 100}%` }} />
+                      </div>
+                      <span className="text-lg font-bold text-green-400">{Math.round((release.acousticness || 0) * 100)}%</span>
+                    </motion.div>
+                  )}
+
+                  {/* Instrumentalness */}
+                  {release.instrumentalness !== undefined && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 }}
+                      className="p-4 rounded-lg"
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
+                    >
+                      <span className="text-xs font-mono text-light-cream/50 block mb-2">INST</span>
+                      <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
+                        <motion.div className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400" style={{ width: `${(release.instrumentalness || 0) * 100}%` }} />
+                      </div>
+                      <span className="text-lg font-bold text-cyan-400">{Math.round((release.instrumentalness || 0) * 100)}%</span>
+                    </motion.div>
+                  )}
+
+                  {/* Speechiness */}
+                  {release.speechiness !== undefined && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.25 }}
+                      className="p-4 rounded-lg"
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
+                    >
+                      <span className="text-xs font-mono text-light-cream/50 block mb-2">SPEECH</span>
+                      <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
+                        <motion.div className="h-full bg-gradient-to-r from-purple-500 to-purple-400" style={{ width: `${(release.speechiness || 0) * 100}%` }} />
+                      </div>
+                      <span className="text-lg font-bold text-purple-400">{Math.round((release.speechiness || 0) * 100)}%</span>
+                    </motion.div>
+                  )}
+
+                  {/* Liveness */}
+                  {release.liveness !== undefined && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 }}
+                      className="p-4 rounded-lg"
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
+                    >
+                      <span className="text-xs font-mono text-light-cream/50 block mb-2">LIVE</span>
+                      <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
+                        <motion.div className="h-full bg-gradient-to-r from-blue-500 to-blue-400" style={{ width: `${(release.liveness || 0) * 100}%` }} />
+                      </div>
+                      <span className="text-lg font-bold text-blue-400">{Math.round((release.liveness || 0) * 100)}%</span>
+                    </motion.div>
+                  )}
+
+                  {/* Loudness */}
+                  {release.loudness !== undefined && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.35 }}
+                      className="p-4 rounded-lg"
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
+                    >
+                      <span className="text-xs font-mono text-light-cream/50 block mb-2">LOUDNESS</span>
+                      <span className="text-lg font-bold text-light-cream">{release.loudness.toFixed(1)}dB</span>
+                    </motion.div>
+                  )}
+
+                  {/* Time Signature */}
+                  {release.timeSignature && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.4 }}
+                      className="p-4 rounded-lg"
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
+                    >
+                      <span className="text-xs font-mono text-light-cream/50 block mb-2">TIME SIG</span>
+                      <span className="text-lg font-bold text-light-cream">{release.timeSignature}</span>
+                    </motion.div>
+                  )}
                 </div>
               </motion.div>
             </div>

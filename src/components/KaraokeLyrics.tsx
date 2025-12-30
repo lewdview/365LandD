@@ -451,7 +451,7 @@ export function KaraokeLyrics({
           ref={containerRef}
           className={`relative z-10 overflow-y-auto overflow-x-hidden scroll-smooth px-8 ${
             fullHeight 
-              ? 'h-[20vh] md:h-[22vh] lg:h-[24vh]' 
+              ? 'h-[40vh] md:h-[44vh] lg:h-[48vh]' 
               : 'h-32 md:h-36 lg:h-40'
           }`}
           style={{
