@@ -25,6 +25,13 @@ import { ConnectModal } from '../components/ConnectModal';
 import { getCoverUrl } from '../services/releaseStorage';
 import type { Release } from '../types';
 
+function isYouTube(url: string) {
+  return /youtube\.com|youtu\.be/.test(url);
+}
+function isVimeo(url: string) {
+  return /vimeo\.com/.test(url);
+}
+
 // Helper to convert hex to rgba
 function hexToRgba(hex: string, alpha: number): string {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -680,6 +687,53 @@ export function DayPage() {
                   <pre className="whitespace-pre-wrap font-mono text-light-cream/80 text-sm leading-relaxed">
                     {release.lyrics}
                   </pre>
+                </motion.div>
+              </div>
+            </section>
+          )}
+
+          {/* About Entry - Video */}
+          {release.videoUrl && (
+            <section className="py-12 px-6 md:px-12 lg:px-16">
+              <div className="w-full">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 }}
+                  className="p-4 md:p-6 rounded-lg"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(45,48,72,0.4) 0%, rgba(26,28,46,0.6) 100%)',
+                    backdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255,255,255,0.08)'
+                  }}
+                >
+                  <h3 className="text-xl font-mono text-neon-yellow mb-4 text-center uppercase tracking-wider">About This Entry</h3>
+                  <div className="relative w-full max-w-4xl mx-auto aspect-video overflow-hidden bg-void-black">
+                    {isYouTube(release.videoUrl) ? (
+                      <iframe
+                        src={release.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
+                        className="absolute inset-0 w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        title={`${release.title} - About video`}
+                      />
+                    ) : isVimeo(release.videoUrl) ? (
+                      <iframe
+                        src={release.videoUrl.replace('vimeo.com/', 'player.vimeo.com/video/')}
+                        className="absolute inset-0 w-full h-full"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowFullScreen
+                        title={`${release.title} - About video`}
+                      />
+                    ) : (
+                      <video
+                        className="absolute inset-0 w-full h-full"
+                        src={release.videoUrl}
+                        controls
+                        playsInline
+                      />
+                    )}
+                  </div>
                 </motion.div>
               </div>
             </section>
