@@ -99,7 +99,10 @@ export interface MonthTheme {
   dayStart: number;
   dayEnd: number;
   theme: string;
-  arc: 'LIGHT' | 'DARK' | 'MIXED' | 'MIXED→LIGHT' | 'FULL LIGHT';
+  // New living-system descriptor; replaces arc
+  pattern?: string; // e.g., 'ebb→flow', 'surge', 'chaos→calm', 'calm', etc.
+  // Kept for backward compatibility with older data
+  arc?: 'LIGHT' | 'DARK' | 'MIXED' | 'MIXED→LIGHT' | 'FULL LIGHT';
   emoji: string;
   description: string;
 }

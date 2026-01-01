@@ -56,18 +56,18 @@ export function MonthThemes() {
 
       {/* Giant scrolling background text - like footer */}
       <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 overflow-hidden pointer-events-none">
-        <motion.p
-          initial={{ x: '0%' }}
-          animate={{ x: '-50%' }}
-          transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-          className="text-[20vw] font-black whitespace-nowrap leading-none"
-          style={{
-            color: primary,
-            opacity: 0.03,
-          }}
-        >
-          LIGHT→DARK→LIGHT • LIGHT→DARK→LIGHT • LIGHT→DARK→LIGHT •
-        </motion.p>
+          <motion.p
+            initial={{ x: '0%' }}
+            animate={{ x: '-50%' }}
+            transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+            className="text-[16vw] font-black whitespace-nowrap leading-none"
+            style={{
+              color: primary,
+              opacity: 0.05,
+            }}
+          >
+            LIVING SYSTEM • EBB ↔ FLOW • SURGE • CALIBRATE • ADAPT •
+          </motion.p>
       </div>
 
       <div className="relative z-10 w-full">
@@ -79,7 +79,7 @@ export function MonthThemes() {
           className="mb-16"
         >
           <span className="font-mono text-sm mb-4 block" style={{ color: accent }}>
-            // THE_EMOTIONAL_ARC
+            // LIVING_SYSTEM_PATTERNS
           </span>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <div>
@@ -107,7 +107,7 @@ export function MonthThemes() {
                     key={month.month}
                     className="w-3 md:w-4 rounded-t-sm relative group cursor-pointer"
                     style={{
-                      background: `linear-gradient(to top, ${month.arc.includes('DARK') ? primary : accent}, transparent)`,
+background: `linear-gradient(to top, ${(['surge','chaos','storm','shadow','shedding'].some(k=> (month.pattern||'').includes(k)) ? primary : accent)}, transparent)`,
                       height: `${30 + progress * 70}%`,
                     }}
                     whileHover={{ scaleY: 1.2 }}
@@ -118,7 +118,7 @@ export function MonthThemes() {
                     {isCurrent && (
                       <motion.div
                         className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full"
-                        style={{ background: month.arc.includes('DARK') ? primary : accent }}
+style={{ background: (['surge','chaos','storm','shadow','shedding'].some(k=> (month.pattern||'').includes(k)) ? primary : accent) }}
                         animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
                         transition={{ duration: 1.5, repeat: Infinity }}
                       />
@@ -127,7 +127,7 @@ export function MonthThemes() {
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                       <div 
                         className="px-2 py-1 text-xs font-mono whitespace-nowrap"
-                        style={{ background: background, border: `1px solid ${month.arc.includes('DARK') ? primary : accent}` }}
+style={{ background: background, border: `1px solid ${(['surge','chaos','storm','shadow','shedding'].some(k=> (month.pattern||'').includes(k)) ? primary : accent)}` }}
                       >
                         {month.name}
                       </div>
@@ -162,7 +162,7 @@ export function MonthThemes() {
               <div className="flex items-center gap-4 mb-6">
                 <motion.div
                   className="w-3 h-3 rounded-full"
-                  style={{ background: currentMonthTheme.arc.includes('DARK') ? primary : accent }}
+                    style={{ background: (['surge','chaos','storm','shadow','shedding'].some(k=> (currentMonthTheme.pattern||'').includes(k)) ? primary : accent) }}
                   animate={{ scale: [1, 1.3, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />
@@ -178,7 +178,7 @@ export function MonthThemes() {
                   </div>
                   <h3 
                     className="text-4xl md:text-6xl font-black mb-4"
-                    style={{ color: currentMonthTheme.arc.includes('DARK') ? primary : accent }}
+style={{ color: (['surge','chaos','storm','shadow','shedding'].some(k=> (currentMonthTheme.pattern||'').includes(k)) ? primary : accent) }}
                   >
                     {currentMonthTheme.theme}
                   </h3>
@@ -189,15 +189,15 @@ export function MonthThemes() {
 
                 <div className="space-y-4">
                   {/* Progress visualization */}
-                  <div className="p-6" style={{ background: `${currentMonthTheme.arc.includes('DARK') ? primary : accent}10` }}>
-                    <div className="flex justify-between text-xs font-mono text-light-cream/40 mb-2">
+                    <div className="p-6" style={{ background: `${(['surge','chaos','storm','shadow','shedding'].some(k=> (currentMonthTheme.pattern||'').includes(k)) ? primary : accent)}10` }}>
+                      <div className="flex justify-between text-xs font-mono text-light-cream/40 mb-2">
                       <span>DAY {currentMonthTheme.dayStart}</span>
                       <span>DAY {currentMonthTheme.dayEnd}</span>
                     </div>
                     <div className="h-2 bg-void-black/50 relative overflow-hidden">
                       <motion.div
                         className="absolute inset-y-0 left-0"
-                        style={{ background: currentMonthTheme.arc.includes('DARK') ? primary : accent }}
+                        style={{ background: (['surge','chaos','storm','shadow','shedding'].some(k=> (currentMonthTheme.pattern||'').includes(k)) ? primary : accent) }}
                         initial={{ width: 0 }}
                         animate={{ width: `${((currentDay - currentMonthTheme.dayStart) / (currentMonthTheme.dayEnd - currentMonthTheme.dayStart)) * 100}%` }}
                         transition={{ duration: 1.5, ease: 'easeOut' }}
@@ -205,13 +205,13 @@ export function MonthThemes() {
                       {/* Glitch effect on progress bar */}
                       <motion.div
                         className="absolute inset-0"
-                        style={{ background: `linear-gradient(90deg, transparent 40%, ${currentMonthTheme.arc.includes('DARK') ? primary : accent}50 50%, transparent 60%)` }}
+style={{ background: `linear-gradient(90deg, transparent 40%, ${(['surge','chaos','storm','shadow','shedding'].some(k=> (currentMonthTheme.pattern||'').includes(k)) ? primary : accent)}50 50%, transparent 60%)` }}
                         animate={{ x: ['-100%', '200%'] }}
                         transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                       />
                     </div>
                     <div className="flex justify-between mt-2">
-                      <span className="text-2xl font-black" style={{ color: currentMonthTheme.arc.includes('DARK') ? primary : accent }}>
+                      <span className="text-2xl font-black" style={{ color: (['surge','chaos','storm','shadow','shedding'].some(k=> (currentMonthTheme.pattern||'').includes(k)) ? primary : accent) }}>
                         {Math.round(((currentDay - currentMonthTheme.dayStart) / (currentMonthTheme.dayEnd - currentMonthTheme.dayStart)) * 100)}%
                       </span>
                       <span className="font-mono text-sm text-light-cream/40">
@@ -222,14 +222,14 @@ export function MonthThemes() {
 
                   {/* Meta info */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4" style={{ borderLeft: `2px solid ${currentMonthTheme.arc.includes('DARK') ? primary : accent}` }}>
+                    <div className="p-4" style={{ borderLeft: `2px solid ${(['surge','chaos','storm','shadow','shedding'].some(k=> (currentMonthTheme.pattern||'').includes(k)) ? primary : accent)}` }}>
                       <span className="text-xs font-mono text-light-cream/30 block">MONTH</span>
                       <span className="text-2xl font-black">{currentMonthTheme.name}</span>
                     </div>
-                    <div className="p-4" style={{ borderLeft: `2px solid ${currentMonthTheme.arc.includes('DARK') ? primary : accent}` }}>
-                      <span className="text-xs font-mono text-light-cream/30 block">ARC</span>
-                      <span className="text-2xl font-black" style={{ color: currentMonthTheme.arc.includes('DARK') ? primary : accent }}>
-                        {currentMonthTheme.arc}
+                    <div className="p-4" style={{ borderLeft: `2px solid ${(['surge','chaos','storm','shadow','shedding'].some(k=> (currentMonthTheme.pattern||'').includes(k)) ? primary : accent)}` }}>
+                      <span className="text-xs font-mono text-light-cream/30 block">PATTERN</span>
+                      <span className="text-2xl font-black" style={{ color: (['surge','chaos','storm','shadow','shedding'].some(k=> (currentMonthTheme.pattern||'').includes(k)) ? primary : accent) }}>
+                        {currentMonthTheme.pattern || currentMonthTheme.arc}
                       </span>
                     </div>
                   </div>
@@ -277,7 +277,7 @@ export function MonthThemes() {
           className="mt-20 relative"
         >
           <div className="text-center mb-8">
-            <span className="font-mono text-xs text-light-cream/30">// LIGHT_DARK_SPECTRUM</span>
+<span className="font-mono text-xs text-light-cream/30">// LIVING_SYSTEM</span>
           </div>
 
           <div className="relative h-32 max-w-5xl mx-auto">
@@ -337,7 +337,7 @@ export function MonthThemes() {
                       cx={x}
                       cy={y}
                       r={isCurrentMonth ? 8 : 4}
-                      fill={month.arc.includes('DARK') ? primary : accent}
+                      fill={(['surge','chaos','storm','shadow','shedding'].some(k=> (month.pattern||'').includes(k)) ? primary : accent)}
                       opacity={isCurrentMonth ? 1 : 0.5}
                     />
                     {isCurrentMonth && (
@@ -346,7 +346,7 @@ export function MonthThemes() {
                         cy={y}
                         r="12"
                         fill="none"
-                        stroke={month.arc.includes('DARK') ? primary : accent}
+                        stroke={(['surge','chaos','storm','shadow','shedding'].some(k=> (month.pattern||'').includes(k)) ? primary : accent)}
                         strokeWidth="2"
                         opacity="0.3"
                       >
@@ -361,11 +361,11 @@ export function MonthThemes() {
 
             {/* Labels */}
             <div className="absolute inset-x-0 bottom-0 flex justify-between text-xs font-mono px-4">
-              <span style={{ color: accent }}>☀ LIGHT</span>
+<span style={{ color: accent }}>EBB</span>
               <span className="text-light-cream/20">|</span>
-              <span style={{ color: primary }}>◐ DARK</span>
+              <span style={{ color: primary }}>SURGE</span>
               <span className="text-light-cream/20">|</span>
-              <span style={{ color: accent }}>☀ LIGHT</span>
+              <span style={{ color: accent }}>FLOW</span>
             </div>
           </div>
         </motion.div>
@@ -408,7 +408,7 @@ function MonthCard({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
-  const themeColor = month.arc.includes('DARK') ? primary : accent;
+  const themeColor = (['surge','chaos','storm','shadow','shedding'].some(k=> (month.pattern||'').includes(k)) ? primary : accent);
   const progress = isCurrent 
     ? ((currentDay - month.dayStart) / (month.dayEnd - month.dayStart)) * 100
     : isPast ? 100 : 0;
@@ -484,7 +484,7 @@ function MonthCard({
               color: themeColor,
             }}
           >
-            {month.arc}
+            {month.pattern || month.arc}
           </span>
           <span className="text-light-cream/30">
             {month.dayStart}-{month.dayEnd}
