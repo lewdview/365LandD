@@ -13,10 +13,10 @@ const INITIAL_ITEMS = 12;
 const ITEMS_PER_PAGE = 30;
 
 export function ReleasesFeed() {
-  const { data, selectedRelease, setSelectedRelease } = useStore();
+  const { data, currentDay, selectedRelease, setSelectedRelease } = useStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [isPaginated, setIsPaginated] = useState(false);
-  const allReleases = data?.releases || [];
+  const allReleases = (data?.releases || []).filter(r => r.day <= (currentDay || 1));
   
   // Calculate pagination
   const totalPages = Math.ceil(allReleases.length / ITEMS_PER_PAGE);

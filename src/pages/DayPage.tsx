@@ -43,7 +43,7 @@ function hexToRgba(hex: string, alpha: number): string {
 export function DayPage() {
   const { day } = useParams<{ day: string }>();
   const navigate = useNavigate();
-  const { data, fetchData } = useStore();
+  const { data, fetchData, currentDay } = useStore();
   const { currentTheme } = useThemeStore();
   const { primary, accent, background } = currentTheme.colors;
   
@@ -146,10 +146,15 @@ export function DayPage() {
     }
   };
 
-  const prevDay = data?.releases.filter(r => r.day < dayNum).sort((a, b) => b.day - a.day)[0];
-  const nextDay = data?.releases.filter(r => r.day > dayNum).sort((a, b) => a.day - b.day)[0];
+  const prevDay = data?.releases.filter(r => r.day < dayNum && r.day >= 1).sort((a, b) => b.day - a.day)[0];
+  const nextDay = data?.releases.filter(r => r.day > dayNum && r.day <= (currentDay || 1)).sort((a, b) => a.day - b.day)[0];
 
   const isLight = release?.mood === 'light';
+
+  // Gate access: redirect if trying to view a future day
+  if (data && dayNum > (currentDay || 1)) {
+    navigate(`/day/${currentDay || 1}`);
+  }
 
   if (!data) {
     return (
