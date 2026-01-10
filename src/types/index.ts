@@ -104,9 +104,9 @@ export interface MonthTheme {
   dayEnd: number;
   theme: string;
   // New living-system descriptor; replaces arc
-  pattern?: string; // e.g., 'ebb→flow', 'surge', 'chaos→calm', 'calm', etc.
+  pattern?: string; // e.g., 'ebb→flow', 'surge', 'chaos→calm', 'calm', 'structure', 'void', 'ascend', etc.
   // Arc represents the phase name: awakening, surge, chaos, shadow, flow, etc.
-  arc?: 'LIGHT' | 'DARK' | 'MIXED' | 'MIXED→LIGHT' | 'FULL LIGHT' | 'Inception' | 'Acceleration' | 'Conflict' | 'Isolation' | 'Nostalgia' | 'Reflection' | 'Reaction' | 'Numbness' | 'Awakening' | 'Grit' | 'Peak' | 'Resolution';
+  arc?: 'LIGHT' | 'DARK' | 'MIXED' | 'MIXED→LIGHT' | 'FULL LIGHT' | 'Inception' | 'Acceleration' | 'Conflict' | 'Isolation' | 'Nostalgia' | 'Reflection' | 'Reaction' | 'Numbness' | 'Awakening' | 'Grit' | 'Peak' | 'Resolution' | 'System Boot' | 'System Crash' | 'System Recovery' | 'Upload & Ascend';
   emoji: string;
   description: string;
 }

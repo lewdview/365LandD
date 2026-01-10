@@ -322,141 +322,141 @@ function buildReleaseDataWithManifest(manifestItems: any[]): ReleaseData {
       { day: 365, title: 'The Final Day' },
     ],
     monthThemes: [
-      // Phase I: The Ascent — The energy begins to build. The systems turn on.
+      // PHASE I: /BOOT_SEQUENCE (Days 1–83) — Structure, Rhythm, Light/Mixed
       {
         month: 1,
         name: 'January',
         dayStart: 1,
         dayEnd: 31,
-        theme: 'The Spark',
-        arc: 'Inception',
-        pattern: 'awakening',
-        emoji: '✨',
-        description: 'The Spark (Inception) — "Before the fire, there is the thought." This is the awakening. The mood is hopeful, curious, and light. These tracks represent new ideas forming, the first cup of coffee in the morning, and the optimism of a blank page. The sound is crisp and promising.'
+        theme: '/BOOT_SEQUENCE',
+        arc: 'System Boot',
+        pattern: 'structure',
+        emoji: '💾',
+        description: '/BOOT_SEQUENCE (Days 1–31) — Theme: Structure, Rhythm, Light/Mixed. Vibe: The OS is booting up. Everything is clean, grid-like, and optimized. The system initializes with crisp, organized beats and clear, hopeful melodies. Like watching a computer startup sequence, each track represents a new system process coming online. The mood is methodical yet uplifting, building anticipation for what\'s to come.'
       },
       {
         month: 2,
         name: 'February',
         dayStart: 32,
         dayEnd: 60,
-        theme: 'The Rush',
-        arc: 'Acceleration',
-        pattern: 'surge',
-        emoji: '🔥',
-        description: 'The Rush (Acceleration) — "Full speed ahead." The idea takes flight. Adrenaline kicks in. These are high-tempo tracks (>135 BPM) that feel like driving with the windows down. It represents the honeymoon phase of any journey—pure excitement, velocity, and the blur of motion.'
+        theme: '/BOOT_SEQUENCE',
+        arc: 'System Boot',
+        pattern: 'structure',
+        emoji: '⚙️',
+        description: '/BOOT_SEQUENCE (Days 32–60) — Theme: Structure, Rhythm, Light/Mixed. The boot sequence continues. Energy builds as more processes activate. The system is becoming operational, with layers of sound stacking like initialization routines. Each track brings the operating system closer to full functionality, the rhythm steady and purposeful. Occasionally packet loss detected—minor glitches that add character to the initialization.'
       },
       {
         month: 3,
         name: 'March',
         dayStart: 61,
-        dayEnd: 91,
-        theme: 'The Turbulence',
-        arc: 'Conflict',
-        pattern: 'chaos',
-        emoji: '⚡',
-        description: 'The Turbulence (Conflict) — "Moving too fast to steer." Speed turns into instability. The energy is still high, but the mood shifts to anxiety and chaos. The rhythms become jagged and the melodies confused. This represents the moment where the plan starts to shake, and the first obstacles appear.'
+        dayEnd: 83,
+        theme: '/BOOT_SEQUENCE',
+        arc: 'System Boot',
+        pattern: 'structure',
+        emoji: '✓',
+        description: '/BOOT_SEQUENCE (Days 61–83) — Theme: Structure, Rhythm, Light/Mixed. The final phase of booting. The OS is nearly ready. Despite minor warnings of occasional packet loss, the system is almost fully operational. The music becomes more complex and dynamic, reflecting the final initialization steps. By day 83, the boot sequence is complete, and the system is ready to accept input.'
       },
-      // Phase II: The Descent — The system crashes. The internal work begins.
+      // PHASE II: /CACHE_OVERFLOW (Days 84–187) — Chaos, High Energy, Dark/Glitch
       {
         month: 4,
         name: 'April',
-        dayStart: 92,
+        dayStart: 84,
         dayEnd: 121,
-        theme: 'The Void',
-        arc: 'Isolation',
-        pattern: 'shadow',
-        emoji: '🌑',
-        description: 'The Void (Isolation) — "The lights go out." The crash. The energy drops to the floor. These tracks are dark, heavy, and isolated. It represents the "Dark Night of the Soul"—confusion, despair, and the feeling of being completely alone in a large room.'
+        theme: '/CACHE_OVERFLOW',
+        arc: 'System Crash',
+        pattern: 'chaos',
+        emoji: '⚡',
+        description: '/CACHE_OVERFLOW (Days 84–121) — Theme: Chaos, High Energy, Dark/Glitch. Vibe: The virus has entered. The file names are corrupted. The music is aggressive, with heavy glitches and distortion. This is the moment of impact. Critical system instability. The rhythms are jagged and unpredictable. The melodies glitch and fragment. It represents the system\'s desperate attempt to process corruption while still running.'
       },
       {
         month: 5,
         name: 'May',
         dayStart: 122,
         dayEnd: 152,
-        theme: 'The Echo',
-        arc: 'Nostalgia',
-        pattern: 'shadow',
-        emoji: '👻',
-        description: 'The Echo (Nostalgia) — "Looking back at what was lost." We aren\'t moving forward yet; we are looking backward. The mood is longing and regret. These songs act as ghosts of the past, filled with reverb and memories. It is the sound of missing someone or something.'
+        theme: '/CACHE_OVERFLOW',
+        arc: 'System Crash',
+        pattern: 'chaos',
+        emoji: '🔴',
+        description: '/CACHE_OVERFLOW (Days 122–152) — Theme: Chaos, High Energy, Dark/Glitch. The cache is overflowing. Error logs stack on top of each other. The system is running hot, struggling under the load of corrupted data. High energy but unstable—like driving on a highway with failing brakes. The sound is dense and overwhelming, reflecting the system\'s inability to manage what\'s being processed.'
       },
       {
         month: 6,
         name: 'June',
         dayStart: 153,
-        dayEnd: 182,
-        theme: 'The Mirror',
-        arc: 'Reflection',
-        pattern: 'shadow',
-        emoji: '🪞',
-        description: 'The Mirror (Reflection) — "Facing the self." The sadness settles into something deeper: understanding. This is the largest collection of songs. They are melancholic and mid-tempo. It is the sound of staring in the mirror, analyzing the heartbreak, and beginning to process the grief.'
+        dayEnd: 187,
+        theme: '/CACHE_OVERFLOW',
+        arc: 'System Crash',
+        pattern: 'chaos',
+        emoji: '📊',
+        description: '/CACHE_OVERFLOW (Days 153–187) — Theme: Chaos, High Energy, Dark/Glitch. The system reaches its breaking point. Data flows are maxed out. This is the crescendo of the crash. The energy is manic and frenetic. Every resource is being thrown at the problem, but it\'s not enough. By day 187, the system can no longer sustain this state—a reboot becomes inevitable.'
       },
-      // Phase III: The Transformation — The grief turns into power. The fire is lit.
+      // PHASE III: /ROOT_ACCESS (Days 188–271) — Void, Deep, Sad/Dark
       {
         month: 7,
         name: 'July',
-        dayStart: 183,
+        dayStart: 188,
         dayEnd: 213,
-        theme: 'The Burn',
-        arc: 'Reaction',
-        pattern: 'surge',
-        emoji: '🔥',
-        description: 'The Burn (Reaction) — "Sadness hardens into armor." The mourning period ends, and the resistance begins. These are the most aggressive, chaotic, and high-energy tracks. It represents anger, grit, and the refusal to stay down. The system fights back against the silence.'
+        theme: '/ROOT_ACCESS',
+        arc: 'System Recovery',
+        pattern: 'void',
+        emoji: '◼️',
+        description: '/ROOT_ACCESS (Days 188–213) — Theme: Void, Deep, Sad/Dark. Vibe: The screen goes black. The system has crashed to a command prompt. We are in root access mode, exploring the hidden files in the darkness. Low power mode active. The sound is deep, sparse, and isolated. Each track is a step through the void—cautious, introspective, and melancholic. The mood is that of facing the machine\'s inner core.'
       },
       {
         month: 8,
         name: 'August',
         dayStart: 214,
         dayEnd: 244,
-        theme: 'The Drift',
-        arc: 'Numbness',
-        pattern: 'calm',
-        emoji: '💨',
-        description: 'The Drift (Numbness) — "Smoke on the water." After the fire burns out, we float. This is the lowest energy point of the year. Ambient, atmospheric, and exhausted. It represents the necessary recovery mode—healing through stillness.'
+        theme: '/ROOT_ACCESS',
+        arc: 'System Recovery',
+        pattern: 'void',
+        emoji: '🌑',
+        description: '/ROOT_ACCESS (Days 214–244) — Theme: Void, Deep, Sad/Dark. Deeper into the darkness. We are reading corrupted logs, trying to understand what went wrong. The energy is low and the tempo slow. The music feels like searching through a filing cabinet in an abandoned building. Echoes and reverb fill the space where data used to be. This is the sound of grief and realization.'
       },
       {
         month: 9,
         name: 'September',
         dayStart: 245,
-        dayEnd: 274,
-        theme: 'The Dawn',
-        arc: 'Awakening',
-        pattern: 'flow',
-        emoji: '🌅',
-        description: 'The Dawn (Awakening) — "First light." The eyes open again. The tempo stabilizes. The mood is neutral but leaning toward survival. It is the sound of walking out of a cave and seeing the sun for the first time in months. The tentative first steps of a new beginning.'
+        dayEnd: 271,
+        theme: '/ROOT_ACCESS',
+        arc: 'System Recovery',
+        pattern: 'void',
+        emoji: '🔍',
+        description: '/ROOT_ACCESS (Days 245–271) — Theme: Void, Deep, Sad/Dark. The final days in root access. We have seen the worst. The damage is catalogued. The mood shifts from active grieving to quiet acceptance. The tracks become more sparse, almost minimalist. It\'s like staring at the code that broke everything, finally understanding the truth. By day 271, we are ready to rebuild.'
       },
-      // Phase IV: The Return — Mastery of the self. The cycle completes.
+      // PHASE IV: /THE_CLOUD (Days 272–365) — Ether, Light, Resolution
       {
         month: 10,
         name: 'October',
-        dayStart: 275,
+        dayStart: 272,
         dayEnd: 305,
-        theme: 'The Climb',
-        arc: 'Grit',
-        pattern: 'surge',
-        emoji: '⛰️',
-        description: 'The Climb (Grit) — "Putting the work in." We are moving with purpose now. The beats are driving and steady. It isn\'t manic like February; it is controlled determination. It represents the grind, the workout, and the disciplined climb back to the top.'
+        theme: '/THE_CLOUD',
+        arc: 'Upload & Ascend',
+        pattern: 'ascend',
+        emoji: '☁️',
+        description: '/THE_CLOUD (Days 272–305) — Theme: Ether, Light, Resolution. Vibe: The data is uploading to the cloud. A gentle hum of processing. The mood shifts upward. It\'s dreamy, euphoric, and ethereal. The music has space and resonance—like standing in a cathedral as light streams through stained glass. The system is being rebuilt in the cloud, piece by piece. Hope is returning.'
       },
       {
         month: 11,
         name: 'November',
         dayStart: 306,
         dayEnd: 335,
-        theme: 'The Flight',
-        arc: 'Peak',
-        pattern: 'flow',
-        emoji: '🦅',
-        description: 'The Flight (Peak) — "Higher than before." We have reached the summit. The energy is high, but the mood is victorious and confident (Flow State). We aren\'t just surviving anymore; we are thriving. The view from here is perfect.'
+        theme: '/THE_CLOUD',
+        arc: 'Upload & Ascend',
+        pattern: 'ascend',
+        emoji: '✨',
+        description: '/THE_CLOUD (Days 306–335) — Theme: Ether, Light, Resolution. The upload is nearly complete. The system is taking shape in the cloud. The energy is high but peaceful—not frantic, but flowing. It feels like finally being able to see a clear path forward. The music is uplifting and confident. We are not just recovering; we are transforming. What comes out of the cloud is better than before.'
       },
       {
         month: 12,
         name: 'December',
         dayStart: 336,
         dayEnd: 365,
-        theme: 'The Landing',
-        arc: 'Resolution',
-        pattern: 'flow',
-        emoji: '🏡',
-        description: 'The Landing (Resolution) — "Coming home." The journey ends, not with a crash, but with a gentle landing. The tracks are peaceful, filled with gratitude and love. We prepare to rest, wiser and stronger, ready for the cycle to begin again.'
+        theme: '/THE_CLOUD',
+        arc: 'Upload & Ascend',
+        pattern: 'ascend',
+        emoji: '🏠',
+        description: '/THE_CLOUD (Days 336–365) — Theme: Ether, Light, Resolution. The upload completes. The system returns to Earth, fully restored and evolved. The final days are peaceful and reflective. The music is warm, grateful, and final. It\'s the sound of coming home—changed, but intact. The 365-day cycle is complete. Warning: Upload in progress. Do not turn off your computer. Day 365: System ready for the next cycle.'
       }
     ],
   };
@@ -570,141 +570,141 @@ export async function buildReleaseData(): Promise<ReleaseData> {
       { day: 365, title: 'The Final Day' },
     ],
     monthThemes: [
-      // Phase I: The Ascent — The energy begins to build. The systems turn on.
+      // PHASE I: /BOOT_SEQUENCE (Days 1–83) — Structure, Rhythm, Light/Mixed
       {
         month: 1,
         name: 'January',
         dayStart: 1,
         dayEnd: 31,
-        theme: 'The Spark',
-        arc: 'Inception',
-        pattern: 'awakening',
-        emoji: '✨',
-        description: 'The Spark (Inception) — "Before the fire, there is the thought." This is the awakening. The mood is hopeful, curious, and light. These tracks represent new ideas forming, the first cup of coffee in the morning, and the optimism of a blank page. The sound is crisp and promising.'
+        theme: '/BOOT_SEQUENCE',
+        arc: 'System Boot',
+        pattern: 'structure',
+        emoji: '💾',
+        description: '/BOOT_SEQUENCE (Days 1–31) — Theme: Structure, Rhythm, Light/Mixed. Vibe: The OS is booting up. Everything is clean, grid-like, and optimized. The system initializes with crisp, organized beats and clear, hopeful melodies. Like watching a computer startup sequence, each track represents a new system process coming online. The mood is methodical yet uplifting, building anticipation for what\'s to come.'
       },
       {
         month: 2,
         name: 'February',
         dayStart: 32,
         dayEnd: 60,
-        theme: 'The Rush',
-        arc: 'Acceleration',
-        pattern: 'surge',
-        emoji: '🔥',
-        description: 'The Rush (Acceleration) — "Full speed ahead." The idea takes flight. Adrenaline kicks in. These are high-tempo tracks (>135 BPM) that feel like driving with the windows down. It represents the honeymoon phase of any journey—pure excitement, velocity, and the blur of motion.'
+        theme: '/BOOT_SEQUENCE',
+        arc: 'System Boot',
+        pattern: 'structure',
+        emoji: '⚙️',
+        description: '/BOOT_SEQUENCE (Days 32–60) — Theme: Structure, Rhythm, Light/Mixed. The boot sequence continues. Energy builds as more processes activate. The system is becoming operational, with layers of sound stacking like initialization routines. Each track brings the operating system closer to full functionality, the rhythm steady and purposeful. Occasionally packet loss detected—minor glitches that add character to the initialization.'
       },
       {
         month: 3,
         name: 'March',
         dayStart: 61,
-        dayEnd: 91,
-        theme: 'The Turbulence',
-        arc: 'Conflict',
-        pattern: 'chaos',
-        emoji: '⚡',
-        description: 'The Turbulence (Conflict) — "Moving too fast to steer." Speed turns into instability. The energy is still high, but the mood shifts to anxiety and chaos. The rhythms become jagged and the melodies confused. This represents the moment where the plan starts to shake, and the first obstacles appear.'
+        dayEnd: 83,
+        theme: '/BOOT_SEQUENCE',
+        arc: 'System Boot',
+        pattern: 'structure',
+        emoji: '✓',
+        description: '/BOOT_SEQUENCE (Days 61–83) — Theme: Structure, Rhythm, Light/Mixed. The final phase of booting. The OS is nearly ready. Despite minor warnings of occasional packet loss, the system is almost fully operational. The music becomes more complex and dynamic, reflecting the final initialization steps. By day 83, the boot sequence is complete, and the system is ready to accept input.'
       },
-      // Phase II: The Descent — The system crashes. The internal work begins.
+      // PHASE II: /CACHE_OVERFLOW (Days 84–187) — Chaos, High Energy, Dark/Glitch
       {
         month: 4,
         name: 'April',
-        dayStart: 92,
+        dayStart: 84,
         dayEnd: 121,
-        theme: 'The Void',
-        arc: 'Isolation',
-        pattern: 'shadow',
-        emoji: '🌑',
-        description: 'The Void (Isolation) — "The lights go out." The crash. The energy drops to the floor. These tracks are dark, heavy, and isolated. It represents the "Dark Night of the Soul"—confusion, despair, and the feeling of being completely alone in a large room.'
+        theme: '/CACHE_OVERFLOW',
+        arc: 'System Crash',
+        pattern: 'chaos',
+        emoji: '⚡',
+        description: '/CACHE_OVERFLOW (Days 84–121) — Theme: Chaos, High Energy, Dark/Glitch. Vibe: The virus has entered. The file names are corrupted. The music is aggressive, with heavy glitches and distortion. This is the moment of impact. Critical system instability. The rhythms are jagged and unpredictable. The melodies glitch and fragment. It represents the system\'s desperate attempt to process corruption while still running.'
       },
       {
         month: 5,
         name: 'May',
         dayStart: 122,
         dayEnd: 152,
-        theme: 'The Echo',
-        arc: 'Nostalgia',
-        pattern: 'shadow',
-        emoji: '👻',
-        description: 'The Echo (Nostalgia) — "Looking back at what was lost." We aren\'t moving forward yet; we are looking backward. The mood is longing and regret. These songs act as ghosts of the past, filled with reverb and memories. It is the sound of missing someone or something.'
+        theme: '/CACHE_OVERFLOW',
+        arc: 'System Crash',
+        pattern: 'chaos',
+        emoji: '🔴',
+        description: '/CACHE_OVERFLOW (Days 122–152) — Theme: Chaos, High Energy, Dark/Glitch. The cache is overflowing. Error logs stack on top of each other. The system is running hot, struggling under the load of corrupted data. High energy but unstable—like driving on a highway with failing brakes. The sound is dense and overwhelming, reflecting the system\'s inability to manage what\'s being processed.'
       },
       {
         month: 6,
         name: 'June',
         dayStart: 153,
-        dayEnd: 182,
-        theme: 'The Mirror',
-        arc: 'Reflection',
-        pattern: 'shadow',
-        emoji: '🪞',
-        description: 'The Mirror (Reflection) — "Facing the self." The sadness settles into something deeper: understanding. This is the largest collection of songs. They are melancholic and mid-tempo. It is the sound of staring in the mirror, analyzing the heartbreak, and beginning to process the grief.'
+        dayEnd: 187,
+        theme: '/CACHE_OVERFLOW',
+        arc: 'System Crash',
+        pattern: 'chaos',
+        emoji: '📊',
+        description: '/CACHE_OVERFLOW (Days 153–187) — Theme: Chaos, High Energy, Dark/Glitch. The system reaches its breaking point. Data flows are maxed out. This is the crescendo of the crash. The energy is manic and frenetic. Every resource is being thrown at the problem, but it\'s not enough. By day 187, the system can no longer sustain this state—a reboot becomes inevitable.'
       },
-      // Phase III: The Transformation — The grief turns into power. The fire is lit.
+      // PHASE III: /ROOT_ACCESS (Days 188–271) — Void, Deep, Sad/Dark
       {
         month: 7,
         name: 'July',
-        dayStart: 183,
+        dayStart: 188,
         dayEnd: 213,
-        theme: 'The Burn',
-        arc: 'Reaction',
-        pattern: 'surge',
-        emoji: '🔥',
-        description: 'The Burn (Reaction) — "Sadness hardens into armor." The mourning period ends, and the resistance begins. These are the most aggressive, chaotic, and high-energy tracks. It represents anger, grit, and the refusal to stay down. The system fights back against the silence.'
+        theme: '/ROOT_ACCESS',
+        arc: 'System Recovery',
+        pattern: 'void',
+        emoji: '◼️',
+        description: '/ROOT_ACCESS (Days 188–213) — Theme: Void, Deep, Sad/Dark. Vibe: The screen goes black. The system has crashed to a command prompt. We are in root access mode, exploring the hidden files in the darkness. Low power mode active. The sound is deep, sparse, and isolated. Each track is a step through the void—cautious, introspective, and melancholic. The mood is that of facing the machine\'s inner core.'
       },
       {
         month: 8,
         name: 'August',
         dayStart: 214,
         dayEnd: 244,
-        theme: 'The Drift',
-        arc: 'Numbness',
-        pattern: 'calm',
-        emoji: '💨',
-        description: 'The Drift (Numbness) — "Smoke on the water." After the fire burns out, we float. This is the lowest energy point of the year. Ambient, atmospheric, and exhausted. It represents the necessary recovery mode—healing through stillness.'
+        theme: '/ROOT_ACCESS',
+        arc: 'System Recovery',
+        pattern: 'void',
+        emoji: '🌑',
+        description: '/ROOT_ACCESS (Days 214–244) — Theme: Void, Deep, Sad/Dark. Deeper into the darkness. We are reading corrupted logs, trying to understand what went wrong. The energy is low and the tempo slow. The music feels like searching through a filing cabinet in an abandoned building. Echoes and reverb fill the space where data used to be. This is the sound of grief and realization.'
       },
       {
         month: 9,
         name: 'September',
         dayStart: 245,
-        dayEnd: 274,
-        theme: 'The Dawn',
-        arc: 'Awakening',
-        pattern: 'flow',
-        emoji: '🌅',
-        description: 'The Dawn (Awakening) — "First light." The eyes open again. The tempo stabilizes. The mood is neutral but leaning toward survival. It is the sound of walking out of a cave and seeing the sun for the first time in months. The tentative first steps of a new beginning.'
+        dayEnd: 271,
+        theme: '/ROOT_ACCESS',
+        arc: 'System Recovery',
+        pattern: 'void',
+        emoji: '🔍',
+        description: '/ROOT_ACCESS (Days 245–271) — Theme: Void, Deep, Sad/Dark. The final days in root access. We have seen the worst. The damage is catalogued. The mood shifts from active grieving to quiet acceptance. The tracks become more sparse, almost minimalist. It\'s like staring at the code that broke everything, finally understanding the truth. By day 271, we are ready to rebuild.'
       },
-      // Phase IV: The Return — Mastery of the self. The cycle completes.
+      // PHASE IV: /THE_CLOUD (Days 272–365) — Ether, Light, Resolution
       {
         month: 10,
         name: 'October',
-        dayStart: 275,
+        dayStart: 272,
         dayEnd: 305,
-        theme: 'The Climb',
-        arc: 'Grit',
-        pattern: 'surge',
-        emoji: '⛰️',
-        description: 'The Climb (Grit) — "Putting the work in." We are moving with purpose now. The beats are driving and steady. It isn\'t manic like February; it is controlled determination. It represents the grind, the workout, and the disciplined climb back to the top.'
+        theme: '/THE_CLOUD',
+        arc: 'Upload & Ascend',
+        pattern: 'ascend',
+        emoji: '☁️',
+        description: '/THE_CLOUD (Days 272–305) — Theme: Ether, Light, Resolution. Vibe: The data is uploading to the cloud. A gentle hum of processing. The mood shifts upward. It\'s dreamy, euphoric, and ethereal. The music has space and resonance—like standing in a cathedral as light streams through stained glass. The system is being rebuilt in the cloud, piece by piece. Hope is returning.'
       },
       {
         month: 11,
         name: 'November',
         dayStart: 306,
         dayEnd: 335,
-        theme: 'The Flight',
-        arc: 'Peak',
-        pattern: 'flow',
-        emoji: '🦅',
-        description: 'The Flight (Peak) — "Higher than before." We have reached the summit. The energy is high, but the mood is victorious and confident (Flow State). We aren\'t just surviving anymore; we are thriving. The view from here is perfect.'
+        theme: '/THE_CLOUD',
+        arc: 'Upload & Ascend',
+        pattern: 'ascend',
+        emoji: '✨',
+        description: '/THE_CLOUD (Days 306–335) — Theme: Ether, Light, Resolution. The upload is nearly complete. The system is taking shape in the cloud. The energy is high but peaceful—not frantic, but flowing. It feels like finally being able to see a clear path forward. The music is uplifting and confident. We are not just recovering; we are transforming. What comes out of the cloud is better than before.'
       },
       {
         month: 12,
         name: 'December',
         dayStart: 336,
         dayEnd: 365,
-        theme: 'The Landing',
-        arc: 'Resolution',
-        pattern: 'flow',
-        emoji: '🏡',
-        description: 'The Landing (Resolution) — "Coming home." The journey ends, not with a crash, but with a gentle landing. The tracks are peaceful, filled with gratitude and love. We prepare to rest, wiser and stronger, ready for the cycle to begin again.'
+        theme: '/THE_CLOUD',
+        arc: 'Upload & Ascend',
+        pattern: 'ascend',
+        emoji: '🏠',
+        description: '/THE_CLOUD (Days 336–365) — Theme: Ether, Light, Resolution. The upload completes. The system returns to Earth, fully restored and evolved. The final days are peaceful and reflective. The music is warm, grateful, and final. It\'s the sound of coming home—changed, but intact. The 365-day cycle is complete. Warning: Upload in progress. Do not turn off your computer. Day 365: System ready for the next cycle.'
       }
     ],
   };
