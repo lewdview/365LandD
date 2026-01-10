@@ -65,14 +65,15 @@ export function GlobalAudioPlayer() {
     const handlePause = () => _setIsPlaying(false);
     const handleEnded = () => { _setIsPlaying(false); _setCurrentTime(0); };
     const handleError = () => {
-      // Try fallback to local audio
+      // Try fallback to local /music symlink (dev only, points to /Volumes/extremeDos/temp music)
       if (currentRelease && audio.src && !audio.src.includes('/music/')) {
-        const fallbackUrl = getLocalAudioUrl(currentRelease.day, currentRelease.title);
-        console.log('Global player: trying fallback:', fallbackUrl);
+        const fallbackUrl = getLocalAudioUrl(currentRelease.day, currentRelease.storageTitle || currentRelease.title);
+        console.log('Global player: bucket failed, trying local fallback:', fallbackUrl);
         audio.src = fallbackUrl;
         audio.load();
         audio.play().catch(() => _setHasError(true));
       } else {
+        console.error('Global player: all sources exhausted');
         _setHasError(true);
       }
     };
@@ -125,7 +126,12 @@ export function GlobalAudioPlayer() {
   return (
     <>
       {/* Hidden audio element */}
-      <audio ref={audioRef} preload="none" />
+      <audio
+        ref={audioRef}
+        preload="none"
+        crossOrigin="anonymous"
+        style={{ display: 'none' }}
+      />
       
       {/* Footer player */}
       <AnimatePresence>
@@ -181,7 +187,7 @@ export function GlobalAudioPlayer() {
                       energy={currentRelease.energy}
                       valence={currentRelease.valence}
                       tempo={currentRelease.tempo}
-                      coverUrl={getCoverUrl(currentRelease.day, currentRelease.title)}
+coverUrl={getCoverUrl(currentRelease.day, currentRelease.storageTitle || currentRelease.title)}
                       className="w-full h-full"
                       showColorVeil 
                     />

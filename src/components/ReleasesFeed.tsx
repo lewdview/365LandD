@@ -253,7 +253,7 @@ function ReleaseCard({
           energy={release.energy}
           valence={release.valence}
           tempo={release.tempo}
-          coverUrl={getCoverUrl(release.day, release.title)}
+coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
           className="w-full h-full object-cover"
         />
         {/* Play overlay */}
@@ -379,7 +379,7 @@ function ReleaseCardSimple({
           energy={release.energy}
           valence={release.valence}
           tempo={release.tempo}
-          coverUrl={getCoverUrl(release.day, release.title)}
+coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
           className="w-full h-full object-cover"
         />
         {/* Play overlay */}

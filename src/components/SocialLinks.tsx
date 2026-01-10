@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { useStore } from '../store/useStore';
 
 const socialIcons: Record<string, { icon: string; label: string; color: string }> = {
@@ -13,10 +14,44 @@ const socialIcons: Record<string, { icon: string; label: string; color: string }
 export function SocialLinks() {
   const { data } = useStore();
   const socials = data?.socials;
+  const [newsEmail, setNewsEmail] = useState('');
+  const [newsStatus, setNewsStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   if (!socials) return null;
 
   const socialEntries = Object.entries(socials);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsEmail.trim()) return;
+
+    setNewsStatus('loading');
+    try {
+      const response = await fetch(
+        'https://pznmptudgicrmljjafex.supabase.co/functions/v1/subscribe',
+        {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: newsEmail }),
+        }
+      );
+
+      if (response.ok) {
+        setNewsStatus('success');
+        setNewsEmail('');
+        setTimeout(() => setNewsStatus('idle'), 3000);
+      } else {
+        setNewsStatus('error');
+        setTimeout(() => setNewsStatus('idle'), 3000);
+      }
+    } catch (error) {
+      console.error('Newsletter signup error:', error);
+      setNewsStatus('error');
+      setTimeout(() => setNewsStatus('idle'), 3000);
+    }
+  };
 
   return (
     <section id="connect" className="py-24 px-6 md:px-12 lg:px-16 relative overflow-hidden">
@@ -63,20 +98,31 @@ export function SocialLinks() {
         >
           <h3 className="text-2xl font-bold text-light-cream mb-2">Stay Updated</h3>
           <p className="text-light-cream/50 mb-6">Get notified for every release</p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input
               type="email"
+              value={newsEmail}
+              onChange={(e) => setNewsEmail(e.target.value)}
               placeholder="your@email.com"
+              required
               className="flex-1 px-4 py-3 bg-void-lighter border-2 border-void-lighter text-light-cream placeholder-light-cream/30 focus:border-neon-yellow outline-none transition-colors font-mono"
             />
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-6 py-3 bg-neon-yellow text-void-black font-bold uppercase tracking-wider hover:bg-neon-yellow-dark transition-colors"
+              type="submit"
+              disabled={newsStatus === 'loading'}
+              className={`px-6 py-3 font-bold uppercase tracking-wider transition-colors ${
+                newsStatus === 'success'
+                  ? 'bg-neon-yellow/50 text-void-black'
+                  : newsStatus === 'error'
+                  ? 'bg-neon-red text-light-cream'
+                  : 'bg-neon-yellow text-void-black hover:bg-neon-yellow-dark'
+              }`}
             >
-              Subscribe
+              {newsStatus === 'loading' ? '⏳' : newsStatus === 'success' ? '✓ Subscribed!' : 'Subscribe'}
             </motion.button>
-          </div>
+          </form>
         </motion.div>
       </div>
 

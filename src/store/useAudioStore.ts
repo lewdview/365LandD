@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Release } from '../types';
-import { getAudioUrl } from '../services/releaseStorage';
+import { getReleaseReadyAudioUrl } from '../services/releaseStorage';
 
 interface AudioState {
   // Current track
@@ -72,16 +72,36 @@ export const useAudioStore = create<AudioState>((set, get) => ({
       duration: 0,
     });
     
-    const primaryUrl = getAudioUrl(release.day, release.title);
+    // Primary: build releaseready bucket URL (works prod and dev if files are uploaded)
+    // This is the authoritative source once files are in the bucket
+    const primaryUrl = getReleaseReadyAudioUrl(release.day, release.storageTitle || release.title);
+    console.log(`[Audio] Loading: ${release.title} from ${primaryUrl}`);
     audioElement.src = primaryUrl;
+    audioElement.currentTime = 0;
     audioElement.load();
     
-    // Play once loaded
-    const handleCanPlay = () => {
-      audioElement.play().catch(() => set({ hasError: true }));
-      audioElement.removeEventListener('canplaythrough', handleCanPlay);
+    // Play once it's ready (either canplay or after a short delay as fallback)
+    let playAttempted = false;
+    const attemptPlay = () => {
+      if (!playAttempted) {
+        playAttempted = true;
+        audioElement.play().catch(err => {
+          console.error(`[Audio] Play failed: ${err}`);
+          set({ hasError: true });
+        });
+      }
     };
-    audioElement.addEventListener('canplaythrough', handleCanPlay);
+    
+    audioElement.addEventListener('canplay', attemptPlay, { once: true });
+    
+    // Fallback: if canplay hasn't fired within 1s, try anyway
+    const timeout = setTimeout(() => {
+      attemptPlay();
+      audioElement.removeEventListener('canplay', attemptPlay);
+    }, 1000);
+    
+    // Clean up timeout if canplay fires first
+    audioElement.addEventListener('canplay', () => clearTimeout(timeout), { once: true });
   },
 
   play: () => {

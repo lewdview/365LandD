@@ -26,6 +26,8 @@ export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [newsEmail, setNewsEmail] = useState('');
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const socials = data?.socials;
 
@@ -33,9 +35,43 @@ export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
     e.preventDefault();
     // Handle contact form submission
     console.log('Contact form:', { email, message });
+    setSubmitStatus('success');
     // Reset form
     setEmail('');
     setMessage('');
+    setTimeout(() => setSubmitStatus('idle'), 3000);
+  };
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsEmail.trim()) return;
+
+    setSubmitStatus('loading');
+    try {
+      const response = await fetch(
+        'https://pznmptudgicrmljjafex.supabase.co/functions/v1/subscribe',
+        {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: newsEmail }),
+        }
+      );
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setNewsEmail('');
+        setTimeout(() => setSubmitStatus('idle'), 3000);
+      } else {
+        setSubmitStatus('error');
+        setTimeout(() => setSubmitStatus('idle'), 3000);
+      }
+    } catch (error) {
+      console.error('Newsletter signup error:', error);
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+    }
   };
 
   return (
@@ -248,24 +284,30 @@ export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
                 <p className="text-light-cream/60 mb-6">
                   Subscribe to get notified when new releases drop.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                   <input
                     type="email"
+                    value={newsEmail}
+                    onChange={(e) => setNewsEmail(e.target.value)}
                     placeholder="your@email.com"
-                    className="flex-1 px-4 py-3 bg-void-lighter border border-void-lighter text-light-cream placeholder-light-cream/30 focus:border-current outline-none transition-colors font-mono"
+                    required
+                    disabled={submitStatus === 'loading'}
+                    className="flex-1 px-4 py-3 bg-void-lighter border border-void-lighter text-light-cream placeholder-light-cream/30 focus:border-current outline-none transition-colors font-mono disabled:opacity-50"
                   />
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-6 py-3 font-mono font-bold uppercase tracking-wider"
+                    whileHover={{ scale: submitStatus === 'loading' ? 1 : 1.05 }}
+                    whileTap={{ scale: submitStatus === 'loading' ? 1 : 0.95 }}
+                    type="submit"
+                    disabled={submitStatus === 'loading'}
+                    className="px-6 py-3 font-mono font-bold uppercase tracking-wider disabled:opacity-50"
                     style={{
-                      background: accent,
+                      background: submitStatus === 'success' ? '#10b981' : submitStatus === 'error' ? '#ef4444' : accent,
                       color: background,
                     }}
                   >
-                    Subscribe
+                    {submitStatus === 'loading' ? 'Sending...' : submitStatus === 'success' ? 'Subscribed!' : submitStatus === 'error' ? 'Try Again' : 'Subscribe'}
                   </motion.button>
-                </div>
+                </form>
               </motion.div>
             </div>
 

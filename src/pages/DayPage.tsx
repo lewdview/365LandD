@@ -84,11 +84,13 @@ export function DayPage() {
     }
   }, [data, fetchData]);
 
-  // Find release for this day
+  // Find release for this day and scroll to top
   useEffect(() => {
     if (data?.releases) {
       const found = data.releases.find(r => r.day === dayNum);
       setRelease(found || null);
+      // Scroll to top when day changes
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [data, dayNum]);
 
@@ -169,7 +171,7 @@ export function DayPage() {
   }
 
   return (
-    <div className="min-h-screen bg-void-black text-light-cream pb-40 md:pb-36">
+    <div className="min-h-screen bg-void-black text-light-cream pb-80 md:pb-72">
       <Navigation />
       <ThemeChanger />
 
@@ -185,7 +187,7 @@ export function DayPage() {
               energy={release.energy}
               valence={release.valence}
               tempo={release.tempo}
-              coverUrl={getCoverUrl(release.day, release.title)}
+coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
               className="w-full h-full object-cover"
               showColorVeil
             />
@@ -745,7 +747,7 @@ export function DayPage() {
           )}
 
           {/* Tags and links */}
-          <section className="py-12 px-6 md:px-12 lg:px-16">
+          <section className="py-12 px-6 md:px-12 lg:px-16 pb-32">
             <div className="w-full">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}

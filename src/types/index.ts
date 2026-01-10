@@ -26,6 +26,10 @@ export interface Release {
   date: string;
   fileName: string;
   title: string;
+  // Exact title as it appears in storage object names (e.g., "Dream"), used to build cover URLs
+  storageTitle?: string;
+  // Path from manifest (e.g., "audio/january/01%20-%20Dream.wav") — preferred for playback
+  manifestAudioPath?: string;
   mood: 'light' | 'dark';
   description: string;
   youtubeUrl?: string;
@@ -101,8 +105,8 @@ export interface MonthTheme {
   theme: string;
   // New living-system descriptor; replaces arc
   pattern?: string; // e.g., 'ebb→flow', 'surge', 'chaos→calm', 'calm', etc.
-  // Kept for backward compatibility with older data
-  arc?: 'LIGHT' | 'DARK' | 'MIXED' | 'MIXED→LIGHT' | 'FULL LIGHT';
+  // Arc represents the phase name: awakening, surge, chaos, shadow, flow, etc.
+  arc?: 'LIGHT' | 'DARK' | 'MIXED' | 'MIXED→LIGHT' | 'FULL LIGHT' | 'Inception' | 'Acceleration' | 'Conflict' | 'Isolation' | 'Nostalgia' | 'Reflection' | 'Reaction' | 'Numbness' | 'Awakening' | 'Grit' | 'Peak' | 'Resolution';
   emoji: string;
   description: string;
 }
@@ -120,6 +124,8 @@ export interface ReleaseData {
 // Raw song analysis from Supabase
 export interface SongAnalysis {
   id: string;
+  // Analyzer-provided canonical title (preferred for display)
+  title?: string;
   fileName: string;
   fileSize: number;
   duration: number;

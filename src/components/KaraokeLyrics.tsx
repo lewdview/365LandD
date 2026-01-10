@@ -229,8 +229,9 @@ export function KaraokeLyrics({
   const progress = currentIndex >= 0 ? ((currentIndex + 1) / words.length) * 100 : 0;
 
   // Check if lyrics have started (with 0.5s lead-in)
+  // Only show lyrics if playing AND time has reached the start
   const firstWordStart = words.length > 0 ? words[0].start : 0;
-  const hasStarted = words.length > 0 && currentTime >= firstWordStart - 0.5;
+  const hasStarted = isPlaying && words.length > 0 && currentTime >= firstWordStart - 0.5;
 
   return (
     <div className="relative w-full">

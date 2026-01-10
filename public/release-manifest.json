@@ -1,0 +1,254 @@
+{
+  "version": 1,
+  "generatedAt": "2026-01-02T00:07:39.171Z",
+  "items": [
+    {
+      "month": "january",
+      "index": 1,
+      "storageTitle": "Dream",
+      "ext": "wav",
+      "audioPath": "audio/january/01%20-%20Dream.wav",
+      "coverPath": "covers/january/01%20-%20Dream.jpg"
+    },
+    {
+      "month": "january",
+      "index": 2,
+      "storageTitle": "80s Stack",
+      "ext": "wav",
+      "audioPath": "audio/january/02%20-%2080s%20Stack.wav",
+      "coverPath": "covers/january/02%20-%2080s%20Stack.jpg"
+    },
+    {
+      "month": "january",
+      "index": 3,
+      "storageTitle": "Beauty",
+      "ext": "wav",
+      "audioPath": "audio/january/03%20-%20Beauty.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 4,
+      "storageTitle": "Be Here Boo",
+      "ext": "wav",
+      "audioPath": "audio/january/04%20-%20Be%20Here%20Boo.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 5,
+      "storageTitle": "Can't Go Back",
+      "ext": "wav",
+      "audioPath": "audio/january/05%20-%20Can't%20Go%20Back.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 6,
+      "storageTitle": "Aborted",
+      "ext": "wav",
+      "audioPath": "audio/january/06%20-%20Aborted.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 7,
+      "storageTitle": "Addicted",
+      "ext": "wav",
+      "audioPath": "audio/january/07%20-%20Addicted.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 8,
+      "storageTitle": "Backroads",
+      "ext": "wav",
+      "audioPath": "audio/january/08%20-%20Backroads.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 9,
+      "storageTitle": "Against the Grain",
+      "ext": "wav",
+      "audioPath": "audio/january/09%20-%20Against%20the%20Grain.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 10,
+      "storageTitle": "Airwaves Feat Zillick",
+      "ext": "wav",
+      "audioPath": "audio/january/10%20-%20Airwaves%20Feat%20Zillick.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 11,
+      "storageTitle": "Benefits Me",
+      "ext": "wav",
+      "audioPath": "audio/january/11%20-%20Benefits%20Me.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 12,
+      "storageTitle": "Bettersion of Me",
+      "ext": "wav",
+      "audioPath": "audio/january/12%20-%20Bettersion%20of%20Me.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 13,
+      "storageTitle": "Away Goes",
+      "ext": "mp3",
+      "audioPath": "audio/january/13%20-%20Away%20Goes.mp3",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 14,
+      "storageTitle": "Awe Ofu",
+      "ext": "wav",
+      "audioPath": "audio/january/14%20-%20Awe%20Ofu.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 15,
+      "storageTitle": "Adrift",
+      "ext": "wav",
+      "audioPath": "audio/january/15%20-%20Adrift.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 16,
+      "storageTitle": "Basic",
+      "ext": "wav",
+      "audioPath": "audio/january/16%20-%20Basic.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 17,
+      "storageTitle": "Through the Ringer",
+      "ext": "wav",
+      "audioPath": "audio/january/17%20-%20Through%20the%20Ringer.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 18,
+      "storageTitle": "Be Nuter",
+      "ext": "mp3",
+      "audioPath": "audio/january/18%20-%20Be%20Nuter.mp3",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 19,
+      "storageTitle": "A Girl",
+      "ext": "wav",
+      "audioPath": "audio/january/19%20-%20A%20Girl.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 20,
+      "storageTitle": "Believing in Just",
+      "ext": "wav",
+      "audioPath": "audio/january/20%20-%20Believing%20in%20Just.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 21,
+      "storageTitle": "Belong",
+      "ext": "mp3",
+      "audioPath": "audio/january/21%20-%20Belong.mp3",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 22,
+      "storageTitle": "Wishingwell",
+      "ext": "wav",
+      "audioPath": "audio/january/22%20-%20Wishingwell.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 23,
+      "storageTitle": "Awaits",
+      "ext": "wav",
+      "audioPath": "audio/january/23%20-%20Awaits.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 24,
+      "storageTitle": "Blackout",
+      "ext": "wav",
+      "audioPath": "audio/january/24%20-%20Blackout.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 25,
+      "storageTitle": "Brave",
+      "ext": "wav",
+      "audioPath": "audio/january/25%20-%20Brave.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 26,
+      "storageTitle": "Breaking M E",
+      "ext": "mp3",
+      "audioPath": "audio/january/26%20-%20Breaking%20M%20E.mp3",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 27,
+      "storageTitle": "Bright Day",
+      "ext": "wav",
+      "audioPath": "audio/january/27%20-%20Bright%20Day.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 28,
+      "storageTitle": "Midnight Piano",
+      "ext": "wav",
+      "audioPath": "audio/january/28%20-%20Midnight%20Piano.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 29,
+      "storageTitle": "Bye Bi",
+      "ext": "wav",
+      "audioPath": "audio/january/29%20-%20Bye%20Bi.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 30,
+      "storageTitle": "Abandon",
+      "ext": "wav",
+      "audioPath": "audio/january/30%20-%20Abandon.wav",
+      "coverPath": null
+    },
+    {
+      "month": "january",
+      "index": 31,
+      "storageTitle": "Cant Escape Mas",
+      "ext": "wav",
+      "audioPath": "audio/january/31%20-%20Cant%20Escape%20Mas.wav",
+      "coverPath": null
+    }
+  ]
+}

@@ -73,11 +73,22 @@ export function getCoverUrl(day: number, title: string): string {
 }
 
 /**
+ * Build releaseready bucket URL for audio from day and title
+ */
+export function getReleaseReadyAudioUrl(day: number, title: string): string {
+  const month = getMonthFromDay(day);
+  const paddedDay = String(day).padStart(2, '0');
+  const fileName = `${paddedDay} - ${title}.wav`;
+  return `${STORAGE_BASE}/audio/${month.toLowerCase()}/${encodeURIComponent(fileName)}`;
+}
+
+/**
  * Local fallback URL for development
  */
 export function getLocalAudioUrl(day: number, title: string): string {
   const paddedDay = String(day).padStart(2, '0');
-  return `/music/${paddedDay} - ${title}.wav`;
+  const month = getMonthFromDay(day);
+  return `/music/${month}/${paddedDay} - ${title}.wav`;
 }
 
 /**
