@@ -286,12 +286,12 @@ export function About() {
             >
               <div 
                 className="p-8 h-full transition-all duration-500 group-hover:translate-x-2 group-hover:-translate-y-2"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
-                  backdropFilter: 'blur(12px)',
-                  border: `1px solid ${i === 1 ? primary : 'rgba(255,255,255,0.1)'}`,
-                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
-                }}
+              style={{
+                background: `linear-gradient(135deg, ${primary}15 0%, ${accent}12 100%)`,
+                backdropFilter: 'blur(12px)',
+                border: `1px solid ${i === 1 ? primary : 'rgba(255,255,255,0.1)'}`,
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05)',
+              }}
               >
                 <span 
                   className="text-6xl md:text-7xl font-black block mb-2"

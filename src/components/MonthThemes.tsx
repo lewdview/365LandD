@@ -302,7 +302,7 @@ style={{ background: `linear-gradient(90deg, transparent 40%, ${(['surge','chaos
                     key={idx}
                     className="relative overflow-hidden"
                     style={{
-                      background: `linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.8) 100%)`,
+                      background: `linear-gradient(135deg, ${primary}15 0%, ${accent}12 100%)`,
                       border: isCurrent ? `2px solid ${phase.color}` : '1px solid rgba(255,255,255,0.05)',
                       boxShadow: isCurrent ? `0 0 30px ${phase.color}30` : 'none',
                     }}

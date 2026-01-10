@@ -233,7 +233,7 @@ export function DayTracker() {
             <div
               className="relative overflow-hidden"
               style={{
-                background: 'linear-gradient(145deg, rgba(45,48,72,0.7) 0%, rgba(26,28,46,0.9) 100%)',
+                background: `linear-gradient(145deg, ${primary}18 0%, ${accent}12 100%)`,
                 backdropFilter: 'blur(20px)',
                 border: `2px solid ${isLight ? accent : primary}40`,
                 boxShadow: `0 20px 60px rgba(0,0,0,0.4), 0 0 40px ${isLight ? accent : primary}10`,

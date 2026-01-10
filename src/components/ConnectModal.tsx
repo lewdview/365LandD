@@ -151,7 +151,7 @@ export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="p-8"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
+                    background: `linear-gradient(135deg, ${primary}20 0%, ${accent}15 100%)`,
                     borderLeft: `4px solid ${primary}`,
                   }}
                 >
@@ -212,7 +212,7 @@ export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
                   <div
                     className="p-6"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(45,48,72,0.4) 0%, rgba(26,28,46,0.6) 100%)',
+                      background: `linear-gradient(135deg, ${accent}20 0%, ${primary}15 100%)`,
                       borderLeft: `4px solid ${accent}`,
                     }}
                   >

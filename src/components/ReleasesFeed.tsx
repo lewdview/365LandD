@@ -330,6 +330,8 @@ function ReleaseCardSimple({
   isSelected: boolean;
   onSelect: () => void;
 }) {
+  const { currentTheme } = useThemeStore();
+  const { primary, accent } = currentTheme.colors;
   const isLight = release.mood === 'light';
 
   return (
@@ -339,7 +341,7 @@ function ReleaseCardSimple({
         isSelected ? 'ring-2 ring-neon-yellow' : ''
       }`}
       style={{
-        background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
+        background: `linear-gradient(135deg, ${primary}20 0%, ${accent}15 100%)`,
         backdropFilter: 'blur(12px)',
         boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2)',
         border: '1px solid rgba(255,255,255,0.08)',
