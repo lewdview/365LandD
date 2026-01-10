@@ -54,7 +54,7 @@ export function MonthThemes() {
         ))}
       </div>
 
-      {/* Giant scrolling background text - like footer */}
+      {/* Giant scrolling background text - OS Boot System */}
       <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 overflow-hidden pointer-events-none">
           <motion.p
             initial={{ x: '0%' }}
@@ -66,7 +66,7 @@ export function MonthThemes() {
               opacity: 0.05,
             }}
           >
-            LIVING SYSTEM • EBB ↔ FLOW • SURGE • CALIBRATE • ADAPT •
+            BOOT • CRASH • RECOVER • TRANSCEND • BOOT • CRASH • RECOVER • TRANSCEND •
           </motion.p>
       </div>
 
@@ -79,7 +79,7 @@ export function MonthThemes() {
           className="mb-16"
         >
           <span className="font-mono text-sm mb-4 block" style={{ color: accent }}>
-            // LIVING_SYSTEM_PATTERNS
+            // OS_BOOT_SEQUENCE
           </span>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
             <div>
@@ -269,7 +269,7 @@ style={{ background: `linear-gradient(90deg, transparent 40%, ${(['surge','chaos
           </div>
         </div>
 
-        {/* Arc visualization - reimagined */}
+        {/* OS Boot Sequence Progress Mapper */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -277,95 +277,82 @@ style={{ background: `linear-gradient(90deg, transparent 40%, ${(['surge','chaos
           className="mt-20 relative"
         >
           <div className="text-center mb-8">
-<span className="font-mono text-xs text-light-cream/30">// LIVING_SYSTEM</span>
+            <span className="font-mono text-xs text-light-cream/30">// OS_BOOT_PROGRESS</span>
           </div>
 
-          <div className="relative h-32 max-w-5xl mx-auto">
-            {/* Animated arc path */}
-            <svg viewBox="0 0 500 100" className="w-full h-full" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor={accent} />
-                  <stop offset="20%" stopColor={accent} />
-                  <stop offset="50%" stopColor={primary} />
-                  <stop offset="80%" stopColor={accent} />
-                  <stop offset="100%" stopColor={accent} />
-                </linearGradient>
-              </defs>
-              
-              {/* Background grid lines */}
-              {Array.from({ length: 13 }).map((_, i) => (
-                <line
-                  key={i}
-                  x1={i * (500 / 12)}
-                  y1="0"
-                  x2={i * (500 / 12)}
-                  y2="100"
-                  stroke="rgba(255,255,255,0.03)"
-                  strokeWidth="1"
-                />
-              ))}
-              
-              {/* The curve - representing emotional journey */}
-              <motion.path
-                d="M 0 70 C 40 70, 80 60, 120 45 C 160 30, 200 15, 250 10 C 300 15, 340 35, 380 55 C 420 70, 460 75, 500 70"
-                fill="none"
-                stroke="url(#arcGrad)"
-                strokeWidth="3"
-                strokeLinecap="round"
-                initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 2.5, ease: 'easeOut' }}
-              />
-
-              {/* Month markers */}
-              {data.monthThemes.map((month, i) => {
-                const x = (i / 11) * 500;
-                const y = (() => {
-                  // Approximate curve position
-                  if (i < 3) return 70 - (i * 8);
-                  if (i < 6) return 45 - ((i - 3) * 10);
-                  if (i < 9) return 15 + ((i - 6) * 15);
-                  return 55 + ((i - 9) * 5);
-                })();
-                const isCurrentMonth = currentDay >= month.dayStart && currentDay <= month.dayEnd;
+          <div className="relative max-w-5xl mx-auto">
+            {/* 4-Phase System Visualization */}
+            <div className="grid grid-cols-4 gap-2 mb-8">
+              {[
+                { label: '/BOOT_SEQUENCE', range: '1-83', icon: '💾', color: accent },
+                { label: '/CACHE_OVERFLOW', range: '84-187', icon: '⚡', color: primary },
+                { label: '/ROOT_ACCESS', range: '188-271', icon: '◼️', color: primary },
+                { label: '/THE_CLOUD', range: '272-365', icon: '☁️', color: accent },
+              ].map((phase, idx) => {
+                const phaseStart = [1, 84, 188, 272][idx];
+                const phaseEnd = [83, 187, 271, 365][idx];
+                const isPast = currentDay > phaseEnd;
+                const isCurrent = currentDay >= phaseStart && currentDay <= phaseEnd;
+                const progress = isCurrent 
+                  ? ((currentDay - phaseStart) / (phaseEnd - phaseStart)) * 100
+                  : isPast ? 100 : 0;
                 
                 return (
-                  <g key={month.month}>
-                    <circle
-                      cx={x}
-                      cy={y}
-                      r={isCurrentMonth ? 8 : 4}
-                      fill={(['surge','chaos','storm','shadow','shedding'].some(k=> (month.pattern||'').includes(k)) ? primary : accent)}
-                      opacity={isCurrentMonth ? 1 : 0.5}
-                    />
-                    {isCurrentMonth && (
-                      <circle
-                        cx={x}
-                        cy={y}
-                        r="12"
-                        fill="none"
-                        stroke={(['surge','chaos','storm','shadow','shedding'].some(k=> (month.pattern||'').includes(k)) ? primary : accent)}
-                        strokeWidth="2"
-                        opacity="0.3"
-                      >
-                        <animate attributeName="r" values="8;16;8" dur="2s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite" />
-                      </circle>
+                  <motion.div
+                    key={idx}
+                    className="relative overflow-hidden"
+                    style={{
+                      background: `linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.8) 100%)`,
+                      border: isCurrent ? `2px solid ${phase.color}` : '1px solid rgba(255,255,255,0.05)',
+                      boxShadow: isCurrent ? `0 0 30px ${phase.color}30` : 'none',
+                    }}
+                  >
+                    <div className="p-4">
+                      <div className="text-2xl mb-2">{phase.icon}</div>
+                      <div className="text-xs font-mono text-light-cream/50 mb-1">{phase.label}</div>
+                      <div className="text-xs text-light-cream/40 mb-3">{phase.range}</div>
+                      
+                      {/* Progress bar */}
+                      <div className="h-1 bg-void-black/50 rounded-full overflow-hidden">
+                        <motion.div
+                          className="h-full"
+                          style={{ background: phase.color }}
+                          initial={{ width: 0 }}
+                          animate={{ width: `${progress}%` }}
+                          transition={{ duration: 1.5, ease: 'easeOut' }}
+                        />
+                      </div>
+                      
+                      {/* Progress percentage */}
+                      <div className="text-xs font-mono mt-2" style={{ color: phase.color }}>
+                        {Math.round(progress)}%
+                      </div>
+                    </div>
+                    
+                    {/* Current indicator */}
+                    {isCurrent && (
+                      <motion.div
+                        className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full"
+                        style={{ background: phase.color }}
+                        animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      />
                     )}
-                  </g>
+                  </motion.div>
                 );
               })}
-            </svg>
+            </div>
 
-            {/* Labels */}
-            <div className="absolute inset-x-0 bottom-0 flex justify-between text-xs font-mono px-4">
-<span style={{ color: accent }}>EBB</span>
-              <span className="text-light-cream/20">|</span>
-              <span style={{ color: primary }}>SURGE</span>
-              <span className="text-light-cream/20">|</span>
-              <span style={{ color: accent }}>FLOW</span>
+            {/* System status indicator */}
+            <div className="text-center">
+              <span className="font-mono text-xs text-light-cream/30">
+                SYSTEM: {(() => {
+                  if (currentDay <= 83) return '🔵 BOOTING';
+                  if (currentDay <= 187) return '🔴 CRITICAL';
+                  if (currentDay <= 271) return '⚫ RECOVERING';
+                  return '✨ TRANSCENDING';
+                })()}
+              </span>
             </div>
           </div>
         </motion.div>
@@ -378,7 +365,7 @@ style={{ background: `linear-gradient(90deg, transparent 40%, ${(['surge','chaos
           viewport={{ once: true }}
         >
           <div className="h-px flex-1 max-w-32" style={{ background: `linear-gradient(90deg, transparent, ${primary})` }} />
-          <span className="font-mono text-xs text-light-cream/30">365_DAYS</span>
+          <span className="font-mono text-xs text-light-cream/30">365_DAY_CYCLE</span>
           <div className="h-px flex-1 max-w-32" style={{ background: `linear-gradient(90deg, ${accent}, transparent)` }} />
         </motion.div>
       </div>
