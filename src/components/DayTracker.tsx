@@ -539,6 +539,8 @@ export function DayTracker() {
             value={data?.stats.totalReleases || 0}
             icon={<WaveformIcon className="w-8 h-8 text-neon-orange" />}
             delay={0}
+            primary={primary}
+            accent={accent}
           />
           <StatCard
             label="Light Tracks"
@@ -546,6 +548,8 @@ export function DayTracker() {
             icon={<SunburstIcon className="w-8 h-8 text-neon-yellow" />}
             delay={0.1}
             color="yellow"
+            primary={primary}
+            accent={accent}
           />
           <StatCard
             label="Dark Tracks"
@@ -553,12 +557,16 @@ export function DayTracker() {
             icon={<MoonPhaseIcon className="w-8 h-8 text-neon-red" />}
             delay={0.2}
             color="red"
+            primary={primary}
+            accent={accent}
           />
           <StatCard
             label="Days Left"
             value={totalDays - currentDay}
             icon={<HourglassIcon className="w-8 h-8 text-neon-yellow-matte" />}
             delay={0.3}
+            primary={primary}
+            accent={accent}
           />
         </motion.div>
       </div>
@@ -575,18 +583,22 @@ function StatCard({
   value, 
   icon, 
   delay, 
-  color = 'default' 
+  color = 'default',
+  primary,
+  accent,
 }: { 
   label: string; 
   value: number; 
   icon: React.ReactNode; 
   delay: number;
   color?: 'default' | 'red' | 'yellow';
+  primary?: string;
+  accent?: string;
 }) {
   const borderClass = color === 'red' 
     ? 'border-neon-red-matte' 
-    : color === 'yellow' 
-      ? 'border-neon-yellow-matte' 
+    : color === 'yellow'
+      ? 'border-neon-yellow-matte'
       : 'border-void-lighter';
   
   const glowClass = color === 'red'
@@ -604,7 +616,7 @@ function StatCard({
       whileHover={{ scale: 1.05, y: -5 }}
       className={`group relative p-6 border-2 ${borderClass} ${glowClass} transition-all duration-300 overflow-hidden`}
       style={{
-        background: 'linear-gradient(135deg, rgba(45,48,72,0.4) 0%, rgba(26,28,46,0.6) 100%)',
+        background: `linear-gradient(135deg, ${primary || 'rgba(45,48,72,0.4)'}10 0%, ${accent || 'rgba(26,28,46,0.6)'}08 100%)`,
         backdropFilter: 'blur(10px)',
         boxShadow: '0 4px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)',
       }}
