@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { useAudioStore } from '../store/useAudioStore';
-import { useEffect, useRef, useState, useCallback } from 'react';
-import gsap from 'gsap';
+import { useState, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, ChevronDown, Play, Clock, Music, Calendar } from 'lucide-react';
 import { CoverImage } from './GenerativeCover';
 import { getCoverUrl } from '../services/releaseStorage';
@@ -133,7 +132,6 @@ export function DayTracker() {
   const { currentTheme } = useThemeStore();
   const { loadAndPlay } = useAudioStore();
   const navigate = useNavigate();
-  const progressRef = useRef<SVGCircleElement>(null);
   const [expandedInfo, setExpandedInfo] = useState(false);
   
   const handlePlayClick = useCallback((e: React.MouseEvent) => {
@@ -149,18 +147,6 @@ export function DayTracker() {
   const { primary, accent, background } = currentTheme.colors;
   const totalDays = data?.project.totalDays || 365;
   const progress = (currentDay / totalDays) * 100;
-  const circumference = 2 * Math.PI * 45; // Smaller ring
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
-
-  useEffect(() => {
-    if (progressRef.current) {
-      gsap.to(progressRef.current, {
-        strokeDashoffset,
-        duration: 2,
-        ease: 'power3.out',
-      });
-    }
-  }, [strokeDashoffset]);
 
   // Get today's release and navigation
   const todaysRelease = data?.releases.find(r => r.day === currentDay);
@@ -260,50 +246,56 @@ export function DayTracker() {
               />
 
               {/* Header with date and progress */}
+              <div className="-mx-6 -mt-6 mb-0">
+                {/* Full-width OS Boot Progress Bar */}
+                <div className="h-1.5 bg-void-black overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  <motion.div
+                    className="h-full"
+                    style={{
+                      background: `linear-gradient(90deg, ${isLight ? accent : primary}, ${isLight ? primary : accent})`,
+                      boxShadow: `0 0 20px ${isLight ? accent : primary}80`,
+                    }}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 2, ease: [0.34, 1.56, 0.64, 1] }}
+                  />
+                </div>
+              </div>
+              
               <div className="p-6 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5">
-                <div className="flex items-center gap-4">
-                  {/* Mini progress ring */}
-                  <div className="relative">
-                    <svg width="60" height="60" className="transform -rotate-90">
-                      <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="4" />
-                      <circle
-                        ref={progressRef}
-                        cx="30" cy="30" r="25"
-                        fill="none"
-                        stroke={isLight ? accent : primary}
-                        strokeWidth="4"
-                        strokeLinecap="round"
-                        strokeDasharray={circumference}
-                        strokeDashoffset={circumference}
-                      />
-                    </svg>
-                    <span className="absolute inset-0 flex items-center justify-center text-sm font-bold" style={{ color: isLight ? accent : primary }}>
-                      {currentDay}
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-light-cream/40" />
+                    <span className="font-mono text-light-cream/60 text-sm">
+                      {formatDisplayDate(currentDay)}
                     </span>
                   </div>
-                  
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-light-cream/40" />
-                      <span className="font-mono text-light-cream/60 text-sm">
-                        {formatDisplayDate(currentDay)}
+                  <div className="flex items-center gap-2">
+                    <span 
+                      className="px-2 py-0.5 text-xs font-mono font-bold"
+                      style={{ 
+                        background: `${isLight ? accent : primary}30`,
+                        color: isLight ? accent : primary,
+                      }}
+                    >
+                      DAY {String(currentDay).padStart(3, '0')}
+                    </span>
+                    {currentMonthTheme && (
+                      <span className="text-xs text-light-cream/40">
+                        {currentMonthTheme.emoji} {currentMonthTheme.theme}
                       </span>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Progress percentage indicator */}
+                <div className="flex items-center gap-4">
+                  <div className="text-right">
+                    <div className="text-sm font-mono text-light-cream/60">
+                      PROGRESS
                     </div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span 
-                        className="px-2 py-0.5 text-xs font-mono font-bold"
-                        style={{ 
-                          background: `${isLight ? accent : primary}30`,
-                          color: isLight ? accent : primary,
-                        }}
-                      >
-                        DAY {String(currentDay).padStart(3, '0')}
-                      </span>
-                      {currentMonthTheme && (
-                        <span className="text-xs text-light-cream/40">
-                          {currentMonthTheme.emoji} {currentMonthTheme.theme}
-                        </span>
-                      )}
+                    <div className="text-2xl font-bold" style={{ color: isLight ? accent : primary }}>
+                      {Math.round(progress)}%
                     </div>
                   </div>
                 </div>
