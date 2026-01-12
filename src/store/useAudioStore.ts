@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Release } from '../types';
-import { getReleaseReadyAudioUrl } from '../services/releaseStorage';
+import { getReleaseAudioUrlVariations, getLocalAudioUrls } from '../services/releaseStorage';
 
 interface AudioState {
   // Current track
@@ -72,36 +72,83 @@ export const useAudioStore = create<AudioState>((set, get) => ({
       duration: 0,
     });
     
-    // Primary: build releaseready bucket URL (works prod and dev if files are uploaded)
-    // This is the authoritative source once files are in the bucket
-    const primaryUrl = getReleaseReadyAudioUrl(release.day, release.storageTitle || release.title);
-    console.log(`[Audio] Loading: ${release.title} from ${primaryUrl}`);
-    audioElement.src = primaryUrl;
-    audioElement.currentTime = 0;
-    audioElement.load();
+    const title = release.storageTitle || release.title;
     
-    // Play once it's ready (either canplay or after a short delay as fallback)
+    // Build URL list: prioritize manifestAudioPath if available, then try variations
+    const urlsToTry: string[] = [];
+    
+    // If release has a manifest audio path (from fallback data), use it first
+    if (release.manifestAudioPath) {
+      urlsToTry.push(`/music/${release.manifestAudioPath}`);
+      console.log(`[Audio] Using manifest path: ${release.manifestAudioPath}`);
+    }
+    
+    // Then add remote variations (releaseready bucket)
+    urlsToTry.push(...getReleaseAudioUrlVariations(release.day, title));
+    
+    // Finally add local file variations as fallback
+    urlsToTry.push(...getLocalAudioUrls(release.day, title));
+    
+    console.log(`[Audio] Loading: ${release.title}, trying ${urlsToTry.length} sources`);
+    
+    let currentUrlIndex = 0;
     let playAttempted = false;
+    
+    const tryNextUrl = () => {
+      if (currentUrlIndex >= urlsToTry.length) {
+        console.error(`[Audio] All formats failed for: ${release.title}`);
+        set({ hasError: true, isLoading: false });
+        return;
+      }
+      
+      const url = urlsToTry[currentUrlIndex];
+      console.log(`[Audio] Trying (${currentUrlIndex + 1}/${urlsToTry.length}): ${url}`);
+      audioElement.src = url;
+      audioElement.currentTime = 0;
+      audioElement.load();
+      currentUrlIndex++;
+    };
+    
     const attemptPlay = () => {
       if (!playAttempted) {
         playAttempted = true;
-        audioElement.play().catch(err => {
-          console.error(`[Audio] Play failed: ${err}`);
-          set({ hasError: true });
+        audioElement.play().catch(() => {
+          if (currentUrlIndex < urlsToTry.length) {
+            console.warn('[Audio] Play failed, trying next format');
+            tryNextUrl();
+          } else {
+            set({ hasError: true });
+          }
         });
       }
     };
     
-    audioElement.addEventListener('canplay', attemptPlay, { once: true });
-    
-    // Fallback: if canplay hasn't fired within 1s, try anyway
-    const timeout = setTimeout(() => {
-      attemptPlay();
+    const handleError = () => {
       audioElement.removeEventListener('canplay', attemptPlay);
-    }, 1000);
+      audioElement.removeEventListener('error', handleError);
+      if (currentUrlIndex < urlsToTry.length) {
+        tryNextUrl();
+      } else {
+        set({ hasError: true, isLoading: false });
+      }
+    };
     
-    // Clean up timeout if canplay fires first
+    audioElement.addEventListener('canplay', attemptPlay, { once: true });
+    audioElement.addEventListener('error', handleError, { once: true });
+    
+    const timeout = setTimeout(() => {
+      audioElement.removeEventListener('canplay', attemptPlay);
+      audioElement.removeEventListener('error', handleError);
+      if (currentUrlIndex < urlsToTry.length) {
+        tryNextUrl();
+      } else {
+        set({ hasError: true, isLoading: false });
+      }
+    }, 2000);
+    
     audioElement.addEventListener('canplay', () => clearTimeout(timeout), { once: true });
+    
+    tryNextUrl();
   },
 
   play: () => {

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 interface GlitchTextProps {
@@ -8,81 +8,94 @@ interface GlitchTextProps {
 }
 
 export function GlitchText({ text, className = '', glitchIntensity = 'medium' }: GlitchTextProps) {
+  const controls = useAnimation();
   const [isGlitching, setIsGlitching] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsGlitching(true);
-      setTimeout(() => setIsGlitching(false), 200);
-    }, glitchIntensity === 'high' ? 2000 : glitchIntensity === 'medium' ? 4000 : 6000);
+  // Configuration based on intensity
+  const config = {
+    low: { interval: 4000, duration: 0.2 },
+    medium: { interval: 2500, duration: 0.4 },
+    high: { interval: 1000, duration: 0.6 },
+  }[glitchIntensity];
 
-    return () => clearInterval(interval);
-  }, [glitchIntensity]);
+  useEffect(() => {
+    const triggerGlitch = async () => {
+      if (Math.random() > 0.7) { // 30% chance to skip a cycle for randomness
+        setIsGlitching(true);
+        await controls.start({
+          x: [0, -2, 2, -1, 1, 0],
+          y: [0, 1, -1, 0],
+          transition: { duration: 0.2 }
+        });
+        setIsGlitching(false);
+      }
+    };
+
+    const intervalId = setInterval(triggerGlitch, config.interval);
+    return () => clearInterval(intervalId);
+  }, [config.interval, controls]);
 
   return (
     <div className={`relative inline-block ${className}`}>
-      {/* Main text */}
-      <span className="relative z-10">{text}</span>
-      
-      {/* Red glitch layer */}
+      {/* 1. THE BASE TEXT - Always visible, high contrast, solid */}
+      <span className="relative z-10 block opacity-100 text-light-cream">
+        {text}
+      </span>
+
+      {/* 2. GLITCH LAYER - RED (Left Shift) */}
       <motion.span
-        className="absolute top-0 left-0 text-neon-red opacity-80"
-        style={{ 
-          clipPath: isGlitching ? 'polygon(0 0, 100% 0, 100% 45%, 0 45%)' : 'none',
-        }}
-        animate={{
-          x: isGlitching ? [-2, 2, -1, 0] : 0,
-          opacity: isGlitching ? [0.8, 0.9, 0.7, 0] : 0,
-        }}
-        transition={{ duration: 0.2 }}
+        className="absolute top-0 left-0 z-0 text-neon-red opacity-0 mix-blend-screen"
+        animate={isGlitching ? {
+          opacity: [0, 0.8, 0, 0.5, 0],
+          x: [-2, -4, 0, -2, 0],
+          y: [0, 1, 0]
+        } : { opacity: 0 }}
+        transition={{ duration: config.duration, ease: "linear" }}
+        style={{ clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)' }} // Top half only
       >
         {text}
       </motion.span>
-      
-      {/* Yellow glitch layer */}
+
+      {/* 3. GLITCH LAYER - CYAN/BLUE (Right Shift) */}
       <motion.span
-        className="absolute top-0 left-0 text-neon-yellow opacity-80"
-        style={{ 
-          clipPath: isGlitching ? 'polygon(0 55%, 100% 55%, 100% 100%, 0 100%)' : 'none',
-        }}
-        animate={{
-          x: isGlitching ? [2, -2, 1, 0] : 0,
-          opacity: isGlitching ? [0.8, 0.9, 0.7, 0] : 0,
-        }}
-        transition={{ duration: 0.2 }}
+        className="absolute top-0 left-0 z-0 text-neon-cyan opacity-0 mix-blend-screen"
+        animate={isGlitching ? {
+          opacity: [0, 0.8, 0, 0.5, 0],
+          x: [2, 4, 0, 2, 0],
+          y: [0, -1, 0]
+        } : { opacity: 0 }}
+        transition={{ duration: config.duration, delay: 0.05, ease: "linear" }}
+        style={{ clipPath: 'polygon(0 55%, 100% 55%, 100% 100%, 0 100%)' }} // Bottom half only
       >
         {text}
       </motion.span>
+
+      {/* 4. GLITCH LAYER - WHITE SLICE (Horizontal Cut) */}
+      <motion.span
+        className="absolute top-0 left-0 z-20 text-white opacity-0"
+        animate={isGlitching ? {
+          opacity: [0, 1, 0],
+          x: [-5, 5, -5],
+        } : { opacity: 0 }}
+        transition={{ duration: 0.1, delay: 0.1 }}
+        style={{ 
+          clipPath: 'polygon(0 40%, 100% 40%, 100% 60%, 0 60%)', // Middle slice
+          textShadow: '0 0 5px white'
+        }} 
+      >
+        {text}
+      </motion.span>
+
+      {/* 5. BACKGROUND NOISE BAR (Occasional rectangular block) */}
+      <motion.div
+        className="absolute top-1/2 left-0 w-full h-1 bg-white mix-blend-overlay pointer-events-none"
+        animate={isGlitching ? {
+          opacity: [0, 0.5, 0],
+          scaleX: [0, 1.5, 0],
+          y: [-10, 10, 0]
+        } : { opacity: 0 }}
+        transition={{ duration: 0.15 }}
+      />
     </div>
   );
-}
-
-// Scramble text effect
-export function ScrambleText({ text, className = '' }: { text: string; className?: string }) {
-  const [displayText, setDisplayText] = useState(text);
-  const chars = '!<>-_\\/[]{}—=+*^?#________';
-
-  useEffect(() => {
-    let iteration = 0;
-    const interval = setInterval(() => {
-      setDisplayText(
-        text
-          .split('')
-          .map((_char, index) => {
-            if (index < iteration) return text[index];
-            return chars[Math.floor(Math.random() * chars.length)];
-          })
-          .join('')
-      );
-
-      if (iteration >= text.length) {
-        clearInterval(interval);
-      }
-      iteration += 1 / 3;
-    }, 30);
-
-    return () => clearInterval(interval);
-  }, [text]);
-
-  return <span className={`font-mono ${className}`}>{displayText}</span>;
 }

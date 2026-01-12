@@ -1,0 +1,629 @@
+#!/usr/bin/env node
+import fs from 'fs';
+import path from 'path';
+
+const ROOT = process.cwd();
+const MUSIC_DIR = '/Volumes/extremeDos/temp music';
+const RELEASE_BASE = path.join(ROOT, '365-releases');
+const AUDIO_BASE = path.join(RELEASE_BASE, 'audio');
+
+// The definitive 365-day song list organized by phase
+const SONG_LIST = {
+  BOOT_SEQUENCE: [
+    "Were Going Crazy World",
+    "Shhh Bitch",
+    "You Like Steve Earle",
+    "Were Only Humanmd7",
+    "Swooped COUPE",
+    "Ss Take One",
+    "Devour",
+    "Poetry",
+    "Without You",
+    "// PERMISSION_DENIED [LOG_108]",
+    "Getting Better",
+    "LANDR Want It Any Other Way Open Low",
+    "Dashboard of Life",
+    "Undercoa 4",
+    "What Bryan Was Working on Last",
+    "Prevail Scriber",
+    "What It Is",
+    "Goods 4 Me",
+    "Through the Ringer",
+    "Figures",
+    "Highup",
+    "// REBOOT_SEQUENCE [LOG_109]",
+    "Come on Dance",
+    "Be Here Boo",
+    "Grenada",
+    "Brave",
+    "Talkin Nody",
+    "LANDR Smoothie Balanced Medium",
+    "Cursed 2ndmix",
+    "To Be a Man",
+    "Scars in My Mind",
+    "Whatuwant",
+    "Bettersion of Me",
+    "Consation W",
+    "The Light",
+    "// 404_SOUL_NOT_FOUND [LOG_101]",
+    "Camebackaroudnd",
+    "Eco N Time",
+    "Up All Night",
+    "Way Eight Fore Dat Storm Level",
+    "Be Nuter",
+    "Xzibit Forever",
+    "Pit What I Got",
+    "Not Good Enough",
+    "LANDR a Way Out Mas Balanced Medium",
+    "Mikeym",
+    "Filthy",
+    "Unforgettable",
+    "Dreams Again",
+    "// DAEMON_RUNNING [LOG_102]",
+    "Change Perception",
+    "Bitter Better",
+    "The End",
+    "Tryied",
+    "Tried N True",
+    "Can't Go Back",
+    "Momentofexctasy",
+    "Awaits",
+    "Reality",
+    "Moment of Exctasy",
+    "Re",
+    "Friendzone",
+    "Never Ends",
+    "// CONNECTION_RESET [LOG_100]",
+    "Untied",
+    "Luckyland",
+    "Letitgo",
+    "From the Earth to the Sea Flipped Mask",
+    "Save Tonight",
+    "Sau",
+    "A Girl",
+    "Isitthathard",
+    "Kurtcobain",
+    "Low Life",
+    "// PING_TIMEOUT [LOG_106]",
+    "Benefits Me",
+    "Rabbit Hole",
+    "Choppmed of F Ya Feel Rough'",
+    "Lightburst",
+    "Monetary",
+    "Get Ghost",
+    "// ADMIN_ACCESS_REQUIRED [LOG_107]",
+    "Jacy B"
+  ],
+  CACHE_OVERFLOW: [
+    "LANDR Self Dick Mas Balanced Medium",
+    "Odosed",
+    "Your Choice",
+    "LANDR Scars in My Mind M Balanced Medium",
+    "Cheat Code",
+    "Peacefullypeace",
+    "Killing Me",
+    "// UPLOADING_CONSCIOUSNESS... [LOG_134]",
+    "// KERNEL_PANIC [LOG_135]",
+    "// INSTALLING_UPDATES... [LOG_136]",
+    "Pop",
+    "// 404_SOUL_NOT_FOUND [LOG_124]",
+    "Dream",
+    "Cold As Ice",
+    "Unifying",
+    "// DAEMON_RUNNING [LOG_128]",
+    "LANDR Here I Go Again 1 Warm High",
+    "Demon Soul",
+    "// ADMIN_ACCESS_REQUIRED [LOG_114]",
+    "My Way",
+    "LANDR Dance Floor Balanced Medium",
+    "Gasp",
+    "No Matter the Pain",
+    "// DECRYPTING_FILES... [LOG_119]",
+    "// UPLOADING_CONSCIOUSNESS... [LOG_138]",
+    "Wish I Was Dead",
+    "LANDR-stay and i go-Balanced-Medium",
+    "// MEMORY_LEAK [LOG_126]",
+    "Double Agent",
+    "One Bye One",
+    "// UPLOADING_CONSCIOUSNESS... [LOG_131]",
+    "A Fine Sin Remix",
+    "Quite the Lie 1",
+    "LANDR Finding HOME Neut Balanced Medium",
+    "Get High with Me",
+    "// END_OF_LINE [LOG_121]",
+    "Self Dick",
+    "Tainted Gospal",
+    "// SYSTEM_OVERHEAT [LOG_118]",
+    "Burn It to the Ground Gapless",
+    "Te Amo",
+    "// PING_TIMEOUT [LOG_117]",
+    "Why U Lie",
+    "Pure Popped",
+    "// TRACING_ROUTE_TO_GOD [LOG_112]",
+    "Cant Escape Mas",
+    "Airwaves Feat Zillick",
+    "// SYNTAX_ERROR_IN_LIFE [LOG_110]",
+    "Oldenside of You",
+    "// SYNTAX_ERROR_IN_LIFE [LOG_120]",
+    "Bye Bi",
+    "// BUFFERING_REALITY [LOG_133]",
+    "Get Naughty",
+    "Little Light",
+    "OLB Remix 2",
+    "Believing in Just",
+    "Come Around Persiuin",
+    "Nostic Heresy",
+    "If You Come Along",
+    "Come Together",
+    "// REBOOT_SEQUENCE [LOG_111]",
+    "// TRACING_ROUTE_TO_GOD [LOG_137]",
+    "Grin Nada",
+    "Get It in",
+    "Breaking M E",
+    "LANDR Burning It Down Co Balanced Medium",
+    "// FILE_CORRUPTED [LOG_122]",
+    "// PACKET_LOSS_DETECTED [LOG_130]",
+    "Aborted",
+    "// DISK_FRAGMENTATION [LOG_123]",
+    "// CONNECTION_RESET [LOG_139]",
+    "Fast Life",
+    "Shawty Not a Hottie",
+    "// MEMORY_LEAK [LOG_132]",
+    "Starshining",
+    "On Sight",
+    "// FILE_CORRUPTED [LOG_113]",
+    "Wishingwell",
+    "// PACKET_LOSS_DETECTED [LOG_125]",
+    "World Ending",
+    "OLB Remix",
+    "LANDR This H Balanced Medium",
+    "Bright Day",
+    "Natural Disaster",
+    "Abandon",
+    "echoes.of.the.abyss.votd",
+    "// REBOOT_SEQUENCE [LOG_115]",
+    "Addicted",
+    "Left on Red",
+    "// SYSTEM_OVERHEAT [LOG_127]",
+    "LANDR Crying Lil Bitch Balanced Medium REV",
+    "Monday Ta Wenday Ta Friday",
+    "Dirt Road",
+    "Leave Me Dead",
+    "// PERMISSION_DENIED [LOG_116]",
+    "Fly Away Again",
+    "Malibu",
+    "Loss",
+    "ONE LAST Breath 3",
+    "Against the Grain",
+    "You're Alwats on My Mind",
+    "Trippie",
+    "Life Succubus",
+    "Afinesin"
+  ],
+  ROOT_ACCESS: [
+    "Flicker Like Fire",
+    "Fundrip",
+    "Sometimes",
+    "// MEMORY_LEAK [LOG_149]",
+    "Isolkated",
+    "Spaces",
+    "To Myself",
+    "Standing on E",
+    "Buck Im Here Yto Fuck",
+    "Riddle",
+    "Hhhhhhhhhhhhh",
+    "Surrender to U",
+    "// END_OF_LINE [LOG_145]",
+    "Backroads",
+    "LANDR Take Me Away Take Blenmd Warm Low",
+    "Missing You",
+    "Maybe Baby Itts on Me",
+    "True Lies",
+    "Find Her Demo Entire Mix",
+    "4u",
+    "Away Goes",
+    "Emotuional Healing Mas",
+    "Feel It",
+    "// PACKET_LOSS_DETECTED [LOG_146]",
+    "Nostalgic Energby",
+    "Nick Snuff M3",
+    "Wasted by What",
+    "What Is God Withoot Me",
+    "Paid the World Back Beat",
+    "LANDR If You Leave0 Open Low",
+    "// FILE_CORRUPTED [LOG_140]",
+    "Flowers of Us",
+    "Cant Have",
+    "Footsteps",
+    "// SYNTAX_ERROR_IN_LIFE [LOG_144]",
+    "// FILE_CORRUPTED [LOG_147]",
+    "Complicated S",
+    "Speed of Pain",
+    "Unloved",
+    "// CONNECTION_RESET [LOG_141]",
+    "Faint Copy",
+    "// DAEMON_RUNNING [LOG_148]",
+    "Live Forefeat Xzibit",
+    "// SYSTEM_OVERHEAT [LOG_143]",
+    "Ngbt1",
+    "Dreams Shattered",
+    "Maybe Baby",
+    "Diamond Death",
+    "A Stop in Time",
+    "Dont Ghost Me",
+    "// TRACING_ROUTE_TO_GOD [LOG_142]",
+    "Poth",
+    "Sicko",
+    "Adrift",
+    "Dark Thoughts",
+    "Mystery",
+    "Message 4 K Comp M1",
+    "// PERMISSION_DENIED [LOG_150]",
+    "Hemmorage",
+    "Monetary T",
+    "D and D",
+    "Blackout",
+    "Sirens",
+    "Running",
+    "Fuck B",
+    "Get Oyou",
+    "Only Time Will Tell",
+    "Far Away",
+    "Hades",
+    "Midnight Piano",
+    "Johnny DEMON",
+    "Sunset",
+    "Purple Sky",
+    "Darewell",
+    "Alien 2nd Mix",
+    "Purpose",
+    "Grave Robber",
+    "Too Late Fawy",
+    "Clebit",
+    "LANDR Hemmorage 1 Open Medium",
+    "Sweater",
+    "What You Know",
+    "Falling Apart",
+    "PULSE"
+  ],
+  THE_CLOUD: [
+    "Say It Up",
+    "Awe Ofu",
+    "Outlast",
+    "// BUFFERING_REALITY [LOG_164]",
+    "// BUFFERING_REALITY [LOG_162]",
+    "Starlight",
+    "Prevail",
+    "Hatedown",
+    "Falllin",
+    "Haert N Soul Collide",
+    "Exhale",
+    "// END_OF_LINE [LOG_166]",
+    "My Sacrifices",
+    "// KERNEL_PANIC [LOG_156]",
+    "// KERNEL_PANIC [LOG_158]",
+    "// INSTALLING_UPDATES... [LOG_163]",
+    "LANDR Love for You Balanced Medium",
+    "Beat 2 O",
+    "No Place 2 Hide",
+    "Chunky",
+    "// REBOOT_SEQUENCE [LOG_161]",
+    "You Know You 2e",
+    "Wysiwyg",
+    "Sing to Me",
+    "Open All Night",
+    "Trip",
+    "Burning It Down Comd2",
+    "It Wont Take Lolng",
+    "// SYNTAX_ERROR_IN_LIFE [LOG_167]",
+    "// UPLOADING_CONSCIOUSNESS... [LOG_155]",
+    "LANDR Sweet You Warm Medium",
+    "// ADMIN_ACCESS_REQUIRED [LOG_151]",
+    "Locked Up",
+    "Negonnas Stop Loving You",
+    "// INSTALLING_UPDATES... [LOG_154]",
+    "Hard to Ignore",
+    "Open Wide",
+    "Be Altm",
+    "It's Gonna Be Alright",
+    "// PING_TIMEOUT [LOG_153]",
+    "Feel Good",
+    "Wrap That",
+    "// DECRYPTING_FILES... [LOG_152]",
+    "Trip Into Background",
+    "Entropy",
+    "Odds",
+    "Go Get It",
+    "Come Along with Me",
+    "She Said Lil Richard Where Da Fux U",
+    "Dont Blame U",
+    "Yourbody",
+    "// ADMIN_ACCESS_REQUIRED [LOG_165]",
+    "Advice 2",
+    "Climax",
+    "// REBOOT_SEQUENCE [LOG_169]",
+    "Summers Ending",
+    "// DAEMON_RUNNING [LOG_159]",
+    "80s Stack",
+    "// PING_TIMEOUT [LOG_168]",
+    "So Done",
+    "// END_OF_LINE [LOG_160]",
+    "My Past",
+    "You Got Me",
+    "Bb",
+    "// 404_SOUL_NOT_FOUND [LOG_157]",
+    "Climb to You",
+    "Basic",
+    "No Service",
+    "// TRACING_ROUTE_TO_GOD [LOG_170]",
+    "When I Say Forever",
+    "LANDR Childhood Warm Low",
+    "ONLY SON",
+    "Beauty",
+    "Climbing 2u",
+    "Spippin",
+    "Luckyland Reprise",
+    "Alf"
+  ]
+};
+
+const MONTHS = [
+  'january', 'february', 'march', 'april', 'may', 'june',
+  'july', 'august', 'september', 'october', 'november', 'december'
+];
+
+const MONTH_OFFSETS = {
+  january: 0, february: 31, march: 59, april: 90, may: 120, june: 151,
+  july: 181, august: 212, september: 243, october: 273, november: 304, december: 334
+};
+
+function getMonthForDay(day) {
+  for (const [month, offset] of Object.entries(MONTH_OFFSETS)) {
+    const daysInMonth = month === 'february' ? 29 : ['april', 'june', 'september', 'november'].includes(month) ? 30 : 31;
+    if (day > offset && day <= offset + daysInMonth) {
+      return month;
+    }
+  }
+  return 'january';
+}
+
+function normalizeForMatch(str) {
+  return str.toLowerCase().trim().replace(/_/g, ' ');
+}
+
+function levenshteinDistance(a, b) {
+  const m = a.length;
+  const n = b.length;
+  const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+  
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+      }
+    }
+  }
+  return dp[m][n];
+}
+
+function findBestMatch(songTitle) {
+  if (!fs.existsSync(MUSIC_DIR)) return null;
+  
+  const files = fs.readdirSync(MUSIC_DIR)
+    .filter(f => /\.(wav|mp3|flac|m4a)$/i.test(f) && !f.startsWith('._'));
+  
+  const normalized = normalizeForMatch(songTitle);
+  
+  // 1. Exact match (case-insensitive, underscore/space flexible)
+  let match = files.find(f => normalizeForMatch(f.replace(/\.\w+$/, '')) === normalized);
+  if (match) return match;
+  
+  // 2. Contains all significant words (3+ chars)
+  const words = normalized.split(/\s+/).filter(w => w.length > 2);
+  if (words.length > 0) {
+    match = files.find(f => {
+      const fname = normalizeForMatch(f.replace(/\.\w+$/, ''));
+      return words.every(w => fname.includes(w));
+    });
+    if (match) return match;
+  }
+  
+  // 3. Fuzzy match using Levenshtein distance
+  let bestScore = Infinity;
+  let bestFile = null;
+  const maxDist = Math.ceil(normalized.length * 0.4);
+  
+  for (const f of files) {
+    const fname = normalizeForMatch(f.replace(/\.\w+$/, ''));
+    const dist = levenshteinDistance(normalized, fname);
+    
+    if (dist < bestScore && dist <= maxDist) {
+      bestScore = dist;
+      bestFile = f;
+    }
+  }
+  
+  return bestFile;
+}
+
+const ERROR_LOG_TEMPLATES = [
+  "SYSTEM_CRASH",
+  "MEMORY_OVERFLOW",
+  "RECURSIVE_LOOP",
+  "STACK_TRACE",
+  "NULL_POINTER",
+  "SEGMENTATION_FAULT",
+  "BUFFER_OVERFLOW",
+  "THREAD_DEADLOCK",
+  "HEAP_CORRUPTION",
+  "INFINITE_RECURSION",
+  "MUTEX_POISONED",
+  "PIPE_BROKEN",
+  "SIGNAL_ABORT",
+  "ACCESS_VIOLATION",
+  "PAGE_FAULT",
+  "SIGSEGV_RECEIVED",
+  "CORE_DUMPED",
+  "PANIC_MODE_ACTIVATED",
+  "CRITICAL_FAILURE",
+  "FATAL_ERROR",
+  "DATA_CORRUPTION",
+  "FILESYSTEM_ERROR",
+  "DEVICE_OFFLINE",
+  "NETWORK_TIMEOUT",
+  "CONNECTION_LOST",
+  "HANDSHAKE_FAILED",
+  "CERTIFICATE_EXPIRED",
+  "AUTH_FAILED",
+  "PERMISSION_REVOKED",
+  "ACCESS_DENIED"
+];
+
+let errorLogIndex = 0;
+
+function generateErrorMessage(day) {
+  const template = ERROR_LOG_TEMPLATES[errorLogIndex % ERROR_LOG_TEMPLATES.length];
+  errorLogIndex++;
+  return `// ${template} [LOG_${String(day).padStart(3, '0')}]`;
+}
+
+console.log('🎵 Matching definitive 365 song list to temp folder...\n');
+
+// Create directory structure
+for (const month of MONTHS) {
+  const monthDir = path.join(AUDIO_BASE, month);
+  fs.mkdirSync(monthDir, { recursive: true });
+}
+
+// Build a map of all available files for faster lookup
+const allFiles = fs.readdirSync(MUSIC_DIR)
+  .filter(f => /\.(wav|mp3|flac|m4a)$/i.test(f) && !f.startsWith('._'));
+
+const usedFiles = new Set();
+
+function findBestMatchWithTracking(songTitle) {
+  let bestFile = null;
+  let bestScore = Infinity;
+  
+  const normalized = normalizeForMatch(songTitle);
+  
+  // 1. Exact match (case-insensitive, underscore/space flexible)
+  let match = allFiles.find(f => normalizeForMatch(f.replace(/\.\w+$/, '')) === normalized && !usedFiles.has(f));
+  if (match) {
+    usedFiles.add(match);
+    return match;
+  }
+  
+  // 2. Contains all significant words (3+ chars)
+  const words = normalized.split(/\s+/).filter(w => w.length > 2);
+  if (words.length > 0) {
+    match = allFiles.find(f => {
+      if (usedFiles.has(f)) return false;
+      const fname = normalizeForMatch(f.replace(/\.\w+$/, ''));
+      return words.every(w => fname.includes(w));
+    });
+    if (match) {
+      usedFiles.add(match);
+      return match;
+    }
+  }
+  
+  // 3. Fuzzy match using Levenshtein distance (with deduplication)
+  const maxDist = Math.ceil(normalized.length * 0.35);
+  
+  for (const f of allFiles) {
+    if (usedFiles.has(f)) continue;
+    
+    const fname = normalizeForMatch(f.replace(/\.\w+$/, ''));
+    const dist = levenshteinDistance(normalized, fname);
+    
+    if (dist < bestScore && dist <= maxDist) {
+      bestScore = dist;
+      bestFile = f;
+    }
+  }
+  
+  if (bestFile) {
+    usedFiles.add(bestFile);
+    return bestFile;
+  }
+  
+  return null;
+}
+
+// Flatten all songs from all phases
+const allSongs = [];
+for (const [phase, songs] of Object.entries(SONG_LIST)) {
+  allSongs.push(...songs);
+}
+
+// Fill remaining days to reach 365 with generated error messages
+while (allSongs.length < 365) {
+  allSongs.push(generateErrorMessage(allSongs.length + 1));
+}
+
+let day = 1;
+let matched = 0;
+let created = 0;
+const noMatches = [];
+
+// Process all 365 days
+for (const songTitle of allSongs) {
+    const month = getMonthForDay(day);
+    const offset = MONTH_OFFSETS[month];
+    const dayInMonth = day - offset;
+    
+    // Try to find the song in temp folder (with tracking)
+    const srcFile = findBestMatchWithTracking(songTitle);
+    
+    if (srcFile) {
+      const srcPath = path.join(MUSIC_DIR, srcFile);
+      const ext = srcFile.split('.').pop();
+      
+      // Sanitize title for filename
+      const safeTitle = songTitle.replace(/[/\\:*?"<>|]/g, '_').substring(0, 100);
+      const destFileName = `${String(dayInMonth).padStart(2, '0')} - ${safeTitle}.${ext}`;
+      const destPath = path.join(AUDIO_BASE, month, destFileName);
+      
+      try {
+        fs.copyFileSync(srcPath, destPath);
+        matched++;
+        if (day % 30 === 0 || day === 1) {
+          console.log(`✓ Day ${day}: "${songTitle}"`);
+        }
+      } catch (err) {
+        console.error(`✗ Failed to copy day ${day}: ${err.message}`);
+      }
+    } else {
+      // For unmatched songs from the list, use the song title itself (may be an error message)
+      const safeTitle = songTitle.replace(/[/\\:*?"<>|]/g, '_');
+      const destFileName = `${String(dayInMonth).padStart(2, '0')} - ${safeTitle}.wav`;
+      const destPath = path.join(AUDIO_BASE, month, destFileName);
+      fs.writeFileSync(destPath, ''); // Empty placeholder
+      created++;
+      noMatches.push(`Day ${day}: ${songTitle}`);
+      if (created <= 5) {
+        console.log(`⚠️  Day ${day}: placeholder "${songTitle}"`);
+      }
+    }
+    
+    day++;
+  }
+
+console.log(`\n✅ Complete!`);
+console.log(`   Matched: ${matched} songs`);
+console.log(`   Placeholders: ${created}`);
+console.log(`   Total: ${matched + created}/365`);
+if (created > 0 && created <= 20) {
+  console.log(`\n📋 Songs with no matches:`);
+  noMatches.forEach(nm => console.log(`   ${nm}`));
+} else if (created > 20) {
+  console.log(`\n📋 First 20 songs with no matches:`);
+  noMatches.slice(0, 20).forEach(nm => console.log(`   ${nm}`));
+}
+console.log(`\nNext: Run 'node scripts/generate-manifest.mjs' to create the manifest`);

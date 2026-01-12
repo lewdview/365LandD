@@ -74,21 +74,37 @@ export function getCoverUrl(day: number, title: string): string {
 
 /**
  * Build releaseready bucket URL for audio from day and title
+ * Tries multiple extensions (.wav, .mp3, .flac, .m4a) to find the file
  */
 export function getReleaseReadyAudioUrl(day: number, title: string): string {
   const month = getMonthFromDay(day);
   const paddedDay = String(day).padStart(2, '0');
+  // Try the most likely format first (.wav), but the actual URL will be tried in order by the caller
   const fileName = `${paddedDay} - ${title}.wav`;
   return `${STORAGE_BASE}/audio/${month.toLowerCase()}/${encodeURIComponent(fileName)}`;
 }
 
 /**
- * Local fallback URL for development
+ * Get alternative audio URLs to try (for fallback)
  */
-export function getLocalAudioUrl(day: number, title: string): string {
+export function getReleaseAudioUrlVariations(day: number, title: string): string[] {
+  const month = getMonthFromDay(day);
+  const paddedDay = String(day).padStart(2, '0');
+  const extensions = ['wav', 'mp3', 'flac', 'm4a'];
+  return extensions.map(ext => {
+    const fileName = `${paddedDay} - ${title}.${ext}`;
+    return `${STORAGE_BASE}/audio/${month.toLowerCase()}/${encodeURIComponent(fileName)}`;
+  });
+}
+
+/**
+ * Local fallback URLs for development (try multiple extensions)
+ */
+export function getLocalAudioUrls(day: number, title: string): string[] {
   const paddedDay = String(day).padStart(2, '0');
   const month = getMonthFromDay(day);
-  return `/music/${month}/${paddedDay} - ${title}.wav`;
+  const extensions = ['wav', 'mp3', 'flac', 'm4a'];
+  return extensions.map(ext => `/music/${month}/${paddedDay} - ${title}.${ext}`);
 }
 
 /**

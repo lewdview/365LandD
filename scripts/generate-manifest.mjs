@@ -25,9 +25,13 @@ const MONTHS = [
 ];
 
 function isAudio(name) {
+  // Skip macOS artifact files
+  if (name.startsWith('._')) return false;
   return /\.(wav|mp3|m4a|flac)$/i.test(name);
 }
 function isImage(name) {
+  // Skip macOS artifact files
+  if (name.startsWith('._')) return false;
   return /\.(jpg|jpeg|png)$/i.test(name);
 }
 

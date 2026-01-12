@@ -3,129 +3,97 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { useAudioStore } from '../store/useAudioStore';
-import { useState, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, ChevronDown, Play, Clock, Music, Calendar } from 'lucide-react';
+import { useState, useCallback, useRef } from 'react';
+import { ChevronLeft, ChevronRight, ChevronDown, Play, Clock, Music, Calendar, Activity, Disc } from 'lucide-react';
 import { CoverImage } from './GenerativeCover';
 import { getCoverUrl } from '../services/releaseStorage';
 
-// Custom SVG Icons
-function WaveformIcon({ className = '' }: { className?: string }) {
+// --- Custom Animated Icons ---
+
+function WaveformIcon({ className = '', color }: { className?: string, color: string }) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" className={className}>
-      <rect x="2" y="12" width="3" height="8" rx="1" fill="currentColor" opacity="0.6">
-        <animate attributeName="height" values="8;16;8" dur="0.8s" repeatCount="indefinite" />
-        <animate attributeName="y" values="12;8;12" dur="0.8s" repeatCount="indefinite" />
-      </rect>
-      <rect x="7" y="8" width="3" height="16" rx="1" fill="currentColor" opacity="0.8">
-        <animate attributeName="height" values="16;8;16" dur="0.6s" repeatCount="indefinite" />
-        <animate attributeName="y" values="8;12;8" dur="0.6s" repeatCount="indefinite" />
-      </rect>
-      <rect x="12" y="4" width="3" height="24" rx="1" fill="currentColor">
-        <animate attributeName="height" values="24;12;24" dur="0.7s" repeatCount="indefinite" />
-        <animate attributeName="y" values="4;10;4" dur="0.7s" repeatCount="indefinite" />
-      </rect>
-      <rect x="17" y="6" width="3" height="20" rx="1" fill="currentColor" opacity="0.9">
-        <animate attributeName="height" values="20;10;20" dur="0.5s" repeatCount="indefinite" />
-        <animate attributeName="y" values="6;11;6" dur="0.5s" repeatCount="indefinite" />
-      </rect>
-      <rect x="22" y="10" width="3" height="12" rx="1" fill="currentColor" opacity="0.7">
-        <animate attributeName="height" values="12;18;12" dur="0.9s" repeatCount="indefinite" />
-        <animate attributeName="y" values="10;7;10" dur="0.9s" repeatCount="indefinite" />
-      </rect>
-      <rect x="27" y="13" width="3" height="6" rx="1" fill="currentColor" opacity="0.5">
-        <animate attributeName="height" values="6;14;6" dur="0.7s" repeatCount="indefinite" />
-        <animate attributeName="y" values="13;9;13" dur="0.7s" repeatCount="indefinite" />
-      </rect>
-    </svg>
+    <div className={`relative ${className}`} style={{ color }}>
+      <svg viewBox="0 0 32 32" fill="none" className="w-full h-full drop-shadow-[0_0_8px_currentColor]">
+        {[2, 7, 12, 17, 22, 27].map((x, i) => (
+          <motion.rect
+            key={i}
+            x={x} y="12" width="3" height="8" rx="1" fill="currentColor" opacity={0.6 + (i * 0.1)}
+            animate={{ 
+              height: [8, 24, 8], 
+              y: [12, 4, 12],
+              opacity: [0.5, 1, 0.5]
+            }}
+            transition={{ 
+              duration: 0.8 + (i * 0.1), 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+          />
+        ))}
+      </svg>
+    </div>
   );
 }
 
-function SunburstIcon({ className = '' }: { className?: string }) {
+function SunburstIcon({ className = '', color }: { className?: string, color: string }) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" className={className}>
-      <circle cx="16" cy="16" r="6" fill="currentColor" />
-      <g stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-        <line x1="16" y1="2" x2="16" y2="6">
-          <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />
-        </line>
-        <line x1="16" y1="26" x2="16" y2="30">
-          <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" />
-        </line>
-        <line x1="2" y1="16" x2="6" y2="16">
-          <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" begin="0.25s" />
-        </line>
-        <line x1="26" y1="16" x2="30" y2="16">
-          <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.25s" />
-        </line>
-        <line x1="6.1" y1="6.1" x2="8.9" y2="8.9">
-          <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" begin="0.5s" />
-        </line>
-        <line x1="23.1" y1="23.1" x2="25.9" y2="25.9">
-          <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.5s" />
-        </line>
-        <line x1="6.1" y1="25.9" x2="8.9" y2="23.1">
-          <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" begin="0.75s" />
-        </line>
-        <line x1="23.1" y1="8.9" x2="25.9" y2="6.1">
-          <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.75s" />
-        </line>
-      </g>
-    </svg>
+    <div className={`relative ${className}`} style={{ color }}>
+      <motion.svg viewBox="0 0 32 32" fill="none" className="w-full h-full drop-shadow-[0_0_8px_currentColor]"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      >
+        <circle cx="16" cy="16" r="6" fill="currentColor" />
+        <g stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => (
+            <motion.line 
+              key={i} x1="16" y1="2" x2="16" y2="6" 
+              transform={`rotate(${deg} 16 16)`}
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ duration: 1.5, delay: i * 0.1, repeat: Infinity }}
+            />
+          ))}
+        </g>
+      </motion.svg>
+    </div>
   );
 }
 
-function MoonPhaseIcon({ className = '' }: { className?: string }) {
+function MoonPhaseIcon({ className = '', color }: { className?: string, color: string }) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" className={className}>
-      <defs>
+    <div className={`relative ${className}`} style={{ color }}>
+      <svg viewBox="0 0 32 32" fill="none" className="w-full h-full drop-shadow-[0_0_8px_currentColor]">
         <mask id="moonMask">
           <circle cx="16" cy="16" r="12" fill="white" />
-          <circle cx="22" cy="14" r="10" fill="black">
-            <animate attributeName="cx" values="22;20;22" dur="4s" repeatCount="indefinite" />
-          </circle>
+          <motion.circle cx="28" cy="16" r="12" fill="black"
+            animate={{ cx: [28, -4] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          />
         </mask>
-      </defs>
-      <circle cx="16" cy="16" r="12" fill="currentColor" mask="url(#moonMask)" />
-      <circle cx="10" cy="12" r="1.5" fill="currentColor" opacity="0.3" />
-      <circle cx="14" cy="18" r="1" fill="currentColor" opacity="0.2" />
-      <circle cx="18" cy="20" r="0.8" fill="currentColor" opacity="0.25" />
-    </svg>
+        <circle cx="16" cy="16" r="12" fill="currentColor" mask="url(#moonMask)" />
+        <circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+      </svg>
+    </div>
   );
 }
 
-function HourglassIcon({ className = '' }: { className?: string }) {
+function HourglassIcon({ className = '', color }: { className?: string, color: string }) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" className={className}>
-      <path 
-        d="M8 4h16v6c0 2-2 4-4 6l-4 3 4 3c2 2 4 4 4 6v6H8v-6c0-2 2-4 4-6l4-3-4-3c-2-2-4-4-4-6V4z" 
-        stroke="currentColor" 
-        strokeWidth="2" 
-        fill="none"
-      />
-      <line x1="6" y1="4" x2="26" y2="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <line x1="6" y1="28" x2="26" y2="28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      {/* Sand particles */}
-      <g fill="currentColor">
-        <circle cx="16" cy="14" r="1">
-          <animate attributeName="cy" values="14;22;22" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="1;1;0" dur="2s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="14" cy="12" r="0.8">
-          <animate attributeName="cy" values="12;21;21" dur="2s" repeatCount="indefinite" begin="0.3s" />
-          <animate attributeName="opacity" values="1;1;0" dur="2s" repeatCount="indefinite" begin="0.3s" />
-        </circle>
-        <circle cx="18" cy="13" r="0.8">
-          <animate attributeName="cy" values="13;23;23" dur="2s" repeatCount="indefinite" begin="0.6s" />
-          <animate attributeName="opacity" values="1;1;0" dur="2s" repeatCount="indefinite" begin="0.6s" />
-        </circle>
-      </g>
-      {/* Bottom sand pile */}
-      <path d="M12 24 Q16 20, 20 24 L20 26 L12 26 Z" fill="currentColor" opacity="0.6">
-        <animate attributeName="d" values="M12 26 Q16 26, 20 26 L20 26 L12 26 Z;M12 24 Q16 20, 20 24 L20 26 L12 26 Z;M12 24 Q16 20, 20 24 L20 26 L12 26 Z" dur="2s" repeatCount="indefinite" />
-      </path>
-    </svg>
+    <div className={`relative ${className}`} style={{ color }}>
+      <motion.svg viewBox="0 0 32 32" fill="none" className="w-full h-full drop-shadow-[0_0_8px_currentColor]"
+        animate={{ rotate: [0, 180, 180] }}
+        transition={{ duration: 4, repeat: Infinity, times: [0, 0.1, 1], ease: "easeInOut" }}
+      >
+        <path d="M8 4h16v6c0 2-2 4-4 6l-4 3 4 3c2 2 4 4 4 6v6H8v-6c0-2 2-4 4-6l4-3-4-3c-2-2-4-4-4-6V4z" stroke="currentColor" strokeWidth="2" />
+        <motion.circle cx="16" cy="14" r="2" fill="currentColor" 
+          animate={{ cy: [14, 24], r: [2, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
+      </motion.svg>
+    </div>
   );
 }
+
+// --- Main Component ---
 
 export function DayTracker() {
   const { data, currentDay } = useStore();
@@ -133,14 +101,13 @@ export function DayTracker() {
   const { loadAndPlay } = useAudioStore();
   const navigate = useNavigate();
   const [expandedInfo, setExpandedInfo] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   
   const handlePlayClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     if (data?.releases && currentDay) {
       const release = data.releases.find(r => r.day === currentDay);
-      if (release) {
-        loadAndPlay(release);
-      }
+      if (release) loadAndPlay(release);
     }
   }, [data, currentDay, loadAndPlay]);
   
@@ -148,279 +115,232 @@ export function DayTracker() {
   const totalDays = data?.project.totalDays || 365;
   const progress = (currentDay / totalDays) * 100;
 
-  // Get today's release and navigation
+  // Navigation Logic
   const todaysRelease = data?.releases.find(r => r.day === currentDay);
   const prevRelease = data?.releases.filter(r => r.day < currentDay).sort((a, b) => b.day - a.day)[0];
   const nextDay = currentDay + 1;
   const hasNextRelease = data?.releases.some(r => r.day === nextDay);
+  const isLight = todaysRelease?.mood === 'light';
   
-  // Calculate current month theme
-  const currentMonthTheme = data?.monthThemes?.find(
+  // Get current month theme
+  const currentMonthTheme = data?.monthThemes.find(
     m => currentDay >= m.dayStart && currentDay <= m.dayEnd
   );
 
-  // Format date for display
+  // Format Date
   const formatDisplayDate = (dayNum: number) => {
     const startDate = new Date(data?.project.startDate || '2026-01-01');
     const date = new Date(startDate);
     date.setDate(startDate.getDate() + dayNum - 1);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'short', 
-      month: 'short', 
-      day: 'numeric',
-      year: 'numeric'
-    });
+    return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
   };
 
-  const isLight = todaysRelease?.mood === 'light';
-
   return (
-    <section id="tracker" className="py-16 md:py-24 px-6 md:px-12 lg:px-16 relative overflow-hidden">
-      <div className="w-full">
-        {/* Section title */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="mb-8 md:mb-12 text-center"
-        >
-          <span className="text-sm font-mono tracking-[0.3em] uppercase mb-4 block" style={{ color: accent }}>
-            The Journey
-          </span>
-          <h2 className="text-3xl md:text-5xl font-bold">
-            <span className="gradient-text">TODAY'S RELEASE</span>
-          </h2>
-          <div className="w-24 h-1 mt-4 mx-auto" style={{ background: `linear-gradient(90deg, ${primary}, ${accent})` }} />
-        </motion.div>
+    <section 
+      id="tracker" 
+      ref={containerRef}
+      className="py-24 px-6 md:px-12 lg:px-16 relative overflow-hidden min-h-[90vh] flex flex-col justify-center"
+    >
+      {/* 2030 Background Grid */}
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `linear-gradient(${primary}20 1px, transparent 1px), linear-gradient(90deg, ${primary}20 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+            maskImage: 'radial-gradient(circle at center, black, transparent 80%)'
+          }}
+        />
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent"
+          animate={{ y: ['-100%', '100%'] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
 
-        {/* Main calendar card layout */}
-        <div className="grid lg:grid-cols-12 gap-6">
-          
-          {/* Previous Day Shortcut - Left side */}
-          {prevRelease && (
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-2 order-2 lg:order-1"
-            >
-              <button
-                onClick={() => navigate(`/day/${prevRelease.day}`)}
-                className="w-full h-full min-h-[120px] p-4 flex flex-col items-center justify-center gap-2 transition-all hover:scale-105 group"
-                style={{
-                  background: `linear-gradient(135deg, ${prevRelease.mood === 'light' ? accent : primary}15 0%, transparent 100%)`,
-                  border: `1px solid ${prevRelease.mood === 'light' ? accent : primary}30`,
-                }}
-              >
-                <ChevronLeft className="w-6 h-6 transition-transform group-hover:-translate-x-1" style={{ color: prevRelease.mood === 'light' ? accent : primary }} />
-                <span className="text-xs font-mono text-light-cream/50">YESTERDAY</span>
-                <span className="text-sm font-bold text-light-cream text-center line-clamp-2">{prevRelease.title}</span>
-                <span className="text-xs font-mono" style={{ color: prevRelease.mood === 'light' ? accent : primary }}>
-                  DAY {prevRelease.day}
-                </span>
-              </button>
-            </motion.div>
-          )}
-
-          {/* Main Today Card - Center */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto">
+        
+        {/* Header HUD */}
+        <div className="flex flex-col md:flex-row items-end justify-between mb-12 border-b border-white/10 pb-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className={`${prevRelease ? 'lg:col-span-8' : 'lg:col-span-10'} order-1 lg:order-2`}
           >
-            <div
-              className="relative overflow-hidden"
-              style={{
-                background: `linear-gradient(145deg, ${primary}18 0%, ${accent}12 100%)`,
-                backdropFilter: 'blur(20px)',
-                border: `2px solid ${isLight ? accent : primary}40`,
-                boxShadow: `0 20px 60px rgba(0,0,0,0.4), 0 0 40px ${isLight ? accent : primary}10`,
-              }}
+            <div className="flex items-center gap-3 mb-2">
+              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: accent }} />
+              <span className="text-xs font-mono tracking-[0.4em] text-light-cream/40">SYSTEM_TRACKER.v3</span>
+            </div>
+            <div className="flex items-end gap-3 mb-2">
+              <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-light-cream to-white/50">
+                  Daily Transmission
+                </span>
+              </h2>
+              {currentMonthTheme && (
+                <div className="text-xl md:text-2xl" title={currentMonthTheme.arc}>
+                  {currentMonthTheme.emoji}
+                </div>
+              )}
+            </div>
+            {currentMonthTheme && (
+              <div className="text-xs font-mono text-light-cream/50 tracking-wider">
+                {currentMonthTheme.theme}
+              </div>
+            )}
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="text-right hidden md:block"
+          >
+            <div className="text-xs font-mono text-light-cream/40 mb-1">GLOBAL_PROGRESS</div>
+            <div className="text-3xl font-mono font-bold" style={{ color: accent }}>
+              {Math.round(progress)}<span className="text-sm opacity-50">%</span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* MAIN INTERFACE GRID */}
+        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+          
+          {/* LEFT: Previous Log (History) */}
+          <div className="lg:col-span-2 hidden lg:flex flex-col justify-center">
+            {prevRelease && (
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                onClick={() => navigate(`/day/${prevRelease.day}`)}
+                className="group relative h-48 w-full border border-white/10 bg-void-black/50 backdrop-blur-sm rounded-lg overflow-hidden transition-all hover:border-primary/50"
+              >
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, ${primary}20 0%, ${accent}15 100%)`
+                  }}
+                />
+                <div className="p-4 h-full flex flex-col justify-between relative z-10">
+                  <ChevronLeft className="w-6 h-6 text-light-cream/40 group-hover:text-primary transition-colors" />
+                  <div>
+                    <div className="text-xs font-mono text-light-cream/30 mb-1">PREVIOUS_LOG</div>
+                    <div className="font-bold text-sm leading-tight text-light-cream/80 group-hover:text-light-cream">{prevRelease.title}</div>
+                  </div>
+                </div>
+              </motion.button>
+            )}
+          </div>
+
+          {/* CENTER: The "Hyper-Card" */}
+          <motion.div 
+            className="lg:col-span-8 relative group"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            {/* Glow Halo */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-xl opacity-20 blur-xl group-hover:opacity-40 transition-opacity duration-700" />
+            
+            <div 
+              className="relative rounded-xl overflow-hidden bg-[#0A0A0E] border border-white/10"
+              style={{ boxShadow: `0 0 50px -10px ${isLight ? accent : primary}20` }}
             >
-              {/* Top accent bar */}
-              <div 
-                className="h-1 w-full"
-                style={{ background: `linear-gradient(90deg, ${isLight ? accent : primary}, ${isLight ? primary : accent})` }}
-              />
-
-              {/* Header with date and progress */}
-              <div className="-mx-6 -mt-6 mb-0">
-                {/* Full-width OS Boot Progress Bar */}
-                <div className="h-1.5 bg-void-black overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  <motion.div
-                    className="h-full"
-                    style={{
-                      background: `linear-gradient(90deg, ${isLight ? accent : primary}, ${isLight ? primary : accent})`,
-                      boxShadow: `0 0 20px ${isLight ? accent : primary}80`,
-                    }}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${progress}%` }}
-                    transition={{ duration: 2, ease: [0.34, 1.56, 0.64, 1] }}
-                  />
-                </div>
-              </div>
-              
-              <div className="p-6 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5">
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-light-cream/40" />
-                    <span className="font-mono text-light-cream/60 text-sm">
-                      {formatDisplayDate(currentDay)}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span 
-                      className="px-2 py-0.5 text-xs font-mono font-bold"
-                      style={{ 
-                        background: `${isLight ? accent : primary}30`,
-                        color: isLight ? accent : primary,
-                      }}
-                    >
-                      DAY {String(currentDay).padStart(3, '0')}
-                    </span>
-                    {currentMonthTheme && (
-                      <span className="text-xs text-light-cream/40">
-                        {currentMonthTheme.emoji} {currentMonthTheme.theme}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Progress percentage indicator */}
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <div className="text-sm font-mono text-light-cream/60">
-                      PROGRESS
-                    </div>
-                    <div className="text-2xl font-bold" style={{ color: isLight ? accent : primary }}>
-                      {Math.round(progress)}%
-                    </div>
-                  </div>
-                </div>
-
-                {/* Progress stats */}
-                <div className="flex items-center gap-6 text-sm font-mono">
-                  <div className="text-center">
-                    <span className="block text-2xl font-bold" style={{ color: accent }}>{data?.stats.lightTracks || 0}</span>
-                    <span className="text-light-cream/40 text-xs">LIGHT</span>
-                  </div>
-                  <div className="text-center">
-                    <span className="block text-2xl font-bold" style={{ color: primary }}>{data?.stats.darkTracks || 0}</span>
-                    <span className="text-light-cream/40 text-xs">DARK</span>
-                  </div>
-                  <div className="text-center">
-                    <span className="block text-2xl font-bold text-light-cream/70">{totalDays - currentDay}</span>
-                    <span className="text-light-cream/40 text-xs">LEFT</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Song content */}
               {todaysRelease ? (
-                <div className="p-6">
-                  <div className="flex flex-col md:flex-row gap-6">
-                    {/* Cover art with generative fallback */}
-                    <div 
-                      className="relative w-full md:w-48 h-48 flex-shrink-0 overflow-hidden cursor-pointer group"
-                    >
-                      <CoverImage
-                        day={todaysRelease.day}
-                        title={todaysRelease.title}
-                        mood={todaysRelease.mood}
-                        energy={todaysRelease.energy}
-                        valence={todaysRelease.valence}
-                        tempo={todaysRelease.tempo}
-                        coverUrl={getCoverUrl(todaysRelease.day, todaysRelease.title)}
-                        className="w-full h-full object-cover"
-                        showColorVeil
-                      />
-                      
-                      {/* Overlay background - hidden on desktop (hover), visible on mobile */}
-                      <motion.div 
-                        className="absolute inset-0 z-20 bg-black/30 opacity-30 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200"
-                        initial={{ opacity: 0 }}
-                      />
-                      
-                      {/* Play button - permanent on mobile, hover on desktop */}
-                      <motion.button
-                        whileHover={{ scale: 1.15 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={handlePlayClick}
-                        className="absolute inset-0 z-30 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200"
-                      >
-                        <motion.div 
-                          className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
-                          style={{ backgroundColor: isLight ? accent : primary }}
+                <div className="flex flex-col md:flex-row">
+                  
+                  {/* COVER ART SECTION */}
+                  <div className="md:w-1/2 relative h-64 md:h-auto min-h-[350px] overflow-hidden">
+                     {/* Dynamic Cover */}
+                     <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
+                        <CoverImage
+                          day={todaysRelease.day}
+                          title={todaysRelease.title}
+                          mood={todaysRelease.mood}
+                          energy={todaysRelease.energy}
+                          valence={todaysRelease.valence}
+                          tempo={todaysRelease.tempo}
+                          coverUrl={getCoverUrl(todaysRelease.day, todaysRelease.title)}
+                          className="w-full h-full object-cover"
+                          showColorVeil
+                        />
+                     </div>
+                     
+                     {/* Interactive Overlay */}
+                     <div className="absolute inset-0 bg-void-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={handlePlayClick}
+                          className="w-20 h-20 rounded-full flex items-center justify-center border border-white/20 bg-white/10 backdrop-blur-md shadow-[0_0_30px_rgba(0,0,0,0.5)] group/btn"
                         >
-                          <Play className="w-8 h-8 ml-1" style={{ color: background }} />
-                        </motion.div>
-                      </motion.button>
+                          <Play className="w-8 h-8 fill-light-cream text-light-cream ml-1 group-hover/btn:scale-110 transition-transform" />
+                        </motion.button>
+                     </div>
 
-                      {/* Mood badge */}
-                      <span 
-                        className="absolute top-3 right-3 px-2 py-1 text-xs font-mono font-bold z-40"
-                        style={{ 
-                          backgroundColor: isLight ? accent : primary,
-                          color: background,
-                        }}
-                      >
-                        {todaysRelease.mood.toUpperCase()}
-                      </span>
-                    </div>
+                     {/* Image Tech Overlay */}
+                     <div className="absolute top-4 left-4 right-4 flex justify-between pointer-events-none">
+                       <span className="text-[10px] font-mono bg-black/50 backdrop-blur px-2 py-1 rounded text-light-cream/70 border border-white/10">
+                         IMG_SRC: GEN_ART_V2
+                       </span>
+                       <span 
+                         className="text-[10px] font-mono px-2 py-1 rounded font-bold border border-white/10"
+                         style={{ background: isLight ? accent : primary, color: background }}
+                       >
+                         {todaysRelease.mood.toUpperCase()}
+                       </span>
+                     </div>
+                  </div>
 
-                    {/* Song info */}
-                    <div className="flex-1 min-w-0">
-                      <h3 
-                        className="text-2xl md:text-3xl font-black mb-2 cursor-pointer hover:opacity-80 transition-opacity"
-                        onClick={() => navigate(`/day/${currentDay}`)}
-                        style={{ color: isLight ? accent : primary }}
-                      >
+                  {/* DATA SECTION */}
+                  <div 
+                    className="md:w-1/2 p-8 flex flex-col justify-between relative bg-gradient-to-b"
+                    style={{
+                      backgroundImage: `linear-gradient(180deg, ${primary}08 0%, ${accent}05 100%)`
+                    }}
+                  >
+                    {/* Scanline Texture */}
+                    <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
+                    
+                    <div>
+                      <div className="flex items-center gap-3 mb-4">
+                        <Calendar className="w-4 h-4 text-light-cream/30" />
+                        <span className="font-mono text-xs text-light-cream/50">{formatDisplayDate(currentDay)}</span>
+                        <div className="h-px w-8 bg-white/10" />
+                        <span className="font-mono text-xs text-primary">DAY {String(currentDay).padStart(3, '0')}</span>
+                      </div>
+
+                      <h3 className="text-3xl md:text-4xl font-black mb-3 leading-tight" style={{ color: isLight ? accent : primary }}>
                         {todaysRelease.title}
                       </h3>
                       
-                      <p className="text-light-cream/60 mb-4 line-clamp-2">
+                      <p className="text-light-cream/60 text-sm leading-relaxed mb-6 border-l-2 border-white/10 pl-4">
                         {todaysRelease.description}
                       </p>
 
-                      {/* Meta info */}
-                      <div className="flex flex-wrap items-center gap-4 text-sm font-mono text-light-cream/50 mb-4">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          {todaysRelease.durationFormatted}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Music className="w-4 h-4" />
-                          {todaysRelease.tempo} BPM
-                        </span>
-                        <span>{todaysRelease.key}</span>
+                      <div className="grid grid-cols-2 gap-4 mb-6">
+                         <div className="bg-white/5 rounded p-3 border border-white/5">
+                            <div className="flex items-center gap-2 text-xs font-mono text-light-cream/40 mb-1">
+                              <Clock className="w-3 h-3" /> DURATION
+                            </div>
+                            <div className="font-bold">{todaysRelease.durationFormatted}</div>
+                         </div>
+                         <div className="bg-white/5 rounded p-3 border border-white/5">
+                            <div className="flex items-center gap-2 text-xs font-mono text-light-cream/40 mb-1">
+                              <Music className="w-3 h-3" /> BPM / KEY
+                            </div>
+                            <div className="font-bold">{todaysRelease.tempo} <span className="text-white/20">|</span> {todaysRelease.key}</div>
+                         </div>
                       </div>
+                    </div>
 
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {todaysRelease.tags.slice(0, 4).map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2 py-1 text-xs"
-                            style={{
-                              background: `${isLight ? accent : primary}15`,
-                              color: isLight ? accent : primary,
-                              border: `1px solid ${isLight ? accent : primary}30`,
-                            }}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Expandable more info */}
-                      <button
+                    <div>
+                      {/* Technical Detail Expander */}
+                      <button 
                         onClick={() => setExpandedInfo(!expandedInfo)}
-                        className="flex items-center gap-2 text-sm font-mono transition-colors"
-                        style={{ color: isLight ? accent : primary }}
+                        className="w-full py-3 border-t border-white/10 flex items-center justify-between text-xs font-mono tracking-widest hover:text-primary transition-colors"
                       >
-                        <span>{expandedInfo ? 'LESS INFO' : 'MORE INFO'}</span>
+                        <span>{expandedInfo ? 'COLLAPSE_DATA' : 'ANALYZE_AUDIO_DATA'}</span>
                         <ChevronDown className={`w-4 h-4 transition-transform ${expandedInfo ? 'rotate-180' : ''}`} />
                       </button>
 
@@ -430,65 +350,34 @@ export function DayTracker() {
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.3 }}
                             className="overflow-hidden"
                           >
-                            <div className="pt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-                              <div className="p-3" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                                <span className="text-xs font-mono text-light-cream/40 block">ENERGY</span>
-                                <div className="flex items-center gap-2 mt-1">
-                                  <div className="flex-1 h-1.5 bg-void-black rounded-full overflow-hidden">
-                                    <div 
-                                      className="h-full rounded-full"
-                                      style={{ 
-                                        width: `${todaysRelease.energy * 100}%`,
-                                        backgroundColor: primary,
-                                      }}
-                                    />
-                                  </div>
-                                  <span className="text-xs font-mono" style={{ color: primary }}>
-                                    {Math.round(todaysRelease.energy * 100)}%
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="p-3" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                                <span className="text-xs font-mono text-light-cream/40 block">VALENCE</span>
-                                <div className="flex items-center gap-2 mt-1">
-                                  <div className="flex-1 h-1.5 bg-void-black rounded-full overflow-hidden">
-                                    <div 
-                                      className="h-full rounded-full"
-                                      style={{ 
-                                        width: `${todaysRelease.valence * 100}%`,
-                                        backgroundColor: accent,
-                                      }}
-                                    />
-                                  </div>
-                                  <span className="text-xs font-mono" style={{ color: accent }}>
-                                    {Math.round(todaysRelease.valence * 100)}%
-                                  </span>
-                                </div>
-                              </div>
-                              {todaysRelease.genre && todaysRelease.genre.length > 0 && (
-                                <div className="p-3 col-span-2" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                                  <span className="text-xs font-mono text-light-cream/40 block">GENRE</span>
-                                  <span className="text-sm text-light-cream/80 mt-1 block">
-                                    {todaysRelease.genre.join(' / ')}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                            
-                            {/* View full page button */}
-                            <button
-                              onClick={() => navigate(`/day/${currentDay}`)}
-                              className="mt-4 w-full py-3 font-mono text-sm font-bold transition-all hover:opacity-90"
-                              style={{ 
-                                background: `linear-gradient(90deg, ${isLight ? accent : primary}, ${isLight ? primary : accent})`,
-                                color: background,
-                              }}
-                            >
-                              VIEW FULL PAGE →
-                            </button>
+                             <div className="pt-4 grid grid-cols-2 gap-2 text-[10px] font-mono">
+                                {['Energy', 'Valence', 'Danceability', 'Acousticness'].map((metric, i) => {
+                                  const val = i === 0 ? todaysRelease.energy : i === 1 ? todaysRelease.valence : 0.5;
+                                  return (
+                                    <div key={metric} className="flex flex-col gap-1">
+                                      <span className="text-light-cream/30 uppercase">{metric}</span>
+                                      <div className="h-1 bg-white/10 w-full rounded-full overflow-hidden">
+                                        <motion.div 
+                                          className="h-full" 
+                                          style={{ background: isLight ? accent : primary }}
+                                          initial={{ width: 0 }}
+                                          animate={{ width: `${val * 100}%` }}
+                                        />
+                                      </div>
+                                    </div>
+                                  )
+                                })}
+                             </div>
+                             <div className="mt-4 pt-4 border-t border-white/10">
+                               <button 
+                                 onClick={() => navigate(`/day/${currentDay}`)}
+                                 className="w-full py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded text-xs font-bold transition-colors"
+                               >
+                                 INITIALIZE FULL SEQUENCE →
+                               </button>
+                             </div>
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -496,165 +385,127 @@ export function DayTracker() {
                   </div>
                 </div>
               ) : (
-                /* No release yet */
-                <div className="p-12 text-center">
-                  <div className="text-6xl mb-4">🎵</div>
-                  <h3 className="text-2xl font-bold text-light-cream mb-2">Day {currentDay}</h3>
-                  <p className="text-light-cream/50">No release yet. Check back soon!</p>
+                <div className="h-96 flex flex-col items-center justify-center text-center p-12">
+                   <div className="w-20 h-20 border-2 border-dashed border-white/20 rounded-full flex items-center justify-center mb-6 animate-spin-slow">
+                     <Disc className="w-10 h-10 text-white/20" />
+                   </div>
+                   <h3 className="text-2xl font-bold mb-2">SIGNAL_LOST</h3>
+                   <p className="font-mono text-sm text-light-cream/40">No transmission found for Day {currentDay}</p>
                 </div>
               )}
-
-              {/* Coming Tomorrow Banner - Bottom right */}
-              <div 
-                className="absolute bottom-0 right-0 p-4 flex items-center gap-3"
-                style={{
-                  background: `linear-gradient(135deg, transparent 0%, ${hasNextRelease ? accent : primary}20 100%)`,
-                }}
-              >
-                <div className="text-right">
-                  <span className="text-xs font-mono text-light-cream/40 block">COMING TOMORROW</span>
-                  <span className="text-sm font-bold" style={{ color: hasNextRelease ? accent : primary }}>
-                    DAY {nextDay}
-                  </span>
-                </div>
-                <ChevronRight className="w-5 h-5" style={{ color: hasNextRelease ? accent : primary }} />
-              </div>
             </div>
           </motion.div>
 
-          {/* Empty right column for grid balance when no prev */}
-          {!prevRelease && <div className="hidden lg:block lg:col-span-2 order-3" />}
+          {/* RIGHT: Next Log (Future) */}
+          <div className="lg:col-span-2 hidden lg:flex flex-col justify-center">
+             <div className="h-48 w-full border border-white/5 bg-void-black/20 rounded-lg p-4 flex flex-col justify-center items-end opacity-50 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
+                <ChevronRight className="w-6 h-6 text-light-cream/20 mb-auto" />
+                <div className="text-right">
+                  <div className="text-xs font-mono text-light-cream/20 mb-1">INCOMING</div>
+                  <div className="font-bold text-sm text-light-cream/40">
+                    {hasNextRelease ? `Day ${nextDay}` : 'END_OF_LINE'}
+                  </div>
+                  {hasNextRelease && <div className="text-[10px] text-primary mt-1 animate-pulse">LOCKED</div>}
+                </div>
+             </div>
+          </div>
         </div>
 
-        {/* Stats row below */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+        {/* PHASE CONTEXT BADGE */}
+        {currentMonthTheme && (
+          <motion.div 
+            className="mt-12 flex items-center gap-4 px-6 py-4 rounded-lg border"
+            style={{
+              background: `linear-gradient(135deg, ${primary}15 0%, ${accent}12 100%)`,
+              borderColor: `${primary}40`
+            }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            <div className="text-2xl">{currentMonthTheme.emoji}</div>
+            <div className="flex-1">
+              <div className="text-xs font-mono text-light-cream/50 uppercase tracking-wider">CURRENT_PHASE</div>
+              <div className="text-sm font-bold text-light-cream" style={{ color: primary }}>{currentMonthTheme.arc}</div>
+              <div className="text-[10px] font-mono text-light-cream/40 mt-1">Days {currentMonthTheme.dayStart}–{currentMonthTheme.dayEnd}</div>
+            </div>
+            <div className="text-right">
+              <div className="text-xs font-mono text-light-cream/50 mb-1">PROGRESS</div>
+              <div className="text-lg font-bold" style={{ color: accent }}>
+                {Math.round(((currentDay - currentMonthTheme.dayStart) / (currentMonthTheme.dayEnd - currentMonthTheme.dayStart)) * 100)}%
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* STATS MODULES (Bottom Row) */}
+        <motion.div 
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4"
         >
-          <StatCard
-            label="Releases"
+          <StatModule 
+            icon={<WaveformIcon className="w-6 h-6" color={primary} />}
+            label="RELEASES"
             value={data?.stats.totalReleases || 0}
-            icon={<WaveformIcon className="w-8 h-8 text-neon-orange" />}
-            delay={0}
-            primary={primary}
-            accent={accent}
+            color={primary}
           />
-          <StatCard
-            label="Light Tracks"
+           <StatModule 
+            icon={<SunburstIcon className="w-6 h-6" color="#FFFF00" />}
+            label="LIGHT_SIDE"
             value={data?.stats.lightTracks || 0}
-            icon={<SunburstIcon className="w-8 h-8 text-neon-yellow" />}
-            delay={0.1}
-            color="yellow"
-            primary={primary}
-            accent={accent}
+            color="#FFFF00"
           />
-          <StatCard
-            label="Dark Tracks"
+           <StatModule 
+            icon={<MoonPhaseIcon className="w-6 h-6" color="#FF0000" />}
+            label="DARK_SIDE"
             value={data?.stats.darkTracks || 0}
-            icon={<MoonPhaseIcon className="w-8 h-8 text-neon-red" />}
-            delay={0.2}
-            color="red"
-            primary={primary}
-            accent={accent}
+            color="#FF0000"
           />
-          <StatCard
-            label="Days Left"
+           <StatModule 
+            icon={<HourglassIcon className="w-6 h-6" color={accent} />}
+            label="REMAINING"
             value={totalDays - currentDay}
-            icon={<HourglassIcon className="w-8 h-8 text-neon-yellow-matte" />}
-            delay={0.3}
-            primary={primary}
-            accent={accent}
+            color={accent}
           />
         </motion.div>
-      </div>
 
-      {/* Background decoration */}
-      <div className="absolute top-1/2 -right-32 w-64 h-64 rounded-full blur-3xl" style={{ backgroundColor: `${primary}10` }} />
-      <div className="absolute bottom-0 -left-32 w-64 h-64 rounded-full blur-3xl" style={{ backgroundColor: `${accent}10` }} />
+      </div>
     </section>
   );
 }
 
-function StatCard({ 
-  label, 
-  value, 
-  icon, 
-  delay, 
-  color = 'default',
-  primary,
-  accent,
-}: { 
-  label: string; 
-  value: number; 
-  icon: React.ReactNode; 
-  delay: number;
-  color?: 'default' | 'red' | 'yellow';
-  primary?: string;
-  accent?: string;
-}) {
-  const borderClass = color === 'red' 
-    ? 'border-neon-red-matte' 
-    : color === 'yellow'
-      ? 'border-neon-yellow-matte'
-      : 'border-void-lighter';
-  
-  const glowClass = color === 'red'
-    ? 'group-hover:shadow-[0_0_30px_var(--color-neon-red)]'
-    : color === 'yellow'
-      ? 'group-hover:shadow-[0_0_30px_var(--color-neon-yellow)]'
-      : 'group-hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]';
+// --- Sub-components ---
 
+function StatModule({ icon, label, value, color }: { icon: any, label: string, value: number, color: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay }}
-      whileHover={{ scale: 1.05, y: -5 }}
-      className={`group relative p-6 border-2 ${borderClass} ${glowClass} transition-all duration-300 overflow-hidden`}
-      style={{
-        background: `linear-gradient(135deg, ${primary || 'rgba(45,48,72,0.4)'}10 0%, ${accent || 'rgba(26,28,46,0.6)'}08 100%)`,
-        backdropFilter: 'blur(10px)',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05)',
-      }}
-    >
-      {/* Animated corner accent */}
-      <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-current opacity-30 group-hover:opacity-60 transition-opacity" 
-        style={{ borderColor: color === 'red' ? 'var(--color-neon-red)' : color === 'yellow' ? 'var(--color-neon-yellow)' : 'var(--color-void-lighter)' }}
-      />
-      <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-current opacity-30 group-hover:opacity-60 transition-opacity"
-        style={{ borderColor: color === 'red' ? 'var(--color-neon-red)' : color === 'yellow' ? 'var(--color-neon-yellow)' : 'var(--color-void-lighter)' }}
-      />
+    <div className="group relative bg-[#0F0F13] border border-white/5 p-5 rounded-lg overflow-hidden hover:border-white/20 transition-all duration-300">
+      {/* Active Corner */}
+      <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-white/20 group-hover:border-white/50 transition-colors" />
       
-      {/* Icon with glow effect on hover */}
-      <div className="mb-3 transform group-hover:scale-110 transition-transform duration-300">
-        {icon}
+      {/* Background Glow */}
+      <div 
+        className="absolute -right-10 -bottom-10 w-24 h-24 rounded-full blur-[40px] opacity-0 group-hover:opacity-20 transition-opacity duration-500"
+        style={{ background: color }}
+      />
+
+      <div className="flex justify-between items-start mb-4">
+        <div className="p-2 bg-white/5 rounded-md border border-white/5 group-hover:border-white/10 transition-colors">
+          {icon}
+        </div>
+        <Activity className="w-4 h-4 text-white/10 group-hover:text-white/30" />
       </div>
-      
-      {/* Value with animated counter effect */}
-      <motion.span
-        key={value}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-5xl font-black gradient-text block mb-1"
-      >
-        {value}
-      </motion.span>
-      
-      {/* Label */}
-      <span className="text-light-cream/60 text-sm font-mono tracking-widest uppercase">{label}</span>
-      
-      {/* Subtle scan line effect */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent pointer-events-none"
-        initial={{ y: '-100%' }}
-        animate={{ y: '100%' }}
-        transition={{ duration: 3, repeat: Infinity, repeatDelay: 2, ease: 'linear' }}
-        style={{ opacity: 0.3 }}
-      />
-    </motion.div>
-  );
+
+      <div>
+        <div className="text-3xl font-black tabular-nums tracking-tight mb-1" style={{ textShadow: `0 0 20px ${color}40` }}>
+           {value}
+        </div>
+        <div className="text-[10px] font-mono tracking-widest text-light-cream/40 group-hover:text-light-cream/60 transition-colors">
+          {label}
+        </div>
+      </div>
+    </div>
+  )
 }

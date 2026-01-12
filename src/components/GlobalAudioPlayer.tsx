@@ -6,7 +6,7 @@ import { useAudioStore } from '../store/useAudioStore';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { CoverImage } from './GenerativeCover';
-import { getLocalAudioUrl, getCoverUrl } from '../services/releaseStorage';
+import { getLocalAudioUrls, getCoverUrl } from '../services/releaseStorage';
 
 export function GlobalAudioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -67,11 +67,16 @@ export function GlobalAudioPlayer() {
     const handleError = () => {
       // Try fallback to local /music symlink (dev only, points to /Volumes/extremeDos/temp music)
       if (currentRelease && audio.src && !audio.src.includes('/music/')) {
-        const fallbackUrl = getLocalAudioUrl(currentRelease.day, currentRelease.storageTitle || currentRelease.title);
-        console.log('Global player: bucket failed, trying local fallback:', fallbackUrl);
-        audio.src = fallbackUrl;
-        audio.load();
-        audio.play().catch(() => _setHasError(true));
+        const fallbackUrls = getLocalAudioUrls(currentRelease.day, currentRelease.storageTitle || currentRelease.title);
+        if (fallbackUrls.length > 0) {
+          console.log('Global player: bucket failed, trying local fallback:', fallbackUrls[0]);
+          audio.src = fallbackUrls[0];
+          audio.load();
+          audio.play().catch(() => _setHasError(true));
+        } else {
+          console.error('Global player: all sources exhausted');
+          _setHasError(true);
+        }
       } else {
         console.error('Global player: all sources exhausted');
         _setHasError(true);
