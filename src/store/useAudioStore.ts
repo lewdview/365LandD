@@ -72,7 +72,6 @@ export const useAudioStore = create<AudioState>((set, get) => ({
       duration: 0,
     });
     
-    const title = release.storageTitle || release.title;
     const isDev = import.meta.env.DEV;
     
     // Build URL list: on production, prioritize releaseready bucket; in dev, use manifest first
@@ -88,11 +87,14 @@ export const useAudioStore = create<AudioState>((set, get) => ({
     }
     
     // Production & fallback: add remote variations from releaseready bucket
-    urlsToTry.push(...getReleaseAudioUrlVariations(release.day, title));
+    // Use storageTitle (the exact filename in bucket) if available, otherwise fall back to title
+    const storageTitle = release.storageTitle || release.title;
+    urlsToTry.push(...getReleaseAudioUrlVariations(release.day, storageTitle));
+    console.log(`[Audio] Using storageTitle for releaseready bucket: "${storageTitle}"`);
     
     // Dev fallback: local file variations
     if (isDev) {
-      urlsToTry.push(...getLocalAudioUrls(release.day, title));
+      urlsToTry.push(...getLocalAudioUrls(release.day, storageTitle));
     }
     
     console.log(`[Audio] Loading: ${release.title}, trying ${urlsToTry.length} sources`);
