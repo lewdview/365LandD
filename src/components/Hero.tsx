@@ -12,7 +12,7 @@ const EMOTIONS = [
   'PEACE.dll', 'CHAOS.init', 'BLISS.mem', 'FURY.net', 'LUST.cmd', 'DREAD.iso'
 ];
 
-// 2030 COMPONENT: Holographic Data Shards (Replaces Falling Paper)
+// 2030 COMPONENT: Holographic Data Shards
 function HolographicShard({ 
   index, 
   primaryColor, 
@@ -26,8 +26,8 @@ function HolographicShard({
     const day = Math.floor(Math.random() * 365) + 1;
     const emotion = EMOTIONS[index % EMOTIONS.length];
     const isLight = index % 2 === 0;
-    const xPos = (Math.random() * 100) - 50; // Random X %
-    const zPos = (Math.random() * 200) - 100; // Depth
+    const xPos = (Math.random() * 100) - 50; 
+    const zPos = (Math.random() * 200) - 100;
     const duration = 15 + Math.random() * 10;
     const delay = Math.random() * 5;
     
@@ -68,7 +68,6 @@ function HolographicShard({
         ease: 'linear',
       }}
     >
-      {/* The Shard Visual */}
       <div
         className="relative w-24 h-32 flex flex-col justify-between p-3 overflow-hidden"
         style={{
@@ -79,24 +78,18 @@ function HolographicShard({
           clipPath: 'polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%)'
         }}
       >
-        {/* Hologram Scanline */}
         <motion.div 
           className="absolute inset-0 bg-gradient-to-b from-transparent via-white/20 to-transparent"
           animate={{ top: ['-100%', '100%'] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
         />
-
-        {/* Content */}
         <div className="flex justify-between items-start">
            <span className="text-[10px] font-mono opacity-50" style={{ color }}>DAY_{day}</span>
            <div className="w-1 h-1 rounded-full animate-pulse" style={{ background: color }} />
         </div>
-        
         <div className="font-mono text-xs tracking-widest uppercase opacity-80" style={{ color }}>
           {emotion}
         </div>
-        
-        {/* Barcode Deco */}
         <div className="flex gap-0.5 h-2 opacity-30 mt-2">
            {[...Array(10)].map((_, i) => (
              <div key={i} className="w-1 bg-current" style={{ opacity: Math.random() }} />
@@ -108,7 +101,7 @@ function HolographicShard({
 }
 
 // 2030 COMPONENT: Floating AR Data Points
-function DataPoint({ color }: { color: string }) {
+function DataPoint({ index, color }: { index: number, color: string }) {
   const x = Math.random() * 100;
   const y = Math.random() * 100;
   
@@ -152,50 +145,44 @@ export function Hero() {
   const rotateY = useTransform(mouseX, [-0.5, 0.5], [-5, 5]);
   const contentX = useTransform(mouseX, [-0.5, 0.5], [-20, 20]);
   const contentY = useTransform(mouseY, [-0.5, 0.5], [-20, 20]);
-  const bgX = useTransform(mouseX, [-0.5, 0.5], [20, -20]);
-  const bgY = useTransform(mouseY, [-0.5, 0.5], [20, -20]);
+  
+  const bgX = useTransform(mouseX, [-0.5, 0.5], [40, -40]);
+  const bgY = useTransform(mouseY, [-0.5, 0.5], [40, -40]);
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden perspective-2000">
       
-      {/* 3D Audio Visualizer Layer */}
+      {/* 1. 3D Audio Visualizer Layer (Background Base) */}
       <div className="absolute inset-0 z-0 opacity-60">
         <AudioVisualizer3D />
       </div>
 
-      {/* Floating Holographic Shards (Background) */}
-      <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
-        {Array.from({ length: 15 }).map((_, i) => (
-          <HolographicShard key={`shard-${i}`} index={i} primaryColor={primary} accentColor={accent} />
-        ))}
-      </div>
-      
-      {/* Background AR Data Grid */}
-      <div className="absolute inset-0 z-10 pointer-events-none">
-         {Array.from({ length: 20 }).map((_, i) => (
-           <DataPoint key={i} color={i % 2 === 0 ? primary : accent} />
-         ))}
-      </div>
-
-      {/* GIANT BACKGROUND NUMBER (The "Void" Projection) */}
+      {/* 2. GIANT BACKGROUND NUMBER (The "Void" Projection) */}
       <motion.div 
-        className="absolute inset-0 flex items-center justify-center z-[5] pointer-events-none overflow-hidden"
+        className="absolute inset-0 flex items-center justify-center z-[1] pointer-events-none overflow-hidden"
         style={{ x: bgX, y: bgY }}
       >
          <div className="relative">
+            {/* Base Layer - Faint Glow - INCREASED OPACITY */}
             <span 
-              className="text-[35vw] font-black leading-none opacity-[0.03] blur-sm select-none"
-              style={{ color: primary }}
+              className="text-[35vw] font-black leading-none select-none blur-sm"
+              style={{ 
+                color: primary,
+                opacity: 0.25, // Increased for visibility
+                textShadow: `0 0 80px ${primary}`
+              }}
             >
               {String(currentDay).padStart(3, '0')}
             </span>
-            {/* Wireframe overlay */}
+            
+            {/* Wireframe Overlay - Sharp - INCREASED OPACITY */}
             <span 
-              className="absolute inset-0 text-[35vw] font-black leading-none opacity-[0.1] select-none"
+              className="absolute inset-0 text-[35vw] font-black leading-none select-none"
               style={{ 
-                WebkitTextStroke: `1px ${primary}`, 
+                WebkitTextStroke: `3px ${primary}`, // Thicker stroke
                 color: 'transparent',
-                maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)'
+                opacity: 0.5, // Increased for visibility
+                maskImage: 'linear-gradient(to bottom, black 40%, transparent 100%)'
               }}
             >
               {String(currentDay).padStart(3, '0')}
@@ -203,14 +190,28 @@ export function Hero() {
          </div>
       </motion.div>
 
-      {/* MAIN CONTENT CARD (Glassmorphism & Tilt) */}
+      {/* 3. Floating Holographic Shards */}
+      <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
+        {Array.from({ length: 15 }).map((_, i) => (
+          <HolographicShard key={`shard-${i}`} index={i} primaryColor={primary} accentColor={accent} />
+        ))}
+      </div>
+      
+      {/* 4. Background AR Data Grid */}
+      <div className="absolute inset-0 z-10 pointer-events-none">
+         {Array.from({ length: 20 }).map((_, i) => (
+           <DataPoint key={i} index={i} color={i % 2 === 0 ? primary : accent} />
+         ))}
+      </div>
+
+      {/* 5. MAIN CONTENT CARD (Glassmorphism & Tilt) */}
       <motion.div
         className="relative z-20 w-full max-w-4xl px-6"
         style={{ rotateX, rotateY, x: contentX, y: contentY, transformStyle: "preserve-3d" }}
       >
         <div 
-           className="relative backdrop-blur-sm bg-void-black/30 border border-white/10 p-8 md:p-16 rounded-sm"
-           style={{ boxShadow: `0 0 100px -20px ${primary}20` }}
+           className="relative backdrop-blur-md/75 bg-void-black/10 border border-white/20 p-8 md:p-16 rounded-sm"
+           style={{ boxShadow: `0 0 150px -30px ${primary}40` }}
         >
           {/* HUD Corners */}
           <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-primary/50" />
@@ -251,9 +252,10 @@ export function Hero() {
 
             {/* Main Title */}
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-2 tracking-tighter relative z-10">
+              {/* ClassName here now applies gradient ONLY to base text in GlitchText */}
               <GlitchText 
                 text="th3scr1b3" 
-                className="text-transparent bg-clip-text bg-gradient-to-br from-light-cream via-white to-light-cream/50 filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                className="text-transparent bg-clip-text bg-gradient-to-br from-light-cream via-white to-light-cream/50 filter drop-shadow-[0_0_25px_rgba(255,255,255,0.5)]"
                 glitchIntensity="high"
               />
             </h1>
@@ -277,8 +279,8 @@ export function Hero() {
               transition={{ delay: 0.6 }}
               className="text-sm md:text-base text-light-cream/50 max-w-lg mx-auto mb-10 font-mono leading-relaxed"
             >
-              {'> '}_INITIALIZING AUDIO_VISUAL SEQUENCE<br/>
-              {'> '}_ONE TAKE. ONE MOMENT. PRESERVED IN THE VOID.
+              &gt;_ INITIALIZING AUDIO_VISUAL SEQUENCE<br/>
+              &gt;_ ONE TAKE. ONE MOMENT. PRESERVED IN THE VOID.
             </motion.p>
 
             {/* Buttons */}
@@ -322,9 +324,9 @@ export function Hero() {
         <span className="text-[10px] font-mono tracking-[0.3em]">SCROLL</span>
       </motion.div>
 
-      {/* Overlay Scanlines */}
-      <div className="absolute inset-0 z-50 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5" />
-      <div className="absolute inset-0 z-50 pointer-events-none opacity-20" style={{ background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))', backgroundSize: '100% 2px, 3px 100%' }} />
+      {/* Overlay Scanlines - REDUCED OPACITY */}
+      <div className="absolute inset-0 z-50 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]" />
+      <div className="absolute inset-0 z-50 pointer-events-none opacity-10" style={{ background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))', backgroundSize: '100% 4px, 4px 100%' }} />
 
     </section>
   );

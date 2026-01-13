@@ -10,6 +10,10 @@ import { getLocalAudioUrls, getCoverUrl } from '../services/releaseStorage';
 
 export function GlobalAudioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
+  const compressorRef = useRef<DynamicsCompressor | null>(null);
+  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const { data } = useStore();
   const { currentTheme } = useThemeStore();
   const { primary, secondary, background } = currentTheme.colors;
@@ -45,14 +49,93 @@ export function GlobalAudioPlayer() {
     loadAndPlay,
   } = useAudioStore();
 
+  // Initialize Web Audio API for normalization
+  useEffect(() => {
+    if (!audioRef.current) return;
+    
+    const initializeAudioContext = () => {
+      // Create audio context if not exists
+      if (!audioContextRef.current) {
+        try {
+          const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+          audioContextRef.current = audioContext;
+          
+          // Create audio source from the audio element
+          if (!sourceRef.current) {
+            sourceRef.current = audioContext.createMediaElementAudioSource(audioRef.current!);
+          }
+          
+          // Create gain node for volume control
+          if (!gainNodeRef.current) {
+            gainNodeRef.current = audioContext.createGain();
+            gainNodeRef.current.gain.value = volume;
+          }
+          
+          // Create dynamics compressor for normalization
+          // This ensures all tracks sound roughly the same volume level
+          if (!compressorRef.current) {
+            compressorRef.current = audioContext.createDynamicsCompressor();
+            // Moderate compression settings for transparent loudness normalization
+            compressorRef.current.threshold.value = -24;  // dB
+            compressorRef.current.knee.value = 30;        // dB
+            compressorRef.current.ratio.value = 12;       // Compression ratio
+            compressorRef.current.attack.value = 0.003;   // seconds
+            compressorRef.current.release.value = 0.25;   // seconds
+          }
+          
+          // Connect: source → compressor → gain → destination
+          sourceRef.current!.connect(compressorRef.current);
+          compressorRef.current.connect(gainNodeRef.current);
+          gainNodeRef.current.connect(audioContext.destination);
+          
+          console.log('[Audio] Web Audio API initialized with compression normalization');
+        } catch (e) {
+          console.warn('[Audio] Web Audio API setup failed (may not be supported):', e);
+        }
+      }
+    };
+    
+    // Initialize on first user interaction
+    const handleUserInteraction = () => {
+      initializeAudioContext();
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('touchstart', handleUserInteraction);
+    };
+    
+    document.addEventListener('click', handleUserInteraction);
+    document.addEventListener('touchstart', handleUserInteraction);
+    
+    return () => {
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('touchstart', handleUserInteraction);
+    };
+  }, []);
+  
   // Register audio element with store
   useEffect(() => {
     if (audioRef.current) {
       setAudioElement(audioRef.current);
-      audioRef.current.volume = volume;
+      audioRef.current.volume = 1; // Use 1.0 since Web Audio API gain handles volume
     }
     return () => setAudioElement(null);
-  }, [setAudioElement, volume]);
+  }, [setAudioElement]);
+  
+  // Update gain node volume when volume changes
+  useEffect(() => {
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = volume;
+    }
+  }, [volume]);
+  
+  // Resume audio context if suspended (required for autoplay policy)
+  useEffect(() => {
+    if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+      audioContextRef.current.resume().catch(() => {
+        console.log('[Audio] Audio context resume failed');
+      });
+    }
+  }, [isPlaying]);
+  
 
   // Audio event handlers
   useEffect(() => {

@@ -78,9 +78,15 @@ export const useAudioStore = create<AudioState>((set, get) => ({
     const urlsToTry: string[] = [];
     
     // If release has a manifest audio path (from fallback data), use it first
+    // The path is already URL-encoded and includes the directory structure
     if (release.manifestAudioPath) {
-      urlsToTry.push(`/music/${release.manifestAudioPath}`);
-      console.log(`[Audio] Using manifest path: ${release.manifestAudioPath}`);
+      // manifestAudioPath is like "audio/january/01%20-%20Title.wav"
+      // We need to decode it for the local music directory
+      const decodedPath = decodeURIComponent(release.manifestAudioPath);
+      // Remove the "audio/" prefix and reconstruct the local path
+      const localPath = decodedPath.replace(/^audio\//, '');
+      urlsToTry.push(`/music/${localPath}`);
+      console.log(`[Audio] Using manifest path: /music/${localPath}`);
     }
     
     // Then add remote variations (releaseready bucket)

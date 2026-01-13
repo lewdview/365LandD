@@ -7,9 +7,10 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     fs: {
-      // Allow serving files from parent directories and the actual music folder
-      // public/music -> /Volumes/extremeDos/temp music (symlinked)
-      allow: ['..', '../../', '/Volumes/extremeDos/temp music']
+      // Allow serving files from parent directories, music folder, and database exports
+      // public/music -> /Volumes/extremeUno/th3scr1b3-365-warp/365-releases/audio (symlinked)
+      // db_output_json -> local database exports (not version-controlled)
+      allow: ['..', '../../', '/Volumes/extremeUno/th3scr1b3-365-warp/365-releases/audio', '/Volumes/extremeUno/th3scr1b3-365-warp/db_output_json']
     }
   },
   resolve: {

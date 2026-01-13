@@ -1,4 +1,5 @@
 import type { Release, SongAnalysis, ReleaseData } from '../types';
+import { buildReleasesFromManifestWithDatabase, loadAndMergeDatabases } from './databaseExport';
 
 const SUPABASE_PROJECT_ID = 'pznmptudgicrmljjafex';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6bm1wdHVkZ2ljcm1samphZmV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDE4ODUsImV4cCI6MjA3OTg3Nzg4NX0.syu1bbr9OJ5LxCnTrybLVgsjac4UOkFVdAHuvhKMY2g';
@@ -228,6 +229,15 @@ function buildReleasesFromManifest(manifest: any[]): Release[] {
       { word: 'discovery', start: 8, end: 9 },
     ];
     
+    // Try to extract duration and other metadata if available in manifest
+    // Default to 180 seconds (3:00) as placeholder
+    const duration = item.duration || 180;
+    const formatDuration = (seconds: number): string => {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
+    
     return {
       id: `${item.month}-${item.index}`,
       day: absDay,
@@ -236,36 +246,37 @@ function buildReleasesFromManifest(manifest: any[]): Release[] {
       title: item.storageTitle,
       storageTitle: item.storageTitle,
       manifestAudioPath: item.audioPath,
-      mood: 'light' as const,
-      description: `A poetic entry from ${item.month}`,
-      duration: 180,
-      durationFormatted: '3:00',
-      tempo: 100,
-      key: 'C major',
-      energy: 0.65,
-      valence: 0.6,
-      danceability: 0.65,
-      acousticness: 0.2,
-      instrumentalness: 0.15,
-      loudness: -7.5,
-      speechiness: 0.05,
-      liveness: 0.15,
-      timeSignature: '4/4',
-      genre: ['Ambient', 'Indie'],
-      tags: ['poetry', 'sonic', 'narrative'],
-      // Sample poetry data with word-level timestamps
-      lyrics: 'A poetic moment in the journey of sound and self discovery.',
-      lyricsSegments: [
-        { start: 0, end: 9, text: 'A poetic moment in the journey of sound and self discovery.' }
+      mood: item.mood || ('light' as const),
+      description: item.description || `A poetic entry from ${item.month}`,
+      duration,
+      durationFormatted: formatDuration(duration),
+      tempo: item.tempo || 100,
+      key: item.key || 'C major',
+      energy: item.energy ?? 0.65,
+      valence: item.valence ?? 0.6,
+      danceability: item.danceability,
+      acousticness: item.acousticness,
+      instrumentalness: item.instrumentalness,
+      loudness: item.loudness,
+      speechiness: item.speechiness,
+      liveness: item.liveness,
+      timeSignature: item.timeSignature || '4/4',
+      genre: item.genre || ['Ambient', 'Indie'],
+      tags: item.tags || ['poetry', 'sonic', 'narrative'],
+      lyrics: item.lyrics || 'A poetic moment in the journey of sound and self discovery.',
+      lyricsSegments: item.lyricsSegments || [
+        { start: 0, end: duration, text: item.lyrics || 'A poetic moment in the journey of sound and self discovery.' }
       ],
-      lyricsWords: sampleWords as any,
+      lyricsWords: item.lyricsWords || (sampleWords as any),
     } as Release;
   });
 }
 
 // Build full ReleaseData from manifest when Supabase fails
-function buildReleaseDataWithManifest(manifestItems: any[]): ReleaseData {
-  const releases = buildReleasesFromManifest(manifestItems);
+async function buildReleaseDataWithManifest(manifestItems: any[]): Promise<ReleaseData> {
+  // Try to load exported database to enrich manifest data
+  const exportedSongs = await loadAndMergeDatabases();
+  const releases = await buildReleasesFromManifestWithDatabase(manifestItems, exportedSongs);
   const lightTracks = releases.filter(r => r.mood === 'light').length;
   const darkTracks = releases.filter(r => r.mood === 'dark').length;
 
@@ -490,7 +501,7 @@ export async function buildReleaseData(): Promise<ReleaseData> {
         const manifest = await manifestRes.json();
         if (manifest.items && manifest.items.length > 0) {
           console.log('[Supabase] No analyses found, building from manifest with', manifest.items.length, 'items');
-          return buildReleaseDataWithManifest(manifest.items);
+          return await buildReleaseDataWithManifest(manifest.items);
         }
       }
     } catch (e) {

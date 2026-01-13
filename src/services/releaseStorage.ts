@@ -86,11 +86,13 @@ export function getReleaseReadyAudioUrl(day: number, title: string): string {
 
 /**
  * Get alternative audio URLs to try (for fallback)
+ * Tries multiple file formats: wav, mp3, flac, m4a, ogg, aac
  */
 export function getReleaseAudioUrlVariations(day: number, title: string): string[] {
   const month = getMonthFromDay(day);
   const paddedDay = String(day).padStart(2, '0');
-  const extensions = ['wav', 'mp3', 'flac', 'm4a'];
+  // Priority order: wav (lossless), mp3 (common), flac (lossless), m4a (aac), ogg (vorbis), aac
+  const extensions = ['wav', 'mp3', 'flac', 'm4a', 'ogg', 'aac'];
   return extensions.map(ext => {
     const fileName = `${paddedDay} - ${title}.${ext}`;
     return `${STORAGE_BASE}/audio/${month.toLowerCase()}/${encodeURIComponent(fileName)}`;
@@ -99,11 +101,13 @@ export function getReleaseAudioUrlVariations(day: number, title: string): string
 
 /**
  * Local fallback URLs for development (try multiple extensions)
+ * Tries the exact extension first, then common alternatives
  */
 export function getLocalAudioUrls(day: number, title: string): string[] {
   const paddedDay = String(day).padStart(2, '0');
   const month = getMonthFromDay(day);
-  const extensions = ['wav', 'mp3', 'flac', 'm4a'];
+  // Priority order: wav (most common), mp3, flac, m4a, ogg, aac
+  const extensions = ['wav', 'mp3', 'flac', 'm4a', 'ogg', 'aac'];
   return extensions.map(ext => `/music/${month}/${paddedDay} - ${title}.${ext}`);
 }
 
