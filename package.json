@@ -10,11 +10,15 @@
     "preview": "vite preview",
     "manifest": "node scripts/generate-manifest.mjs",
     "db:to-local": "node scripts/build-releases-from-db-exports.mjs",
-    "files:to-local": "node scripts/build-from-organized-files.mjs"
+    "files:to-local": "node scripts/build-from-organized-files.mjs",
+    "upload:audio": "node scripts/upload-to-releaseready.mjs audio",
+    "upload:covers": "node scripts/upload-to-releaseready.mjs covers",
+    "upload:all": "node scripts/upload-to-releaseready.mjs all"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
+    "@supabase/supabase-js": "^2.90.1",
     "@tailwindcss/vite": "^4.1.18",
     "framer-motion": "^12.23.26",
     "gsap": "^3.14.2",
