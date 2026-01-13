@@ -149,15 +149,17 @@ export function DayPage() {
   };
 
   const prevDay = data?.releases.filter(r => r.day < dayNum && r.day >= 1).sort((a, b) => b.day - a.day)[0];
-  // PRODUCTION: Gate access to current day only; DEV: all 365 days accessible
-  const nextDay = data?.releases.filter(r => r.day > dayNum && r.day <= (currentDay || 1)).sort((a, b) => a.day - b.day)[0];
+  // PRODUCTION: Only allow access up to current day
+  const nextDay = data?.releases.filter(r => r.day > dayNum && r.day <= currentDay).sort((a, b) => a.day - b.day)[0];
 
   const isLight = release?.mood === 'light';
 
-  // Gate access: redirect if trying to view a future day (PRODUCTION mode)
-  if (data && dayNum > (currentDay || 1)) {
-    navigate(`/day/${currentDay || 1}`);
-  }
+  // PRODUCTION: Day-gating — redirect to current day if user tries to access the future
+  useEffect(() => {
+    if (data && currentDay && dayNum > currentDay) {
+      navigate(`/day/${currentDay}`);
+    }
+  }, [data, currentDay, dayNum, navigate]);
 
   if (!data) {
     return (
@@ -372,6 +374,11 @@ coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
           {nextDay && (
             <p className="text-xs font-mono text-light-cream/60 mt-2 text-center font-semibold" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
               DAY {nextDay.day}
+            </p>
+          )}
+          {!nextDay && dayNum === currentDay && (
+            <p className="text-xs font-mono text-light-cream/40 mt-2 text-center font-semibold" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
+              TODAY'S TRANSMISSION
             </p>
           )}
         </div>
