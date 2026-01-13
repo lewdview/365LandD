@@ -43,7 +43,7 @@ function hexToRgba(hex: string, alpha: number): string {
 export function DayPage() {
   const { day } = useParams<{ day: string }>();
   const navigate = useNavigate();
-  const { data, fetchData } = useStore();
+  const { data, fetchData, currentDay } = useStore();
   const { currentTheme } = useThemeStore();
   const { primary, accent, background } = currentTheme.colors;
   
@@ -149,16 +149,15 @@ export function DayPage() {
   };
 
   const prevDay = data?.releases.filter(r => r.day < dayNum && r.day >= 1).sort((a, b) => b.day - a.day)[0];
-  // DEV MODE: Allow all 365 days; PRODUCTION: limit to current day
-  const nextDay = data?.releases.filter(r => r.day > dayNum && r.day <= 365).sort((a, b) => a.day - b.day)[0];
+  // PRODUCTION: Gate access to current day only; DEV: all 365 days accessible
+  const nextDay = data?.releases.filter(r => r.day > dayNum && r.day <= (currentDay || 1)).sort((a, b) => a.day - b.day)[0];
 
   const isLight = release?.mood === 'light';
 
-  // DEV MODE: All 365 days accessible for testing
-  // PRODUCTION: Uncomment gating to limit to current day
-  // if (data && dayNum > (currentDay || 1)) {
-  //   navigate(`/day/${currentDay || 1}`);
-  // }
+  // Gate access: redirect if trying to view a future day (PRODUCTION mode)
+  if (data && dayNum > (currentDay || 1)) {
+    navigate(`/day/${currentDay || 1}`);
+  }
 
   if (!data) {
     return (
@@ -174,11 +173,6 @@ export function DayPage() {
 
   return (
     <div className="min-h-screen bg-void-black text-light-cream pb-80 md:pb-72">
-      {/* DEV MODE BANNER */}
-      <div className="bg-neon-red/20 border-b-2 border-neon-red text-center py-2 px-4">
-        <p className="text-sm font-mono text-neon-red font-bold">🔴 DEV MODE: All 365 days accessible for testing</p>
-      </div>
-      
       <Navigation />
       <ThemeChanger />
 
