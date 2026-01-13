@@ -27,3 +27,5 @@ dist-ssr
 # Local symlinks
 public/music
 365-releases/audio/
+.vercel
+db_output_json/
