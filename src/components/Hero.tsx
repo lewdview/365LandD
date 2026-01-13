@@ -101,7 +101,7 @@ function HolographicShard({
 }
 
 // 2030 COMPONENT: Floating AR Data Points
-function DataPoint({ index, color }: { index: number, color: string }) {
+function DataPoint({ color }: { index: number, color: string }) {
   const x = Math.random() * 100;
   const y = Math.random() * 100;
   

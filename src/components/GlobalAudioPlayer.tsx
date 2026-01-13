@@ -12,7 +12,7 @@ export function GlobalAudioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const gainNodeRef = useRef<GainNode | null>(null);
-  const compressorRef = useRef<DynamicsCompressor | null>(null);
+  const compressorRef = useRef<DynamicsCompressorNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const { data } = useStore();
   const { currentTheme } = useThemeStore();
@@ -61,8 +61,8 @@ export function GlobalAudioPlayer() {
           audioContextRef.current = audioContext;
           
           // Create audio source from the audio element
-          if (!sourceRef.current) {
-            sourceRef.current = audioContext.createMediaElementAudioSource(audioRef.current!);
+          if (!sourceRef.current && audioRef.current) {
+            sourceRef.current = (audioContext as any).createMediaElementSource(audioRef.current);
           }
           
           // Create gain node for volume control

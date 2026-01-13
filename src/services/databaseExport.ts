@@ -1,26 +1,8 @@
-import type { Release, ReleaseData } from '../types';
+import type { Release } from '../types';
+import type { LyricsAnalysis } from '../types';
 
-interface ExportedSong {
-  id: string;
-  fileName: string;
-  title: string;
-  duration: number;
-  tempo: number;
-  key: string;
-  timeSignature: string;
-  genre: string[];
-  mood: string[];
-  lyrics?: string;
-  lyricsSegments?: Array<{ start: number; end: number; text: string }>;
-  lyricsAnalysis?: {
-    sentiment: 'positive' | 'negative' | 'neutral' | 'mixed';
-    sentimentScore: number;
-    themes: string[];
-    energyFromLyrics: number;
-    valenceFromLyrics: number;
-  };
-  [key: string]: unknown;
-}
+// ExportedSong interface is not used but kept for reference
+// (actual usage is AnalysisData below)
 
 interface AnalysisData {
   id: string;
@@ -42,14 +24,7 @@ interface AnalysisData {
   mood: string[];
   lyrics?: string;
   lyricsSegments?: Array<{ start: number; end: number; text: string }>;
-  lyricsAnalysis?: {
-    sentiment: 'positive' | 'negative' | 'neutral' | 'mixed';
-    sentimentScore: number;
-    themes: string[];
-    emotion: string[];
-    energyFromLyrics: number;
-    valenceFromLyrics: number;
-  };
+  lyricsAnalysis?: LyricsAnalysis;
 }
 
 /**
@@ -204,10 +179,10 @@ function formatDuration(seconds: number): string {
 /**
  * Build releases from manifest using exported database as enrichment source
  */
-export async function buildReleasesFromManifestWithDatabase(
+export function buildReleasesFromManifestWithDatabase(
   manifestItems: any[],
   exportedSongs: Map<string, AnalysisData>
-): Promise<Release[]> {
+): Release[] {
   const offsets: Record<string, number> = {
     january: 0, february: 31, march: 59, april: 90, may: 120, june: 151,
     july: 181, august: 212, september: 243, october: 273, november: 304, december: 334
