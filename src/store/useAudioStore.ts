@@ -73,27 +73,27 @@ export const useAudioStore = create<AudioState>((set, get) => ({
     });
     
     const title = release.storageTitle || release.title;
+    const isDev = import.meta.env.DEV;
     
-    // Build URL list: prioritize manifestAudioPath if available, then try variations
+    // Build URL list: on production, prioritize releaseready bucket; in dev, use manifest first
     const urlsToTry: string[] = [];
     
-    // If release has a manifest audio path (from fallback data), use it first
-    // The path is already URL-encoded and includes the directory structure
-    if (release.manifestAudioPath) {
+    if (isDev && release.manifestAudioPath) {
+      // Development: try manifest path first (local symlink)
       // manifestAudioPath is like "audio/january/01%20-%20Title.wav"
-      // We need to decode it for the local music directory
       const decodedPath = decodeURIComponent(release.manifestAudioPath);
-      // Remove the "audio/" prefix and reconstruct the local path
       const localPath = decodedPath.replace(/^audio\//, '');
       urlsToTry.push(`/music/${localPath}`);
-      console.log(`[Audio] Using manifest path: /music/${localPath}`);
+      console.log(`[Audio] Dev mode: using manifest path: /music/${localPath}`);
     }
     
-    // Then add remote variations (releaseready bucket)
+    // Production & fallback: add remote variations from releaseready bucket
     urlsToTry.push(...getReleaseAudioUrlVariations(release.day, title));
     
-    // Finally add local file variations as fallback
-    urlsToTry.push(...getLocalAudioUrls(release.day, title));
+    // Dev fallback: local file variations
+    if (isDev) {
+      urlsToTry.push(...getLocalAudioUrls(release.day, title));
+    }
     
     console.log(`[Audio] Loading: ${release.title}, trying ${urlsToTry.length} sources`);
     
