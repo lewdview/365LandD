@@ -43,7 +43,7 @@ function hexToRgba(hex: string, alpha: number): string {
 export function DayPage() {
   const { day } = useParams<{ day: string }>();
   const navigate = useNavigate();
-  const { data, fetchData, currentDay } = useStore();
+  const { data, fetchData } = useStore();
   const { currentTheme } = useThemeStore();
   const { primary, accent, background } = currentTheme.colors;
   
