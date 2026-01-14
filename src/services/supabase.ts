@@ -97,12 +97,15 @@ function songAnalysisToRelease(analysis: SongAnalysis, dayNumber: number): Relea
   const releaseDate = new Date(startDate);
   releaseDate.setDate(startDate.getDate() + dayNumber - 1);
   
+  const cleanedTitle = fileNameToTitle(analysis.fileName);
+  
   return {
     id: analysis.id,
     day: dayNumber,
     date: releaseDate.toISOString().split('T')[0],
     fileName: analysis.fileName,
-    title: fileNameToTitle(analysis.fileName),
+    title: cleanedTitle,
+    storageTitle: cleanedTitle,
     mood,
     description: generateDescription(analysis),
     storedAudioUrl: analysis.storedAudioUrl,
