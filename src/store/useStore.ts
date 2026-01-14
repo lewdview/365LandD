@@ -79,9 +79,9 @@ export const useStore = create<AppState>((set, get) => ({
               return merged;
             }
             // Fallback minimal entry when analyzer hasn't produced metadata yet
-            const startDate = new Date('2026-01-01');
-            const d = new Date(startDate);
-            d.setDate(startDate.getDate() + absDay - 1);
+            // Use local date to avoid timezone issues
+            const d = new Date(2026, 0, 1);
+            d.setDate(1 + absDay - 1); // Day 1 = Jan 1, etc.
             return {
               id: `${it.month}-${it.index}`,
               day: absDay,

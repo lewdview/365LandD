@@ -93,9 +93,10 @@ function songAnalysisToRelease(analysis: SongAnalysis, dayNumber: number): Relea
   ].filter(Boolean).map(t => t.toLowerCase());
   
   // Create a date based on day number (starting Jan 1, 2026)
-  const startDate = new Date('2026-01-01');
-  const releaseDate = new Date(startDate);
-  releaseDate.setDate(startDate.getDate() + dayNumber - 1);
+  // Use local date to avoid timezone issues
+  const startDate = new Date(2026, 0, 1); // Jan 1, 2026 in local time
+  const releaseDate = new Date(2026, 0, 1);
+  releaseDate.setDate(1 + dayNumber - 1); // Day 1 = Jan 1, Day 2 = Jan 2, etc.
   
   const cleanedTitle = fileNameToTitle(analysis.fileName);
   

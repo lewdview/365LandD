@@ -129,9 +129,9 @@ function generateDescription(song: AnalysisData): string {
  * Convert exported analysis data to Release format
  */
 function analysisToRelease(song: AnalysisData, dayNumber: number, storageTitle?: string): Release {
-  const startDate = new Date('2026-01-01');
-  const releaseDate = new Date(startDate);
-  releaseDate.setDate(startDate.getDate() + dayNumber - 1);
+  // Use local date to avoid timezone issues
+  const releaseDate = new Date(2026, 0, 1);
+  releaseDate.setDate(1 + dayNumber - 1); // Day 1 = Jan 1, Day 2 = Jan 2, etc.
   
   const mood = determineMood(song);
   const tags = [
@@ -212,9 +212,9 @@ export function buildReleasesFromManifestWithDatabase(
     }
     
     // Fallback: minimal release from manifest only
-    const startDate = new Date('2026-01-01');
-    const releaseDate = new Date(startDate);
-    releaseDate.setDate(startDate.getDate() + absDay - 1);
+    // Use local date to avoid timezone issues
+    const releaseDate = new Date(2026, 0, 1);
+    releaseDate.setDate(1 + absDay - 1); // Day 1 = Jan 1, etc.
     
     return {
       id: `${item.month}-${item.index}`,
