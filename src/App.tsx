@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { useStore } from './store/useStore';
 import { Loader } from './components/Loader';
 import { HomePage } from './pages/HomePage';
@@ -26,6 +27,9 @@ function App() {
       
       {/* Global audio player - persists across navigation */}
       <GlobalAudioPlayer />
+      
+      {/* Vercel Analytics */}
+      <Analytics />
     </BrowserRouter>
   );
 }
