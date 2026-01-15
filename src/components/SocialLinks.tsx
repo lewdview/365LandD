@@ -11,11 +11,15 @@ const socialIcons: Record<string, { icon: string; label: string; color: string }
   spotify: { icon: '●', label: 'Spotify', color: '#1db954' },
 };
 
+// TODO: Move this to an environment variable
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6bm1wdHVkZ2ljcm1samphZmV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDE4ODUsImV4cCI6MjA3OTg3Nzg4NX0.syu1bbr9OJ5LxCnTrybLVgsjac4UOkFVdAHuvhKMY2g';
+
 export function SocialLinks() {
   const { data } = useStore();
   const socials = data?.socials;
   const [newsEmail, setNewsEmail] = useState('');
   const [newsStatus, setNewsStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [newsMessage, setNewsMessage] = useState('');
 
   if (!socials) return null;
 
@@ -26,30 +30,40 @@ export function SocialLinks() {
     if (!newsEmail.trim()) return;
 
     setNewsStatus('loading');
+    setNewsMessage('');
     try {
       const response = await fetch(
         'https://pznmptudgicrmljjafex.supabase.co/functions/v1/subscribe',
         {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'apikey': SUPABASE_ANON_KEY,
           },
           body: JSON.stringify({ email: newsEmail }),
         }
       );
 
+      const result = await response.json();
+
       if (response.ok) {
         setNewsStatus('success');
+        setNewsMessage(result.message || '✓ Subscribed!');
         setNewsEmail('');
-        setTimeout(() => setNewsStatus('idle'), 3000);
       } else {
         setNewsStatus('error');
-        setTimeout(() => setNewsStatus('idle'), 3000);
+        setNewsMessage(result.error || 'Failed to subscribe. Please try again.');
       }
     } catch (error) {
       console.error('Newsletter signup error:', error);
       setNewsStatus('error');
-      setTimeout(() => setNewsStatus('idle'), 3000);
+      setNewsMessage('An unexpected error occurred.');
+    } finally {
+        setTimeout(() => {
+            setNewsStatus('idle');
+            setNewsMessage('');
+        }, 3000);
     }
   };
 
@@ -120,7 +134,7 @@ export function SocialLinks() {
                   : 'bg-neon-yellow text-void-black hover:bg-neon-yellow-dark'
               }`}
             >
-              {newsStatus === 'loading' ? '⏳' : newsStatus === 'success' ? '✓ Subscribed!' : 'Subscribe'}
+              {newsStatus === 'loading' ? '⏳' : newsMessage || 'Subscribe'}
             </motion.button>
           </form>
         </motion.div>

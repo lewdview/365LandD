@@ -19,6 +19,9 @@ const socialIcons: Record<string, { icon: string; label: string; color: string }
   spotify: { icon: '●', label: 'Spotify', color: '#1db954' },
 };
 
+// TODO: Move this to an environment variable
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6bm1wdHVkZ2ljcm1samphZmV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDE4ODUsImV4cCI6MjA3OTg3Nzg4NX0.syu1bbr9OJ5LxCnTrybLVgsjac4UOkFVdAHuvhKMY2g';
+
 export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
   const { currentTheme } = useThemeStore();
   const { data } = useStore();
@@ -27,7 +30,10 @@ export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [newsEmail, setNewsEmail] = useState('');
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [newsStatus, setNewsStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [newsMessage, setNewsMessage] = useState('');
+  const [contactStatus, setContactStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
 
   const socials = data?.socials;
 
@@ -35,42 +41,52 @@ export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
     e.preventDefault();
     // Handle contact form submission
     console.log('Contact form:', { email, message });
-    setSubmitStatus('success');
+    setContactStatus('success');
     // Reset form
     setEmail('');
     setMessage('');
-    setTimeout(() => setSubmitStatus('idle'), 3000);
+    setTimeout(() => setContactStatus('idle'), 3000);
   };
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newsEmail.trim()) return;
 
-    setSubmitStatus('loading');
+    setNewsStatus('loading');
+    setNewsMessage('');
     try {
       const response = await fetch(
         'https://pznmptudgicrmljjafex.supabase.co/functions/v1/subscribe',
         {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'apikey': SUPABASE_ANON_KEY,
           },
           body: JSON.stringify({ email: newsEmail }),
         }
       );
+      
+      const result = await response.json();
 
       if (response.ok) {
-        setSubmitStatus('success');
+        setNewsStatus('success');
+        setNewsMessage(result.message || '✓ Subscribed!');
         setNewsEmail('');
-        setTimeout(() => setSubmitStatus('idle'), 3000);
       } else {
-        setSubmitStatus('error');
-        setTimeout(() => setSubmitStatus('idle'), 3000);
+        setNewsStatus('error');
+        setNewsMessage(result.error || 'Failed to subscribe. Please try again.');
       }
     } catch (error) {
       console.error('Newsletter signup error:', error);
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus('idle'), 3000);
+      setNewsStatus('error');
+      setNewsMessage('An unexpected error occurred.');
+    } finally {
+        setTimeout(() => {
+            setNewsStatus('idle');
+            setNewsMessage('');
+        }, 3000);
     }
   };
 
@@ -92,7 +108,7 @@ export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
             transition={{ delay: 0.2 }}
             onClick={onClose}
             className="fixed top-6 right-6 z-[10000] w-12 h-12 flex items-center justify-center rounded-full transition-colors"
-            style={{ 
+            style={{
               background: `${primary}30`,
               border: `2px solid ${primary}`,
             }}
@@ -116,7 +132,7 @@ export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
             <RisingParticles count={10} />
 
             {/* Top accent line */}
-            <motion.div 
+            <motion.div
               className="absolute top-0 left-0 w-full h-2"
               style={{ background: `linear-gradient(90deg, ${primary}, ${accent})` }}
               initial={{ scaleX: 0 }}
@@ -291,28 +307,28 @@ export function ConnectModal({ isOpen, onClose }: ConnectModalProps) {
                     onChange={(e) => setNewsEmail(e.target.value)}
                     placeholder="your@email.com"
                     required
-                    disabled={submitStatus === 'loading'}
+                    disabled={newsStatus === 'loading'}
                     className="flex-1 px-4 py-3 bg-void-lighter border border-void-lighter text-light-cream placeholder-light-cream/30 focus:border-current outline-none transition-colors font-mono disabled:opacity-50"
                   />
                   <motion.button
-                    whileHover={{ scale: submitStatus === 'loading' ? 1 : 1.05 }}
-                    whileTap={{ scale: submitStatus === 'loading' ? 1 : 0.95 }}
+                    whileHover={{ scale: newsStatus === 'loading' ? 1 : 1.05 }}
+                    whileTap={{ scale: newsStatus === 'loading' ? 1 : 0.95 }}
                     type="submit"
-                    disabled={submitStatus === 'loading'}
+                    disabled={newsStatus === 'loading'}
                     className="px-6 py-3 font-mono font-bold uppercase tracking-wider disabled:opacity-50"
                     style={{
-                      background: submitStatus === 'success' ? '#10b981' : submitStatus === 'error' ? '#ef4444' : accent,
+                      background: newsStatus === 'success' ? '#10b981' : newsStatus === 'error' ? '#ef4444' : accent,
                       color: background,
                     }}
                   >
-                    {submitStatus === 'loading' ? 'Sending...' : submitStatus === 'success' ? 'Subscribed!' : submitStatus === 'error' ? 'Try Again' : 'Subscribe'}
+                    {newsStatus === 'loading' ? 'Sending...' : newsMessage || 'Subscribe'}
                   </motion.button>
                 </form>
               </motion.div>
             </div>
 
             {/* Bottom accent line */}
-            <motion.div 
+            <motion.div
               className="absolute bottom-0 left-0 w-full h-1"
               style={{ background: `linear-gradient(90deg, ${accent}, ${primary})` }}
               initial={{ scaleX: 0 }}
