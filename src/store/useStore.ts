@@ -59,7 +59,7 @@ export const useStore = create<AppState>((set, get) => ({
             const fn = r.storedAudioUrl ? decodeURIComponent(r.storedAudioUrl.split('/').pop() || '') : '';
             // 1. Remove extension
             let base = fn.replace(/\.(wav|mp3|m4a|flac)$/i, '');
-            // 2. Remove leading day number (CRITICAL FIX)
+            // 2. Remove leading day number (CRITICAL FIX for Day 14+)
             base = stripLeadingNumber(base);
             // 3. Normalize (remove punctuation/spaces)
             return [normalize(base), r];
