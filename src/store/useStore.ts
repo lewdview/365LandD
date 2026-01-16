@@ -15,7 +15,6 @@ interface AppState {
   calculateCurrentDay: () => void;
 }
 
-// Ensure this line starts with 'export const'
 export const useStore = create<AppState>((set, get) => ({
   data: null,
   loading: true,
@@ -44,13 +43,11 @@ export const useStore = create<AppState>((set, get) => ({
       const supabaseData = await buildReleaseData();
       let dataToUse: ReleaseData | null = null;
       
-      // LOGIC FIX: Always prioritize Manifest if available.
       if (manifest && manifest.items?.length) {
           // Manifest-first: build the releases in EXACT manifest order, enriching with analyzer data when possible
           const remoteReleases = supabaseData.releases || [];
           
-      // AGGRESSIVE normalization: removes spaces, apostrophes, dashes, everything.
-      // "We're" becomes "were", matching the manifest's "Were".
+          // AGGRESSIVE normalization: remove spaces, punctuation, everything except letters/numbers
           const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
           
           const byTitle = new Map(remoteReleases.map(r => [normalize(r.storageTitle || r.title), r]));
@@ -66,11 +63,18 @@ export const useStore = create<AppState>((set, get) => ({
             const keyFile = normalize(String(it.index).padStart(2,'0') + ' - ' + it.storageTitle);
             const match = byFile.get(keyFile) || byTitle.get(keyTitle);
             const absDay = (offsets[it.month] ?? 0) + it.index;
+            
+            // Recalculate date ensuring it matches the manifest Day
+            const startDate = new Date('2026-01-01');
+            const d = new Date(startDate);
+            d.setDate(startDate.getDate() + absDay - 1);
+            const correctDateStr = d.toISOString().split('T')[0];
 
             if (match) {
               const merged = {
                 ...match,
                 day: absDay,
+                date: correctDateStr, // <--- FORCE CORRECT DATE
                 title: it.storageTitle,
                 storageTitle: it.storageTitle,
                 manifestAudioPath: it.audioPath,
@@ -82,14 +86,12 @@ export const useStore = create<AppState>((set, get) => ({
               
               return merged;
             }
-            // Fallback minimal entry when analyzer hasn't produced metadata yet
-            const startDate = new Date('2026-01-01');
-            const d = new Date(startDate);
-            d.setDate(startDate.getDate() + absDay - 1);
+            
+            // Fallback minimal entry
             return {
               id: `${it.month}-${it.index}`,
               day: absDay,
-              date: d.toISOString().split('T')[0],
+              date: correctDateStr,
               fileName: `${String(it.index).padStart(2,'0')} - ${it.storageTitle}.${it.ext}`,
               title: it.storageTitle,
               storageTitle: it.storageTitle,
@@ -116,7 +118,6 @@ export const useStore = create<AppState>((set, get) => ({
             }
           };
       } else if (supabaseData.releases && supabaseData.releases.length > 0) {
-        // No manifest found, but we have remote data, so use that
         dataToUse = supabaseData;
       }
       
@@ -155,7 +156,6 @@ export const useStore = create<AppState>((set, get) => ({
     const { data } = get();
     if (!data) return;
 
-    // Interpret project.startDate as LOCAL midnight
     const localStart = new Date(`${data.project.startDate}T00:00:00`);
     const now = new Date();
     const msPerDay = 1000 * 60 * 60 * 24;
