@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Release } from '../types';
-import { getReleaseAudioUrlVariations } from '../services/releaseStorage';
+import { getReleaseAudioUrlVariations, getLocalAudioUrls } from '../services/releaseStorage';
 
 interface AudioState {
   // Current track
@@ -15,7 +15,7 @@ interface AudioState {
   isLoading: boolean;
   hasError: boolean;
   
-  // The actual audio element
+  // The actual audio element (set from component)
   audioElement: HTMLAudioElement | null;
   
   // Actions
@@ -29,7 +29,7 @@ interface AudioState {
   toggleMute: () => void;
   stop: () => void;
   
-  // Internal state updates
+  // Internal state updates (called from audio events)
   _setCurrentTime: (time: number) => void;
   _setDuration: (duration: number) => void;
   _setIsPlaying: (playing: boolean) => void;
@@ -72,15 +72,32 @@ export const useAudioStore = create<AudioState>((set, get) => ({
       duration: 0,
     });
     
-    // FORCE RELEASEREADY BUCKET ONLY
-    // We removed the 'isDev' checks and manifest/local path logic.
+    const isDev = import.meta.env.DEV;
+    
+    // Build URL list: on production, prioritize releaseready bucket; in dev, use manifest first
     const urlsToTry: string[] = [];
     
-    // Use storageTitle (the exact filename in bucket without extension) if available, otherwise fall back to title
+    if (isDev && release.manifestAudioPath) {
+      // Development: try manifest path first (local symlink)
+      // manifestAudioPath is like "audio/january/01%20-%20Title.wav"
+      const decodedPath = decodeURIComponent(release.manifestAudioPath);
+      const localPath = decodedPath.replace(/^audio\//, '');
+      urlsToTry.push(`/music/${localPath}`);
+      console.log(`[Audio] Dev mode: using manifest path: /music/${localPath}`);
+    }
+    
+    // Production & fallback: add remote variations from releaseready bucket
+    // Use storageTitle (the exact filename in bucket) if available, otherwise fall back to title
     const storageTitle = release.storageTitle || release.title;
     urlsToTry.push(...getReleaseAudioUrlVariations(release.day, storageTitle));
+    console.log(`[Audio] Using storageTitle for releaseready bucket: "${storageTitle}"`);
     
-    console.log(`[Audio] Loading from Storage: ${release.title}`);
+    // Dev fallback: local file variations
+    if (isDev) {
+      urlsToTry.push(...getLocalAudioUrls(release.day, storageTitle));
+    }
+    
+    console.log(`[Audio] Loading: ${release.title}, trying ${urlsToTry.length} sources`);
     
     let currentUrlIndex = 0;
     let playAttempted = false;
@@ -93,7 +110,7 @@ export const useAudioStore = create<AudioState>((set, get) => ({
       }
       
       const url = urlsToTry[currentUrlIndex];
-      // console.log(`[Audio] Trying: ${url}`);
+      console.log(`[Audio] Trying (${currentUrlIndex + 1}/${urlsToTry.length}): ${url}`);
       audioElement.src = url;
       audioElement.currentTime = 0;
       audioElement.load();
@@ -127,7 +144,6 @@ export const useAudioStore = create<AudioState>((set, get) => ({
     audioElement.addEventListener('canplay', attemptPlay, { once: true });
     audioElement.addEventListener('error', handleError, { once: true });
     
-    // Safety timeout in case browser hangs on loading
     const timeout = setTimeout(() => {
       audioElement.removeEventListener('canplay', attemptPlay);
       audioElement.removeEventListener('error', handleError);
@@ -204,6 +220,7 @@ export const useAudioStore = create<AudioState>((set, get) => ({
     });
   },
 
+  // Internal setters for audio events
   _setCurrentTime: (time) => set({ currentTime: time }),
   _setDuration: (duration) => set({ duration }),
   _setIsPlaying: (playing) => set({ isPlaying: playing }),

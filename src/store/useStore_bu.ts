@@ -15,7 +15,6 @@ interface AppState {
   calculateCurrentDay: () => void;
 }
 
-// Ensure this line starts with 'export const'
 export const useStore = create<AppState>((set, get) => ({
   data: null,
   loading: true,
@@ -35,25 +34,20 @@ export const useStore = create<AppState>((set, get) => ({
           manifest = await mres.json();
           console.log('[Store] Loaded release-manifest with', manifest?.items?.length || 0, 'items');
         }
-      } catch (e) {
-        console.warn('[Store] Failed to load manifest:', e);
-      }
+      } catch {}
       
       // 2) Remote analyzer metadata
       console.log('[Store] Fetching data from Supabase (remote)…');
       const supabaseData = await buildReleaseData();
       let dataToUse: ReleaseData | null = null;
       
-      // LOGIC FIX: Always prioritize Manifest if available.
-      if (manifest && manifest.items?.length) {
+      if (supabaseData.releases && supabaseData.releases.length > 0) {
+        // If manifest present, force order/day + storageTitle from it
+        if (manifest && manifest.items?.length) {
           // Manifest-first: build the releases in EXACT manifest order, enriching with analyzer data when possible
-          const remoteReleases = supabaseData.releases || [];
-          
-          // Aggressive normalization: remove spaces, punctuation, everything except letters/numbers
-          const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
-          
-          const byTitle = new Map(remoteReleases.map(r => [normalize(r.storageTitle || r.title), r]));
-          const byFile = new Map(remoteReleases.map(r => {
+          const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+          const byTitle = new Map(supabaseData.releases.map(r => [normalize(r.storageTitle || r.title), r]));
+          const byFile = new Map(supabaseData.releases.map(r => {
             const fn = r.storedAudioUrl ? decodeURIComponent(r.storedAudioUrl.split('/').pop() || '') : '';
             const base = fn.replace(/\.(wav|mp3|m4a|flac)$/i, '');
             return [normalize(base), r];
@@ -75,16 +69,19 @@ export const useStore = create<AppState>((set, get) => ({
                 manifestAudioPath: it.audioPath,
               } as Release;
               
+              // Debug: log if lyrics matched
               if (match.lyrics || match.lyricsWords?.length) {
-                console.log(`[Store] Day ${absDay} (${it.storageTitle}): matched analyzer with lyrics`);
+                console.log(`[Store] Day ${absDay} (${it.storageTitle}): matched analyzer with lyrics (${match.lyrics?.length || 0} chars, ${match.lyricsWords?.length || 0} words)`);
+              } else {
+                console.log(`[Store] Day ${absDay} (${it.storageTitle}): matched analyzer but NO LYRICS`);
               }
               
               return merged;
             }
             // Fallback minimal entry when analyzer hasn't produced metadata yet
-            const startDate = new Date('2026-01-01');
-            const d = new Date(startDate);
-            d.setDate(startDate.getDate() + absDay - 1);
+            // Use local date to avoid timezone issues
+            const d = new Date(2026, 0, 1);
+            d.setDate(1 + absDay - 1); // Day 1 = Jan 1, etc.
             return {
               id: `${it.month}-${it.index}`,
               day: absDay,
@@ -106,17 +103,10 @@ export const useStore = create<AppState>((set, get) => ({
             } as Release;
           });
 
-          dataToUse = { 
-            ...supabaseData, 
-            releases: remapped,
-            stats: {
-                ...supabaseData.stats,
-                totalReleases: remapped.length
-            }
-          };
-      } else if (supabaseData.releases && supabaseData.releases.length > 0) {
-        // No manifest found, but we have remote data, so use that
-        dataToUse = supabaseData;
+          dataToUse = { ...supabaseData, releases: remapped };
+        } else {
+          dataToUse = supabaseData;
+        }
       }
       
       if (dataToUse) {
@@ -125,9 +115,11 @@ export const useStore = create<AppState>((set, get) => ({
         return;
       }
       
-      console.log('[Store] Remote returned no data and no manifest, checking local preview…');
+      console.log('[Store] Remote returned no data, checking local preview…');
+      // Prefer releases.local.json if present (local preview override)
       let response = await fetch('/releases.local.json');
       if (!response.ok) {
+        // Fallback to static releases.json
         response = await fetch('/releases.json');
       }
       if (response.ok) {
@@ -154,11 +146,12 @@ export const useStore = create<AppState>((set, get) => ({
     const { data } = get();
     if (!data) return;
 
-    // Interpret project.startDate as LOCAL midnight
+    // Interpret project.startDate as LOCAL midnight to avoid early day rollover due to UTC parsing
     const localStart = new Date(`${data.project.startDate}T00:00:00`);
     const now = new Date();
     const msPerDay = 1000 * 60 * 60 * 24;
     const elapsedDays = Math.floor((now.getTime() - localStart.getTime()) / msPerDay);
+    // Day count is elapsedDays + 1 (Jan 1 => day 1 until local midnight passes)
     const dayNumber = elapsedDays + 1;
 
     const currentDay = Math.max(1, Math.min(dayNumber, 365));

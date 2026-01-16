@@ -13,15 +13,21 @@ function formatDuration(seconds: number): string {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
+// ... existing imports
+
 // Clean up filename to create a title
 function fileNameToTitle(fileName: string): string {
   return fileName
-    .replace(/\.(mp3|wav|flac|m4a)$/i, '')
+    .replace(/\.(mp3|wav|flac|m4a)$/i, '') // Remove extension
+    .replace(/^\d+[\s-_]+/, '') // Remove leading day numbers (e.g. "01 - ", "01_")
     .replace(/_/g, ' ')
     .replace(/[-]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
+
+// ... rest of the file stays the same
+
 
 // Determine if a track is "light" or "dark" based on valence and mood
 function determineMood(analysis: SongAnalysis): 'light' | 'dark' {
