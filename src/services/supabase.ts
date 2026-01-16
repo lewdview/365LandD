@@ -100,9 +100,8 @@ function songAnalysisToRelease(analysis: SongAnalysis, dayNumber: number): Relea
   
   // Create a date based on day number (starting Jan 1, 2026)
   // Use local date to avoid timezone issues
-  const startDate = new Date(2026, 0, 1); // Jan 1, 2026 in local time
-  const releaseDate = new Date(2026, 0, 1);
-  releaseDate.setDate(1 + dayNumber - 1); // Day 1 = Jan 1, Day 2 = Jan 2, etc.
+  const releaseDate = new Date('2026-01-01');
+  releaseDate.setDate(releaseDate.getDate() + dayNumber - 1);
   
   const cleanedTitle = fileNameToTitle(analysis.fileName);
   
@@ -140,7 +139,7 @@ function songAnalysisToRelease(analysis: SongAnalysis, dayNumber: number): Relea
 
 // Cache configuration
 const CACHE_KEY = 'th3scr1b3_release_data';
-const CACHE_TTL_HOURS = 24; // Cache for 24 hours
+const CACHE_TTL_HOURS = 1; // Cache for 24 hours
 
 // Check if cached data is still valid
 function isCacheValid(): boolean {

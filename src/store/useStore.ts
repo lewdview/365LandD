@@ -49,7 +49,8 @@ export const useStore = create<AppState>((set, get) => ({
           // Manifest-first: build the releases in EXACT manifest order, enriching with analyzer data when possible
           const remoteReleases = supabaseData.releases || [];
           
-          // Aggressive normalization: remove spaces, punctuation, everything except letters/numbers
+      // AGGRESSIVE normalization: removes spaces, apostrophes, dashes, everything.
+      // "We're" becomes "were", matching the manifest's "Were".
           const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
           
           const byTitle = new Map(remoteReleases.map(r => [normalize(r.storageTitle || r.title), r]));
