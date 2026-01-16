@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+mport { create } from 'zustand';
 import type { ReleaseData, Release } from '../types';
 import { buildReleaseData } from '../services/supabase';
 
