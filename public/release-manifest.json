@@ -77,9 +77,9 @@
     {
       "month": "january",
       "index": 10,
-      "storageTitle": "__ PERMISSION_DENIED [LOG_108]",
+      "storageTitle": "Long Haul",
       "ext": "wav",
-      "audioPath": "audio/january/10%20-%20__%20PERMISSION_DENIED%20%5BLOG_108%5D.wav",
+      "audioPath": "audio/january/10%20-%20Long%20Haul.wav",
       "coverPath": null
     },
     {
@@ -173,9 +173,9 @@
     {
       "month": "january",
       "index": 22,
-      "storageTitle": "__ REBOOT_SEQUENCE [LOG_109]",
+      "storageTitle": "Tightrope+",
       "ext": "wav",
-      "audioPath": "audio/january/22%20-%20__%20REBOOT_SEQUENCE%20%5BLOG_109%5D.wav",
+      "audioPath": "audio/january/22%20-%20Tightrope+.wav",
       "coverPath": null
     },
     {
@@ -285,9 +285,9 @@
     {
       "month": "february",
       "index": 5,
-      "storageTitle": "__ 404_SOUL_NOT_FOUND [LOG_101]",
+      "storageTitle": "St America",
       "ext": "wav",
-      "audioPath": "audio/february/05%20-%20__%20404_SOUL_NOT_FOUND%20%5BLOG_101%5D.wav",
+      "audioPath": "audio/february/05%20-%20St%20America.wav",
       "coverPath": null
     },
     {
@@ -397,9 +397,9 @@
     {
       "month": "february",
       "index": 19,
-      "storageTitle": "__ DAEMON_RUNNING [LOG_102]",
-      "ext": "wav",
-      "audioPath": "audio/february/19%20-%20__%20DAEMON_RUNNING%20%5BLOG_102%5D.wav",
+      "storageTitle": "Belong",
+      "ext": "mp3",
+      "audioPath": "audio/february/19%20-%20Belong.mp3",
       "coverPath": null
     },
     {
@@ -509,9 +509,9 @@
     {
       "month": "march",
       "index": 5,
-      "storageTitle": "__ CONNECTION_RESET [LOG_100]",
+      "storageTitle": "Mythical",
       "ext": "wav",
-      "audioPath": "audio/march/05%20-%20__%20CONNECTION_RESET%20%5BLOG_100%5D.wav",
+      "audioPath": "audio/march/05%20-%20Mythical.wav",
       "coverPath": null
     },
     {
@@ -597,9 +597,9 @@
     {
       "month": "march",
       "index": 16,
-      "storageTitle": "__ PING_TIMEOUT [LOG_106]",
+      "storageTitle": "fml",
       "ext": "wav",
-      "audioPath": "audio/march/16%20-%20__%20PING_TIMEOUT%20%5BLOG_106%5D.wav",
+      "audioPath": "audio/march/16%20-%20fml.wav",
       "coverPath": null
     },
     {
@@ -653,9 +653,9 @@
     {
       "month": "march",
       "index": 23,
-      "storageTitle": "__ ADMIN_ACCESS_REQUIRED [LOG_107]",
+      "storageTitle": "lightgoesin",
       "ext": "wav",
-      "audioPath": "audio/march/23%20-%20__%20ADMIN_ACCESS_REQUIRED%20%5BLOG_107%5D.wav",
+      "audioPath": "audio/march/23%20-%20lightgoesin.wav",
       "coverPath": null
     },
     {
@@ -725,25 +725,25 @@
     {
       "month": "april",
       "index": 1,
-      "storageTitle": "__ UPLOADING_CONSCIOUSNESS... [LOG_134]",
-      "ext": "wav",
-      "audioPath": "audio/april/01%20-%20__%20UPLOADING_CONSCIOUSNESS...%20%5BLOG_134%5D.wav",
+      "storageTitle": "mylight",
+      "ext": "mp3",
+      "audioPath": "audio/april/01%20-%20mylight.mp3",
       "coverPath": null
     },
     {
       "month": "april",
       "index": 2,
-      "storageTitle": "__ KERNEL_PANIC [LOG_135]",
+      "storageTitle": "mylight",
       "ext": "wav",
-      "audioPath": "audio/april/02%20-%20__%20KERNEL_PANIC%20%5BLOG_135%5D.wav",
+      "audioPath": "audio/april/02%20-%20mylight.wav",
       "coverPath": null
     },
     {
       "month": "april",
       "index": 3,
-      "storageTitle": "__ INSTALLING_UPDATES... [LOG_136]",
+      "storageTitle": "love_carries",
       "ext": "wav",
-      "audioPath": "audio/april/03%20-%20__%20INSTALLING_UPDATES...%20%5BLOG_136%5D.wav",
+      "audioPath": "audio/april/03%20-%20love_carries.wav",
       "coverPath": null
     },
     {
@@ -757,9 +757,9 @@
     {
       "month": "april",
       "index": 5,
-      "storageTitle": "__ 404_SOUL_NOT_FOUND [LOG_124]",
+      "storageTitle": "hanging_around",
       "ext": "wav",
-      "audioPath": "audio/april/05%20-%20__%20404_SOUL_NOT_FOUND%20%5BLOG_124%5D.wav",
+      "audioPath": "audio/april/05%20-%20hanging_around.wav",
       "coverPath": null
     },
     {
@@ -789,9 +789,9 @@
     {
       "month": "april",
       "index": 9,
-      "storageTitle": "__ DAEMON_RUNNING [LOG_128]",
+      "storageTitle": "problems",
       "ext": "wav",
-      "audioPath": "audio/april/09%20-%20__%20DAEMON_RUNNING%20%5BLOG_128%5D.wav",
+      "audioPath": "audio/april/09%20-%20problems.wav",
       "coverPath": null
     },
     {
@@ -813,9 +813,9 @@
     {
       "month": "april",
       "index": 12,
-      "storageTitle": "__ ADMIN_ACCESS_REQUIRED [LOG_114]",
+      "storageTitle": "getthrfuck_outa_ml",
       "ext": "wav",
-      "audioPath": "audio/april/12%20-%20__%20ADMIN_ACCESS_REQUIRED%20%5BLOG_114%5D.wav",
+      "audioPath": "audio/april/12%20-%20getthrfuck_outa_ml.wav",
       "coverPath": null
     },
     {
@@ -853,17 +853,17 @@
     {
       "month": "april",
       "index": 17,
-      "storageTitle": "__ DECRYPTING_FILES... [LOG_119]",
+      "storageTitle": "ihadsomehelp",
       "ext": "wav",
-      "audioPath": "audio/april/17%20-%20__%20DECRYPTING_FILES...%20%5BLOG_119%5D.wav",
+      "audioPath": "audio/april/17%20-%20ihadsomehelp.wav",
       "coverPath": null
     },
     {
       "month": "april",
       "index": 18,
-      "storageTitle": "__ UPLOADING_CONSCIOUSNESS... [LOG_138]",
+      "storageTitle": "letitflow_0",
       "ext": "wav",
-      "audioPath": "audio/april/18%20-%20__%20UPLOADING_CONSCIOUSNESS...%20%5BLOG_138%5D.wav",
+      "audioPath": "audio/april/18%20-%20letitflow_0.wav",
       "coverPath": null
     },
     {
@@ -885,9 +885,9 @@
     {
       "month": "april",
       "index": 21,
-      "storageTitle": "__ MEMORY_LEAK [LOG_126]",
+      "storageTitle": "hopeand faith",
       "ext": "wav",
-      "audioPath": "audio/april/21%20-%20__%20MEMORY_LEAK%20%5BLOG_126%5D.wav",
+      "audioPath": "audio/april/21%20-%20hopeand%20faith.wav",
       "coverPath": null
     },
     {
@@ -909,9 +909,9 @@
     {
       "month": "april",
       "index": 24,
-      "storageTitle": "__ UPLOADING_CONSCIOUSNESS... [LOG_131]",
+      "storageTitle": "rain_isitthathard_intro",
       "ext": "wav",
-      "audioPath": "audio/april/24%20-%20__%20UPLOADING_CONSCIOUSNESS...%20%5BLOG_131%5D.wav",
+      "audioPath": "audio/april/24%20-%20rain_isitthathard_intro.wav",
       "coverPath": null
     },
     {
@@ -949,9 +949,9 @@
     {
       "month": "april",
       "index": 29,
-      "storageTitle": "__ END_OF_LINE [LOG_121]",
+      "storageTitle": "fucking wit me",
       "ext": "wav",
-      "audioPath": "audio/april/29%20-%20__%20END_OF_LINE%20%5BLOG_121%5D.wav",
+      "audioPath": "audio/april/29%20-%20fucking%20wit%20me.wav",
       "coverPath": null
     },
     {
@@ -973,9 +973,9 @@
     {
       "month": "may",
       "index": 2,
-      "storageTitle": "__ SYSTEM_OVERHEAT [LOG_118]",
+      "storageTitle": "searching for free",
       "ext": "wav",
-      "audioPath": "audio/may/02%20-%20__%20SYSTEM_OVERHEAT%20%5BLOG_118%5D.wav",
+      "audioPath": "audio/may/02%20-%20searching%20for%20free.wav",
       "coverPath": null
     },
     {
@@ -997,9 +997,9 @@
     {
       "month": "may",
       "index": 5,
-      "storageTitle": "__ PING_TIMEOUT [LOG_117]",
+      "storageTitle": "without_you_cyro",
       "ext": "wav",
-      "audioPath": "audio/may/05%20-%20__%20PING_TIMEOUT%20%5BLOG_117%5D.wav",
+      "audioPath": "audio/may/05%20-%20without_you_cyro.wav",
       "coverPath": null
     },
     {
