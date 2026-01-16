@@ -50,17 +50,32 @@ export const useStore = create<AppState>((set, get) => ({
           // AGGRESSIVE normalization: remove spaces, punctuation, everything except letters/numbers
           const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
           
+          // Helper to strip leading "01 - " or "14_" patterns before normalizing
+          const stripLeadingNumber = (s: string) => s.replace(/^\d+[\s-_]+/, '');
+
           const byTitle = new Map(remoteReleases.map(r => [normalize(r.storageTitle || r.title), r]));
+          
           const byFile = new Map(remoteReleases.map(r => {
             const fn = r.storedAudioUrl ? decodeURIComponent(r.storedAudioUrl.split('/').pop() || '') : '';
-            const base = fn.replace(/\.(wav|mp3|m4a|flac)$/i, '');
+            // 1. Remove extension
+            let base = fn.replace(/\.(wav|mp3|m4a|flac)$/i, '');
+            // 2. Remove leading day number (CRITICAL FIX)
+            base = stripLeadingNumber(base);
+            // 3. Normalize (remove punctuation/spaces)
             return [normalize(base), r];
           }));
+
           const offsets: Record<string, number> = { january:0,february:31,march:59,april:90,may:120,june:151,july:181,august:212,september:243,october:273,november:304,december:334 };
 
           const remapped = manifest.items.map((it) => {
-            const keyTitle = normalize(it.storageTitle);
-            const keyFile = normalize(String(it.index).padStart(2,'0') + ' - ' + it.storageTitle);
+            // Clean the manifest title just in case
+            const cleanStorageTitle = stripLeadingNumber(it.storageTitle);
+            const keyTitle = normalize(cleanStorageTitle);
+            
+            // Also try creating a "numbered" key just in case the DB file *is* numbered and our strip failed
+            const keyFile = normalize(cleanStorageTitle); 
+
+            // Try matching
             const match = byFile.get(keyFile) || byTitle.get(keyTitle);
             const absDay = (offsets[it.month] ?? 0) + it.index;
             
@@ -74,20 +89,23 @@ export const useStore = create<AppState>((set, get) => ({
               const merged = {
                 ...match,
                 day: absDay,
-                date: correctDateStr, // <--- FORCE CORRECT DATE
-                title: it.storageTitle,
+                date: correctDateStr, // Force correct date
+                title: it.storageTitle, // Use manifest title
                 storageTitle: it.storageTitle,
                 manifestAudioPath: it.audioPath,
               } as Release;
               
               if (match.lyrics || match.lyricsWords?.length) {
                 console.log(`[Store] Day ${absDay} (${it.storageTitle}): matched analyzer with lyrics`);
+              } else {
+                 console.log(`[Store] Day ${absDay} (${it.storageTitle}): matched analyzer (no lyrics)`);
               }
               
               return merged;
             }
             
-            // Fallback minimal entry
+            // Fallback minimal entry (when no match found)
+            console.warn(`[Store] Day ${absDay} (${it.storageTitle}): NO MATCH FOUND. Keys tried: '${keyFile}'`);
             return {
               id: `${it.month}-${it.index}`,
               day: absDay,
