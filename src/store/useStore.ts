@@ -56,7 +56,7 @@ export const useStore = create<AppState>((set, get) => ({
           // Right side: Database Title/Filename (normalized)
           const manualOverrides: Record<string, string> = {
             // Day 3
-            "youlikesteveearle": "kindofgirl", 
+            "youlikesteveearle": "You Like Steve Earle", 
             // Day 9
             "withoutyou": "withoutyou",
             // Day 10
