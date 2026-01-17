@@ -51,395 +51,304 @@ export const useStore = create<AppState>((set, get) => ({
           const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
           const stripLeadingNumber = (s: string) => s.replace(/^\d+[\s-_]+/, '');
 
-          // --- MANUAL OVERRIDES (Based on your logs) ---
-          // Left side: Manifest Title (normalized)
-          // Right side: Database Title/Filename (normalized)
+         // --- MANUAL OVERRIDES (Generated from song_list.csv) ---
+          // Left side: Manifest Title (normalized + stripped)
+          // Right side: Database Filename (normalized + stripped + no extension)
           const manualOverrides: Record<string, string> = {
-            // Day 3
-            "youlikesteveearle": "You Like Steve Earle", 
-            // Day 9
-            "withoutyou": "withoutyou",
-            // Day 10
-            "permissiondeniedlog108": "permissiondenied",
-            // Day 11
-            "gettingbetter": "itsnotalwayseasy",
-            // Day 14
-            "undercoa4": "undercover",
-            // Day 15
-            "whatbryanwasworkingonlast": "whatbryanwasworkingonlast", // Should match fuzzy
-            // Day 16
-            "prevailscriber": "prevail", 
-            // Day 18
-            "goods4me": "goodsforme",
-            // Day 22
-            "rebootsequencelog109": "rebootsequence",
-            // Day 25
-            "grenada": "grenada", 
-            // Day 27
-            "talkinnody": "talkinnobody",
-            // Day 31
-            "scarsinmymind": "scarsinmymind", 
-            // Day 33
+            "chunky": "chunkynewm",
+            "dream": "dreammastered",
+            "whatitis": "whatitis",
+            "peacefullypeace": "peacefullypeace2",
+            "openwide": "openwide",
+            "onsight": "onsight",
+            "monetary": "monetary2121",
+            "getnaughty": "getnaughty",
+            "getitin": "getitin",
+            "wishingwell": "wishingwell23mixdown",
+            "wishiwasdead": "wishiwasdead",
+            "unloved": "unloved",
+            "spaces": "spaces",
+            "sayitup": "sayitup",
+            "killingme": "killingme",
+            "unforgettable": "unforgettable",
+            "highup": "highup",
+            "faraway": "faraway",
+            "fundrip": "fundripexhale",
+            "astopintime": "astopintime",
+            "demonsoul": "demonsoul",
+            "maybebabyittsonme": "maybebabyittsonme",
+            "olbremix": "olbremixuntitled12mastered",
+            "adrift": "adrift",
+            "noservice": "noservice",
+            "speedofpain": "speedofpain",
+            "throughtheringer": "throughtheringer",
+            "climbtoyou": "climbtoyouth3scr1b3afterlife",
+            "onebyeone": "onebyeoneth3scr1b3afterlife",
+            "trip": "tripth3scr1b3afterlife",
+            "comeondance": "comeondance",
+            "emotuionalhealingmas": "emotuionalhealingmas",
+            "grenada": "grenadasr",
+            "liveforefeatxzibit": "liveforeverfeatxzibit",
+            "pulse": "pulse",
+            "odosed": "overdosedmas",
+            "dreamsagain": "dreamsagain",
+            "undercoa4": "undercovera4masteredwithclearskyat100pct",
+            "myway": "mywayrelaymmastered",
+            "hardtoignore": "hard2ignore",
+            "fastlife": "fastlife2",
+            "dontblameu": "dontblameumix5masteredwithsunroofat100pct",
+            "byebi": "byebi2mastered",
             "bettersionofme": "betterversionofme",
-            // Day 34
-            "consationw": "conversationw",
-            // Day 36
-            "404soulnotfoundlog101": "404soulnotfound",
-            // Day 38
-            "econtime": "economictime", 
-            // Day 40
-            "wayeightforedatstormlevel": "waybeforethatstormlevel",
-            // Day 41
-            "benuter": "beneuter",
-            // Day 42
-            "xzibitforever": "xzibitforever",
-            // Day 50
-            "daemonrunninglog102": "daemonrunning",
-            // Day 51
-            "changeperception": "changeperception",
-            // Day 53
-            "theend": "theend",
-            // Day 59
-            "reality": "reality",
-            // Day 61
-            "re": "re",
-            // Day 64
-            "connectionresetlog100": "connectionreset",
-            // Day 68
-            "fromtheearthtotheseaflippedmask": "fromtheearthtothesea",
-            // Day 70
-            "sau": "sau",
-            // Day 72
-            "isitthathard": "isitthathard",
-            // Day 74
-            "lowlife": "lowlife",
-            // Day 75
-            "pingtimeoutlog106": "pingtimeout",
-            // Day 79
-            "lightburst": "lightburst",
-            // Day 80
-            "monetary": "monetary",
-            // Day 82
-            "adminaccessrequiredlog107": "adminaccessrequired",
-            // Day 83
-            "jacyb": "jacyb",
-            // Day 85
-            "odosed": "overdosed",
-            // Day 88
-            "cheatcode": "cheatcode",
-            // Day 89
-            "peacefullypeace": "peacefully",
-            // Day 91
-            "uploadingconsciousnesslog134": "uploadingconsciousness",
-            // Day 92
-            "kernelpaniclog135": "kernelpanic",
-            // Day 93
-            "installingupdateslog136": "installingupdates",
-            // Day 94
-            "pop": "pop",
-            // Day 95
-            "404soulnotfoundlog124": "404soulnotfound",
-            // Day 96
-            "dream": "dream",
-            // Day 97
-            "coldasice": "coldasice",
-            // Day 98
-            "unifying": "unifying",
-            // Day 99
-            "daemonrunninglog128": "daemonrunning",
-            // Day 102
-            "adminaccessrequiredlog114": "adminaccessrequired",
-            // Day 103
-            "myway": "myway",
-            // Day 105
-            "gasp": "gasp",
-            // Day 106
-            "nomatterthepain": "nomatterthepain",
-            // Day 107
-            "decryptingfileslog119": "decryptingfiles",
-            // Day 108
-            "uploadingconsciousnesslog138": "uploadingconsciousness",
-            // Day 111
-            "memoryleaklog126": "memoryleak",
-            // Day 113
-            "onebyeone": "onebyone",
-            // Day 114
-            "uploadingconsciousnesslog131": "uploadingconsciousness",
-            // Day 115
-            "afinesinremix": "afinesin",
-            // Day 116
-            "quitethelie1": "quitethelie",
-            // Day 118
-            "gethighwithme": "gethighwithme",
-            // Day 119
-            "endoflinelog121": "endofline",
-            // Day 120
-            "selfdick": "selfdick",
-            // Day 121
-            "taintedgospal": "taintedgospel",
-            // Day 122
-            "systemoverheatlog118": "systemoverheat",
-            // Day 123
-            "burnittothegroundgapless": "burnittotheground",
-            // Day 125
-            "pingtimeoutlog117": "pingtimeout",
-            // Day 126
-            "whyulie": "whyulie",
-            // Day 127
-            "purepopped": "purepopped",
-            // Day 128
-            "tracingroutetogodlog112": "tracingroutetogod",
-            // Day 129
-            "cantescapemas": "cantescape",
-            // Day 130
-            "airwavesfeatzillick": "airwaves",
-            // Day 131
-            "syntaxerrorinlifelog110": "syntaxerrorinlife",
-            // Day 133
-            "syntaxerrorinlifelog120": "syntaxerrorinlife",
-            // Day 134
-            "byebi": "byebye",
-            // Day 135
-            "bufferingrealitylog133": "bufferingreality",
-            // Day 138
-            "olbremix2": "olbremix",
-            // Day 140
-            "comearoundpersiuin": "comearoundpersuasion",
-            // Day 141
-            "nosticheresy": "gnosticheresy",
-            // Day 144
-            "rebootsequencelog111": "rebootsequence",
-            // Day 145
-            "tracingroutetogodlog137": "tracingroutetogod",
-            // Day 146
-            "grinnada": "grenada",
-            // Day 148
-            "breakingme": "breakingme",
-            // Day 149
-            "landrburningitdowncobalancedmedium": "burningitdown",
-            // Day 150
-            "filecorruptedlog122": "filecorrupted",
-            // Day 151
-            "packetlossdetectedlog130": "packetlossdetected",
-            // Day 152
-            "aborted": "aborted",
-            // Day 153
-            "diskfragmentationlog123": "diskfragmentation",
-            // Day 154
-            "connectionresetlog139": "connectionreset",
-            // Day 155
-            "fastlife": "fastlife",
-            // Day 156
-            "shawtynotahottie": "shawtynotahottie",
-            // Day 157
-            "memoryleaklog132": "memoryleak",
-            // Day 160
-            "filecorruptedlog113": "filecorrupted",
-            // Day 161
-            "wishingwell": "wishingwell",
-            // Day 162
-            "packetlossdetectedlog125": "packetlossdetected",
-            // Day 164
-            "olbremix": "olbremix",
-            // Day 166
-            "brightday": "brightday",
-            // Day 170
-            "rebootsequencelog115": "rebootsequence",
-            // Day 173
-            "systemoverheatlog127": "systemoverheat",
-            // Day 174
-            "landrcryinglilbitchbalancedmediumrev": "cryinglilbitch",
-            // Day 175
-            "mondaytawendaytafriday": "mondaytowednesdaytofriday",
-            // Day 177
-            "leavemedead": "leavemedead",
-            // Day 178
-            "permissiondeniedlog116": "permissiondenied",
-            // Day 179
-            "flyawayagain": "flyawayagain",
-            // Day 182
-            "onelastbreath3": "onelastbreath",
-            // Day 183
-            "againstthegrain": "againstthegrain",
-            // Day 185
-            "trippie": "trippie",
-            // Day 189
-            "fundrip": "fundrip",
-            // Day 190
-            "sometimes": "sometimes",
-            // Day 191
-            "memoryleaklog149": "memoryleak",
-            // Day 199
-            "surrendertou": "surrendertoyou",
-            // Day 200
-            "endoflinelog145": "endofline",
-            // Day 206
-            "findherdemoentiremix": "findher",
-            // Day 210
-            "feelit": "feelit",
-            // Day 211
-            "packetlossdetectedlog146": "packetlossdetected",
-            // Day 217
-            "landrifyouleave0openlow": "ifyouleave",
-            // Day 218
-            "filecorruptedlog140": "filecorrupted",
-            // Day 219
-            "flowersofus": "flowersofus",
-            // Day 220
-            "canthave": "canthave",
-            // Day 221
-            "footsteps": "footsteps",
-            // Day 222
-            "syntaxerrorinlifelog144": "syntaxerrorinlife",
-            // Day 223
-            "filecorruptedlog147": "filecorrupted",
-            // Day 224
-            "complicateds": "complicated",
-            // Day 227
-            "connectionresetlog141": "connectionreset",
-            // Day 229
-            "daemonrunninglog148": "daemonrunning",
-            // Day 230
-            "liveforefeatxzibit": "livefore",
-            // Day 231
-            "systemoverheatlog143": "systemoverheat",
-            // Day 232
-            "ngbt1": "ngbt",
-            // Day 238
-            "tracingroutetogodlog142": "tracingroutetogod",
-            // Day 245
-            "permissiondeniedlog150": "permissiondenied",
-            // Day 246
-            "hemmorage": "hemmorage",
-            // Day 249
-            "blackout": "blackout",
-            // Day 251
-            "running": "running",
-            // Day 252
-            "fuckb": "fuckb",
-            // Day 253
-            "getoyou": "gettoyou",
-            // Day 254
-            "onlytimewilltell": "onlytimewilltell",
-            // Day 257
-            "midnightpiano": "midnightpiano",
-            // Day 258
-            "johnnydemon": "johnnydemon",
-            // Day 260
-            "purplesky": "purplesky",
-            // Day 265
-            "toolatefawy": "toolateforyou",
-            // Day 266
-            "clebit": "clebit",
-            // Day 270
-            "fallingapart": "fallingapart",
-            // Day 274
-            "outlast": "outlast",
-            // Day 275
-            "bufferingrealitylog164": "bufferingreality",
-            // Day 276
-            "bufferingrealitylog162": "bufferingreality",
-            // Day 279
-            "hatedown": "hatedown",
-            // Day 283
-            "endoflinelog166": "endofline",
-            // Day 285
-            "kernelpaniclog156": "kernelpanic",
-            // Day 286
-            "kernelpaniclog158": "kernelpanic",
-            // Day 287
-            "installingupdateslog163": "installingupdates",
-            // Day 289
-            "beat2o": "beat2",
-            // Day 291
-            "chunky": "chunky",
-            // Day 292
-            "rebootsequencelog161": "rebootsequence",
-            // Day 294
-            "wysiwyg": "wysiwyg",
-            // Day 296
-            "openallnight": "openallnight",
-            // Day 297
-            "trip": "trip",
-            // Day 298
-            "burningitdowncomd2": "burningitdown",
-            // Day 300
-            "syntaxerrorinlifelog167": "syntaxerrorinlife",
-            // Day 301
-            "uploadingconsciousnesslog155": "uploadingconsciousness",
-            // Day 303
-            "adminaccessrequiredlog151": "adminaccessrequired",
-            // Day 304
-            "lockedup": "lockedup",
-            // Day 305
-            "negonnasstoplovingyou": "negonnastoplovingyou",
-            // Day 306
-            "installingupdateslog154": "installingupdates",
-            // Day 307
-            "hardtoignore": "hardtoignore",
-            // Day 310
-            "itsgonnabealright": "itsgonnabealright",
-            // Day 311
-            "pingtimeoutlog153": "pingtimeout",
-            // Day 313
-            "wrapthat": "wrapthat",
-            // Day 314
-            "decryptingfileslog152": "decryptingfiles",
-            // Day 316
-            "entropy": "entropy",
-            // Day 317
-            "odds": "odds",
-            // Day 318
-            "gogetit": "gogetit",
-            // Day 319
-            "comealongwithme": "comealongwithme",
-            // Day 320
-            "shesaidlilrichardwheredafuxu": "shesaidlilrichard",
-            // Day 321
-            "dontblameu": "dontblameyou",
-            // Day 323
-            "adminaccessrequiredlog165": "adminaccessrequired",
-            // Day 324
-            "advice2": "advice",
-            // Day 325
-            "climax": "climax",
-            // Day 326
-            "rebootsequencelog169": "rebootsequence",
-            // Day 328
-            "daemonrunninglog159": "daemonrunning",
-            // Day 329
-            "80sstack": "80sstack",
-            // Day 330
-            "pingtimeoutlog168": "pingtimeout",
-            // Day 331
-            "sodone": "sodone",
-            // Day 332
-            "endoflinelog160": "endofline",
-            // Day 333
-            "mypast": "mypast",
-            // Day 334
-            "yougotme": "yougotme",
-            // Day 335
-            "bb": "bb",
-            // Day 336
-            "404soulnotfoundlog157": "404soulnotfound",
-            // Day 337
-            "climbtoyou": "climbtoyou",
-            // Day 338
-            "basic": "basic",
-            // Day 340
-            "tracingroutetogodlog170": "tracingroutetogod",
-            // Day 341
-            "whenisayforever": "whenisayforever",
-            // Day 344
-            "beauty": "beauty",
-            // Day 345
-            "climbing2u": "climbingtoyou",
-            // Day 346
-            "spippin": "spippin",
-            // Day 348
-            "alf": "alf",
-            // Days 349-365 (System Log files)
+            "cantescapemas": "cantescapemasprecisedepthpresence4824",
+            "cursed2ndmix": "cursed2ndmix",
+            "climax": "climaxmas",
+            "behereboo": "behereboo",
+            "awaits": "awaits",
+            "yourchoice": "yourchoice",
+            "openallnight": "openallnightver2",
+            "littlelight": "littlelight",
+            "ifyoucomealong": "ifyoucomealong",
+            "gasp": "gaspdownload",
+            "dandd": "dandd",
+            "luckyland": "luckyland",
+            "luckylandreprise": "luckylandreprise",
+            "longhaul": "longhaul",
+            "mondaytawendaytafriday": "mondaytawendaytafridayrelay",
+            "cometogether": "cometogether",
+            "starshining": "starshining",
+            "tightrope": "tightrope2mastered",
+            "triedntrue": "triedntrue",
+            "loss": "loss",
+            "lightburst": "lightburstmastered",
+            "malibu": "malibu",
+            "sirens": "sirens",
+            "filthy": "filthy",
+            "hhhhhhhhhhhhh": "hhhhhhhhhhhhh",
+            "midnightpiano": "midnightpianoth3scr1b3afterlife",
+            "whyulie": "whyulieth3scr1b3afterlife",
+            "xzibitforever": "xzinbitforever",
+            "whatisgodwithootme": "whatisgodwithootme",
+            "breakingme": "breakingmem",
+            "gogetit": "gogetitm",
+            "graverobber": "graverobber",
+            "mikeym": "mikeym",
+            "nicksnuffm3": "nicksnuffm3",
+            "onlyson": "onlyson",
+            "poetry": "poetry",
+            "prevail": "prevail",
+            "prevailscriber": "prevailmscriber",
+            "summersending": "summersending",
+            "stamerica": "stamericamixdown",
+            "shesaidlilrichardwheredafuxu": "shesaidlilrichardwheredafuxumixdown",
+            "momentofexctasy": "momentofexctasy320",
+            "flyawayagain": "flyawayagainmixdown",
+            "upallnight": "copyofupallnight",
+            "purepopped": "copyofpurepopped",
+            "cheatcode": "cheatcode2",
+            "fromtheearthtotheseaflippedmask": "fromtheearthtotheseaflippedmaskmastered",
+            "sicko": "sicko",
+            "cantgoback": "cantgoback",
+            "onelastbreath3": "onelastbreathmastered3",
+            "darkthoughts": "darkthoughts",
+            "brave": "brave",
+            "dontghostme": "dontghostme",
+            "whatyouknow": "whatyouknow",
+            "whatuwant": "whatuwant",
+            "teamo": "teamo",
+            "ngbt1": "ngbt12",
+            "naturaldisaster": "naturaldisaster",
+            "monetaryt": "monetaryt",
+            "kurtcobain": "kurtcobain",
+            "jacyb": "jacy24b",
+            "getghost": "getghost",
+            "isitthathard": "isitthathardcyrom",
+            "purpose": "purpose",
+            "wastedbywhat": "wastedbywhat",
+            "canthave": "canthavemyballs",
+            "faintcopy": "faintcopy",
+            "believinginjust": "believinginjust",
+            "isolkated": "isolkated",
+            "brightday": "brightdaymastered",
+            "taintedgospal": "gchauvinfloydtaintedgospalwsimastered",
+            "surrendertou": "surrendertou2",
+            "sodone": "sodonetemplate",
+            "80sstack": "80sstackabbyroad",
+            "dashboardoflife": "dashboardoflife",
+            "thelight": "thelightcover",
+            "complicateds": "complicatedsth3scr1b3afterlife",
+            "blackout": "blackoutth3scr1b3afterlife",
+            "lowlife": "lowlifeth3scr1b3afterlife",
+            "feelit": "feelitth3scr1b3afterlife",
+            "whenisayforever": "whenisayforeverth3scr1b3afterlife",
+            "airwavesfeatzillick": "airwavesfeatzillickth3scr1b3afterlife",
+            "gettingbetter": "gettingbetterth3scr1b3afterlife",
+            "weregoingcrazyworld": "weregoingcrazyworld",
+            "awaygoes": "awaygoes",
+            "benuter": "benuterm",
+            "belong": "belongm",
+            "footsteps": "footstepsmas",
+            "fuckb": "fuckbm",
+            "hatedown": "hatemixdown",
+            "johnnydemon": "johnnydemonm",
+            "shhhbitch": "shhhbitch",
+            "friendzone": "friendzone",
+            "falllin": "falllin",
+            "againstthegrain": "againstthegrain2",
+            "wayeightforedatstormlevel": "wayeightforedatstormlevel2",
+            "rabbithole": "rabbithole",
+            "lockedup": "lockedupmasteredwithsunroofat65pct",
+            "entropy": "entropynormal2",
+            "consationw": "conversationwm",
+            "tripintobackground": "tripintobackground",
+            "benefitsme": "benefitsme",
+            "darewell": "darewell",
+            "comearoundpersiuin": "dsbangerz4comearoundpersiuin",
+            "choppmedoffyafeelrough": "choppmedoffyafeelrough",
+            "swoopedcoupe": "swoopedcoupe",
+            "leftonred": "leftonred",
+            "gethighwithme": "gethighwmemixdown",
+            "feelgood": "feelgood",
+            "hades": "hades",
+            "toolatefawy": "toolatefawymastered",
+            "talkinnody": "talkinnodycover",
+            "notgoodenough": "notgoodenough",
+            "agirl": "agirl",
+            "addicted": "addicted",
+            "nostalgicenergby": "nostalgicenergby",
+            "unifying": "unifyingmastered",
+            "nosticheresy": "gchauvinfloydnosticheresybsidemastered",
+            "haertnsoulcollide": "haertnsoulcollide",
+            "comealongwithme": "comealongwithmemastered",
+            "flickerlikefire": "flickerlikefire",
+            "maybebaby": "maybebaby",
+            "neverends": "neverends",
+            "olbremix2": "olbremixuntitled12mastered2",
+            "yourealwatsonmymind": "yourealwatsonmymind",
+            "itsgonnabealright": "itsgonnabealrightsat",
+            "onlytimewilltell": "otwtrealscr1b3mix",
+            "sometimes": "sometimessplittermas",
+            "econtime": "econtimeth3scr1b3afterlife",
+            "beauty": "beautyth3scr1b3afterlife",
+            "reality": "realityth3scr1b3afterlife",
+            "whatbryanwasworkingonlast": "whatbryanwasworkingonlastth3scr1b3afterlife",
+            "spippin": "spippinth3scr1b3afterlife",
+            "wysiwyg": "wysiwygmas",
+            "yougotme": "yougotmem",
+            "alien2ndmix": "alien2ndmix",
+            "burningitdowncomd2": "burningitdowncovermd2",
+            "climbing2u": "climbing2uneews",
+            "coldasice": "coldasicem",
+            "goods4me": "goods4memastered",
+            "negonnasstoplovingyou": "nevergonnasstoplovingyou",
+            "noplace2hide": "noplace2hide",
+            "scarsinmymind": "scarsinmymindm",
+            "trippie": "trippiefeatrittz",
+            "leavemedead": "leavemedead48000",
+            "aborted": "dssbangerz2aborted",
+            "devour": "devour",
+            "re": "replace",
+            "hemmorage": "hemmorage1",
+            "untied": "untied",
+            "diamonddeath": "diamonddeath",
+            "wereonlyhumanmd7": "wereonlyhumanmd7",
+            "mythical": "mythicalth3scr1b3afterlife",
+            "mypast": "mypastth3scr1b3afterlife",
+            "purplesky": "purpleskyth3scr1b3afterlife",
+            "flowersofus": "flowersofusth3scr1b3afterlife",
+            "alf": "alfm2",
+            "fallingapart": "fallingapartm",
+            "grinnada": "grinnadam",
+            "sau": "mastersau",
+            "odds": "oddsmas",
+            "oldensideofyou": "oldensideofyou",
+            "outlast": "outlastmas",
+            "pop": "pop1",
+            "pitwhatigot": "pitwhatigot",
+            "youlikesteveearle": "youlikesteveearlemastered1",
+            "quitethelie1": "quitethelie1masteredwithsunroofat100pct",
+            "nomatterthepain": "nomatterthepain2",
+            "findherdemoentiremix": "findherdemomasterentiremixbounced",
+            "burnittothegroundgapless": "burnittothegroundmastergapless",
+            "afinesinremix": "afinesinremix3",
+            "aweofu": "aweofu",
+            "selfdick": "selfdickmas",
+            "backroads": "backroads",
+            "basic": "basicmas",
+            "abandon": "abandon",
+            "clebit": "cleverbit",
+            "dreamsshattered": "dreamsshattered",
+            "sunset": "sunset",
+            "starlight": "starlight",
+            "singtome": "singtome",
+            "truelies": "truelies",
+            "tryied": "tryied",
+            "yourbody": "yourbody3",
+            "camebackaroudnd": "camebackaroudnd",
+            "worldending": "worldending",
+            "tobeaman": "tobeaman",
+            "theend": "theendfeatkvon",
+            "sweater": "sweater",
+            "savetonight": "savetonight",
+            "riddle": "riddle",
+            "poth": "poth",
+            "mysacrifices": "mysacrifices",
+            "mystery": "mystery",
+            "sstakeone": "sstakeone",
+            "message4kcompm1": "message4kcompm1",
+            "getoyou": "getoveryouineedmaster",
+            "bealtm": "bealtm",
+            "bitterbetter": "bitterbetter",
+            "landrdancefloorbalancedmedium": "landrdancefloorbalancedmedium",
+            "tomyself": "tomyself",
+            "landrhemmorage1openmedium": "landrhemmorage1openmedium",
+            "landrchildhoodwarmlow": "landrchildhoodwarmlow",
+            "landrscarsinmymindmbalancedmedium": "landrscarsinmymindmbalancedmedium",
+            "landrloveforyoubalancedmedium": "landrloveforyoubalancedmedium",
+            "landrselfdickmasbalancedmedium": "landrselfdickmasbalancedmedium",
+            "4u": "4u",
+            "landrsmoothiebalancedmedium": "landrsmoothiebalancedmedium",
+            "landrawayoutmasbalancedmedium": "landrawayoutmasbalancedmedium",
+            "standingone": "standingone",
+            "landrsweetyouwarmmedium": "landrsweetyouwarmmedium",
+            "landrwantitanyotherwayopenlow": "landrwantitanyotherwayopenlow",
+            "doubleagent": "doubleagent",
+            "changeperception": "changeperceptionm",
+            "running": "runningmas",
+            "itwonttakelolng": "itwonttakelolng",
+            "missingyou": "missingyou",
+            "exhale": "exhale",
+            "figures": "figures",
+            "advice2": "copyofadvice2masteredwithauroraat100pct",
+            "dirtroad": "dirtroad",
+            "lifesuccubus": "lifesuccubus",
+            "bb": "bb33m",
+            "buckimhereytofuck": "buckimhereytofuck",
+            "wrapthat": "wrapthatm",
+            "youknowyou2e": "youknowyou2e",
+            "shawtynotahottie": "shawtynotahottiefreesyleadlib",
+            "paidtheworldbackbeat": "paidtheworldbackbeat",
+            "afinesin": "afinesin",
+            "letitgo": "letitgo",
+            "landrstayandigobalancedmedium": "landrstayandigobalancedmedium",
+            "echoesoftheabyssvotd": "echoesoftheabyssvotd",
+            "fml": "fml",
+            "lightgoesin": "lightgoesin",
+            "mylight": "mylight",
+            "lovecarries": "lovecarries",
+            "hangingaround": "hangingaround",
+            "problems": "problems",
+            "getthrfuckoutaml": "getthrfuckoutaml",
+            "ihadsomehelp": "ihadsomehelp",
+            "letitflow0": "letitflow0",
+            "hopeandfaith": "hopeandfaith",
+            "rainisitthathardintro": "rainisitthathardintro",
+            "fuckingwitme": "fuckingwitme",
+            "searchingforfree": "searchingforfree",
+            "withoutyoucyro": "withoutyoucyro",
+            "2croissroads": "2croissroads",
+            "getdownwiththenegative": "getdownwiththenegative",
+
+            // Days 349-365 (System Log files - Preserved)
             "systemcrashlog349": "systemcrash",
             "memoryoverflowlog350": "memoryoverflow",
             "recursivelooplog351": "recursiveloop",
