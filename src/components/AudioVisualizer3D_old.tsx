@@ -4,14 +4,6 @@ import { Float, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import { useThemeStore } from '../store/useThemeStore';
 
-// Helper to convert hex to normalized RGB array [0-1, 0-1, 0-1]
-const hexToRgbArray = (hex: string) => {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  return [r, g, b];
-};
-
 // Custom shader for light/dark split parabola
 const parabolaVertexShader = `
   varying vec3 vPosition;
@@ -149,8 +141,10 @@ function DualityParabola({ lightColor, darkColor, accentColor }: {
   
   // Convert hex to vec3
   const hexToVec3 = (hex: string) => {
-    const rgb = hexToRgbArray(hex);
-    return new THREE.Vector3(rgb[0], rgb[1], rgb[2]);
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+    return new THREE.Vector3(r, g, b);
   };
   
   const uniforms = useMemo(() => ({
@@ -199,7 +193,7 @@ function DualityParabola({ lightColor, darkColor, accentColor }: {
   );
 }
 
-function ParticleRing({ startColor, endColor }: { startColor: string; endColor: string }) {
+function ParticleRing() {
   const points = useRef<THREE.Points>(null);
   const particleCount = 2000;
   
@@ -217,18 +211,15 @@ function ParticleRing({ startColor, endColor }: { startColor: string; endColor: 
 
   const colors = useMemo(() => {
     const cols = new Float32Array(particleCount * 3);
-    const start = hexToRgbArray(startColor);
-    const end = hexToRgbArray(endColor);
-
     for (let i = 0; i < particleCount; i++) {
       const t = i / particleCount;
-      // Interpolate between start and end theme colors
-      cols[i * 3] = start[0] + t * (end[0] - start[0]); // R
-      cols[i * 3 + 1] = start[1] + t * (end[1] - start[1]); // G
-      cols[i * 3 + 2] = start[2] + t * (end[2] - start[2]); // B
+      // Gradient from steel-blue to lime-cream
+      cols[i * 3] = 0.29 + t * 0.63; // R: 74->236
+      cols[i * 3 + 1] = 0.48 + t * 0.52; // G: 123->255
+      cols[i * 3 + 2] = 0.62 - t * (0.62 - 0.69); // B: 157->176
     }
     return cols;
-  }, [startColor, endColor]);
+  }, []);
 
   useFrame((state) => {
     if (points.current) {
@@ -342,10 +333,7 @@ function Scene() {
         darkColor={primary} 
         accentColor={secondary} 
       />
-      
-      {/* Update ParticleRing to use dynamic theme colors instead of hardcoded steel-blue/lime */}
-      <ParticleRing startColor={primary} endColor={accent} />
-      
+      <ParticleRing />
       <EnergyWaves primaryColor={secondary} accentColor={accent} />
       <LightBeams primaryColor={primary} accentColor={accent} />
       

@@ -45,7 +45,7 @@ export function DayPage() {
   const navigate = useNavigate();
   const { data, fetchData, currentDay } = useStore();
   const { currentTheme } = useThemeStore();
-  const { primary, secondary, accent, background, text } = currentTheme.colors;
+  const { primary, accent, background } = currentTheme.colors;
   
   // Global audio store
   const {
@@ -190,7 +190,7 @@ export function DayPage() {
               energy={release.energy}
               valence={release.valence}
               tempo={release.tempo}
-              coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
+coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
               className="w-full h-full object-cover"
               showColorVeil
             />
@@ -244,14 +244,13 @@ export function DayPage() {
           >
             <Link 
               to="/" 
-              className="flex items-center gap-2 hover:text-neon-yellow transition-colors"
-              style={{ color: hexToRgba(text, 0.8) }}
+              className="flex items-center gap-2 text-light-cream/80 hover:text-neon-yellow transition-colors"
             >
               <Home className="w-4 h-4" />
               <span className="font-mono text-sm font-semibold">HOME</span>
             </Link>
-            <span style={{ color: hexToRgba(text, 0.5) }}>/</span>
-            <span className="font-mono text-sm font-semibold" style={{ color: accent }}>DAY {dayNum}</span>
+            <span className="text-light-cream/50">/</span>
+            <span className="font-mono text-sm font-semibold text-neon-yellow">DAY {dayNum}</span>
           </motion.div>
 
           {/* Day badge */}
@@ -262,11 +261,9 @@ export function DayPage() {
             className="mb-6"
           >
             <span 
-              className="inline-block px-6 py-2 text-lg font-mono font-bold"
-              style={{
-                backgroundColor: isLight ? accent : primary,
-                color: background
-              }}
+              className={`inline-block px-6 py-2 text-lg font-mono font-bold ${
+                isLight ? 'bg-neon-yellow text-void-black' : 'bg-neon-red text-light-cream'
+              }`}
             >
               DAY {String(dayNum).padStart(3, '0')}
             </span>
@@ -303,7 +300,7 @@ export function DayPage() {
                 className="text-xl font-semibold mb-6"
                 style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)' }}
               >
-                <span style={{ color: isLight ? accent : primary }}>
+                <span className={isLight ? 'text-neon-yellow' : 'text-neon-red'}>
                   {release.mood.toUpperCase()}
                 </span>
                 <span className="text-light-cream/70"> • {release.date}</span>
@@ -339,12 +336,12 @@ export function DayPage() {
             whileTap={{ scale: 0.9 }}
             onClick={() => prevDay && goToDay(prevDay.day)}
             disabled={!prevDay}
-            className="p-3 md:p-4 rounded-full transition-all"
+            className={`p-3 md:p-4 rounded-full transition-all ${
+              prevDay 
+                ? 'bg-void-gray/80 backdrop-blur-sm hover:bg-neon-red/20 text-light-cream' 
+                : 'bg-void-gray/30 text-light-cream/20 cursor-not-allowed'
+            }`}
             style={{
-              backgroundColor: prevDay ? hexToRgba(text, 0.1) : hexToRgba(text, 0.05),
-              color: prevDay ? text : hexToRgba(text, 0.2),
-              backdropFilter: 'blur(4px)',
-              cursor: prevDay ? 'pointer' : 'not-allowed',
               boxShadow: prevDay ? '0 4px 20px rgba(0,0,0,0.3)' : 'none',
             }}
           >
@@ -363,12 +360,12 @@ export function DayPage() {
             whileTap={{ scale: 0.9 }}
             onClick={() => nextDay && goToDay(nextDay.day)}
             disabled={!nextDay}
-            className="p-3 md:p-4 rounded-full transition-all"
+            className={`p-3 md:p-4 rounded-full transition-all ${
+              nextDay 
+                ? 'bg-void-gray/80 backdrop-blur-sm hover:bg-neon-yellow/20 text-light-cream' 
+                : 'bg-void-gray/30 text-light-cream/20 cursor-not-allowed'
+            }`}
             style={{
-              backgroundColor: nextDay ? hexToRgba(text, 0.1) : hexToRgba(text, 0.05),
-              color: nextDay ? text : hexToRgba(text, 0.2),
-              backdropFilter: 'blur(4px)',
-              cursor: nextDay ? 'pointer' : 'not-allowed',
               boxShadow: nextDay ? '0 4px 20px rgba(0,0,0,0.3)' : 'none',
             }}
           >
@@ -393,8 +390,8 @@ export function DayPage() {
           <section className="py-12 px-6 md:px-12 lg:px-16">
             <div className="w-full">
               {audioError && isThisPlaying && (
-                <div className="mb-4 p-3 border rounded text-center" style={{ backgroundColor: hexToRgba(text, 0.1), borderColor: hexToRgba(primary, 0.5) }}>
-                  <p className="font-mono text-sm" style={{ color: primary }}>
+                <div className="mb-4 p-3 bg-void-gray/30 border border-neon-red/50 rounded text-center">
+                  <p className="text-neon-red text-sm font-mono">
                     Audio connection issue. Trying alternative source...
                   </p>
                 </div>
@@ -405,10 +402,10 @@ export function DayPage() {
                 transition={{ delay: 0.6 }}
                 className="rounded-lg overflow-hidden"
                 style={{
-                  background: `linear-gradient(135deg, ${hexToRgba(background, 0.6)} 0%, ${hexToRgba(background, 0.9)} 100%)`,
+                  background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
                   backdropFilter: 'blur(12px)',
-                  boxShadow: `0 8px 32px ${hexToRgba(background, 0.4)}, inset 0 1px 0 ${hexToRgba(text, 0.05)}`,
-                  border: `1px solid ${hexToRgba(text, 0.08)}`,
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.08)',
                 }}
               >
                 {/* Controls - no cover art in player, it's now in hero background */}
@@ -420,24 +417,22 @@ export function DayPage() {
                       whileTap={{ scale: 0.9 }}
                       onClick={handlePlay}
                       disabled={audioError && isThisPlaying}
-                      className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center flex-shrink-0 transition-all"
-                      style={{
-                        backgroundColor: audioError && isThisPlaying ? hexToRgba(text, 0.2) : (isLight ? accent : primary),
-                        cursor: audioError && isThisPlaying ? 'not-allowed' : 'pointer',
-                        boxShadow: isThisReleaseActive ? `0 0 30px ${isLight ? accent : primary}` : 'none'
-                      }}
+                      className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
+                        audioError && isThisPlaying
+                          ? 'bg-void-gray/50 cursor-not-allowed' 
+                          : isLight ? 'bg-neon-yellow hover:shadow-[0_0_30px_var(--color-neon-yellow)]' : 'bg-neon-red hover:shadow-[0_0_30px_var(--color-neon-red)]'
+                      }`}
                     >
                       {isLoading && isThisPlaying ? (
                         <motion.div
-                          className="w-8 h-8 border-4 border-t-transparent rounded-full"
-                          style={{ borderColor: background, borderTopColor: 'transparent' }}
+                          className="w-8 h-8 border-4 border-void-black border-t-transparent rounded-full"
                           animate={{ rotate: 360 }}
                           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                         />
                       ) : isThisReleaseActive ? (
-                        <Pause className="w-8 h-8" style={{ color: background }} />
+                        <Pause className="w-8 h-8 text-void-black" />
                       ) : (
-                        <Play className="w-8 h-8 ml-1" style={{ color: background }} />
+                        <Play className="w-8 h-8 text-void-black ml-1" />
                       )}
                     </motion.button>
 
@@ -450,7 +445,7 @@ export function DayPage() {
                         value={isThisPlaying ? currentTime : 0}
                         onChange={handleSeek}
                         disabled={!isThisPlaying}
-                        className="w-full h-2 rounded-full appearance-none cursor-pointer disabled:opacity-50"
+                        className="w-full h-2 bg-void-lighter rounded-full appearance-none cursor-pointer disabled:opacity-50"
                         style={{
                           background: isThisPlaying 
                             ? `linear-gradient(to right, ${isLight ? accent : primary} ${(currentTime / (duration || 1)) * 100}%, rgba(255,255,255,0.1) ${(currentTime / (duration || 1)) * 100}%)`
@@ -496,10 +491,7 @@ export function DayPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
               >
-                <h3 
-                  className="text-2xl font-mono mb-8 text-center uppercase tracking-wider"
-                  style={{ color: accent }}
-                >
+                <h3 className="text-2xl font-mono text-neon-yellow mb-8 text-center uppercase tracking-wider">
                   Audio Analysis
                 </h3>
                 
@@ -511,11 +503,11 @@ export function DayPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     className="p-4 rounded-lg"
-                    style={{ background: `linear-gradient(135deg, ${hexToRgba(background, 0.5)} 0%, ${hexToRgba(background, 0.7)} 100%)` }}
+                    style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
                   >
                     <span className="text-xs font-mono text-light-cream/50 block mb-2">ENERGY</span>
                     <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
-                      <motion.div className="h-full" style={{ background: `linear-gradient(to right, ${primary}, ${secondary})`, width: `${release.energy * 100}%` }} />
+                      <motion.div className="h-full bg-gradient-to-r from-neon-red to-neon-orange" style={{ width: `${release.energy * 100}%` }} />
                     </div>
                     <span className="text-lg font-bold" style={{ color: primary }}>{Math.round(release.energy * 100)}%</span>
                   </motion.div>
@@ -527,16 +519,16 @@ export function DayPage() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.05 }}
                     className="p-4 rounded-lg"
-                    style={{ background: `linear-gradient(135deg, ${hexToRgba(background, 0.5)} 0%, ${hexToRgba(background, 0.7)} 100%)` }}
+                    style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
                   >
                     <span className="text-xs font-mono text-light-cream/50 block mb-2">VALENCE</span>
                     <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
-                      <motion.div className="h-full" style={{ background: `linear-gradient(to right, ${accent}, ${secondary})`, width: `${release.valence * 100}%` }} />
+                      <motion.div className="h-full bg-gradient-to-r from-neon-yellow to-neon-orange" style={{ width: `${release.valence * 100}%` }} />
                     </div>
                     <span className="text-lg font-bold" style={{ color: accent }}>{Math.round(release.valence * 100)}%</span>
                   </motion.div>
 
-                  {/* Danceability - Replaced pink hardcode with secondary */}
+                  {/* Danceability */}
                   {release.danceability !== undefined && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
@@ -544,17 +536,17 @@ export function DayPage() {
                       viewport={{ once: true }}
                       transition={{ delay: 0.1 }}
                       className="p-4 rounded-lg"
-                      style={{ background: `linear-gradient(135deg, ${hexToRgba(background, 0.5)} 0%, ${hexToRgba(background, 0.7)} 100%)` }}
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
                     >
                       <span className="text-xs font-mono text-light-cream/50 block mb-2">DANCE</span>
                       <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
-                        <motion.div className="h-full" style={{ background: `linear-gradient(to right, ${secondary}, ${primary})`, width: `${(release.danceability || 0) * 100}%` }} />
+                        <motion.div className="h-full bg-gradient-to-r from-pink-500 to-pink-400" style={{ width: `${(release.danceability || 0) * 100}%` }} />
                       </div>
-                      <span className="text-lg font-bold" style={{ color: secondary }}>{Math.round((release.danceability || 0) * 100)}%</span>
+                      <span className="text-lg font-bold text-pink-400">{Math.round((release.danceability || 0) * 100)}%</span>
                     </motion.div>
                   )}
 
-                  {/* Acousticness - Replaced green hardcode with accent */}
+                  {/* Acousticness */}
                   {release.acousticness !== undefined && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
@@ -562,17 +554,17 @@ export function DayPage() {
                       viewport={{ once: true }}
                       transition={{ delay: 0.15 }}
                       className="p-4 rounded-lg"
-                      style={{ background: `linear-gradient(135deg, ${hexToRgba(background, 0.5)} 0%, ${hexToRgba(background, 0.7)} 100%)` }}
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
                     >
                       <span className="text-xs font-mono text-light-cream/50 block mb-2">ACOUSTIC</span>
                       <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
-                        <motion.div className="h-full" style={{ background: `linear-gradient(to right, ${accent}, ${secondary})`, width: `${(release.acousticness || 0) * 100}%` }} />
+                        <motion.div className="h-full bg-gradient-to-r from-green-500 to-green-400" style={{ width: `${(release.acousticness || 0) * 100}%` }} />
                       </div>
-                      <span className="text-lg font-bold" style={{ color: accent }}>{Math.round((release.acousticness || 0) * 100)}%</span>
+                      <span className="text-lg font-bold text-green-400">{Math.round((release.acousticness || 0) * 100)}%</span>
                     </motion.div>
                   )}
 
-                  {/* Instrumentalness - Replaced cyan hardcode with primary */}
+                  {/* Instrumentalness */}
                   {release.instrumentalness !== undefined && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
@@ -580,17 +572,17 @@ export function DayPage() {
                       viewport={{ once: true }}
                       transition={{ delay: 0.2 }}
                       className="p-4 rounded-lg"
-                      style={{ background: `linear-gradient(135deg, ${hexToRgba(background, 0.5)} 0%, ${hexToRgba(background, 0.7)} 100%)` }}
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
                     >
                       <span className="text-xs font-mono text-light-cream/50 block mb-2">INST</span>
                       <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
-                        <motion.div className="h-full" style={{ background: `linear-gradient(to right, ${primary}, ${accent})`, width: `${(release.instrumentalness || 0) * 100}%` }} />
+                        <motion.div className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400" style={{ width: `${(release.instrumentalness || 0) * 100}%` }} />
                       </div>
-                      <span className="text-lg font-bold" style={{ color: primary }}>{Math.round((release.instrumentalness || 0) * 100)}%</span>
+                      <span className="text-lg font-bold text-cyan-400">{Math.round((release.instrumentalness || 0) * 100)}%</span>
                     </motion.div>
                   )}
 
-                  {/* Speechiness - Replaced purple hardcode with secondary */}
+                  {/* Speechiness */}
                   {release.speechiness !== undefined && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
@@ -598,17 +590,17 @@ export function DayPage() {
                       viewport={{ once: true }}
                       transition={{ delay: 0.25 }}
                       className="p-4 rounded-lg"
-                      style={{ background: `linear-gradient(135deg, ${hexToRgba(background, 0.5)} 0%, ${hexToRgba(background, 0.7)} 100%)` }}
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
                     >
                       <span className="text-xs font-mono text-light-cream/50 block mb-2">SPEECH</span>
                       <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
-                        <motion.div className="h-full" style={{ background: `linear-gradient(to right, ${secondary}, ${accent})`, width: `${(release.speechiness || 0) * 100}%` }} />
+                        <motion.div className="h-full bg-gradient-to-r from-purple-500 to-purple-400" style={{ width: `${(release.speechiness || 0) * 100}%` }} />
                       </div>
-                      <span className="text-lg font-bold" style={{ color: secondary }}>{Math.round((release.speechiness || 0) * 100)}%</span>
+                      <span className="text-lg font-bold text-purple-400">{Math.round((release.speechiness || 0) * 100)}%</span>
                     </motion.div>
                   )}
 
-                  {/* Liveness - Replaced blue hardcode with accent */}
+                  {/* Liveness */}
                   {release.liveness !== undefined && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
@@ -616,13 +608,13 @@ export function DayPage() {
                       viewport={{ once: true }}
                       transition={{ delay: 0.3 }}
                       className="p-4 rounded-lg"
-                      style={{ background: `linear-gradient(135deg, ${hexToRgba(background, 0.5)} 0%, ${hexToRgba(background, 0.7)} 100%)` }}
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
                     >
                       <span className="text-xs font-mono text-light-cream/50 block mb-2">LIVE</span>
                       <div className="w-full h-2 bg-void-black rounded-full overflow-hidden mb-2">
-                        <motion.div className="h-full" style={{ background: `linear-gradient(to right, ${accent}, ${primary})`, width: `${(release.liveness || 0) * 100}%` }} />
+                        <motion.div className="h-full bg-gradient-to-r from-blue-500 to-blue-400" style={{ width: `${(release.liveness || 0) * 100}%` }} />
                       </div>
-                      <span className="text-lg font-bold" style={{ color: accent }}>{Math.round((release.liveness || 0) * 100)}%</span>
+                      <span className="text-lg font-bold text-blue-400">{Math.round((release.liveness || 0) * 100)}%</span>
                     </motion.div>
                   )}
 
@@ -634,7 +626,7 @@ export function DayPage() {
                       viewport={{ once: true }}
                       transition={{ delay: 0.35 }}
                       className="p-4 rounded-lg"
-                      style={{ background: `linear-gradient(135deg, ${hexToRgba(background, 0.5)} 0%, ${hexToRgba(background, 0.7)} 100%)` }}
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
                     >
                       <span className="text-xs font-mono text-light-cream/50 block mb-2">LOUDNESS</span>
                       <span className="text-lg font-bold text-light-cream">{release.loudness.toFixed(1)}dB</span>
@@ -649,7 +641,7 @@ export function DayPage() {
                       viewport={{ once: true }}
                       transition={{ delay: 0.4 }}
                       className="p-4 rounded-lg"
-                      style={{ background: `linear-gradient(135deg, ${hexToRgba(background, 0.5)} 0%, ${hexToRgba(background, 0.7)} 100%)` }}
+                      style={{ background: 'linear-gradient(135deg, rgba(45,48,72,0.5) 0%, rgba(26,28,46,0.7) 100%)' }}
                     >
                       <span className="text-xs font-mono text-light-cream/50 block mb-2">TIME SIG</span>
                       <span className="text-lg font-bold text-light-cream">{release.timeSignature}</span>
@@ -669,10 +661,7 @@ export function DayPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7 }}
                 >
-                  <h3 
-                    className="text-xl font-mono mb-6 flex items-center justify-center gap-2"
-                    style={{ color: accent }}
-                  >
+                  <h3 className="text-xl font-mono text-neon-yellow mb-6 flex items-center justify-center gap-2">
                     <Sparkles className="w-5 h-5" />
                     POETRY IN MOTION
                     {playingHasPoetryData && !isThisPlaying && playingRelease && (
@@ -704,12 +693,12 @@ export function DayPage() {
                   transition={{ delay: 0.7 }}
                   className="p-6 md:p-8 rounded-lg"
                   style={{
-                    background: `linear-gradient(135deg, ${hexToRgba(background, 0.4)} 0%, ${hexToRgba(background, 0.6)} 100%)`,
+                    background: 'linear-gradient(135deg, rgba(45,48,72,0.4) 0%, rgba(26,28,46,0.6) 100%)',
                     backdropFilter: 'blur(12px)',
-                    border: `1px solid ${hexToRgba(text, 0.08)}`,
+                    border: '1px solid rgba(255,255,255,0.08)',
                   }}
                 >
-                  <h3 className="text-xl font-mono mb-6 text-center" style={{ color: accent }}>LYRICS</h3>
+                  <h3 className="text-xl font-mono text-neon-yellow mb-6 text-center">LYRICS</h3>
                   <pre className="whitespace-pre-wrap font-mono text-light-cream/80 text-sm leading-relaxed">
                     {release.lyrics}
                   </pre>
@@ -728,12 +717,12 @@ export function DayPage() {
                   transition={{ delay: 0.7 }}
                   className="p-4 md:p-6 rounded-lg"
                   style={{
-                    background: `linear-gradient(135deg, ${hexToRgba(background, 0.4)} 0%, ${hexToRgba(background, 0.6)} 100%)`,
+                    background: 'linear-gradient(135deg, rgba(45,48,72,0.4) 0%, rgba(26,28,46,0.6) 100%)',
                     backdropFilter: 'blur(12px)',
-                    border: `1px solid ${hexToRgba(text, 0.08)}`
+                    border: '1px solid rgba(255,255,255,0.08)'
                   }}
                 >
-                  <h3 className="text-xl font-mono mb-4 text-center uppercase tracking-wider" style={{ color: accent }}>About This Entry</h3>
+                  <h3 className="text-xl font-mono text-neon-yellow mb-4 text-center uppercase tracking-wider">About This Entry</h3>
                   <div className="relative w-full max-w-4xl mx-auto aspect-video overflow-hidden bg-void-black">
                     {isYouTube(release.videoUrl) ? (
                       <iframe
@@ -774,9 +763,9 @@ export function DayPage() {
                 transition={{ delay: 0.8 }}
                 className="p-6 rounded-lg"
                 style={{
-                  background: `linear-gradient(135deg, ${hexToRgba(background, 0.3)} 0%, ${hexToRgba(background, 0.5)} 100%)`,
+                  background: 'linear-gradient(135deg, rgba(45,48,72,0.3) 0%, rgba(26,28,46,0.5) 100%)',
                   backdropFilter: 'blur(8px)',
-                  border: `1px solid ${hexToRgba(text, 0.05)}`,
+                  border: '1px solid rgba(255,255,255,0.05)',
                 }}
               >
               <div className="flex flex-col gap-6 items-center text-center">
@@ -787,12 +776,11 @@ export function DayPage() {
                       {release.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-3 py-1.5 text-sm font-mono transition-colors cursor-default"
-                          style={{
-                            backgroundColor: isLight ? hexToRgba(accent, 0.1) : hexToRgba(primary, 0.1),
-                            color: isLight ? accent : primary,
-                            border: `1px solid ${isLight ? hexToRgba(accent, 0.3) : hexToRgba(primary, 0.3)}`
-                          }}
+                          className={`px-3 py-1.5 text-sm font-mono ${
+                            isLight
+                              ? 'bg-neon-yellow/10 text-neon-yellow border border-neon-yellow/30 hover:bg-neon-yellow/20'
+                              : 'bg-neon-red/10 text-neon-red border border-neon-red/30 hover:bg-neon-red/20'
+                          } transition-colors cursor-default`}
                         >
                           {tag}
                         </span>
@@ -827,8 +815,7 @@ export function DayPage() {
                             href={release.youtubeUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-4 py-2 hover:bg-neon-red/30 transition-all text-sm font-mono hover:scale-105"
-                            style={{ backgroundColor: hexToRgba(text, 0.1) }}
+                            className="flex items-center gap-2 px-4 py-2 bg-void-gray/80 hover:bg-neon-red/30 transition-all text-sm font-mono hover:scale-105"
                           >
                             <ExternalLink className="w-4 h-4" />
                             YouTube
@@ -839,8 +826,7 @@ export function DayPage() {
                             href={release.audiusUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-4 py-2 hover:bg-neon-yellow/30 transition-all text-sm font-mono hover:scale-105"
-                            style={{ backgroundColor: hexToRgba(text, 0.1) }}
+                            className="flex items-center gap-2 px-4 py-2 bg-void-gray/80 hover:bg-neon-yellow/30 transition-all text-sm font-mono hover:scale-105"
                           >
                             <ExternalLink className="w-4 h-4" />
                             Audius
@@ -874,8 +860,7 @@ export function DayPage() {
                 <div className="flex items-center gap-3">
                   <Link
                     to="/"
-                    className="px-4 py-2 transition-colors font-mono text-sm"
-                    style={{ backgroundColor: hexToRgba(text, 0.1) }}
+                    className="px-4 py-2 bg-void-gray/50 hover:bg-neon-red/20 transition-colors font-mono text-sm"
                   >
                     ALL RELEASES
                   </Link>
