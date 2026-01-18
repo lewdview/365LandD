@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { ReleaseData, Release } from '../types';
 import { buildReleaseData } from '../services/supabase';
+import { getReleaseAudioUrl } from '../services/releaseStorage'; // Import this helper
 
 interface AppState {
   data: ReleaseData | null;
@@ -411,6 +412,10 @@ export const useStore = create<AppState>((set, get) => ({
             d.setDate(startDate.getDate() + absDay - 1);
             const correctDateStr = d.toISOString().split('T')[0];
 
+            // 6. FORCE CORRECT URL (Override potential stale DB link)
+            // This ensures we point to "18 - Goods 4 Me.mp3" instead of "goods_4_me_mastered.mp3"
+            const correctAudioUrl = getReleaseAudioUrl(absDay, it.storageTitle, it.month, it.ext);
+
             if (match) {
               return {
                 ...match,
@@ -419,6 +424,7 @@ export const useStore = create<AppState>((set, get) => ({
                 title: it.storageTitle, // Keep manifest title for display
                 storageTitle: it.storageTitle,
                 manifestAudioPath: it.audioPath,
+                storedAudioUrl: correctAudioUrl, // FORCE OVERWRITE
               } as Release;
             }
             
@@ -432,6 +438,7 @@ export const useStore = create<AppState>((set, get) => ({
               title: it.storageTitle,
               storageTitle: it.storageTitle,
               manifestAudioPath: it.audioPath,
+              storedAudioUrl: correctAudioUrl, // Ensure fallback also points to correct place
               mood: 'light',
               description: '',
               duration: 0,
