@@ -8,14 +8,6 @@ import { ChevronLeft, ChevronRight, ChevronDown, Play, Clock, Music, Calendar, A
 import { CoverImage } from './GenerativeCover';
 import { getCoverUrl } from '../services/releaseStorage';
 
-// Helper to convert hex to rgba
-function hexToRgba(hex: string, alpha: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
 // --- Custom Animated Icons ---
 
 function WaveformIcon({ className = '', color }: { className?: string, color: string }) {
@@ -119,7 +111,7 @@ export function DayTracker() {
     }
   }, [data, currentDay, loadAndPlay]);
   
-  const { primary, secondary, accent, background, text } = currentTheme.colors;
+  const { primary, accent, background } = currentTheme.colors;
   const totalDays = data?.project.totalDays || 365;
   const progress = (currentDay / totalDays) * 100;
 
@@ -148,7 +140,6 @@ export function DayTracker() {
       id="tracker" 
       ref={containerRef}
       className="py-24 px-6 md:px-12 lg:px-16 relative overflow-hidden min-h-[90vh] flex flex-col justify-center"
-      style={{ color: text }}
     >
       {/* 2030 Background Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
@@ -161,10 +152,7 @@ export function DayTracker() {
           }}
         />
         <motion.div 
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to bottom, transparent, ${hexToRgba(primary, 0.05)}, transparent)`
-          }}
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent"
           animate={{ y: ['-100%', '100%'] }}
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
         />
@@ -173,10 +161,7 @@ export function DayTracker() {
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         
         {/* Header HUD */}
-        <div 
-          className="flex flex-col md:flex-row items-end justify-between mb-12 border-b pb-6"
-          style={{ borderColor: hexToRgba(text, 0.1) }}
-        >
+        <div className="flex flex-col md:flex-row items-end justify-between mb-12 border-b border-white/10 pb-6">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -184,14 +169,11 @@ export function DayTracker() {
           >
             <div className="flex items-center gap-3 mb-2">
               <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: accent }} />
-              <span className="text-xs font-mono tracking-[0.4em]" style={{ color: hexToRgba(text, 0.4) }}>SYSTEM_TRACKER.v3</span>
+              <span className="text-xs font-mono tracking-[0.4em] text-light-cream/40">SYSTEM_TRACKER.v3</span>
             </div>
             <div className="flex items-end gap-3 mb-2">
               <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
-                <span 
-                  className="text-transparent bg-clip-text"
-                  style={{ backgroundImage: `linear-gradient(to right, ${text}, ${hexToRgba(text, 0.5)})` }}
-                >
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-light-cream to-white/50">
                   Daily Transmission
                 </span>
               </h2>
@@ -202,7 +184,7 @@ export function DayTracker() {
               )}
             </div>
             {currentMonthTheme && (
-              <div className="text-xs font-mono tracking-wider" style={{ color: hexToRgba(text, 0.5) }}>
+              <div className="text-xs font-mono text-light-cream/50 tracking-wider">
                 {currentMonthTheme.theme}
               </div>
             )}
@@ -214,7 +196,7 @@ export function DayTracker() {
             viewport={{ once: true }}
             className="text-right hidden md:block"
           >
-            <div className="text-xs font-mono mb-1" style={{ color: hexToRgba(text, 0.4) }}>GLOBAL_PROGRESS</div>
+            <div className="text-xs font-mono text-light-cream/40 mb-1">GLOBAL_PROGRESS</div>
             <div className="text-3xl font-mono font-bold" style={{ color: accent }}>
               {Math.round(progress)}<span className="text-sm opacity-50">%</span>
             </div>
@@ -231,11 +213,7 @@ export function DayTracker() {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 onClick={() => navigate(`/day/${prevRelease.day}`)}
-                className="group relative h-48 w-full border backdrop-blur-sm rounded-lg overflow-hidden transition-all"
-                style={{
-                  backgroundColor: hexToRgba(background, 0.5),
-                  borderColor: hexToRgba(text, 0.1)
-                }}
+                className="group relative h-48 w-full border border-white/10 bg-void-black/50 backdrop-blur-sm rounded-lg overflow-hidden transition-all hover:border-primary/50"
               >
                 <div 
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -244,10 +222,10 @@ export function DayTracker() {
                   }}
                 />
                 <div className="p-4 h-full flex flex-col justify-between relative z-10">
-                  <ChevronLeft className="w-6 h-6 transition-colors" style={{ color: hexToRgba(text, 0.4) }} />
+                  <ChevronLeft className="w-6 h-6 text-light-cream/40 group-hover:text-primary transition-colors" />
                   <div>
-                    <div className="text-xs font-mono mb-1" style={{ color: hexToRgba(text, 0.3) }}>PREVIOUS_LOG</div>
-                    <div className="font-bold text-sm leading-tight text-left" style={{ color: hexToRgba(text, 0.8) }}>{prevRelease.title}</div>
+                    <div className="text-xs font-mono text-light-cream/30 mb-1">PREVIOUS_LOG</div>
+                    <div className="font-bold text-sm leading-tight text-light-cream/80 group-hover:text-light-cream">{prevRelease.title}</div>
                   </div>
                 </div>
               </motion.button>
@@ -262,18 +240,11 @@ export function DayTracker() {
             viewport={{ once: true }}
           >
             {/* Glow Halo */}
-            <div 
-              className="absolute -inset-1 rounded-xl opacity-20 blur-xl group-hover:opacity-40 transition-opacity duration-700" 
-              style={{ background: `linear-gradient(to right, ${primary}, ${accent})` }}
-            />
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-xl opacity-20 blur-xl group-hover:opacity-40 transition-opacity duration-700" />
             
             <div 
-              className="relative rounded-xl overflow-hidden border"
-              style={{ 
-                backgroundColor: hexToRgba(background, 0.6),
-                borderColor: hexToRgba(text, 0.1),
-                boxShadow: `0 0 50px -10px ${isLight ? accent : primary}20` 
-              }}
+              className="relative rounded-xl overflow-hidden bg-[#0A0A0E] border border-white/10"
+              style={{ boxShadow: `0 0 50px -10px ${isLight ? accent : primary}20` }}
             >
               {todaysRelease ? (
                 <div className="flex flex-col md:flex-row">
@@ -296,31 +267,20 @@ export function DayTracker() {
                      </div>
                      
                      {/* Interactive Overlay */}
-                     <div className="absolute inset-0 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center" style={{ backgroundColor: hexToRgba(background, 0.4) }}>
+                     <div className="absolute inset-0 bg-void-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={handlePlayClick}
-                          className="w-20 h-20 rounded-full flex items-center justify-center border backdrop-blur-md shadow-[0_0_30px_rgba(0,0,0,0.5)] group/btn"
-                          style={{
-                            borderColor: hexToRgba(text, 0.2),
-                            backgroundColor: hexToRgba(text, 0.1)
-                          }}
+                          className="w-20 h-20 rounded-full flex items-center justify-center border border-white/20 bg-white/10 backdrop-blur-md shadow-[0_0_30px_rgba(0,0,0,0.5)] group/btn"
                         >
-                          <Play className="w-8 h-8 ml-1 group-hover/btn:scale-110 transition-transform" style={{ fill: text, color: text }} />
+                          <Play className="w-8 h-8 fill-light-cream text-light-cream ml-1 group-hover/btn:scale-110 transition-transform" />
                         </motion.button>
                      </div>
 
                      {/* Image Tech Overlay */}
                      <div className="absolute top-4 left-4 right-4 flex justify-between pointer-events-none">
-                       <span 
-                         className="text-[10px] font-mono backdrop-blur px-2 py-1 rounded border"
-                         style={{ 
-                           backgroundColor: hexToRgba(background, 0.5),
-                           color: hexToRgba(text, 0.7),
-                           borderColor: hexToRgba(text, 0.1)
-                         }}
-                       >
+                       <span className="text-[10px] font-mono bg-black/50 backdrop-blur px-2 py-1 rounded text-light-cream/70 border border-white/10">
                          IMG_SRC: GEN_ART_V2
                        </span>
                        <span 
@@ -344,32 +304,32 @@ export function DayTracker() {
                     
                     <div>
                       <div className="flex items-center gap-3 mb-4">
-                        <Calendar className="w-4 h-4" style={{ color: hexToRgba(text, 0.3) }} />
-                        <span className="font-mono text-xs" style={{ color: hexToRgba(text, 0.5) }}>{formatDisplayDate(currentDay)}</span>
-                        <div className="h-px w-8" style={{ backgroundColor: hexToRgba(text, 0.1) }} />
-                        <span className="font-mono text-xs" style={{ color: primary }}>DAY {String(currentDay).padStart(3, '0')}</span>
+                        <Calendar className="w-4 h-4 text-light-cream/30" />
+                        <span className="font-mono text-xs text-light-cream/50">{formatDisplayDate(currentDay)}</span>
+                        <div className="h-px w-8 bg-white/10" />
+                        <span className="font-mono text-xs text-primary">DAY {String(currentDay).padStart(3, '0')}</span>
                       </div>
 
                       <h3 className="text-3xl md:text-4xl font-black mb-3 leading-tight" style={{ color: isLight ? accent : primary }}>
                         {todaysRelease.title}
                       </h3>
                       
-                      <p className="text-sm leading-relaxed mb-6 border-l-2 pl-4" style={{ color: hexToRgba(text, 0.6), borderColor: hexToRgba(text, 0.1) }}>
+                      <p className="text-light-cream/60 text-sm leading-relaxed mb-6 border-l-2 border-white/10 pl-4">
                         {todaysRelease.description}
                       </p>
 
                       <div className="grid grid-cols-2 gap-4 mb-6">
-                         <div className="rounded p-3 border" style={{ backgroundColor: hexToRgba(text, 0.05), borderColor: hexToRgba(text, 0.05) }}>
-                            <div className="flex items-center gap-2 text-xs font-mono mb-1" style={{ color: hexToRgba(text, 0.4) }}>
+                         <div className="bg-white/5 rounded p-3 border border-white/5">
+                            <div className="flex items-center gap-2 text-xs font-mono text-light-cream/40 mb-1">
                               <Clock className="w-3 h-3" /> DURATION
                             </div>
                             <div className="font-bold">{todaysRelease.durationFormatted}</div>
                          </div>
-                         <div className="rounded p-3 border" style={{ backgroundColor: hexToRgba(text, 0.05), borderColor: hexToRgba(text, 0.05) }}>
-                            <div className="flex items-center gap-2 text-xs font-mono mb-1" style={{ color: hexToRgba(text, 0.4) }}>
+                         <div className="bg-white/5 rounded p-3 border border-white/5">
+                            <div className="flex items-center gap-2 text-xs font-mono text-light-cream/40 mb-1">
                               <Music className="w-3 h-3" /> BPM / KEY
                             </div>
-                            <div className="font-bold">{todaysRelease.tempo} <span style={{ color: hexToRgba(text, 0.2) }}>|</span> {todaysRelease.key}</div>
+                            <div className="font-bold">{todaysRelease.tempo} <span className="text-white/20">|</span> {todaysRelease.key}</div>
                          </div>
                       </div>
                     </div>
@@ -378,8 +338,7 @@ export function DayTracker() {
                       {/* Technical Detail Expander */}
                       <button 
                         onClick={() => setExpandedInfo(!expandedInfo)}
-                        className="w-full py-3 border-t flex items-center justify-between text-xs font-mono tracking-widest hover:opacity-80 transition-opacity"
-                        style={{ borderColor: hexToRgba(text, 0.1), color: isLight ? accent : primary }}
+                        className="w-full py-3 border-t border-white/10 flex items-center justify-between text-xs font-mono tracking-widest hover:text-primary transition-colors"
                       >
                         <span>{expandedInfo ? 'COLLAPSE_DATA' : 'ANALYZE_AUDIO_DATA'}</span>
                         <ChevronDown className={`w-4 h-4 transition-transform ${expandedInfo ? 'rotate-180' : ''}`} />
@@ -398,8 +357,8 @@ export function DayTracker() {
                                   const val = i === 0 ? todaysRelease.energy : i === 1 ? todaysRelease.valence : 0.5;
                                   return (
                                     <div key={metric} className="flex flex-col gap-1">
-                                      <span className="uppercase" style={{ color: hexToRgba(text, 0.3) }}>{metric}</span>
-                                      <div className="h-1 w-full rounded-full overflow-hidden" style={{ backgroundColor: hexToRgba(text, 0.1) }}>
+                                      <span className="text-light-cream/30 uppercase">{metric}</span>
+                                      <div className="h-1 bg-white/10 w-full rounded-full overflow-hidden">
                                         <motion.div 
                                           className="h-full" 
                                           style={{ background: isLight ? accent : primary }}
@@ -411,15 +370,10 @@ export function DayTracker() {
                                   )
                                 })}
                              </div>
-                             <div className="mt-4 pt-4 border-t" style={{ borderColor: hexToRgba(text, 0.1) }}>
+                             <div className="mt-4 pt-4 border-t border-white/10">
                                <button 
                                  onClick={() => navigate(`/day/${currentDay}`)}
-                                 className="w-full py-2 border rounded text-xs font-bold transition-colors"
-                                 style={{ 
-                                   backgroundColor: hexToRgba(text, 0.05),
-                                   borderColor: hexToRgba(text, 0.1),
-                                   color: text 
-                                 }}
+                                 className="w-full py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded text-xs font-bold transition-colors"
                                >
                                  INITIALIZE FULL SEQUENCE →
                                </button>
@@ -432,11 +386,11 @@ export function DayTracker() {
                 </div>
               ) : (
                 <div className="h-96 flex flex-col items-center justify-center text-center p-12">
-                   <div className="w-20 h-20 border-2 border-dashed rounded-full flex items-center justify-center mb-6 animate-spin-slow" style={{ borderColor: hexToRgba(text, 0.2) }}>
-                     <Disc className="w-10 h-10" style={{ color: hexToRgba(text, 0.2) }} />
+                   <div className="w-20 h-20 border-2 border-dashed border-white/20 rounded-full flex items-center justify-center mb-6 animate-spin-slow">
+                     <Disc className="w-10 h-10 text-white/20" />
                    </div>
                    <h3 className="text-2xl font-bold mb-2">SIGNAL_LOST</h3>
-                   <p className="font-mono text-sm" style={{ color: hexToRgba(text, 0.4) }}>No transmission found for Day {currentDay}</p>
+                   <p className="font-mono text-sm text-light-cream/40">No transmission found for Day {currentDay}</p>
                 </div>
               )}
             </div>
@@ -444,21 +398,15 @@ export function DayTracker() {
 
           {/* RIGHT: Next Log (Future) */}
           <div className="lg:col-span-2 hidden lg:flex flex-col justify-center">
-             <div 
-               className="h-48 w-full border rounded-lg p-4 flex flex-col justify-center items-end opacity-50 relative overflow-hidden"
-               style={{
-                 backgroundColor: hexToRgba(background, 0.2),
-                 borderColor: hexToRgba(text, 0.05)
-               }}
-             >
+             <div className="h-48 w-full border border-white/5 bg-void-black/20 rounded-lg p-4 flex flex-col justify-center items-end opacity-50 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
-                <ChevronRight className="w-6 h-6 mb-auto" style={{ color: hexToRgba(text, 0.2) }} />
+                <ChevronRight className="w-6 h-6 text-light-cream/20 mb-auto" />
                 <div className="text-right">
-                  <div className="text-xs font-mono mb-1" style={{ color: hexToRgba(text, 0.2) }}>INCOMING</div>
-                  <div className="font-bold text-sm" style={{ color: hexToRgba(text, 0.4) }}>
+                  <div className="text-xs font-mono text-light-cream/20 mb-1">INCOMING</div>
+                  <div className="font-bold text-sm text-light-cream/40">
                     {hasNextRelease ? `Day ${nextDay}` : 'END_OF_LINE'}
                   </div>
-                  {hasNextRelease && <div className="text-[10px] mt-1 animate-pulse" style={{ color: primary }}>LOCKED</div>}
+                  {hasNextRelease && <div className="text-[10px] text-primary mt-1 animate-pulse">LOCKED</div>}
                 </div>
              </div>
           </div>
@@ -478,12 +426,12 @@ export function DayTracker() {
           >
             <div className="text-2xl">{currentMonthTheme.emoji}</div>
             <div className="flex-1">
-              <div className="text-xs font-mono uppercase tracking-wider" style={{ color: hexToRgba(text, 0.5) }}>CURRENT_PHASE</div>
-              <div className="text-sm font-bold" style={{ color: primary }}>{currentMonthTheme.arc}</div>
-              <div className="text-[10px] font-mono mt-1" style={{ color: hexToRgba(text, 0.4) }}>Days {currentMonthTheme.dayStart}–{currentMonthTheme.dayEnd}</div>
+              <div className="text-xs font-mono text-light-cream/50 uppercase tracking-wider">CURRENT_PHASE</div>
+              <div className="text-sm font-bold text-light-cream" style={{ color: primary }}>{currentMonthTheme.arc}</div>
+              <div className="text-[10px] font-mono text-light-cream/40 mt-1">Days {currentMonthTheme.dayStart}–{currentMonthTheme.dayEnd}</div>
             </div>
             <div className="text-right">
-              <div className="text-xs font-mono mb-1" style={{ color: hexToRgba(text, 0.5) }}>PROGRESS</div>
+              <div className="text-xs font-mono text-light-cream/50 mb-1">PROGRESS</div>
               <div className="text-lg font-bold" style={{ color: accent }}>
                 {Math.round(((currentDay - currentMonthTheme.dayStart) / (currentMonthTheme.dayEnd - currentMonthTheme.dayStart)) * 100)}%
               </div>
@@ -499,28 +447,28 @@ export function DayTracker() {
           viewport={{ once: true }}
         >
           <StatModule 
-            icon={<WaveformIcon className="w-6 h-6" color={secondary} />}
+            icon={<WaveformIcon className="w-6 h-6" color={primary} />}
             label="RELEASES"
             value={data?.stats.totalReleases || 0}
-            color={secondary}
-          />
-           <StatModule 
-            icon={<SunburstIcon className="w-6 h-6" color={accent} />}
-            label="LIGHT_SIDE"
-            value={data?.stats.lightTracks || 0}
-            color={accent}
-          />
-           <StatModule 
-            icon={<MoonPhaseIcon className="w-6 h-6" color={primary} />}
-            label="DARK_SIDE"
-            value={data?.stats.darkTracks || 0}
             color={primary}
           />
            <StatModule 
-            icon={<HourglassIcon className="w-6 h-6" color={hexToRgba(text, 0.7)} />}
+            icon={<SunburstIcon className="w-6 h-6" color="#FFFF00" />}
+            label="LIGHT_SIDE"
+            value={data?.stats.lightTracks || 0}
+            color="#FFFF00"
+          />
+           <StatModule 
+            icon={<MoonPhaseIcon className="w-6 h-6" color="#FF0000" />}
+            label="DARK_SIDE"
+            value={data?.stats.darkTracks || 0}
+            color="#FF0000"
+          />
+           <StatModule 
+            icon={<HourglassIcon className="w-6 h-6" color={accent} />}
             label="REMAINING"
             value={totalDays - currentDay}
-            color={hexToRgba(text, 0.7)}
+            color={accent}
           />
         </motion.div>
 
@@ -532,19 +480,10 @@ export function DayTracker() {
 // --- Sub-components ---
 
 function StatModule({ icon, label, value, color }: { icon: any, label: string, value: number, color: string }) {
-  const { currentTheme } = useThemeStore();
-  const { background, text } = currentTheme.colors;
-  
   return (
-    <div 
-      className="group relative border p-5 rounded-lg overflow-hidden transition-all duration-300"
-      style={{ 
-        backgroundColor: hexToRgba(background, 0.6),
-        borderColor: hexToRgba(text, 0.05)
-      }}
-    >
+    <div className="group relative bg-[#0F0F13] border border-white/5 p-5 rounded-lg overflow-hidden hover:border-white/20 transition-all duration-300">
       {/* Active Corner */}
-      <div className="absolute top-0 right-0 w-3 h-3 border-t border-r transition-colors" style={{ borderColor: hexToRgba(text, 0.2) }} />
+      <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-white/20 group-hover:border-white/50 transition-colors" />
       
       {/* Background Glow */}
       <div 
@@ -553,17 +492,17 @@ function StatModule({ icon, label, value, color }: { icon: any, label: string, v
       />
 
       <div className="flex justify-between items-start mb-4">
-        <div className="p-2 rounded-md border transition-colors" style={{ backgroundColor: hexToRgba(text, 0.05), borderColor: hexToRgba(text, 0.05) }}>
+        <div className="p-2 bg-white/5 rounded-md border border-white/5 group-hover:border-white/10 transition-colors">
           {icon}
         </div>
-        <Activity className="w-4 h-4" style={{ color: hexToRgba(text, 0.1) }} />
+        <Activity className="w-4 h-4 text-white/10 group-hover:text-white/30" />
       </div>
 
       <div>
-        <div className="text-3xl font-black tabular-nums tracking-tight mb-1" style={{ textShadow: `0 0 20px ${color}40`, color: text }}>
+        <div className="text-3xl font-black tabular-nums tracking-tight mb-1" style={{ textShadow: `0 0 20px ${color}40` }}>
            {value}
         </div>
-        <div className="text-[10px] font-mono tracking-widest transition-colors" style={{ color: hexToRgba(text, 0.4) }}>
+        <div className="text-[10px] font-mono tracking-widest text-light-cream/40 group-hover:text-light-cream/60 transition-colors">
           {label}
         </div>
       </div>
