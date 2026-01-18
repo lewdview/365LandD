@@ -191,14 +191,16 @@ export function DayPage() {
   };
 
   const prevDay = data?.releases.filter(r => r.day < dayNum && r.day >= 1).sort((a, b) => b.day - a.day)[0];
-  
-  // UNLOCKED: Allowed navigation to any future day that exists in the database
-  const nextDay = data?.releases.filter(r => r.day > dayNum).sort((a, b) => a.day - b.day)[0];
+  const nextDay = data?.releases.filter(r => r.day > dayNum && r.day <= currentDay).sort((a, b) => a.day - b.day)[0];
 
   const isLight = release?.mood === 'light';
   const moodColor = isLight ? accent : primary;
 
-  // REMOVED: Day-gating useEffect that was here
+  useEffect(() => {
+    if (data && currentDay && dayNum > currentDay) {
+      navigate(`/day/${currentDay}`);
+    }
+  }, [data, currentDay, dayNum, navigate]);
 
   // Keyboard Navigation
   useEffect(() => {
