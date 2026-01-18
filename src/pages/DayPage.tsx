@@ -190,8 +190,6 @@ export function DayPage() {
   };
 
   const prevDay = data?.releases.filter(r => r.day < dayNum && r.day >= 1).sort((a, b) => b.day - a.day)[0];
-  
-  // UNLOCKED: Allowed navigation to any future day that exists in the database
   const nextDay = data?.releases.filter(r => r.day > dayNum).sort((a, b) => a.day - b.day)[0];
 
   const isLight = release?.mood === 'light';
