@@ -25,7 +25,12 @@ function WaveformIcon({ className = '', color }: { className?: string, color: st
         {[2, 7, 12, 17, 22, 27].map((x, i) => (
           <motion.rect
             key={i}
-            x={x} y="12" width="3" height="8" rx="1" fill="currentColor" opacity={0.6 + (i * 0.1)}
+            x={x} 
+            width="3" 
+            rx="1" 
+            fill="currentColor"
+            // FIX: Explicitly set initial values to prevent "undefined" errors
+            initial={{ height: 8, y: 12, opacity: 0.5 }}
             animate={{ 
               height: [8, 24, 8], 
               y: [12, 4, 12],
@@ -56,6 +61,8 @@ function SunburstIcon({ className = '', color }: { className?: string, color: st
             <motion.line 
               key={i} x1="16" y1="2" x2="16" y2="6" 
               transform={`rotate(${deg} 16 16)`}
+              // FIX: Explicitly set initial value
+              initial={{ opacity: 0.3 }}
               animate={{ opacity: [0.3, 1, 0.3] }}
               transition={{ duration: 1.5, delay: i * 0.1, repeat: Infinity }}
             />
@@ -72,7 +79,10 @@ function MoonPhaseIcon({ className = '', color }: { className?: string, color: s
       <svg viewBox="0 0 32 32" fill="none" className="w-full h-full drop-shadow-[0_0_8px_currentColor]">
         <mask id="moonMask">
           <circle cx="16" cy="16" r="12" fill="white" />
-          <motion.circle cx="28" cy="16" r="12" fill="black"
+          <motion.circle 
+            cy="16" r="12" fill="black"
+            // FIX: Explicitly set initial value for cx
+            initial={{ cx: 28 }}
             animate={{ cx: [28, -4] }}
             transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
           />
@@ -92,7 +102,10 @@ function HourglassIcon({ className = '', color }: { className?: string, color: s
         transition={{ duration: 4, repeat: Infinity, times: [0, 0.1, 1], ease: "easeInOut" }}
       >
         <path d="M8 4h16v6c0 2-2 4-4 6l-4 3 4 3c2 2 4 4 4 6v6H8v-6c0-2 2-4 4-6l4-3-4-3c-2-2-4-4-4-6V4z" stroke="currentColor" strokeWidth="2" />
-        <motion.circle cx="16" cy="14" r="2" fill="currentColor" 
+        <motion.circle 
+          cx="16" fill="currentColor" 
+          // FIX: Explicitly set initial values for cy and r
+          initial={{ cy: 14, r: 2 }}
           animate={{ cy: [14, 24], r: [2, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         />
