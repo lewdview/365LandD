@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -8,7 +8,6 @@ import {
   Pause, 
   Clock,
   Music,
-  Calendar,
   ExternalLink,
   Home,
   Sparkles,
@@ -98,7 +97,7 @@ function StatModule({ label, value, color, max = 100 }: { label: string, value: 
 export function DayPage() {
   const { day } = useParams<{ day: string }>();
   const navigate = useNavigate();
-  const { data, fetchData, currentDay } = useStore();
+  const { data, fetchData } = useStore();
   const { currentTheme } = useThemeStore();
   const { primary, secondary, accent, background, text } = currentTheme.colors;
   
@@ -197,8 +196,6 @@ export function DayPage() {
 
   const isLight = release?.mood === 'light';
   const moodColor = isLight ? accent : primary;
-
-  // REMOVED: Day-gating useEffect that was here
 
   // Keyboard Navigation
   useEffect(() => {
