@@ -72,15 +72,25 @@ export const useAudioStore = create<AudioState>((set, get) => ({
       duration: 0,
     });
     
-    // FORCE RELEASEREADY BUCKET ONLY
-    // We removed the 'isDev' checks and manifest/local path logic.
     const urlsToTry: string[] = [];
     
-    // Use storageTitle (the exact filename in bucket without extension) if available, otherwise fall back to title
+    // 1. PRIORITY: Use the specific URL computed by useStore (handles MP3 exceptions like Day 18)
+    if (release.storedAudioUrl) {
+        urlsToTry.push(release.storedAudioUrl);
+    }
+
+    // 2. FALLBACK: Generate variations based on title (.wav, .mp3, etc.)
     const storageTitle = release.storageTitle || release.title;
-    urlsToTry.push(...getReleaseAudioUrlVariations(release.day, storageTitle));
+    const variations = getReleaseAudioUrlVariations(release.day, storageTitle);
     
-    console.log(`[Audio] Loading from Storage: ${release.title}`);
+    // Add variations, avoiding duplicates of the priority URL
+    variations.forEach(url => {
+        if (!urlsToTry.includes(url)) {
+            urlsToTry.push(url);
+        }
+    });
+    
+    console.log(`[Audio] Loading ${release.title}. Queue:`, urlsToTry);
     
     let currentUrlIndex = 0;
     let playAttempted = false;
@@ -136,7 +146,7 @@ export const useAudioStore = create<AudioState>((set, get) => ({
       } else {
         set({ hasError: true, isLoading: false });
       }
-    }, 2000);
+    }, 4000); // Increased timeout to 4s to allow for slower networks
     
     audioElement.addEventListener('canplay', () => clearTimeout(timeout), { once: true });
     
