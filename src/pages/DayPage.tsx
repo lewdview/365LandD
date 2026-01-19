@@ -190,6 +190,8 @@ export function DayPage() {
   };
 
   const prevDay = data?.releases.filter(r => r.day < dayNum && r.day >= 1).sort((a, b) => b.day - a.day)[0];
+  
+  // UNLOCKED: Allowed navigation to any future day that exists in the database
   const nextDay = data?.releases.filter(r => r.day > dayNum).sort((a, b) => a.day - b.day)[0];
 
   const isLight = release?.mood === 'light';
@@ -244,10 +246,10 @@ export function DayPage() {
         />
       </div>
 
-      {/* HERO SECTION - Increased top padding to avoid nav conflict */}
-      <section className="relative pt-32 md:pt-40 pb-12 px-6 md:px-12 lg:px-16 z-10 min-h-[70vh] flex flex-col justify-center">
+      {/* HERO SECTION - Responsive padding fix for mobile */}
+      <section className="relative pt-24 md:pt-40 pb-12 px-6 md:px-12 lg:px-16 z-10 min-h-[60vh] md:min-h-[70vh] flex flex-col justify-center">
         
-        {/* Navigation Arrows (Absolute to Hero) */}
+        {/* Navigation Arrows (Desktop Only - Absolute) */}
         {prevDay && (
           <motion.button
             whileHover={{ x: -5, scale: 1.1 }}
@@ -289,8 +291,8 @@ export function DayPage() {
         <div className="max-w-7xl mx-auto w-full">
           
           {/* Breadcrumbs HUD with Mobile Nav */}
-          <div className="flex items-center justify-between mb-8 text-xs font-mono tracking-widest opacity-60">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-between mb-8 gap-4">
+            <div className="flex items-center gap-4 text-xs font-mono tracking-widest opacity-60">
               <Link to="/" className="hover:text-primary transition-colors flex items-center gap-2">
                 <Home className="w-3 h-3" /> HOME
               </Link>
@@ -298,79 +300,37 @@ export function DayPage() {
               <span style={{ color: moodColor }}>LOG_{String(dayNum).padStart(3, '0')}</span>
             </div>
 
-            {/* Mobile Nav Controls */}
-            <div className="flex lg:hidden gap-2">
+            {/* Mobile Nav Controls - Larger touch targets */}
+            <div className="flex lg:hidden gap-3">
               <button 
                 onClick={() => prevDay && goToDay(prevDay.day)}
                 disabled={!prevDay}
-                className="p-2 border rounded hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed"
-                style={{ borderColor: hexToRgba(text, 0.2) }}
+                className="p-3 border rounded-lg hover:bg-white/10 active:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                style={{ borderColor: hexToRgba(text, 0.2), backgroundColor: hexToRgba(background, 0.5) }}
               >
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => nextDay && goToDay(nextDay.day)}
                 disabled={!nextDay}
-                className="p-2 border rounded hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed"
-                style={{ borderColor: hexToRgba(text, 0.2) }}
+                className="p-3 border rounded-lg hover:bg-white/10 active:bg-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                style={{ borderColor: hexToRgba(text, 0.2), backgroundColor: hexToRgba(background, 0.5) }}
               >
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
-            {/* Left: Content Info */}
-            <div className="lg:col-span-7 relative z-10">
-              {release ? (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className="px-3 py-1 text-xs font-bold bg-white/10 border border-white/10 rounded uppercase" style={{ color: moodColor }}>
-                      {release.mood}
-                    </span>
-                    <span className="h-px w-8 bg-white/20" />
-                    <span className="text-xs font-mono opacity-60">{release.date}</span>
-                  </div>
-
-                  <h1 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.85] tracking-tighter mb-8 text-transparent bg-clip-text" 
-                      style={{ backgroundImage: `linear-gradient(to bottom right, ${text}, ${hexToRgba(text, 0.5)})` }}>
-                    {release.title}
-                  </h1>
-
-                  <p className="text-lg md:text-xl leading-relaxed opacity-80 border-l-2 pl-6 max-w-2xl" 
-                     style={{ borderColor: moodColor }}>
-                    {release.description}
-                  </p>
-
-                  {/* Quick Stats Row */}
-                  <div className="flex flex-wrap gap-4 mt-8">
-                    <TechBadge color={text} label="TEMPO">
-                      <Clock className="w-3 h-3" /> {release.tempo} BPM
-                    </TechBadge>
-                    <TechBadge color={text} label="KEY">
-                      <Music className="w-3 h-3" /> {release.key}
-                    </TechBadge>
-                    <TechBadge color={text} label="DURATION">
-                      <Maximize2 className="w-3 h-3" /> {release.durationFormatted}
-                    </TechBadge>
-                  </div>
-                </motion.div>
-              ) : (
-                <div className="py-20 text-center border border-dashed border-white/10 rounded-xl bg-white/5">
-                  <p className="text-2xl font-mono opacity-50">DATA_CORRUPTED: NO_ENTRY_FOUND</p>
-                </div>
-              )}
-            </div>
-
-            {/* Right: Cover Art / Visualization */}
-            <div className="lg:col-span-5 relative">
+            {/* Right: Cover Art / Visualization (Mobile: First) */}
+            <div className="lg:col-span-5 relative order-first lg:order-last">
                {release && (
                  <motion.div 
                    initial={{ opacity: 0, scale: 0.9 }} 
                    animate={{ opacity: 1, scale: 1 }}
                    transition={{ delay: 0.2 }}
-                   className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group"
+                   className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group mx-auto max-w-sm lg:max-w-none"
                    style={{ boxShadow: `0 0 60px -20px ${moodColor}40` }}
                  >
                    {/* Animated border ring */}
@@ -392,12 +352,12 @@ export function DayPage() {
                     <div className="absolute inset-0 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm bg-black/20">
                       <button 
                         onClick={handlePlay}
-                        className="w-24 h-24 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 hover:scale-110 transition-transform shadow-2xl"
+                        className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 hover:scale-110 transition-transform shadow-2xl"
                       >
                          {isThisReleaseActive ? (
-                            <Pause className="w-10 h-10 fill-current" />
+                            <Pause className="w-8 h-8 md:w-10 md:h-10 fill-current" />
                          ) : (
-                            <Play className="w-10 h-10 fill-current ml-1" />
+                            <Play className="w-8 h-8 md:w-10 md:h-10 fill-current ml-1" />
                          )}
                       </button>
                     </div>
@@ -408,6 +368,50 @@ export function DayPage() {
                  </motion.div>
                )}
             </div>
+
+            {/* Left: Content Info (Mobile: Second) */}
+            <div className="lg:col-span-7 relative z-10 order-last lg:order-first">
+              {release ? (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                  <div className="flex items-center gap-3 mb-4 lg:mb-6">
+                    <span className="px-3 py-1 text-xs font-bold bg-white/10 border border-white/10 rounded uppercase" style={{ color: moodColor }}>
+                      {release.mood}
+                    </span>
+                    <span className="h-px w-8 bg-white/20" />
+                    <span className="text-xs font-mono opacity-60">{release.date}</span>
+                  </div>
+
+                  {/* Responsive Title Size */}
+                  <h1 className="text-4xl md:text-5xl lg:text-8xl font-black uppercase leading-[0.9] tracking-tighter mb-6 lg:mb-8 text-transparent bg-clip-text break-words" 
+                      style={{ backgroundImage: `linear-gradient(to bottom right, ${text}, ${hexToRgba(text, 0.5)})` }}>
+                    {release.title}
+                  </h1>
+
+                  <p className="text-base md:text-xl leading-relaxed opacity-80 border-l-2 pl-4 lg:pl-6 max-w-2xl" 
+                     style={{ borderColor: moodColor }}>
+                    {release.description}
+                  </p>
+
+                  {/* Quick Stats Row */}
+                  <div className="flex flex-wrap gap-3 lg:gap-4 mt-6 lg:mt-8">
+                    <TechBadge color={text} label="TEMPO">
+                      <Clock className="w-3 h-3" /> {release.tempo} BPM
+                    </TechBadge>
+                    <TechBadge color={text} label="KEY">
+                      <Music className="w-3 h-3" /> {release.key}
+                    </TechBadge>
+                    <TechBadge color={text} label="DURATION">
+                      <Maximize2 className="w-3 h-3" /> {release.durationFormatted}
+                    </TechBadge>
+                  </div>
+                </motion.div>
+              ) : (
+                <div className="py-20 text-center border border-dashed border-white/10 rounded-xl bg-white/5">
+                  <p className="text-2xl font-mono opacity-50">DATA_CORRUPTED: NO_ENTRY_FOUND</p>
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
       </section>
@@ -420,7 +424,7 @@ export function DayPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="my-12 p-6 md:p-8 rounded-2xl border backdrop-blur-xl relative overflow-hidden"
+            className="my-8 lg:my-12 p-6 md:p-8 rounded-2xl border backdrop-blur-xl relative overflow-hidden"
             style={{ 
               backgroundColor: hexToRgba(background, 0.7),
               borderColor: hexToRgba(text, 0.1),
@@ -432,12 +436,12 @@ export function DayPage() {
               <motion.div layoutId="activeLine" className="absolute top-0 left-0 right-0 h-1" style={{ backgroundColor: moodColor }} />
             )}
 
-            <div className="flex flex-col md:flex-row gap-8 items-center">
+            <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-center">
               {/* Play Button */}
               <button
                 onClick={handlePlay}
                 disabled={audioError && isThisPlaying}
-                className="w-20 h-20 rounded-2xl flex items-center justify-center shrink-0 transition-all hover:scale-105 active:scale-95"
+                className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center shrink-0 transition-all hover:scale-105 active:scale-95"
                 style={{
                   backgroundColor: isThisPlaying ? moodColor : hexToRgba(text, 0.05),
                   color: isThisPlaying ? background : text,
@@ -445,11 +449,11 @@ export function DayPage() {
                 }}
               >
                  {isLoading && isThisPlaying ? (
-                    <div className="w-8 h-8 border-4 border-current border-t-transparent rounded-full animate-spin" />
+                    <div className="w-6 h-6 md:w-8 md:h-8 border-4 border-current border-t-transparent rounded-full animate-spin" />
                  ) : isThisReleaseActive ? (
-                    <Pause className="w-8 h-8 fill-current" />
+                    <Pause className="w-6 h-6 md:w-8 md:h-8 fill-current" />
                  ) : (
-                    <Play className="w-8 h-8 fill-current ml-1" />
+                    <Play className="w-6 h-6 md:w-8 md:h-8 fill-current ml-1" />
                  )}
               </button>
 
@@ -457,7 +461,7 @@ export function DayPage() {
               <div className="flex-1 w-full space-y-4">
                 <div className="flex justify-between text-xs font-mono tracking-wider opacity-60">
                    <span>{isThisPlaying ? formatTime(currentTime) : '0:00'}</span>
-                   <span>Audio Sequence Running...</span>
+                   <span className="hidden md:inline">Audio Sequence Running...</span>
                    <span>{formatTime((isThisPlaying && duration) || release.duration)}</span>
                 </div>
                 
@@ -552,7 +556,7 @@ export function DayPage() {
               </div>
 
               <div 
-                className="min-h-[500px] rounded-2xl border relative overflow-hidden"
+                className="min-h-[400px] md:min-h-[500px] rounded-2xl border relative overflow-hidden"
                 style={{ 
                   backgroundColor: hexToRgba(background, 0.4),
                   borderColor: hexToRgba(text, 0.1)
@@ -572,7 +576,7 @@ export function DayPage() {
                       fullHeight
                     />
                 ) : (
-                  <div className="p-8 h-full overflow-y-auto custom-scrollbar">
+                  <div className="p-6 md:p-8 h-full overflow-y-auto custom-scrollbar">
                      <pre className="font-mono text-sm leading-loose whitespace-pre-wrap opacity-80">
                        {release.lyrics || "No lyrical data available for this transmission."}
                      </pre>
@@ -620,7 +624,7 @@ export function DayPage() {
           )}
 
           {/* FOOTER NAVIGATION */}
-          <div className="flex items-center justify-between border-t py-8" style={{ borderColor: hexToRgba(text, 0.1) }}>
+          <div className="flex flex-wrap items-center justify-between border-t py-8 gap-4" style={{ borderColor: hexToRgba(text, 0.1) }}>
              {prevDay ? (
                <button onClick={() => goToDay(prevDay.day)} className="group text-left">
                   <div className="text-[10px] font-mono opacity-50 mb-1 group-hover:text-primary transition-colors">PREV_LOG</div>
@@ -630,7 +634,7 @@ export function DayPage() {
                </button>
              ) : <div />}
 
-             <div className="flex gap-4">
+             <div className="flex gap-4 order-first lg:order-none w-full lg:w-auto justify-center">
                 {(release.youtubeUrl || release.audiusUrl) && (
                   <div className="flex gap-2">
                      {release.youtubeUrl && (
