@@ -8,16 +8,64 @@ const STORAGE_BASE = `https://${SUPABASE_PROJECT_ID}.supabase.co/storage/v1/obje
 // Days that use .mp3 instead of .wav (in January)
 const MP3_DAYS = [13, 18, 21, 26];
 
+// Month definitions for day mapping
+const MONTHS = [
+  { name: 'january', start: 1, end: 31 },
+  { name: 'february', start: 32, end: 59 },
+  { name: 'march', start: 60, end: 90 },
+  { name: 'april', start: 91, end: 120 },
+  { name: 'may', start: 121, end: 151 },
+  { name: 'june', start: 152, end: 181 },
+  { name: 'july', start: 182, end: 212 },
+  { name: 'august', start: 213, end: 243 },
+  { name: 'september', start: 244, end: 273 },
+  { name: 'october', start: 274, end: 304 },
+  { name: 'november', start: 305, end: 334 },
+  { name: 'december', start: 335, end: 365 },
+];
+
+/**
+ * Helper to convert absolute day (1-365) to relative day of month (1-31)
+ * Example: Day 32 becomes Day 1 (of February)
+ */
+function getRelativeDay(day: number): number {
+  for (const m of MONTHS) {
+    if (day >= m.start && day <= m.end) {
+      return day - m.start + 1;
+    }
+  }
+  return day; // Fallback
+}
+
+/**
+ * Get month name from day number
+ */
+export function getMonthFromDay(day: number): string {
+  for (const m of MONTHS) {
+    if (day >= m.start && day <= m.end) {
+      return m.name;
+    }
+  }
+  return 'january';
+}
+
 /**
  * Get the audio URL for a release from the releaseready bucket
  * Format: /audio/january/01 - Dream.wav (or .mp3 for specific tracks)
  */
 export function getReleaseAudioUrl(day: number, title: string, month: string = 'january', ext?: string): string {
-  const paddedDay = String(day).padStart(2, '0');
+  // FIX: Use relative day (1-31) instead of absolute day (1-365)
+  const relativeDay = getRelativeDay(day);
+  const paddedDay = String(relativeDay).padStart(2, '0');
+  
   // Use provided extension, or check if it's a known mp3 day, otherwise default to wav
   const extension = ext || (MP3_DAYS.includes(day) ? 'mp3' : 'wav');
   const fileName = `${paddedDay} - ${title}.${extension}`;
-  return `${STORAGE_BASE}/audio/${month.toLowerCase()}/${encodeURIComponent(fileName)}`;
+  
+  // Ensure month is lowercase for URL
+  const monthPath = (month || getMonthFromDay(day)).toLowerCase();
+  
+  return `${STORAGE_BASE}/audio/${monthPath}/${encodeURIComponent(fileName)}`;
 }
 
 /**
@@ -25,36 +73,14 @@ export function getReleaseAudioUrl(day: number, title: string, month: string = '
  * Format: /covers/january/01 - Dream.jpg
  */
 export function getReleaseCoverUrl(day: number, title: string, month: string = 'january'): string {
-  const paddedDay = String(day).padStart(2, '0');
-  const fileName = `${paddedDay} - ${title}.jpg`;
-  return `${STORAGE_BASE}/covers/${month.toLowerCase()}/${encodeURIComponent(fileName)}`;
-}
-
-/**
- * Get month name from day number
- */
-export function getMonthFromDay(day: number): string {
-  const months = [
-    { name: 'january', start: 1, end: 31 },
-    { name: 'february', start: 32, end: 59 },
-    { name: 'march', start: 60, end: 90 },
-    { name: 'april', start: 91, end: 120 },
-    { name: 'may', start: 121, end: 151 },
-    { name: 'june', start: 152, end: 181 },
-    { name: 'july', start: 182, end: 212 },
-    { name: 'august', start: 213, end: 243 },
-    { name: 'september', start: 244, end: 273 },
-    { name: 'october', start: 274, end: 304 },
-    { name: 'november', start: 305, end: 334 },
-    { name: 'december', start: 335, end: 365 },
-  ];
+  // FIX: Use relative day (1-31)
+  const relativeDay = getRelativeDay(day);
+  const paddedDay = String(relativeDay).padStart(2, '0');
   
-  for (const m of months) {
-    if (day >= m.start && day <= m.end) {
-      return m.name;
-    }
-  }
-  return 'january';
+  const fileName = `${paddedDay} - ${title}.jpg`;
+  const monthPath = (month || getMonthFromDay(day)).toLowerCase();
+  
+  return `${STORAGE_BASE}/covers/${monthPath}/${encodeURIComponent(fileName)}`;
 }
 
 /**
@@ -78,7 +104,11 @@ export function getCoverUrl(day: number, title: string): string {
  */
 export function getReleaseReadyAudioUrl(day: number, title: string): string {
   const month = getMonthFromDay(day);
-  const paddedDay = String(day).padStart(2, '0');
+  
+  // FIX: Use relative day (1-31)
+  const relativeDay = getRelativeDay(day);
+  const paddedDay = String(relativeDay).padStart(2, '0');
+  
   // Try the most likely format first (.wav), but the actual URL will be tried in order by the caller
   const fileName = `${paddedDay} - ${title}.wav`;
   return `${STORAGE_BASE}/audio/${month.toLowerCase()}/${encodeURIComponent(fileName)}`;
@@ -90,7 +120,11 @@ export function getReleaseReadyAudioUrl(day: number, title: string): string {
  */
 export function getReleaseAudioUrlVariations(day: number, title: string): string[] {
   const month = getMonthFromDay(day);
-  const paddedDay = String(day).padStart(2, '0');
+  
+  // FIX: Use relative day (1-31)
+  const relativeDay = getRelativeDay(day);
+  const paddedDay = String(relativeDay).padStart(2, '0');
+  
   // Priority order: wav (lossless), mp3 (common), flac (lossless), m4a (aac), ogg (vorbis), aac
   const extensions = ['wav', 'mp3', 'flac', 'm4a', 'ogg', 'aac'];
   return extensions.map(ext => {
@@ -104,8 +138,12 @@ export function getReleaseAudioUrlVariations(day: number, title: string): string
  * Tries the exact extension first, then common alternatives
  */
 export function getLocalAudioUrls(day: number, title: string): string[] {
-  const paddedDay = String(day).padStart(2, '0');
   const month = getMonthFromDay(day);
+  
+  // FIX: Use relative day (1-31)
+  const relativeDay = getRelativeDay(day);
+  const paddedDay = String(relativeDay).padStart(2, '0');
+  
   // Priority order: wav (most common), mp3, flac, m4a, ogg, aac
   const extensions = ['wav', 'mp3', 'flac', 'm4a', 'ogg', 'aac'];
   return extensions.map(ext => `/music/${month}/${paddedDay} - ${title}.${ext}`);

@@ -7,122 +7,37 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --os-bg: #008080;
-            --win-gray: #c0c0c0;
-            --win-dark: #808080;
-            --win-black: #000000;
-            --win-blue: #000080;
-            --neon-green: #00ff00;
-        }
-
-        body {
-            background-color: var(--os-bg);
-            font-family: 'VT323', monospace;
-            overflow: hidden; /* OS feel, no body scroll */
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewport='0 0 16 16' style='fill:white;stroke:black;stroke-width:1px;'><polygon points='0,0 12,12 8,12 6,16 4,16 6,12 0,16'/></svg>"), auto;
-        }
-
-        /* === RETRO UI UTILS === */
-        .retro-border {
-            box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #0a0a0a, 1px 1px #000000;
-            background-color: var(--win-gray);
-        }
-        
-        .retro-border-inset {
-            box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px #0a0a0a, 1px 1px #ffffff;
-            background-color: #fff;
-        }
-
-        .retro-btn {
-            box-shadow: inset 1px 1px #fff, inset -1px -1px #0a0a0a, 1px 1px #000;
-            background: var(--win-gray);
-            active: box-shadow: inset 1px 1px #0a0a0a, inset -1px -1px #fff;
-        }
-
-        .retro-btn:active {
-            box-shadow: inset 1px 1px #0a0a0a, inset -1px -1px #fff;
-            padding-top: 2px;
-            padding-left: 2px;
-        }
-
-        .title-bar {
-            background: linear-gradient(90deg, var(--win-blue), #1084d0);
-        }
-
-        /* === SCANLINES === */
-        .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        /* === BOOT SEQUENCE === */
-        #boot-screen {
-            position: fixed;
-            inset: 0;
-            background: black;
-            color: var(--neon-green);
-            z-index: 10000;
-            padding: 2rem;
-            font-size: 1.2rem;
-        }
-        
+        :root { --os-bg: #008080; --win-gray: #c0c0c0; --win-dark: #808080; --win-black: #000000; --win-blue: #000080; --neon-green: #00ff00; }
+        body { background-color: var(--os-bg); font-family: 'VT323', monospace; overflow: hidden; cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewport='0 0 16 16' style='fill:white;stroke:black;stroke-width:1px;'><polygon points='0,0 12,12 8,12 6,16 4,16 6,12 0,16'/></svg>"), auto; }
+        .retro-border { box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #0a0a0a, 1px 1px #000000; background-color: var(--win-gray); }
+        .retro-border-inset { box-shadow: inset -1px -1px #dfdfdf, inset 1px 1px #0a0a0a, 1px 1px #ffffff; background-color: #fff; }
+        .retro-btn { box-shadow: inset 1px 1px #fff, inset -1px -1px #0a0a0a, 1px 1px #000; background: var(--win-gray); }
+        .retro-btn:active { box-shadow: inset 1px 1px #0a0a0a, inset -1px -1px #fff; padding-top: 2px; padding-left: 2px; }
+        .title-bar { background: linear-gradient(90deg, var(--win-blue), #1084d0); }
+        .scanlines { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%); background-size: 100% 4px; pointer-events: none; z-index: 9999; }
+        #boot-screen { position: fixed; inset: 0; background: black; color: var(--neon-green); z-index: 10000; padding: 2rem; font-size: 1.2rem; }
         .blink { animation: blink 1s step-end infinite; }
         @keyframes blink { 50% { opacity: 0; } }
-
-        /* === DESKTOP ICONS === */
-        .desktop-icon {
-            width: 80px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .desktop-icon:hover {
-            background-color: rgba(0,0,128,0.2);
-            border: 1px dotted white;
-        }
-
-        /* === WINDOWS === */
-        .window-frame {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            resize: both;
-            overflow: auto;
-        }
-
-        /* Winamp Visualizer Fake */
-        .bar-viz {
-            display: flex;
-            align-items: flex-end;
-            gap: 1px;
-            height: 40px;
-            background: #000;
-            padding: 2px;
-        }
-        .bar {
-            flex: 1;
-            background: var(--neon-green);
-            animation: bounce 0.5s infinite ease-in-out alternate;
-        }
+        .desktop-icon { width: 80px; text-align: center; cursor: pointer; }
+        .desktop-icon:hover { background-color: rgba(0,0,128,0.2); border: 1px dotted white; }
+        .window-frame { position: absolute; display: flex; flex-direction: column; resize: both; overflow: auto; }
+        .bar-viz { display: flex; align-items: flex-end; gap: 1px; height: 40px; background: #000; padding: 2px; }
+        .bar { flex: 1; background: var(--neon-green); animation: bounce 0.5s infinite ease-in-out alternate; }
         @keyframes bounce { 0% { height: 10%; } 100% { height: 100%; } }
-
     </style>
 </head>
 <body>
 
     <div class="scanlines"></div>
+    <audio id="os-player"></audio>
 
     <div id="boot-screen" onclick="this.style.display='none'">
         <p>TH3SCR1B3 BIOS (v.365) // 2026</p>
         <p>CPU: NEURAL_ENGINE... OK</p>
         <p>RAM: 640K... OK</p>
         <br>
-        <p>> MOUNTING 'LIGHT_AND_DARK'...</p>
-        <p>> LOADING BOOTLEG_MEMORIES...</p>
+        <p>> MOUNTING 'SUPABASE_DB'...</p>
+        <p>> CONNECTING TO RELEASE_READY BUCKET...</p>
         <br>
         <p id="boot-msg" class="blink">_ PRESS ANY KEY TO INITIALIZE SYSTEM</p>
     </div>
@@ -137,88 +52,48 @@
         </div>
 
         <div class="desktop-icon flex flex-col items-center gap-1 text-white group" onclick="toggleWindow('manifesto-window')">
-             <div class="w-10 h-10 bg-white border-2 border-black flex items-center justify-center text-black font-bold text-xs retro-border">
-                TXT
-             </div>
+             <div class="w-10 h-10 bg-white border-2 border-black flex items-center justify-center text-black font-bold text-xs retro-border">TXT</div>
             <span class="bg-blue-900/0 px-1 text-sm drop-shadow-md group-hover:bg-blue-800">Readme.txt</span>
-        </div>
-
-        <div class="desktop-icon flex flex-col items-center gap-1 text-white group">
-             <div class="w-10 h-10 bg-gray-400 border-2 border-black relative retro-border flex items-center justify-center">
-                <div class="w-6 h-6 border border-black bg-black rounded-full"></div>
-             </div>
-            <span class="bg-blue-900/0 px-1 text-sm drop-shadow-md group-hover:bg-blue-800">Lost_Media</span>
         </div>
     </div>
 
-    <div id="archive-window" class="window-frame retro-border w-[90%] md:w-[800px] h-[600px] top-10 left-10 md:left-32 z-10 shadow-[10px_10px_0px_rgba(0,0,0,0.5)]">
+    <div id="archive-window" class="window-frame retro-border w-[90%] md:w-[800px] h-[600px] top-10 left-10 md:left-32 z-10 shadow-[10px_10px_0px_rgba(0,0,0,0.5)] flex" style="display:none">
         <div class="title-bar p-1 flex justify-between items-center cursor-move select-none border-b-2 border-gray-400">
             <div class="flex items-center gap-2 px-1">
                 <div class="w-4 h-4 bg-yellow-200 border border-black"></div>
                 <span class="text-white font-bold tracking-wider text-sm">C:\TH3SCR1B3\MEMORIES\ARCHIVE</span>
             </div>
             <div class="flex gap-1">
-                <button class="retro-btn w-5 h-5 flex items-center justify-center font-bold text-xs leading-none" onclick="toggleWindow('archive-window')">_</button>
-                <button class="retro-btn w-5 h-5 flex items-center justify-center font-bold text-xs leading-none">□</button>
                 <button class="retro-btn w-5 h-5 flex items-center justify-center font-bold text-xs leading-none" onclick="toggleWindow('archive-window')">X</button>
             </div>
         </div>
 
         <div class="bg-[#c0c0c0] p-1 flex gap-2 border-b border-gray-400">
-            <span class="px-2 py-0.5 retro-border-inset bg-white text-sm w-full">365 items found...</span>
+            <span id="file-count" class="px-2 py-0.5 retro-border-inset bg-white text-sm w-full">Loading...</span>
         </div>
 
         <div class="bg-white p-4 h-full overflow-y-auto retro-border-inset">
             <h2 class="font-['Press_Start_2P'] text-lg mb-6 text-black border-b-2 border-black pb-2">365 Days of Light & Dark</h2>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="group cursor-pointer">
-                    <div class="aspect-square bg-gray-200 border-2 border-black mb-1 relative overflow-hidden group-hover:bg-black group-hover:border-green-500 transition-colors">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 group-hover:text-green-500 font-bold text-2xl">001</div>
-                        <img src="/api/placeholder/100/100" class="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-40 mix-blend-screen" />
-                    </div>
-                    <div class="text-xs truncate font-bold group-hover:bg-blue-800 group-hover:text-white px-1">001_Beginning.mp3</div>
+            <div id="file-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 </div>
-
-                <div class="group cursor-pointer">
-                    <div class="aspect-square bg-gray-200 border-2 border-black mb-1 relative overflow-hidden group-hover:bg-black group-hover:border-green-500 transition-colors">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 group-hover:text-green-500 font-bold text-2xl">002</div>
-                    </div>
-                    <div class="text-xs truncate font-bold group-hover:bg-blue-800 group-hover:text-white px-1">002_Static.mp3</div>
-                </div>
-
-                 <div class="group cursor-pointer">
-                    <div class="aspect-square bg-gray-200 border-2 border-black mb-1 relative overflow-hidden group-hover:bg-black group-hover:border-green-500 transition-colors">
-                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 group-hover:text-green-500 font-bold text-2xl">003</div>
-                    </div>
-                    <div class="text-xs truncate font-bold group-hover:bg-blue-800 group-hover:text-white px-1">003_Neon_Veins.mp3</div>
-                </div>
-
-                <div class="group cursor-pointer">
-                    <div class="aspect-square bg-black border-2 border-red-500 mb-1 relative overflow-hidden">
-                        <div class="absolute inset-0 flex items-center justify-center text-red-500 font-bold text-2xl blink">ERR</div>
-                    </div>
-                    <div class="text-xs truncate font-bold text-red-600 px-1">DATA_CORRUPT</div>
-                </div>
-            </div>
             
             <p class="text-center mt-8 text-gray-500 text-sm">--- END OF BUFFER ---</p>
         </div>
     </div>
 
-    <div id="player-window" class="window-frame retro-border w-[300px] bottom-20 right-4 z-20 border-2 border-black bg-[#2a2a2a]">
+    <div id="player-window" class="window-frame retro-border w-[300px] bottom-20 right-4 z-20 border-2 border-black bg-[#2a2a2a] flex">
         <div class="bg-gray-800 h-6 flex justify-between items-center px-2 cursor-move handle">
             <span class="text-[10px] text-green-500 tracking-widest">TH3SCR1B3.EXE</span>
             <div class="flex gap-1">
-                <div class="w-2 h-2 bg-gray-500"></div>
                 <div class="w-2 h-2 bg-gray-500"></div>
             </div>
         </div>
         
         <div class="p-2">
             <div class="bg-black border-2 border-gray-600 p-2 mb-2 relative">
-                <div class="text-green-500 text-2xl font-mono tracking-widest">00:03:42</div>
-                <div class="text-[10px] text-green-700">KBPS: 320 // KHZ: 44</div>
+                <div id="player-time" class="text-green-500 text-2xl font-mono tracking-widest">00:00</div>
+                <div id="player-specs" class="text-[10px] text-green-700">KBPS: 320 // KHZ: 44</div>
             </div>
 
             <div class="bar-viz mb-2 border border-gray-600">
@@ -232,67 +107,154 @@
                 <div class="bar" style="animation-delay: 0.1s"></div>
             </div>
 
-            <div class="marquee-text bg-black text-green-500 text-xs p-1 mb-2 whitespace-nowrap overflow-hidden border border-gray-600">
-                001. The Beginning - th3scr1b3 (Bootleg Memories) *** 365 DAYS OF LIGHT AND DARK ***
+            <div id="player-marquee" class="marquee-text bg-black text-green-500 text-xs p-1 mb-2 whitespace-nowrap overflow-hidden border border-gray-600">
+                READY TO PLAY...
             </div>
 
             <div class="flex justify-between items-center">
-                <button class="retro-btn w-8 h-8 text-[10px]">PREV</button>
-                <button class="retro-btn w-8 h-8 text-[10px]">PLAY</button>
-                <button class="retro-btn w-8 h-8 text-[10px]">PAUSE</button>
-                <button class="retro-btn w-8 h-8 text-[10px]">STOP</button>
-                <button class="retro-btn w-8 h-8 text-[10px]">NEXT</button>
+                <button class="retro-btn w-8 h-8 text-[10px]" onclick="playerControl('prev')">|&lt;</button>
+                <button class="retro-btn w-8 h-8 text-[10px]" onclick="playerControl('play')">></button>
+                <button class="retro-btn w-8 h-8 text-[10px]" onclick="playerControl('pause')">||</button>
+                <button class="retro-btn w-8 h-8 text-[10px]" onclick="playerControl('stop')">[]</button>
+                <button class="retro-btn w-8 h-8 text-[10px]" onclick="playerControl('next')">>|</button>
             </div>
         </div>
     </div>
 
     <nav class="fixed bottom-0 w-full h-10 bg-[#c0c0c0] border-t-2 border-white flex justify-between items-center px-1 z-50 shadow-[0_-2px_2px_rgba(0,0,0,0.1)]">
         <div class="flex gap-2 h-full py-1">
-            <button class="retro-btn h-full px-4 flex items-center gap-2 font-bold text-sm border-2 border-black" style="box-shadow: inset 1px 1px #fff, inset -1px -1px #000;">
-                <img src="https://img.icons8.com/color/48/000000/windows-logo.png" class="w-4 h-4 grayscale contrast-200">
-                BOOT
+            <button onclick="toggleWindow('boot-screen')" class="retro-btn h-full px-4 flex items-center gap-2 font-bold text-sm border-2 border-black">
+                <img src="https://img.icons8.com/color/48/000000/windows-logo.png" class="w-4 h-4 grayscale contrast-200"> BOOT
             </button>
-            <div class="w-[2px] h-full bg-gray-500 mx-1"></div>
-            
-            <div class="retro-btn h-full px-4 flex items-center gap-2 text-xs bg-[#e0e0e0] border border-black active-tab" style="box-shadow: inset -1px -1px #fff, inset 1px 1px #000; background: #ddd;">
-                <span class="font-bold">My Memories</span>
-            </div>
         </div>
-
         <div class="retro-border-inset h-full px-3 flex items-center gap-2 bg-[#c0c0c0] border border-gray-500 text-xs">
-            <img src="https://img.icons8.com/tiny-color/16/000000/audio.png" class="w-4 h-4 opacity-50">
             <span id="clock">12:00 PM</span>
         </div>
     </nav>
 
     <script>
-        // Update Clock
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        // === DATA LAYER ===
+        const SUPABASE_PROJECT_ID = 'pznmptudgicrmljjafex';
+        const SUPABASE_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co`;
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6bm1wdHVkZ2ljcm1samphZmV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDE4ODUsImV4cCI6MjA3OTg3Nzg4NX0.syu1bbr9OJ5LxCnTrybLVgsjac4UOkFVdAHuvhKMY2g';
+        const BUCKET_NAME = 'releaseready';
+
+        const MONTHS = [
+            { name: 'january', end: 31 }, { name: 'february', end: 59 }, { name: 'march', end: 90 },
+            { name: 'april', end: 120 }, { name: 'may', end: 151 }, { name: 'june', end: 181 },
+            { name: 'july', end: 212 }, { name: 'august', end: 243 }, { name: 'september', end: 273 },
+            { name: 'october', end: 304 }, { name: 'november', end: 334 }, { name: 'december', end: 365 }
+        ];
+
+        function getMonthFromDay(day) {
+            for(let m of MONTHS) { if (day <= m.end) return m.name; }
+            return 'january';
         }
-        setInterval(updateClock, 1000);
-        updateClock();
 
-        // Boot Screen Click
-        document.getElementById('boot-screen').addEventListener('click', function() {
-            this.style.display = 'none';
-        });
-        
-        // Auto hide boot screen for demo
-        setTimeout(() => {
-            document.getElementById('boot-screen').style.display = 'none';
-        }, 3000);
+        function fileNameToTitle(fileName) {
+            return fileName.replace(/\.(mp3|wav|flac|m4a)$/i, '').replace(/^\d+[\s-_]+/, '').replace(/_/g, ' ').replace(/[-]/g, ' ').trim();
+        }
 
-        // Simple Window Toggle
-        function toggleWindow(id) {
-            const el = document.getElementById(id);
-            if(el.style.display === 'none') {
-                el.style.display = 'flex';
-            } else {
-                el.style.display = 'none';
+        function getReleaseReadyUrl(day, title) {
+            const month = getMonthFromDay(day);
+            const paddedDay = String(day).padStart(2, '0');
+            const fileName = `${paddedDay} - ${title}.wav`;
+            return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/audio/${month}/${encodeURIComponent(fileName)}`;
+        }
+
+        // === APP LOGIC ===
+        let files = [];
+        let currentIndex = 0;
+        const player = document.getElementById('os-player');
+
+        async function boot() {
+            try {
+                const res = await fetch(`${SUPABASE_URL}/functions/v1/make-server-473d7342/analyses/load`, {
+                    headers: { 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                const json = await res.json();
+                const rawData = json.analyses || [];
+                
+                // Sort
+                rawData.sort((a,b) => new Date(a.analyzedAt) - new Date(b.analyzedAt));
+
+                files = rawData.map((d, i) => {
+                    const day = i + 1;
+                    const title = fileNameToTitle(d.fileName);
+                    return {
+                        day,
+                        title,
+                        url: getReleaseReadyUrl(day, title),
+                        len: d.duration
+                    };
+                });
+
+                renderFiles();
+                document.getElementById('file-count').innerText = `${files.length} object(s) found`;
+
+            } catch(e) {
+                console.error("Boot error", e);
+                document.getElementById('file-count').innerText = "ERROR: CONNECTION_REFUSED";
             }
         }
+
+        function renderFiles() {
+            const grid = document.getElementById('file-grid');
+            grid.innerHTML = '';
+            files.forEach((f, idx) => {
+                const item = document.createElement('div');
+                item.className = 'group cursor-pointer';
+                item.onclick = () => loadTrack(idx);
+                item.innerHTML = `
+                    <div class="aspect-square bg-gray-200 border-2 border-black mb-1 relative overflow-hidden group-hover:bg-black group-hover:border-green-500 transition-colors">
+                        <div class="absolute inset-0 flex items-center justify-center text-gray-400 group-hover:text-green-500 font-bold text-2xl">${String(f.day).padStart(3,'0')}</div>
+                    </div>
+                    <div class="text-xs truncate font-bold group-hover:bg-blue-800 group-hover:text-white px-1">${f.title}.mp3</div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function loadTrack(idx) {
+            currentIndex = idx;
+            const track = files[idx];
+            player.src = track.url;
+            player.play();
+            
+            document.getElementById('player-marquee').innerText = `PLAYING: ${String(track.day).padStart(3,'0')} - ${track.title} [TH3SCR1B3]`;
+            document.getElementById('player-specs').innerText = `FREQ: 44100 // LEN: ${Math.floor(track.len/60)}:${String(Math.floor(track.len%60)).padStart(2,'0')}`;
+        }
+
+        function playerControl(action) {
+            if(action === 'play') player.play();
+            if(action === 'pause') player.pause();
+            if(action === 'stop') { player.pause(); player.currentTime = 0; }
+            if(action === 'next' && currentIndex < files.length-1) loadTrack(currentIndex+1);
+            if(action === 'prev' && currentIndex > 0) loadTrack(currentIndex-1);
+        }
+
+        // Clock
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }, 1000);
+
+        // UI Helpers
+        window.toggleWindow = (id) => {
+            const el = document.getElementById(id);
+            el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        // Update player time
+        player.ontimeupdate = () => {
+             const m = Math.floor(player.currentTime / 60);
+             const s = Math.floor(player.currentTime % 60);
+             document.getElementById('player-time').innerText = `${m}:${String(s).padStart(2,'0')}`;
+        };
+
+        // Auto boot
+        boot();
+        setTimeout(() => document.getElementById('boot-screen').style.display='none', 2500);
+
     </script>
 </body>
 </html>

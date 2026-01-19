@@ -7,110 +7,31 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Rubik+Glitch&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --neon-green: #0f0;
-            --neon-pink: #ff00ff;
-            --tape-gray: #2a2a2a;
-            --crt-scanline: rgba(18, 16, 16, 0.5);
-        }
-
-        body {
-            background-color: #050505;
-            color: #e0e0e0;
-            font-family: 'Courier Prime', monospace;
-            overflow-x: hidden;
-        }
-
-        /* === CRT EFFECTS === */
-        .crt-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
-            z-index: 50;
-        }
-
-        .flicker {
-            animation: flicker 0.15s infinite;
-        }
-
-        @keyframes flicker {
-            0% { opacity: 0.9; }
-            5% { opacity: 0.8; }
-            10% { opacity: 0.95; }
-            100% { opacity: 0.9; }
-        }
-
-        /* === GLITCH TEXT === */
-        .glitch-title {
-            font-family: 'Rubik Glitch', system-ui;
-            text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-green);
-            animation: noise-anim 2s infinite linear alternate-reverse;
-        }
-
-        /* === CASSETTE GRID === */
-        .cassette-card {
-            transition: all 0.3s ease;
-            border: 1px solid #333;
-            background: #111;
-        }
-        
-        .cassette-card:hover {
-            border-color: var(--neon-green);
-            transform: translateY(-2px) skewX(-1deg);
-            box-shadow: 4px 4px 0px var(--neon-pink);
-        }
-
-        /* === SCROLLBAR === */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #000;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #444; 
-            border: 1px solid var(--neon-green);
-        }
-
-        /* === MARQUEE === */
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        .marquee-content {
-            display: inline-block;
-            animation: marquee 20s linear infinite;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* === UTILS === */
-        .handwritten {
-            font-style: italic;
-            color: #aaa;
-            transform: rotate(-2deg);
-            display: inline-block;
-        }
+        :root { --neon-green: #0f0; --neon-pink: #ff00ff; --tape-gray: #2a2a2a; --crt-scanline: rgba(18, 16, 16, 0.5); }
+        body { background-color: #050505; color: #e0e0e0; font-family: 'Courier Prime', monospace; overflow-x: hidden; }
+        .crt-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 2px, 3px 100%; pointer-events: none; z-index: 50; }
+        .flicker { animation: flicker 0.15s infinite; }
+        @keyframes flicker { 0% { opacity: 0.9; } 5% { opacity: 0.8; } 10% { opacity: 0.95; } 100% { opacity: 0.9; } }
+        .glitch-title { font-family: 'Rubik Glitch', system-ui; text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-green); animation: noise-anim 2s infinite linear alternate-reverse; }
+        .cassette-card { transition: all 0.3s ease; border: 1px solid #333; background: #111; }
+        .cassette-card:hover { border-color: var(--neon-green); transform: translateY(-2px) skewX(-1deg); box-shadow: 4px 4px 0px var(--neon-pink); }
+        .marquee-container { overflow: hidden; white-space: nowrap; }
+        .marquee-content { display: inline-block; animation: marquee 20s linear infinite; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .active-playing { border-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
     </style>
 </head>
 <body class="flicker">
 
     <div class="crt-overlay"></div>
+    <audio id="global-player"></audio>
 
     <nav class="fixed top-0 w-full z-40 bg-black/90 border-b border-gray-800 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="text-sm tracking-widest text-green-500">[REC] ● 00:00:00:00</div>
+            <div class="text-sm tracking-widest text-green-500">[REC] ● <span id="time-display">00:00:00:00</span></div>
             <div class="flex gap-6 text-xs uppercase tracking-widest">
-                <a href="#" class="hover:text-green-400 decoration-wavy underline-offset-4 hover:underline">Archive</a>
+                <a href="#archive" class="hover:text-green-400 decoration-wavy underline-offset-4 hover:underline">Archive</a>
                 <a href="#" class="hover:text-pink-500 decoration-wavy underline-offset-4 hover:underline">Manifesto</a>
-                <a href="#" class="hover:text-white decoration-wavy underline-offset-4 hover:underline">Contact</a>
             </div>
         </div>
     </nav>
@@ -134,105 +55,198 @@
             </p>
 
             <div class="mt-12 flex flex-col md:flex-row gap-4 justify-center">
-                <button class="bg-green-600 text-black px-8 py-3 font-bold uppercase tracking-widest hover:bg-green-500 hover:shadow-[0_0_15px_rgba(0,255,0,0.5)] transition-all">
-                    Play Latest Tape
-                </button>
-                <button class="border border-gray-600 text-gray-300 px-8 py-3 font-bold uppercase tracking-widest hover:border-pink-500 hover:text-pink-500 transition-all">
-                    Access Grid
+                <button id="play-latest-btn" class="bg-green-600 text-black px-8 py-3 font-bold uppercase tracking-widest hover:bg-green-500 hover:shadow-[0_0_15px_rgba(0,255,0,0.5)] transition-all">
+                    Initialize System
                 </button>
             </div>
-        </div>
-        
-        <div class="absolute bottom-10 left-10 text-[10px] text-gray-700 font-mono hidden md:block">
-            ERR_CODE: 365_OVERFLOW<br>
-            MEM_ALLOC: 99%<br>
-            STATUS: UNSTABLE
         </div>
     </header>
 
-    <section class="max-w-7xl mx-auto px-4 py-20 border-t border-gray-800">
+    <section id="archive" class="max-w-7xl mx-auto px-4 py-20 border-t border-gray-800">
         <div class="flex justify-between items-end mb-12">
             <div>
                 <h3 class="text-3xl font-bold uppercase mb-2">The Archive</h3>
-                <p class="text-xs text-green-500">/// RECOVERING DATA FRAGMENTS...</p>
+                <p id="status-text" class="text-xs text-green-500">/// CONNECTING TO SUPABASE...</p>
             </div>
             <div class="text-right">
-                <span class="text-4xl font-bold text-gray-800">001</span><span class="text-xl text-gray-600">/365</span>
+                <span id="count-display" class="text-4xl font-bold text-gray-800">000</span><span class="text-xl text-gray-600">/365</span>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="cassette-card p-4 relative group cursor-pointer">
-                <div class="aspect-square bg-gray-800 mb-4 overflow-hidden relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-purple-900 to-black opacity-80"></div>
-                    <div class="absolute inset-0 flex items-center justify-center text-4xl font-bold text-white/10 group-hover:text-white/30 transition-all">DAY 001</div>
-                    <img src="/api/placeholder/400/400" alt="Day 1 Art" class="w-full h-full object-cover mix-blend-overlay opacity-50 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h4 class="font-bold text-sm uppercase">The Beginning</h4>
-                        <p class="text-[10px] text-gray-500 mt-1">Light Phase • 3:42</p>
-                    </div>
-                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                </div>
+        <div id="grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             </div>
-
-            <div class="cassette-card p-4 relative group cursor-pointer">
-                <div class="aspect-square bg-gray-800 mb-4 overflow-hidden relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-red-900 to-black opacity-80"></div>
-                    <div class="absolute inset-0 flex items-center justify-center text-4xl font-bold text-white/10 group-hover:text-white/30 transition-all">DAY 002</div>
-                </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h4 class="font-bold text-sm uppercase">Static Rain</h4>
-                        <p class="text-[10px] text-gray-500 mt-1">Dark Phase • 2:15</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cassette-card p-4 relative group cursor-pointer">
-                <div class="aspect-square bg-gray-800 mb-4 overflow-hidden relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-900 to-black opacity-80"></div>
-                    <div class="absolute inset-0 flex items-center justify-center text-4xl font-bold text-white/10 group-hover:text-white/30 transition-all">DAY 003</div>
-                </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h4 class="font-bold text-sm uppercase">Neon Veins</h4>
-                        <p class="text-[10px] text-gray-500 mt-1">Bootleg Mix • 4:02</p>
-                    </div>
-                </div>
-            </div>
-
-             <div class="cassette-card p-4 relative group cursor-pointer border-red-900/30">
-                <div class="aspect-square bg-black mb-4 overflow-hidden relative border border-red-900/20">
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-xs text-red-500 blink">FILE_CORRUPTED</span>
-                    </div>
-                </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h4 class="font-bold text-sm text-red-800 uppercase">?????</h4>
-                        <p class="text-[10px] text-red-900 mt-1">ERROR • 0:00</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="mt-12 text-center">
-            <button class="text-xs uppercase tracking-widest border-b border-green-500 pb-1 hover:text-green-500 transition-colors">
-                Load More from Database
-            </button>
-        </div>
     </section>
 
     <footer class="fixed bottom-0 w-full bg-black border-t border-gray-800 py-2 z-40">
         <div class="marquee-container">
             <div class="marquee-content text-xs uppercase tracking-[0.2em] text-gray-500">
                 th3scr1b3.art /// 365 Days of Light and Dark /// Bootleg Memories /// All Rights Reserved © 2026 /// No Signal Detected /// Listening to the Void ///
-                th3scr1b3.art /// 365 Days of Light and Dark /// Bootleg Memories /// All Rights Reserved © 2026 /// No Signal Detected /// Listening to the Void ///
             </div>
         </div>
     </footer>
 
+    <script>
+        // === CONFIG & HELPERS ===
+        const SUPABASE_PROJECT_ID = 'pznmptudgicrmljjafex';
+        const SUPABASE_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co`;
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB6bm1wdHVkZ2ljcm1samphZmV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDE4ODUsImV4cCI6MjA3OTg3Nzg4NX0.syu1bbr9OJ5LxCnTrybLVgsjac4UOkFVdAHuvhKMY2g';
+        const BUCKET_NAME = 'releaseready';
+        
+        // Month logic from releaseStorage.ts
+        const MONTHS = [
+            { name: 'january', end: 31 }, { name: 'february', end: 59 }, { name: 'march', end: 90 },
+            { name: 'april', end: 120 }, { name: 'may', end: 151 }, { name: 'june', end: 181 },
+            { name: 'july', end: 212 }, { name: 'august', end: 243 }, { name: 'september', end: 273 },
+            { name: 'october', end: 304 }, { name: 'november', end: 334 }, { name: 'december', end: 365 }
+        ];
+
+        function getMonthFromDay(day) {
+            let runningTotal = 0;
+            for(let m of MONTHS) {
+                if (day <= m.end) return m.name;
+            }
+            return 'january';
+        }
+
+        function fileNameToTitle(fileName) {
+            return fileName
+                .replace(/\.(mp3|wav|flac|m4a)$/i, '')
+                .replace(/^\d+[\s-_]+/, '')
+                .replace(/_/g, ' ')
+                .replace(/[-]/g, ' ')
+                .trim();
+        }
+
+        // Logic from releaseStorage.ts to build URLs
+        function getReleaseReadyUrl(day, title, type = 'audio') {
+            const month = getMonthFromDay(day);
+            const paddedDay = String(day).padStart(2, '0');
+            const ext = type === 'audio' ? 'wav' : 'jpg'; // Default to wav for simplicity
+            const folder = type === 'audio' ? 'audio' : 'covers';
+            const fileName = `${paddedDay} - ${title}.${ext}`;
+            return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${folder}/${month}/${encodeURIComponent(fileName)}`;
+        }
+
+        // === MAIN LOGIC ===
+        let allReleases = [];
+        const audioPlayer = document.getElementById('global-player');
+        
+        async function init() {
+            const grid = document.getElementById('grid-container');
+            const status = document.getElementById('status-text');
+            
+            try {
+                // Fetch from Edge Function
+                const res = await fetch(`${SUPABASE_URL}/functions/v1/make-server-473d7342/analyses/load`, {
+                    headers: { 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+                });
+                
+                let data = [];
+                if(res.ok) {
+                    const json = await res.json();
+                    data = json.analyses || [];
+                } else {
+                    // Fallback to static if edge function fails
+                    status.innerText = '/// ERR: EDGE FUNCTION FAIL. LOADING BACKUP...';
+                    const localRes = await fetch('/releases.json');
+                    const localJson = await localRes.json();
+                    data = localJson.releases || [];
+                }
+
+                // Sort by date/id
+                data.sort((a, b) => new Date(a.analyzedAt || a.date) - new Date(b.analyzedAt || b.date));
+                
+                // Process data into standard format
+                allReleases = data.map((item, idx) => {
+                    const day = idx + 1;
+                    const title = item.title || fileNameToTitle(item.fileName);
+                    return {
+                        id: item.id,
+                        day: day,
+                        title: title,
+                        // Use constructed URL logic from releaseStorage.ts
+                        audioUrl: getReleaseReadyUrl(day, title, 'audio'),
+                        coverUrl: getReleaseReadyUrl(day, title, 'cover'),
+                        mood: (item.valence < 0.5) ? 'Dark' : 'Light',
+                        length: item.duration ? Math.floor(item.duration/60) + ':' + String(Math.floor(item.duration%60)).padStart(2,'0') : '0:00'
+                    };
+                });
+
+                document.getElementById('count-display').innerText = String(allReleases.length).padStart(3, '0');
+                status.innerText = '/// DATA FRAGMENTS RESTORED.';
+                document.getElementById('play-latest-btn').innerText = `PLAY TAPE ${String(allReleases.length).padStart(3,'0')}`;
+                document.getElementById('play-latest-btn').onclick = () => playTrack(allReleases[allReleases.length-1]);
+
+                renderGrid();
+
+            } catch (e) {
+                console.error(e);
+                status.innerText = '/// CRITICAL FAILURE. SYSTEM OFFLINE.';
+            }
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('grid-container');
+            grid.innerHTML = '';
+            
+            allReleases.forEach(track => {
+                const card = document.createElement('div');
+                card.className = 'cassette-card p-4 relative group cursor-pointer';
+                card.onclick = () => playTrack(track);
+                card.id = `card-${track.id}`;
+                
+                // Color based on mood
+                const gradient = track.mood === 'Light' ? 'from-purple-900' : 'from-red-900';
+                
+                card.innerHTML = `
+                    <div class="aspect-square bg-gray-800 mb-4 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-gradient-to-br ${gradient} to-black opacity-80"></div>
+                        <div class="absolute inset-0 flex items-center justify-center text-4xl font-bold text-white/10 group-hover:text-white/30 transition-all">DAY ${String(track.day).padStart(3,'0')}</div>
+                        <img src="${track.coverUrl}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-50 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-sm uppercase truncate w-32">${track.title}</h4>
+                            <p class="text-[10px] text-gray-500 mt-1">${track.mood} Phase • ${track.length}</p>
+                        </div>
+                        <div id="indicator-${track.id}" class="w-2 h-2 rounded-full bg-gray-800"></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function playTrack(track) {
+            // Reset UI
+            document.querySelectorAll('.cassette-card').forEach(c => c.classList.remove('active-playing'));
+            document.querySelectorAll('[id^="indicator-"]').forEach(i => {
+                i.classList.remove('bg-green-500', 'animate-pulse');
+                i.classList.add('bg-gray-800');
+            });
+
+            // Set Active
+            const card = document.getElementById(`card-${track.id}`);
+            const ind = document.getElementById(`indicator-${track.id}`);
+            if(card) card.classList.add('active-playing');
+            if(ind) {
+                ind.classList.remove('bg-gray-800');
+                ind.classList.add('bg-green-500', 'animate-pulse');
+            }
+
+            // Play
+            audioPlayer.src = track.audioUrl;
+            audioPlayer.play().catch(e => console.log("Playback error (likely 404 on URL):", e));
+            
+            document.getElementById('status-text').innerText = `/// PLAYING: ${track.title.toUpperCase()}...`;
+        }
+
+        // Time Code Update
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('time-display').innerText = now.toLocaleTimeString('en-US', {hour12: false}) + ':' + Math.floor(now.getMilliseconds()/10);
+        }, 50);
+
+        init();
+    </script>
 </body>
 </html>
