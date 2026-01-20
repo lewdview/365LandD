@@ -391,23 +391,26 @@ export function DayPage() {
                     {release.description}
                   </p>
 
-                  {/* CUSTOM INFO / ABOUT SECTION INJECTION */}
+                  {/* CUSTOM INFO / ABOUT SECTION INJECTION - FIXED VISIBILITY */}
                   {release.customInfo && (
                     <motion.div 
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
                       className="mt-6 p-4 rounded-lg border backdrop-blur-sm"
                       style={{ 
                         backgroundColor: hexToRgba(moodColor, 0.05),
                         borderColor: hexToRgba(moodColor, 0.2)
                       }}
                     >
-                      <div className="flex items-center gap-2 mb-2 opacity-70">
+                      <div className="flex items-center gap-2 mb-3 opacity-80">
                         <Info className="w-4 h-4" />
                         <span className="text-xs font-mono uppercase tracking-widest">Additional Intel</span>
                       </div>
+                      
+                      {/* Enforce text color to ensure visibility against dark backgrounds */}
                       <div 
-                        className="prose prose-invert prose-sm max-w-none"
+                        className="prose prose-invert prose-sm max-w-none text-light-cream/90"
                         dangerouslySetInnerHTML={{ __html: release.customInfo }}
                       />
                     </motion.div>
