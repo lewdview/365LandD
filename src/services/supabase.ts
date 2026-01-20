@@ -13,8 +13,6 @@ function formatDuration(seconds: number): string {
   return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
-// ... existing imports
-
 // Clean up filename to create a title
 function fileNameToTitle(fileName: string): string {
   return fileName
@@ -25,9 +23,6 @@ function fileNameToTitle(fileName: string): string {
     .replace(/\s+/g, ' ')
     .trim();
 }
-
-// ... rest of the file stays the same
-
 
 // Determine if a track is "light" or "dark" based on valence and mood
 function determineMood(analysis: SongAnalysis): 'light' | 'dark' {
@@ -99,7 +94,6 @@ function songAnalysisToRelease(analysis: SongAnalysis, dayNumber: number): Relea
   ].filter(Boolean).map(t => t.toLowerCase());
   
   // Create a date based on day number (starting Jan 1, 2026)
-  // Use local date to avoid timezone issues
   const releaseDate = new Date('2026-01-01');
   releaseDate.setDate(releaseDate.getDate() + dayNumber - 1);
   
@@ -139,7 +133,7 @@ function songAnalysisToRelease(analysis: SongAnalysis, dayNumber: number): Relea
 
 // Cache configuration
 const CACHE_KEY = 'th3scr1b3_release_data';
-const CACHE_TTL_HOURS = 1; // Cache for 24 hours
+const CACHE_TTL_HOURS = 1; // Cache for 1 hour
 
 // Check if cached data is still valid
 function isCacheValid(): boolean {
@@ -175,16 +169,33 @@ function getCachedData(): ReleaseData | null {
   return null;
 }
 
-// Store release data in cache
+// Store release data in cache with Quota Handling
 function setCachedData(data: ReleaseData): void {
   try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify({
+    const serialized = JSON.stringify({
       timestamp: Date.now(),
       data,
-    }));
+    });
+    localStorage.setItem(CACHE_KEY, serialized);
     console.log('[Cache] Stored data with', data.releases?.length || 0, 'releases');
   } catch (e) {
-    console.warn('[Cache] Could not store in localStorage:', e);
+    // FIX: Handle QuotaExceededError gracefully
+    if (e instanceof DOMException && (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED')) {
+      console.warn('[Cache] Storage quota exceeded. Attempting to clear old cache...');
+      try {
+        localStorage.clear(); // Clear all local storage to try and make room
+        const serialized = JSON.stringify({
+          timestamp: Date.now(),
+          data,
+        });
+        localStorage.setItem(CACHE_KEY, serialized);
+        console.log('[Cache] Successfully stored after clearing storage.');
+      } catch (retryError) {
+        console.warn('[Cache] Dataset too large for localStorage. Caching disabled for this session.');
+      }
+    } else {
+      console.warn('[Cache] Could not store in localStorage:', e);
+    }
   }
 }
 
@@ -219,7 +230,7 @@ async function buildReleaseDataWithManifest(manifestItems: any[]): Promise<Relea
   const lightTracks = releases.filter(r => r.mood === 'light').length;
   const darkTracks = releases.filter(r => r.mood === 'dark').length;
 
-  return {
+  const result: ReleaseData = {
     project: {
       title: '365 Days of Light and Dark: Poetry in Motion',
       artist: 'th3scr1b3',
@@ -410,6 +421,10 @@ async function buildReleaseDataWithManifest(manifestItems: any[]): Promise<Relea
       }
     ],
   };
+  
+  // Cache the result before returning
+  setCachedData(result);
+  return result;
 }
 
 // Build the full release data from Supabase

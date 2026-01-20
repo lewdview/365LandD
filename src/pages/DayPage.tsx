@@ -141,6 +141,13 @@ export function DayPage() {
     if (data?.releases) {
       const found = data.releases.find(r => r.day === dayNum);
       setRelease(found || null);
+      
+      // DEBUG: Log to see if data is actually arriving
+      if (found) {
+        console.log(`[DayPage] Loaded Day ${dayNum}:`, found);
+        console.log(`[DayPage] Custom Info present?`, !!found.customInfo);
+      }
+      
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [data, dayNum]);
@@ -391,29 +398,23 @@ export function DayPage() {
                     {release.description}
                   </p>
 
-                  {/* CUSTOM INFO / ABOUT SECTION INJECTION - FIXED VISIBILITY */}
+                  {/* CUSTOM INFO / ABOUT SECTION INJECTION - FIXED */}
+                  {/* Removed conditional motion.div animation to ensure visibility */}
                   {release.customInfo && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="mt-6 p-4 rounded-lg border backdrop-blur-sm"
-                      style={{ 
-                        backgroundColor: hexToRgba(moodColor, 0.05),
-                        borderColor: hexToRgba(moodColor, 0.2)
-                      }}
+                    <div 
+                      className="mt-6 p-4 rounded-lg border backdrop-blur-sm bg-white/5 border-white/10"
                     >
-                      <div className="flex items-center gap-2 mb-3 opacity-80">
+                      <div className="flex items-center gap-2 mb-3 opacity-80 text-white/80">
                         <Info className="w-4 h-4" />
                         <span className="text-xs font-mono uppercase tracking-widest">Additional Intel</span>
                       </div>
                       
-                      {/* Enforce text color to ensure visibility against dark backgrounds */}
+                      {/* Enforced white text for maximum visibility */}
                       <div 
-                        className="prose prose-invert prose-sm max-w-none text-light-cream/90"
+                        className="prose prose-invert prose-sm max-w-none text-white/90"
                         dangerouslySetInnerHTML={{ __html: release.customInfo }}
                       />
-                    </motion.div>
+                    </div>
                   )}
 
                   {/* Quick Stats Row */}
