@@ -421,14 +421,16 @@ export const useStore = create<AppState>((set, get) => ({
                 ...match,
                 day: absDay,
                 date: correctDateStr,
-                title: displayTitle, // Use custom or manifest title
-                customInfo: displayInfo, // Inject custom info
+                
+                // FIX: Use the calculated display variables here!
+                title: displayTitle, // Was: it.storageTitle
+                customInfo: displayInfo, // Was: missing entirely
+                
                 storageTitle: it.storageTitle,
                 manifestAudioPath: it.audioPath,
                 storedAudioUrl: correctAudioUrl,
               } as Release;
             }
-            
             // Fallback
             return {
               id: `${it.month}-${it.index}`,
