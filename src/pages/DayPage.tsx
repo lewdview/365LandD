@@ -14,7 +14,8 @@ import {
   Activity,
   Disc,
   Share2,
-  Maximize2
+  Maximize2,
+  Info
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
@@ -190,8 +191,6 @@ export function DayPage() {
   };
 
   const prevDay = data?.releases.filter(r => r.day < dayNum && r.day >= 1).sort((a, b) => b.day - a.day)[0];
-  
-  // UNLOCKED: Allowed navigation to any future day that exists in the database
   const nextDay = data?.releases.filter(r => r.day > dayNum).sort((a, b) => a.day - b.day)[0];
 
   const isLight = release?.mood === 'light';
@@ -391,6 +390,28 @@ export function DayPage() {
                      style={{ borderColor: moodColor }}>
                     {release.description}
                   </p>
+
+                  {/* CUSTOM INFO / ABOUT SECTION INJECTION */}
+                  {release.customInfo && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="mt-6 p-4 rounded-lg border backdrop-blur-sm"
+                      style={{ 
+                        backgroundColor: hexToRgba(moodColor, 0.05),
+                        borderColor: hexToRgba(moodColor, 0.2)
+                      }}
+                    >
+                      <div className="flex items-center gap-2 mb-2 opacity-70">
+                        <Info className="w-4 h-4" />
+                        <span className="text-xs font-mono uppercase tracking-widest">Additional Intel</span>
+                      </div>
+                      <div 
+                        className="prose prose-invert prose-sm max-w-none"
+                        dangerouslySetInnerHTML={{ __html: release.customInfo }}
+                      />
+                    </motion.div>
+                  )}
 
                   {/* Quick Stats Row */}
                   <div className="flex flex-wrap gap-3 lg:gap-4 mt-6 lg:mt-8">

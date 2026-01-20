@@ -4,7 +4,18 @@ import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { useAudioStore } from '../store/useAudioStore';
 import { useState, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, ChevronDown, Play, Clock, Music, Calendar, Activity, Disc } from 'lucide-react';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  ChevronDown, 
+  Play, 
+  Clock, 
+  Music, 
+  Calendar, 
+  Activity, 
+  Disc,
+  Info 
+} from 'lucide-react';
 import { CoverImage } from './GenerativeCover';
 import { getCoverUrl } from '../services/releaseStorage';
 
@@ -25,22 +36,10 @@ function WaveformIcon({ className = '', color }: { className?: string, color: st
         {[2, 7, 12, 17, 22, 27].map((x, i) => (
           <motion.rect
             key={i}
-            x={x} 
-            width="3" 
-            rx="1" 
-            fill="currentColor"
-            // FIX: Explicitly set initial values to prevent "undefined" errors
+            x={x} width="3" rx="1" fill="currentColor"
             initial={{ height: 8, y: 12, opacity: 0.5 }}
-            animate={{ 
-              height: [8, 24, 8], 
-              y: [12, 4, 12],
-              opacity: [0.5, 1, 0.5]
-            }}
-            transition={{ 
-              duration: 0.8 + (i * 0.1), 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
+            animate={{ height: [8, 24, 8], y: [12, 4, 12], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 0.8 + (i * 0.1), repeat: Infinity, ease: "easeInOut" }}
           />
         ))}
       </svg>
@@ -61,7 +60,6 @@ function SunburstIcon({ className = '', color }: { className?: string, color: st
             <motion.line 
               key={i} x1="16" y1="2" x2="16" y2="6" 
               transform={`rotate(${deg} 16 16)`}
-              // FIX: Explicitly set initial value
               initial={{ opacity: 0.3 }}
               animate={{ opacity: [0.3, 1, 0.3] }}
               transition={{ duration: 1.5, delay: i * 0.1, repeat: Infinity }}
@@ -81,7 +79,6 @@ function MoonPhaseIcon({ className = '', color }: { className?: string, color: s
           <circle cx="16" cy="16" r="12" fill="white" />
           <motion.circle 
             cy="16" r="12" fill="black"
-            // FIX: Explicitly set initial value for cx
             initial={{ cx: 28 }}
             animate={{ cx: [28, -4] }}
             transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
@@ -104,7 +101,6 @@ function HourglassIcon({ className = '', color }: { className?: string, color: s
         <path d="M8 4h16v6c0 2-2 4-4 6l-4 3 4 3c2 2 4 4 4 6v6H8v-6c0-2 2-4 4-6l4-3-4-3c-2-2-4-4-4-6V4z" stroke="currentColor" strokeWidth="2" />
         <motion.circle 
           cx="16" fill="currentColor" 
-          // FIX: Explicitly set initial values for cy and r
           initial={{ cy: 14, r: 2 }}
           animate={{ cy: [14, 24], r: [2, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -302,7 +298,7 @@ export function DayTracker() {
                           energy={todaysRelease.energy}
                           valence={todaysRelease.valence}
                           tempo={todaysRelease.tempo}
-                          coverUrl={getCoverUrl(todaysRelease.day, todaysRelease.title)}
+                          coverUrl={getCoverUrl(todaysRelease.day, todaysRelease.storageTitle || todaysRelease.title)}
                           className="w-full h-full object-cover"
                           showColorVeil
                         />
@@ -370,6 +366,20 @@ export function DayTracker() {
                       <p className="text-sm leading-relaxed mb-6 border-l-2 pl-4" style={{ color: hexToRgba(text, 0.6), borderColor: hexToRgba(text, 0.1) }}>
                         {todaysRelease.description}
                       </p>
+
+                      {/* --- CUSTOM INFO INJECTION --- */}
+                      {todaysRelease.customInfo && (
+                        <div className="mb-6 p-3 rounded border bg-black/10 backdrop-blur-sm" style={{ borderColor: hexToRgba(isLight ? accent : primary, 0.2) }}>
+                          <div className="flex items-center gap-2 mb-2 opacity-80" style={{ color: isLight ? accent : primary }}>
+                            <Info className="w-3 h-3" />
+                            <span className="text-[10px] font-mono uppercase tracking-wider">Intel</span>
+                          </div>
+                          <div 
+                            className="text-xs prose prose-invert prose-p:my-1 max-h-32 overflow-y-auto custom-scrollbar"
+                            dangerouslySetInnerHTML={{ __html: todaysRelease.customInfo }} 
+                          />
+                        </div>
+                      )}
 
                       <div className="grid grid-cols-2 gap-4 mb-6">
                          <div className="rounded p-3 border" style={{ backgroundColor: hexToRgba(text, 0.05), borderColor: hexToRgba(text, 0.05) }}>
@@ -582,4 +592,4 @@ function StatModule({ icon, label, value, color }: { icon: any, label: string, v
       </div>
     </div>
   )
-}
+} 

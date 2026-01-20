@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { ReleaseData, Release } from '../types';
 import { buildReleaseData } from '../services/supabase';
-import { getReleaseAudioUrl } from '../services/releaseStorage'; // Import this helper
+import { getReleaseAudioUrl } from '../services/releaseStorage';
 
 interface AppState {
   data: ReleaseData | null;
@@ -10,7 +10,6 @@ interface AppState {
   currentDay: number;
   selectedRelease: Release | null;
   
-  // Actions
   fetchData: () => Promise<void>;
   setSelectedRelease: (release: Release | null) => void;
   calculateCurrentDay: () => void;
@@ -27,34 +26,42 @@ export const useStore = create<AppState>((set, get) => ({
     try {
       set({ loading: true, error: null });
 
-      // 1) Load manifest (defines audio + order from local 365-releases)
+      // 1) Load manifest
       let manifest: { items: Array<{ month: string; index: number; storageTitle: string; ext: string; audioPath: string }> } | null = null;
       try {
         const mres = await fetch('/release-manifest.json');
-        if (mres.ok) {
-          manifest = await mres.json();
-          console.log('[Store] Loaded release-manifest with', manifest?.items?.length || 0, 'items');
-        }
-      } catch (e) {
-        console.warn('[Store] Failed to load manifest:', e);
-      }
+        if (mres.ok) manifest = await mres.json();
+      } catch (e) { console.warn('[Store] Failed to load manifest:', e); }
       
-      // 2) Remote analyzer metadata
-      console.log('[Store] Fetching data from Supabase (remote)…');
+      // 2) Remote metadata
       const supabaseData = await buildReleaseData();
       let dataToUse: ReleaseData | null = null;
       
       if (manifest && manifest.items?.length) {
-          // Manifest-first: build the releases in EXACT manifest order
           const remoteReleases = supabaseData.releases || [];
-          
-          // --- MATCHING HELPERS ---
           const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
           const stripLeadingNumber = (s: string) => s.replace(/^\d+[\s-_]+/, '');
 
-         // --- MANUAL OVERRIDES (Generated from song_list.csv) ---
-          // Left side: Manifest Title (normalized + stripped)
-          // Right side: Database Filename (normalized + stripped + no extension)
+          // --- CONTENT OVERRIDES (CUSTOM TITLES & INFO) ---
+          // Format: DayNumber: { title: "New Title", info: "<p>HTML Content</p>" }
+          const contentOverrides: Record<number, { title?: string; info?: string }> = {
+            1: { 
+              title: "The Beginning (Day One)", 
+              info: "<p>This was the very first track created for the project. <strong>It sets the tone</strong> for the entire year.</p>" 
+            },
+            18: { 
+              title: "Goods 4 Me", 
+              info: `
+                <div class="p-4 border border-green-500/30 bg-green-500/10 rounded">
+                  <h4 class="font-bold text-green-400 mb-2">Production Note</h4>
+                  <p>I utilized a new sampling technique here that distorts the vocal chop into a rhythmic element.</p>
+                </div>
+              `
+            },
+            // Add more days here as needed...
+          };
+
+          // --- FUZZY MATCHING OVERRIDES (Filename Mapping) ---
           const manualOverrides: Record<string, string> = {
             "chunky": "chunkynewm",
             "dream": "dreammastered",
@@ -371,7 +378,6 @@ export const useStore = create<AppState>((set, get) => ({
 
           // Build Lookup Maps
           const byTitle = new Map(remoteReleases.map(r => [normalize(r.storageTitle || r.title), r]));
-          
           const byFile = new Map(remoteReleases.map(r => {
             const fn = r.storedAudioUrl ? decodeURIComponent(r.storedAudioUrl.split('/').pop() || '') : '';
             let base = fn.replace(/\.(wav|mp3|m4a|flac)$/i, '');
@@ -382,63 +388,58 @@ export const useStore = create<AppState>((set, get) => ({
           const offsets: Record<string, number> = { january:0,february:31,march:59,april:90,may:120,june:151,july:181,august:212,september:243,october:273,november:304,december:334 };
 
           const remapped = manifest.items.map((it) => {
-            // 1. Prepare Manifest Key
+            // 1. Matching Logic
             const cleanStorageTitle = stripLeadingNumber(it.storageTitle);
             const keyTitle = normalize(cleanStorageTitle);
-            
-            // 2. Check Overrides first
-            let searchKey = keyTitle;
-            if (manualOverrides[keyTitle]) {
-                searchKey = manualOverrides[keyTitle];
-            }
-
-            // 3. Try Matching (Title first, then Filename)
+            let searchKey = manualOverrides[keyTitle] || keyTitle;
             let match = byTitle.get(searchKey) || byFile.get(searchKey);
 
-            // 4. Fuzzy Fallback (if still no match)
             if (!match) {
                match = remoteReleases.find(r => {
                   const rTitle = normalize(r.storageTitle || r.title);
                   return rTitle.includes(searchKey) || searchKey.includes(rTitle);
                });
-               if (match) console.log(`[Store] Fuzzy matched Day ${it.index}: '${it.storageTitle}'`);
             }
 
             const absDay = (offsets[it.month] ?? 0) + it.index;
-            
-            // 5. Force Correct Date (Jan 1 + Day Number)
             const startDate = new Date('2026-01-01');
             const d = new Date(startDate);
             d.setDate(startDate.getDate() + absDay - 1);
             const correctDateStr = d.toISOString().split('T')[0];
-
-            // 6. FORCE CORRECT URL (Override potential stale DB link)
-            // This ensures we point to "18 - Goods 4 Me.mp3" instead of "goods_4_me_mastered.mp3"
             const correctAudioUrl = getReleaseAudioUrl(absDay, it.storageTitle, it.month, it.ext);
+
+            // --- APPLY CONTENT OVERRIDES HERE ---
+            let displayTitle = it.storageTitle;
+            let displayInfo = undefined;
+            if (contentOverrides[absDay]) {
+                if (contentOverrides[absDay].title) displayTitle = contentOverrides[absDay].title;
+                if (contentOverrides[absDay].info) displayInfo = contentOverrides[absDay].info;
+            }
 
             if (match) {
               return {
                 ...match,
                 day: absDay,
-                date: correctDateStr, // Overwrite DB date
-                title: it.storageTitle, // Keep manifest title for display
+                date: correctDateStr,
+                title: displayTitle, // Use custom or manifest title
+                customInfo: displayInfo, // Inject custom info
                 storageTitle: it.storageTitle,
                 manifestAudioPath: it.audioPath,
-                storedAudioUrl: correctAudioUrl, // FORCE OVERWRITE
+                storedAudioUrl: correctAudioUrl,
               } as Release;
             }
             
-            // Fallback (No Match Found)
-            console.warn(`[Store] Day ${absDay} (${it.storageTitle}): NO MATCH. Keys tried: '${searchKey}'`);
+            // Fallback
             return {
               id: `${it.month}-${it.index}`,
               day: absDay,
               date: correctDateStr,
               fileName: `${String(it.index).padStart(2,'0')} - ${it.storageTitle}.${it.ext}`,
-              title: it.storageTitle,
+              title: displayTitle, // Use custom or manifest title
+              customInfo: displayInfo, // Inject custom info
               storageTitle: it.storageTitle,
               manifestAudioPath: it.audioPath,
-              storedAudioUrl: correctAudioUrl, // Ensure fallback also points to correct place
+              storedAudioUrl: correctAudioUrl,
               mood: 'light',
               description: '',
               duration: 0,
@@ -455,10 +456,7 @@ export const useStore = create<AppState>((set, get) => ({
           dataToUse = { 
             ...supabaseData, 
             releases: remapped,
-            stats: {
-                ...supabaseData.stats,
-                totalReleases: remapped.length
-            }
+            stats: { ...supabaseData.stats, totalReleases: remapped.length }
           };
       } else if (supabaseData.releases && supabaseData.releases.length > 0) {
         dataToUse = supabaseData;
@@ -471,17 +469,14 @@ export const useStore = create<AppState>((set, get) => ({
       }
       
       // Local/Static Fallback
-      console.log('[Store] Remote returned no data, checking local...');
       let response = await fetch('/releases.local.json');
       if (!response.ok) response = await fetch('/releases.json');
-      
       if (response.ok) {
         const data: ReleaseData = await response.json();
         set({ data, loading: false });
         get().calculateCurrentDay();
         return;
       }
-
       throw new Error('No data available');
     } catch (error) {
       console.error('Error fetching data:', error);
