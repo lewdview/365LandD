@@ -9,7 +9,7 @@ import { CoverImage } from './GenerativeCover';
 import { getCoverUrl } from '../services/releaseStorage';
 import type { Release } from '../types';
 
-const INITIAL_ITEMS = 12;
+const INITIAL_ITEMS = 6;
 const ITEMS_PER_PAGE = 6; // Updated to 6 per page
 
 // Helper to convert hex to rgba
