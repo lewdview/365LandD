@@ -8,7 +8,7 @@ import {
   Pause, 
   Clock, 
   Music, 
-  ExternalLink, // Added back
+  ExternalLink, 
   Home, 
   Sparkles, 
   Activity, 
@@ -96,7 +96,7 @@ function ReactorPlayButton({ isPlaying, onClick, color }: { isPlaying: boolean, 
   return (
     <button 
       onClick={onClick}
-      className="group relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center focus:outline-none"
+      className="group relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center focus:outline-none z-30" // Added z-30 to ensure clickability
     >
       {/* Outer Rotating Ring */}
       <motion.div 
@@ -179,13 +179,6 @@ export function DayPage() {
     if (data?.releases) {
       const found = data.releases.find(r => r.day === dayNum);
       setRelease(found || null);
-      
-      // DEBUG: Log to see if data is actually arriving
-      if (found) {
-        console.log(`[DayPage] Loaded Day ${dayNum}:`, found);
-        console.log(`[DayPage] Custom Info present?`, !!found.customInfo);
-      }
-      
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [data, dayNum]);
@@ -267,7 +260,7 @@ export function DayPage() {
   }
 
   return (
-    // Added significant padding bottom (pb-48) to account for Global Player + Mobile Nav
+    // PADDING INCREASED: pt-32 mobile (was pt-24), md:pt-48 (was md:pt-40) to clear fixed header
     <div className="min-h-screen pb-48 relative overflow-hidden" style={{ backgroundColor: background, color: text }}>
       <Navigation />
       <ThemeChanger />
@@ -290,8 +283,8 @@ export function DayPage() {
         />
       </div>
 
-      {/* HERO SECTION - Responsive Overhaul */}
-      <section className="relative pt-24 md:pt-40 pb-4 px-4 md:px-12 lg:px-16 z-10 min-h-[60vh] md:min-h-[70vh] flex flex-col justify-center">
+      {/* HERO SECTION */}
+      <section className="relative pt-32 md:pt-48 pb-4 px-4 md:px-12 lg:px-16 z-10 min-h-[60vh] md:min-h-[70vh] flex flex-col justify-center">
         
         {/* Breadcrumbs (Desktop Only) */}
         <div className="hidden lg:flex items-center gap-4 text-xs font-mono tracking-widest opacity-60 mb-8 max-w-7xl mx-auto w-full">
@@ -308,6 +301,36 @@ export function DayPage() {
           <div className="lg:col-span-5 relative order-first lg:order-last">
              {release && (
                <div className="flex flex-col gap-6">
+                 
+                 {/* MOBILE BREADCRUMBS & NAV ROW */}
+                 {/* Added z-30 relative to ensure clickability over potential overlaps */}
+                 <div className="flex lg:hidden items-center justify-between gap-4 relative z-30">
+                    {/* Home Link */}
+                    <Link to="/" className="p-2 rounded hover:bg-white/10 text-xs font-mono tracking-widest opacity-80 flex items-center gap-2">
+                      <Home className="w-3 h-3" /> HOME
+                    </Link>
+
+                    {/* Compact Arrows */}
+                    <div className="flex items-center gap-2">
+                      <button 
+                        onClick={() => prevDay && goToDay(prevDay.day)}
+                        disabled={!prevDay}
+                        className="p-2 border rounded hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        style={{ borderColor: hexToRgba(text, 0.2) }}
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button 
+                        onClick={() => nextDay && goToDay(nextDay.day)}
+                        disabled={!nextDay}
+                        className="p-2 border rounded hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        style={{ borderColor: hexToRgba(text, 0.2) }}
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </div>
+                 </div>
+
                  {/* Art Container */}
                  <motion.div 
                    initial={{ opacity: 0, scale: 0.95 }} 
@@ -342,34 +365,12 @@ export function DayPage() {
                     <div className="absolute bottom-2 right-2 w-4 h-4 border-b border-r opacity-50" style={{ borderColor: text }} />
                  </motion.div>
 
-                 {/* MOBILE CONTROL BAR (Tactile Navigation) */}
+                 {/* MOBILE CONTROL BAR (Tactile Navigation - Bottom of Art) */}
                  <div className="flex lg:hidden items-center justify-between gap-4 p-4 rounded-xl border backdrop-blur-md bg-white/5" style={{ borderColor: hexToRgba(text, 0.1) }}>
-                    <button 
-                      onClick={() => prevDay && goToDay(prevDay.day)}
-                      disabled={!prevDay}
-                      className="flex-1 flex flex-col items-center justify-center py-2 active:scale-95 transition-transform disabled:opacity-30"
-                    >
-                      <ChevronLeft className="w-6 h-6 mb-1" />
-                      <span className="text-[10px] font-mono uppercase tracking-widest opacity-60">Prev</span>
-                    </button>
-                    
-                    <div className="w-px h-8 bg-white/10" />
-                    
-                    <div className="flex flex-col items-center px-4">
-                      <span className="text-xs font-bold" style={{ color: moodColor }}>DAY {dayNum}</span>
-                      <span className="text-[10px] opacity-50 font-mono">365 / 365</span>
+                    <div className="flex flex-col items-center px-4 w-full text-center">
+                      <span className="text-xs font-bold" style={{ color: moodColor }}>DAY {String(dayNum).padStart(3, '0')}</span>
+                      <span className="text-[10px] opacity-50 font-mono">TRANSMISSION LOG</span>
                     </div>
-
-                    <div className="w-px h-8 bg-white/10" />
-
-                    <button 
-                      onClick={() => nextDay && goToDay(nextDay.day)}
-                      disabled={!nextDay}
-                      className="flex-1 flex flex-col items-center justify-center py-2 active:scale-95 transition-transform disabled:opacity-30"
-                    >
-                      <ChevronRight className="w-6 h-6 mb-1" />
-                      <span className="text-[10px] font-mono uppercase tracking-widest opacity-60">Next</span>
-                    </button>
                  </div>
                </div>
              )}
@@ -400,19 +401,20 @@ export function DayPage() {
                   {release.description}
                 </p>
 
-                {/* CUSTOM INFO / ABOUT SECTION */}
+                {/* CUSTOM INFO / ABOUT SECTION INJECTION - FIXED VISIBILITY */}
+                {/* Check directly if release.customInfo exists */}
                 {release.customInfo && (
                   <div 
-                    className="mt-6 mx-auto lg:mx-0 p-4 text-left rounded-lg border backdrop-blur-sm bg-white/5 border-white/10 max-w-2xl"
+                    className="mt-6 mx-auto lg:mx-0 p-5 text-left rounded-lg border backdrop-blur-sm bg-white/10 border-white/20 max-w-2xl shadow-lg"
                   >
-                    <div className="flex items-center gap-2 mb-3 opacity-80 text-white/80">
+                    <div className="flex items-center gap-2 mb-3 opacity-90 text-white">
                       <Info className="w-4 h-4" />
-                      <span className="text-xs font-mono uppercase tracking-widest">Additional Intel</span>
+                      <span className="text-xs font-mono uppercase tracking-widest font-bold">Additional Intel</span>
                     </div>
                     
-                    {/* Enforced white text for maximum visibility */}
+                    {/* Enforced text colors and prose override */}
                     <div 
-                      className="prose prose-invert prose-sm max-w-none text-white/90"
+                      className="prose prose-invert prose-sm max-w-none text-white leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: release.customInfo }}
                     />
                   </div>
