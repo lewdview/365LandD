@@ -453,7 +453,7 @@ export function DayPage() {
               {/* Main Grid: Info & Lyrics */}
               <div className="grid lg:grid-cols-3 gap-8 mb-20">
                 
-                {/* 1. Description & Stats */}
+                {/* 1. Description & Stats (NEW INFO SECTION) */}
                 <motion.div 
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
