@@ -8,16 +8,12 @@ import {
   Pause, 
   Clock, 
   Music, 
-  ExternalLink, 
   Home, 
   Sparkles, 
   Activity, 
-  Disc, 
-  Share2, 
   Maximize2, 
   Info, 
-  Minimize2 
-} from 'lucide-react';
+  Minimize2} from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { useAudioStore } from '../store/useAudioStore';
@@ -33,9 +29,6 @@ import type { Release } from '../types';
 function isYouTube(url: string) {
   return /youtube\.com|youtu\.be/.test(url);
 }
-function isVimeo(url: string) {
-  return /vimeo\.com/.test(url);
-}
 
 // Helper to convert hex to rgba
 function hexToRgba(hex: string, alpha: number): string {
@@ -50,13 +43,14 @@ function hexToRgba(hex: string, alpha: number): string {
 function TechBadge({ children, color, label }: { children: React.ReactNode, color: string, label?: string }) {
   return (
     <div className="flex flex-col gap-1">
-      {label && <span className="text-[10px] font-mono tracking-wider opacity-50 uppercase">{label}</span>}
+      {label && <span className="text-[10px] font-mono tracking-wider opacity-70 uppercase text-white/80 shadow-black drop-shadow-md">{label}</span>}
       <div 
-        className="px-3 py-1.5 rounded border flex items-center gap-2 font-mono text-xs font-bold backdrop-blur-sm"
+        className="px-3 py-1.5 rounded border flex items-center gap-2 font-mono text-xs font-bold backdrop-blur-md"
         style={{ 
-          borderColor: hexToRgba(color, 0.3),
-          backgroundColor: hexToRgba(color, 0.05),
-          color: color
+          borderColor: hexToRgba(color, 0.5),
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          color: color,
+          textShadow: '0 0 10px rgba(0,0,0,0.5)'
         }}
       >
         {children}
@@ -96,11 +90,11 @@ function ReactorPlayButton({ isPlaying, onClick, color }: { isPlaying: boolean, 
   return (
     <button 
       onClick={onClick}
-      className="group relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center focus:outline-none z-30"
+      className="group relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center focus:outline-none z-30"
     >
       {/* Outer Rotating Ring */}
       <motion.div 
-        className="absolute inset-0 rounded-full border border-dashed opacity-60"
+        className="absolute inset-0 rounded-full border-2 border-dashed opacity-80"
         style={{ borderColor: color }}
         animate={{ rotate: 360 }}
         transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
@@ -108,24 +102,24 @@ function ReactorPlayButton({ isPlaying, onClick, color }: { isPlaying: boolean, 
       
       {/* Inner Glow Pulse */}
       <motion.div 
-        className="absolute inset-2 rounded-full opacity-30 blur-md"
+        className="absolute inset-2 rounded-full opacity-40 blur-md"
         style={{ backgroundColor: color }}
-        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       />
       
       {/* Glass Core */}
       <div 
-        className="absolute inset-3 rounded-full backdrop-blur-xl border border-white/20 shadow-inner flex items-center justify-center transition-transform group-hover:scale-95 group-active:scale-90"
+        className="absolute inset-4 rounded-full backdrop-blur-xl border border-white/40 shadow-inner flex items-center justify-center transition-transform group-hover:scale-95 group-active:scale-90"
         style={{ 
-          background: `linear-gradient(135deg, ${hexToRgba(color, 0.4)}, ${hexToRgba('#000000', 0.8)})`,
-          boxShadow: `0 0 20px ${hexToRgba(color, 0.3)}, inset 0 0 10px rgba(255,255,255,0.2)`
+          background: `linear-gradient(135deg, ${hexToRgba(color, 0.6)}, ${hexToRgba('#000000', 0.8)})`,
+          boxShadow: `0 0 30px ${hexToRgba(color, 0.5)}, inset 0 0 10px rgba(255,255,255,0.5)`
         }}
       >
         {isPlaying ? (
-          <Pause className="w-8 h-8 md:w-10 md:h-10 text-white fill-white drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" />
+          <Pause className="w-10 h-10 md:w-12 md:h-12 text-white fill-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
         ) : (
-          <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1 drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" />
+          <Play className="w-10 h-10 md:w-12 md:h-12 text-white fill-white ml-2 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
         )}
       </div>
     </button>
@@ -177,12 +171,6 @@ export function DayPage() {
     if (data?.releases) {
       const found = data.releases.find(r => r.day === dayNum);
       setRelease(found || null);
-      
-      if (found) {
-        console.log(`[DayPage] Loaded Day ${dayNum}:`, found);
-        console.log(`[DayPage] Custom Info present?`, !!found.customInfo);
-      }
-      
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [data, dayNum]);
@@ -264,7 +252,6 @@ export function DayPage() {
   }
 
   return (
-    // PADDING INCREASED: pt-36 mobile (was pt-32), md:pt-48 (was md:pt-40) to clear fixed header
     <div className="min-h-screen pb-48 relative overflow-hidden" style={{ backgroundColor: background, color: text }}>
       <Navigation />
       <ThemeChanger />
@@ -279,294 +266,261 @@ export function DayPage() {
             maskImage: 'radial-gradient(circle at center, black, transparent 80%)'
           }}
         />
-        <motion.div 
-          className="absolute inset-0"
-          style={{ background: `linear-gradient(to bottom, transparent, ${hexToRgba(primary, 0.05)}, transparent)` }}
-          animate={{ y: ['-100%', '100%'] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        />
       </div>
 
-      {/* HERO SECTION */}
-      {/* FIX: Removed 'flex flex-col justify-center' on mobile to prevent vertical centering clipping.
-          Replaced with 'flex flex-col justify-start' and explicit padding.
-      */}
-      <section className="relative pt-36 md:pt-48 pb-4 px-4 md:px-12 lg:px-16 z-10 min-h-[60vh] md:min-h-[70vh] flex flex-col justify-start md:justify-center">
-        
-        {/* Breadcrumbs (Desktop Only) */}
-        <div className="hidden lg:flex items-center gap-4 text-xs font-mono tracking-widest opacity-60 mb-8 max-w-7xl mx-auto w-full">
-          <Link to="/" className="hover:text-primary transition-colors flex items-center gap-2">
-            <Home className="w-3 h-3" /> HOME
-          </Link>
-          <span>/</span>
-          <span style={{ color: moodColor }}>LOG_{String(dayNum).padStart(3, '0')}</span>
-        </div>
+      {/* --- IMMERSIVE HERO SECTION --- */}
+      <section className="relative h-[85vh] md:h-[90vh] w-full overflow-hidden flex flex-col justify-end pb-12 z-10">
+        {release ? (
+          <>
+            {/* FULL BACKGROUND COVER */}
+            <div className="absolute inset-0 z-0">
+              <CoverImage
+                day={release.day}
+                title={release.title}
+                mood={release.mood}
+                energy={release.energy}
+                valence={release.valence}
+                tempo={release.tempo}
+                coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
+                className="w-full h-full object-cover"
+              />
+              {/* Gradient Overlays for readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 opacity-60" />
+              
+              {/* Scanline Texture */}
+              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay" />
+            </div>
 
-        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          
-          {/* COVER ART & MOBILE CONTROLS (First on Mobile) */}
-          <div className="lg:col-span-5 relative order-first lg:order-last">
-             {release && (
-               <div className="flex flex-col gap-6">
-                 
-                 {/* MOBILE BREADCRUMBS & NAV ROW */}
-                 <div className="flex lg:hidden items-center justify-between gap-4 relative z-30 mb-4">
-                    {/* Home Link */}
-                    <Link to="/" className="p-2 rounded hover:bg-white/10 text-xs font-mono tracking-widest opacity-80 flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/10">
-                      <Home className="w-3 h-3" /> HOME
-                    </Link>
+            {/* BREADCRUMBS & NAVIGATION */}
+            <div className="absolute top-32 left-0 right-0 z-20 px-4 md:px-12 flex justify-between items-start">
+               {/* Back to Home */}
+               <Link to="/" className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-black/40 border border-white/10 hover:bg-white/10 transition-colors">
+                  <Home className="w-4 h-4 text-white" />
+                  <span className="text-xs font-mono font-bold text-white tracking-widest">HOME</span>
+               </Link>
 
-                    {/* Compact Arrows */}
-                    <div className="flex items-center gap-2">
-                      <button 
-                        onClick={() => prevDay && goToDay(prevDay.day)}
-                        disabled={!prevDay}
-                        className="p-2 border rounded hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors bg-black/40 backdrop-blur-md"
-                        style={{ borderColor: hexToRgba(text, 0.2) }}
-                      >
-                        <ChevronLeft className="w-5 h-5" />
-                      </button>
-                      <button 
-                        onClick={() => nextDay && goToDay(nextDay.day)}
-                        disabled={!nextDay}
-                        className="p-2 border rounded hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors bg-black/40 backdrop-blur-md"
-                        style={{ borderColor: hexToRgba(text, 0.2) }}
-                      >
-                        <ChevronRight className="w-5 h-5" />
-                      </button>
-                    </div>
-                 </div>
-
-                 {/* Art Container */}
-                 <motion.div 
-                   initial={{ opacity: 0, scale: 0.95 }} 
-                   animate={{ opacity: 1, scale: 1 }}
-                   transition={{ delay: 0.2 }}
-                   className="relative aspect-square rounded-xl overflow-hidden shadow-2xl group mx-auto w-full max-w-md lg:max-w-none border border-white/10"
-                   style={{ boxShadow: `0 0 40px -10px ${moodColor}30` }}
-                 >
-                   <CoverImage
-                      day={release.day}
-                      title={release.title}
-                      mood={release.mood}
-                      energy={release.energy}
-                      valence={release.valence}
-                      tempo={release.tempo}
-                      coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
-                      className="w-full h-full object-cover"
-                      showColorVeil
-                    />
-                    
-                    {/* NEW REACTOR PLAY BUTTON (Centered) */}
-                    <div className="absolute inset-0 flex items-center justify-center z-10">
-                      <ReactorPlayButton 
-                        isPlaying={isThisReleaseActive} 
-                        onClick={handlePlay}
-                        color={moodColor}
-                      />
-                    </div>
-
-                    {/* Corner Accents */}
-                    <div className="absolute top-2 left-2 w-4 h-4 border-t border-l opacity-50" style={{ borderColor: text }} />
-                    <div className="absolute bottom-2 right-2 w-4 h-4 border-b border-r opacity-50" style={{ borderColor: text }} />
-                 </motion.div>
-
-                 {/* MOBILE CONTROL BAR (Tactile Navigation - Bottom of Art) */}
-                 <div className="flex lg:hidden items-center justify-between gap-4 p-4 rounded-xl border backdrop-blur-md bg-white/5" style={{ borderColor: hexToRgba(text, 0.1) }}>
-                    <div className="flex flex-col items-center px-4 w-full text-center">
-                      <span className="text-xs font-bold" style={{ color: moodColor }}>DAY {String(dayNum).padStart(3, '0')}</span>
-                      <span className="text-[10px] opacity-50 font-mono">TRANSMISSION LOG</span>
-                    </div>
-                 </div>
+               {/* Log Number */}
+               <div className="flex flex-col items-end">
+                 <span className="text-[10px] font-mono tracking-[0.3em] uppercase opacity-70 text-white">Transmission Log</span>
+                 <span className="text-4xl font-black text-white tracking-tighter" style={{ textShadow: `0 0 20px ${moodColor}` }}>
+                   {String(dayNum).padStart(3, '0')}
+                 </span>
                </div>
-             )}
-          </div>
+            </div>
 
-          {/* TEXT INFO (Second on Mobile) */}
-          <div className="lg:col-span-7 relative z-10 order-last lg:order-first text-center lg:text-left">
-            {release ? (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            {/* MAIN CONTENT OVERLAY */}
+            <div className="relative z-20 w-full max-w-7xl mx-auto px-4 md:px-12 lg:px-16 grid lg:grid-cols-12 gap-8 items-end">
+              
+              {/* Left Column: Title & Info */}
+              <div className="lg:col-span-8 space-y-6">
                 
-                {/* Meta Header */}
-                <div className="flex items-center justify-center lg:justify-start gap-3 mb-4 lg:mb-6">
-                  <span className="px-3 py-1 text-xs font-bold bg-white/5 border border-white/10 rounded uppercase backdrop-blur-sm" style={{ color: moodColor }}>
-                    {release.mood}
-                  </span>
-                  <span className="h-px w-8 bg-white/20" />
-                  <span className="text-xs font-mono opacity-60">{release.date}</span>
+                {/* Mood Badge */}
+                <div className="flex items-center gap-3">
+                   <div className="px-3 py-1 rounded border backdrop-blur-md bg-black/30 border-white/20 flex items-center gap-2">
+                     <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: moodColor }} />
+                     <span className="text-xs font-mono font-bold uppercase text-white tracking-widest">{release.mood}</span>
+                   </div>
+                   <span className="text-xs font-mono text-white/60">{release.date}</span>
                 </div>
 
                 {/* Title */}
-                <h1 className="text-4xl md:text-5xl lg:text-8xl font-black uppercase leading-[0.9] tracking-tighter mb-6 text-transparent bg-clip-text break-words drop-shadow-sm" 
-                    style={{ backgroundImage: `linear-gradient(to bottom right, ${text}, ${hexToRgba(text, 0.5)})` }}>
+                <motion.h1 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="text-5xl md:text-7xl lg:text-9xl font-black uppercase leading-[0.85] tracking-tighter text-white break-words drop-shadow-2xl"
+                  style={{ textShadow: '2px 2px 0px rgba(0,0,0,0.5)' }}
+                >
                   {release.title}
-                </h1>
+                </motion.h1>
 
-                {/* Description */}
-                <p className="text-base md:text-xl leading-relaxed opacity-80 max-w-2xl mx-auto lg:mx-0 font-medium" >
-                  {release.description}
-                </p>
-
-                {/* CUSTOM INFO / ABOUT SECTION INJECTION - FIXED VISIBILITY */}
-                {/* Check directly if release.customInfo exists */}
-                {release.customInfo && (
-                  <div 
-                    className="mt-6 mx-auto lg:mx-0 p-5 text-left rounded-lg border backdrop-blur-sm bg-white/10 border-white/20 max-w-2xl shadow-lg"
-                  >
-                    <div className="flex items-center gap-2 mb-3 opacity-90 text-white">
-                      <Info className="w-4 h-4" />
-                      <span className="text-xs font-mono uppercase tracking-widest font-bold">Additional Intel</span>
-                    </div>
-                    
-                    {/* Enforced text colors and prose override */}
-                    <div 
-                      className="prose prose-invert prose-sm max-w-none text-white/90 leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: release.customInfo }}
-                    />
-                  </div>
-                )}
-
-                {/* Quick Stats Row */}
-                <div className="flex flex-wrap justify-center lg:justify-start gap-3 mt-8">
-                  <TechBadge color={text} label="TEMPO">
+                {/* Stats Row */}
+                <div className="flex flex-wrap gap-4 pt-2">
+                  <TechBadge color={moodColor} label="TEMPO">
                     <Clock className="w-3 h-3" /> {release.tempo} BPM
                   </TechBadge>
-                  <TechBadge color={text} label="KEY">
+                  <TechBadge color={moodColor} label="KEY">
                     <Music className="w-3 h-3" /> {release.key}
                   </TechBadge>
-                  <TechBadge color={text} label="DURATION">
+                  <TechBadge color={moodColor} label="DURATION">
                     <Maximize2 className="w-3 h-3" /> {release.durationFormatted}
                   </TechBadge>
                 </div>
-              </motion.div>
-            ) : (
-              <div className="py-20 text-center border border-dashed border-white/10 rounded-xl bg-white/5">
-                <p className="text-2xl font-mono opacity-50">DATA_CORRUPTED: NO_ENTRY_FOUND</p>
               </div>
-            )}
-          </div>
 
-        </div>
+              {/* Right Column: Play Button */}
+              <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-center pb-4">
+                 <motion.div
+                   initial={{ scale: 0, opacity: 0 }}
+                   animate={{ scale: 1, opacity: 1 }}
+                   transition={{ delay: 0.3, type: "spring" }}
+                 >
+                   <ReactorPlayButton 
+                      isPlaying={isThisReleaseActive} 
+                      onClick={handlePlay} 
+                      color={moodColor} 
+                   />
+                 </motion.div>
+                 <div className="mt-4 text-xs font-mono text-white/60 tracking-widest uppercase">
+                    {isThisReleaseActive ? 'Sequence Active' : 'Initiate Sequence'}
+                 </div>
+              </div>
+
+            </div>
+
+            {/* Custom Info Panel (if exists) */}
+            {release.customInfo && (
+               <div className="absolute bottom-4 right-4 md:right-12 z-30 hidden lg:block">
+                 <motion.div 
+                   initial={{ opacity: 0, x: 20 }}
+                   animate={{ opacity: 1, x: 0 }}
+                   transition={{ delay: 1 }}
+                   className="p-4 rounded-lg border backdrop-blur-md bg-black/60 border-white/10 max-w-sm"
+                 >
+                    <div className="flex items-center gap-2 mb-2 text-white/90">
+                      <Info className="w-3 h-3" />
+                      <span className="text-[10px] font-mono uppercase font-bold">Additional Intel</span>
+                    </div>
+                    <div 
+                      className="prose prose-invert prose-xs leading-snug text-white/80 line-clamp-3 hover:line-clamp-none transition-all cursor-default"
+                      dangerouslySetInnerHTML={{ __html: release.customInfo }}
+                    />
+                 </motion.div>
+               </div>
+            )}
+          </>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <p className="font-mono text-xl opacity-50">INITIALIZING_DATA_STREAM...</p>
+          </div>
+        )}
       </section>
 
+      {/* --- DASHBOARD SECTION --- */}
       {release && (
-        <div className="max-w-7xl mx-auto px-4 md:px-12 lg:px-16 z-10 relative">
+        <div className="max-w-7xl mx-auto px-4 md:px-12 lg:px-16 z-10 relative -mt-12">
           
-          {/* AUDIO PLAYER MODULE (Desktop mostly, but simplified for mobile) */}
+          {/* Audio Player Strip */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="hidden md:block my-12 p-8 rounded-2xl border backdrop-blur-xl relative overflow-hidden"
+            className="mb-12 p-6 rounded-xl border backdrop-blur-xl relative overflow-hidden shadow-2xl"
             style={{ 
-              backgroundColor: hexToRgba(background, 0.7),
-              borderColor: hexToRgba(text, 0.1),
-              boxShadow: isThisReleaseActive ? `0 0 40px -10px ${moodColor}30` : 'none'
+              backgroundColor: hexToRgba(background, 0.8),
+              borderColor: hexToRgba(text, 0.1)
             }}
           >
-            {isThisReleaseActive && (
-              <motion.div layoutId="activeLine" className="absolute top-0 left-0 right-0 h-1" style={{ backgroundColor: moodColor }} />
-            )}
-
-            <div className="flex items-center gap-8">
-              <button
-                onClick={handlePlay}
-                className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 hover:scale-105 active:scale-95 transition-all"
-                style={{ backgroundColor: isThisPlaying ? moodColor : hexToRgba(text, 0.1) }}
-              >
-                 {isThisReleaseActive ? <Pause className="fill-white" /> : <Play className="fill-white ml-1" />}
-              </button>
-
-              {/* Scrubber Area */}
-              <div className="flex-1 space-y-2">
-                <div className="flex justify-between text-xs font-mono opacity-60">
-                   <span>{isThisPlaying ? formatTime(currentTime) : '0:00'}</span>
-                   <span>Audio Sequence</span>
-                   <span>{formatTime((isThisPlaying && duration) || release.duration)}</span>
+             {/* Progress Bar Overlay */}
+             <div className="absolute bottom-0 left-0 h-1 bg-white/5 w-full">
+               <motion.div 
+                 className="h-full" 
+                 style={{ backgroundColor: moodColor, width: `${(currentTime / (duration || 1)) * 100}%` }}
+               />
+             </div>
+             
+             <div className="flex items-center justify-between gap-6 relative z-10">
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest">Current Position</span>
+                  <span className="text-xl font-mono font-bold tabular-nums">{isThisPlaying ? formatTime(currentTime) : '0:00'}</span>
                 </div>
-                <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div className="absolute top-0 left-0 bottom-0 bg-current opacity-80" style={{ width: `${(currentTime / (duration || 1)) * 100}%`, color: moodColor }} />
-                  <input type="range" min={0} max={duration || 100} value={currentTime} onChange={handleSeek} className="absolute inset-0 opacity-0 cursor-pointer" />
+
+                <div className="flex-1 hidden md:block px-8">
+                   <div className="h-12 w-full flex items-center gap-1 opacity-30">
+                      {/* Fake waveform bars */}
+                      {Array.from({ length: 40 }).map((_, i) => (
+                        <div 
+                          key={i} 
+                          className="flex-1 bg-current rounded-full transition-all duration-300"
+                          style={{ 
+                            height: `${20 + Math.random() * 80}%`,
+                            color: isThisPlaying && (i / 40) < (currentTime / (duration || 1)) ? moodColor : text
+                          }} 
+                        />
+                      ))}
+                   </div>
                 </div>
-              </div>
-            </div>
+
+                <div className="flex flex-col items-end">
+                  <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest">Total Duration</span>
+                  <span className="text-xl font-mono font-bold tabular-nums">{formatTime((isThisPlaying && duration) || release.duration)}</span>
+                </div>
+             </div>
+             
+             {/* Seek Input */}
+             <input 
+               type="range" 
+               min={0} 
+               max={duration || 100} 
+               value={currentTime} 
+               onChange={handleSeek} 
+               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" 
+             />
           </motion.div>
 
-          {/* DASHBOARD GRID */}
+          {/* Main Grid */}
           <div className="grid lg:grid-cols-3 gap-8 mb-20">
             
-            {/* 1. AUDIO ANALYSIS */}
+            {/* 1. Description & Stats */}
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-1 space-y-4"
+              className="lg:col-span-1 space-y-6"
             >
-              <div className="flex items-center gap-2 mb-4">
-                <Activity className="w-5 h-5" style={{ color: moodColor }} />
-                <h3 className="font-mono text-sm tracking-widest uppercase">Signal Analysis</h3>
-              </div>
-              
-              <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
-                <StatModule label="Energy Output" value={release.energy * 100} color={primary} />
-                <StatModule label="Valence Level" value={release.valence * 100} color={accent} />
-                <StatModule label="Danceability" value={(release.danceability || 0) * 100} color={secondary} />
-                {release.loudness && (
-                  <div className="p-4 border rounded-lg bg-white/5 border-white/10 flex justify-between items-center backdrop-blur-sm">
-                    <span className="text-[10px] font-mono uppercase opacity-60">Loudness</span>
-                    <span className="font-mono font-bold">{release.loudness.toFixed(1)} dB</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Tags Cloud */}
-              <div className="mt-8">
-                 <h4 className="font-mono text-xs opacity-50 mb-3 uppercase">Classifications</h4>
+               <div className="p-6 rounded-xl border bg-white/5 backdrop-blur-sm" style={{ borderColor: hexToRgba(text, 0.1) }}>
+                 <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                   <Activity className="w-5 h-5" style={{ color: moodColor }} /> Mission Brief
+                 </h3>
+                 <p className="text-sm leading-relaxed opacity-80 mb-6 font-medium">
+                   {release.description}
+                 </p>
                  <div className="flex flex-wrap gap-2">
                    {release.tags.map(tag => (
-                     <span key={tag} className="px-2 py-1 text-[10px] font-mono border rounded hover:bg-white/5 cursor-default transition-colors" style={{ borderColor: hexToRgba(text, 0.2) }}>
+                     <span key={tag} className="px-2 py-1 text-[10px] font-mono border rounded bg-black/20" style={{ borderColor: hexToRgba(text, 0.1) }}>
                        #{tag}
                      </span>
                    ))}
                  </div>
-              </div>
+               </div>
+
+               <div className="space-y-3">
+                  <StatModule label="Energy Output" value={release.energy * 100} color={primary} />
+                  <StatModule label="Valence Level" value={release.valence * 100} color={accent} />
+                  <StatModule label="Danceability" value={(release.danceability || 0) * 100} color={secondary} />
+               </div>
             </motion.div>
 
-            {/* 2. LYRICS / POETRY (Mobile-First Fix) */}
+            {/* 2. Lyrics / Poetry */}
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className={`lg:col-span-2 transition-all duration-500 ${lyricsExpanded ? 'fixed inset-0 z-50 bg-black/95 p-6 overflow-hidden' : 'relative'}`}
+              className={`lg:col-span-2 transition-all duration-500 ${lyricsExpanded ? 'fixed inset-0 z-50 bg-black/95 p-6 overflow-hidden flex flex-col' : 'relative h-full'}`}
             >
-              <div className="flex items-center justify-between mb-4">
+               <div className={`flex items-center justify-between mb-4 ${lyricsExpanded ? 'container mx-auto max-w-4xl pt-12' : ''}`}>
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5" style={{ color: moodColor }} />
-                  <h3 className="font-mono text-sm tracking-widest uppercase">Poetry Stream</h3>
+                  <h3 className="font-bold text-lg">Poetry Stream</h3>
                 </div>
-                
-                {/* Mobile Expand Toggle */}
                 <button 
                   onClick={() => setLyricsExpanded(!lyricsExpanded)}
-                  className="lg:hidden p-2 rounded border border-white/10 bg-white/5"
+                  className="p-2 rounded hover:bg-white/5 transition-colors"
                 >
-                  {lyricsExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                  {lyricsExpanded ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
                 </button>
               </div>
 
               <div 
-                className={`rounded-2xl border relative overflow-hidden transition-all duration-500 ${lyricsExpanded ? 'h-full pb-20' : 'h-[400px] md:h-[500px]'}`}
+                className={`rounded-xl border relative overflow-hidden transition-all duration-500 ${lyricsExpanded ? 'flex-1 container mx-auto max-w-4xl' : 'min-h-[500px]'}`}
                 style={{ 
-                  backgroundColor: hexToRgba(background, 0.4),
+                  backgroundColor: hexToRgba(background, 0.3),
                   borderColor: hexToRgba(text, 0.1)
                 }}
               >
-                {/* Background Noise Texture */}
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-                     style={{ backgroundImage: `url('https://grainy-gradients.vercel.app/noise.svg')` }} />
-
                 {(playingHasPoetryData || hasPoetryData) ? (
-                   <div className="h-full w-full overflow-y-auto custom-scrollbar touch-pan-y">
+                   <div className="h-full w-full overflow-y-auto custom-scrollbar">
                      <KaraokeLyrics
                         words={lyricsWordsToShow || []}
                         segments={lyricsSegmentsToShow}
@@ -577,22 +531,17 @@ export function DayPage() {
                       />
                    </div>
                 ) : (
-                  <div className="p-6 md:p-8 h-full overflow-y-auto custom-scrollbar touch-pan-y">
+                  <div className="p-8 h-full overflow-y-auto custom-scrollbar">
                      <pre className="font-mono text-sm leading-loose whitespace-pre-wrap opacity-80">
                        {release.lyrics || "No lyrical data available for this transmission."}
                      </pre>
                   </div>
                 )}
-                
-                {/* Fade indicator for mobile if not expanded */}
-                {!lyricsExpanded && (
-                  <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-black/80 to-transparent pointer-events-none lg:hidden" />
-                )}
               </div>
             </motion.div>
           </div>
 
-          {/* 3. VIDEO / ABOUT SECTION */}
+          {/* 3. Video Section */}
           {release.videoUrl && (
             <motion.section 
               initial={{ opacity: 0, y: 30 }}
@@ -600,25 +549,14 @@ export function DayPage() {
               viewport={{ once: true }}
               className="mb-20"
             >
-              <div className="flex items-center gap-2 mb-6 justify-center">
-                 <Disc className="w-5 h-5 animate-spin-slow" style={{ color: moodColor }} />
-                 <h3 className="font-mono text-sm tracking-widest uppercase">Visual Log</h3>
-              </div>
-              
-              <div className="w-full max-w-4xl mx-auto rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-                <div className="aspect-video relative">
+              <div className="w-full max-w-5xl mx-auto p-1 rounded-2xl bg-gradient-to-br from-white/10 to-transparent">
+                <div className="rounded-xl overflow-hidden shadow-2xl bg-black aspect-video relative group">
+                  <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-black/60 backdrop-blur rounded text-xs font-mono border border-white/10">VISUAL_LOG</div>
                   {isYouTube(release.videoUrl) ? (
                       <iframe
                         src={release.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
                         className="absolute inset-0 w-full h-full"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    ) : isVimeo(release.videoUrl) ? (
-                      <iframe
-                        src={release.videoUrl.replace('vimeo.com/', 'player.vimeo.com/video/')}
-                        className="absolute inset-0 w-full h-full"
-                        allow="autoplay; fullscreen; picture-in-picture"
                         allowFullScreen
                       />
                     ) : (
@@ -629,41 +567,35 @@ export function DayPage() {
             </motion.section>
           )}
 
-          {/* FOOTER NAVIGATION (Desktop Only - Mobile uses control bar) */}
-          <div className="hidden lg:flex items-center justify-between border-t py-8" style={{ borderColor: hexToRgba(text, 0.1) }}>
-             {prevDay ? (
-               <button onClick={() => goToDay(prevDay.day)} className="group text-left">
-                  <div className="text-[10px] font-mono opacity-50 mb-1 group-hover:text-primary transition-colors">PREV_LOG</div>
-                  <div className="flex items-center gap-2 text-sm font-bold opacity-80 group-hover:opacity-100">
-                    <ChevronLeft className="w-4 h-4" /> Day {prevDay.day}
-                  </div>
-               </button>
-             ) : <div />}
+          {/* Footer Nav */}
+          <div className="border-t pt-8 flex justify-between items-center" style={{ borderColor: hexToRgba(text, 0.1) }}>
+             <button 
+               onClick={() => prevDay && goToDay(prevDay.day)} 
+               disabled={!prevDay}
+               className="flex items-center gap-4 group disabled:opacity-30 disabled:cursor-not-allowed"
+             >
+               <div className="w-12 h-12 rounded-full border flex items-center justify-center group-hover:bg-white/5 transition-colors" style={{ borderColor: hexToRgba(text, 0.2) }}>
+                 <ChevronLeft className="w-5 h-5" />
+               </div>
+               <div className="text-left hidden md:block">
+                 <div className="text-[10px] font-mono opacity-50 uppercase">Previous Transmission</div>
+                 <div className="font-bold">Day {prevDay?.day || '000'}</div>
+               </div>
+             </button>
 
-             <div className="flex gap-4">
-                {(release.youtubeUrl || release.audiusUrl) && (
-                  <div className="flex gap-2">
-                     {release.youtubeUrl && (
-                       <a href={release.youtubeUrl} target="_blank" rel="noopener noreferrer" 
-                          className="p-3 rounded-full bg-white/5 hover:bg-red-600 hover:text-white transition-colors">
-                          <ExternalLink className="w-4 h-4" />
-                       </a>
-                     )}
-                     <button className="p-3 rounded-full bg-white/5 hover:bg-white/20 transition-colors">
-                       <Share2 className="w-4 h-4" />
-                     </button>
-                  </div>
-                )}
-             </div>
-
-             {nextDay ? (
-               <button onClick={() => goToDay(nextDay.day)} className="group text-right">
-                  <div className="text-[10px] font-mono opacity-50 mb-1 group-hover:text-primary transition-colors">NEXT_LOG</div>
-                  <div className="flex items-center gap-2 text-sm font-bold opacity-80 group-hover:opacity-100">
-                    Day {nextDay.day} <ChevronRight className="w-4 h-4" />
-                  </div>
-               </button>
-             ) : <div />}
+             <button 
+               onClick={() => nextDay && goToDay(nextDay.day)} 
+               disabled={!nextDay}
+               className="flex items-center gap-4 group text-right disabled:opacity-30 disabled:cursor-not-allowed"
+             >
+               <div className="text-right hidden md:block">
+                 <div className="text-[10px] font-mono opacity-50 uppercase">Next Transmission</div>
+                 <div className="font-bold">Day {nextDay?.day || '000'}</div>
+               </div>
+               <div className="w-12 h-12 rounded-full border flex items-center justify-center group-hover:bg-white/5 transition-colors" style={{ borderColor: hexToRgba(text, 0.2) }}>
+                 <ChevronRight className="w-5 h-5" />
+               </div>
+             </button>
           </div>
 
         </div>
