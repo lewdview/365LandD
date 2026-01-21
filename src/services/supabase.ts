@@ -131,8 +131,8 @@ function songAnalysisToRelease(analysis: SongAnalysis, dayNumber: number): Relea
   };
 }
 
-// Cache configuration
-const CACHE_KEY = 'th3scr1b3_release_data';
+// Cache configuration - UPDATED TO FORCE FRESH FETCH
+const CACHE_KEY = 'th3scr1b3_release_data_v2'; 
 const CACHE_TTL_HOURS = 1; // Cache for 1 hour
 
 // Check if cached data is still valid

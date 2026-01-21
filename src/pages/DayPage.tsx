@@ -96,7 +96,7 @@ function ReactorPlayButton({ isPlaying, onClick, color }: { isPlaying: boolean, 
   return (
     <button 
       onClick={onClick}
-      className="group relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center focus:outline-none z-30" // Added z-30 to ensure clickability
+      className="group relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center focus:outline-none z-30"
     >
       {/* Outer Rotating Ring */}
       <motion.div 
@@ -145,8 +145,6 @@ export function DayPage() {
     isPlaying,
     currentTime,
     duration,
-    hasError: audioError,
-    isLoading,
     loadAndPlay,
     togglePlay: globalTogglePlay,
     seek,
@@ -179,6 +177,12 @@ export function DayPage() {
     if (data?.releases) {
       const found = data.releases.find(r => r.day === dayNum);
       setRelease(found || null);
+      
+      if (found) {
+        console.log(`[DayPage] Loaded Day ${dayNum}:`, found);
+        console.log(`[DayPage] Custom Info present?`, !!found.customInfo);
+      }
+      
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [data, dayNum]);
@@ -260,7 +264,7 @@ export function DayPage() {
   }
 
   return (
-    // PADDING INCREASED: pt-32 mobile (was pt-24), md:pt-48 (was md:pt-40) to clear fixed header
+    // PADDING INCREASED: pt-36 mobile (was pt-32), md:pt-48 (was md:pt-40) to clear fixed header
     <div className="min-h-screen pb-48 relative overflow-hidden" style={{ backgroundColor: background, color: text }}>
       <Navigation />
       <ThemeChanger />
@@ -284,7 +288,10 @@ export function DayPage() {
       </div>
 
       {/* HERO SECTION */}
-      <section className="relative pt-32 md:pt-48 pb-4 px-4 md:px-12 lg:px-16 z-10 min-h-[60vh] md:min-h-[70vh] flex flex-col justify-center">
+      {/* FIX: Removed 'flex flex-col justify-center' on mobile to prevent vertical centering clipping.
+          Replaced with 'flex flex-col justify-start' and explicit padding.
+      */}
+      <section className="relative pt-36 md:pt-48 pb-4 px-4 md:px-12 lg:px-16 z-10 min-h-[60vh] md:min-h-[70vh] flex flex-col justify-start md:justify-center">
         
         {/* Breadcrumbs (Desktop Only) */}
         <div className="hidden lg:flex items-center gap-4 text-xs font-mono tracking-widest opacity-60 mb-8 max-w-7xl mx-auto w-full">
@@ -303,10 +310,9 @@ export function DayPage() {
                <div className="flex flex-col gap-6">
                  
                  {/* MOBILE BREADCRUMBS & NAV ROW */}
-                 {/* Added z-30 relative to ensure clickability over potential overlaps */}
-                 <div className="flex lg:hidden items-center justify-between gap-4 relative z-30">
+                 <div className="flex lg:hidden items-center justify-between gap-4 relative z-30 mb-4">
                     {/* Home Link */}
-                    <Link to="/" className="p-2 rounded hover:bg-white/10 text-xs font-mono tracking-widest opacity-80 flex items-center gap-2">
+                    <Link to="/" className="p-2 rounded hover:bg-white/10 text-xs font-mono tracking-widest opacity-80 flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/10">
                       <Home className="w-3 h-3" /> HOME
                     </Link>
 
@@ -315,7 +321,7 @@ export function DayPage() {
                       <button 
                         onClick={() => prevDay && goToDay(prevDay.day)}
                         disabled={!prevDay}
-                        className="p-2 border rounded hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-2 border rounded hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors bg-black/40 backdrop-blur-md"
                         style={{ borderColor: hexToRgba(text, 0.2) }}
                       >
                         <ChevronLeft className="w-5 h-5" />
@@ -323,7 +329,7 @@ export function DayPage() {
                       <button 
                         onClick={() => nextDay && goToDay(nextDay.day)}
                         disabled={!nextDay}
-                        className="p-2 border rounded hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        className="p-2 border rounded hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors bg-black/40 backdrop-blur-md"
                         style={{ borderColor: hexToRgba(text, 0.2) }}
                       >
                         <ChevronRight className="w-5 h-5" />
@@ -414,7 +420,7 @@ export function DayPage() {
                     
                     {/* Enforced text colors and prose override */}
                     <div 
-                      className="prose prose-invert prose-sm max-w-none text-white leading-relaxed"
+                      className="prose prose-invert prose-sm max-w-none text-white/90 leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: release.customInfo }}
                     />
                   </div>
@@ -465,17 +471,10 @@ export function DayPage() {
             <div className="flex items-center gap-8">
               <button
                 onClick={handlePlay}
-                disabled={audioError && isThisPlaying}
                 className="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 hover:scale-105 active:scale-95 transition-all"
                 style={{ backgroundColor: isThisPlaying ? moodColor : hexToRgba(text, 0.1) }}
               >
-                 {isLoading && isThisPlaying ? (
-                    <div className="w-6 h-6 border-4 border-current border-t-transparent rounded-full animate-spin" />
-                 ) : isThisReleaseActive ? (
-                    <Pause className="fill-white" /> 
-                 ) : ( 
-                    <Play className="fill-white ml-1" />
-                 )}
+                 {isThisReleaseActive ? <Pause className="fill-white" /> : <Play className="fill-white ml-1" />}
               </button>
 
               {/* Scrubber Area */}
