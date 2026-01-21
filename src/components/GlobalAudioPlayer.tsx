@@ -263,20 +263,22 @@ export function GlobalAudioPlayer() {
           >
             <div className="w-full px-4 md:px-8 py-2 md:py-3">
               <div className="flex items-center gap-3 md:gap-4">
-                {/* Cover art - clickable to go to day page */}
+                {/* Cover art - clickable to go to day page - RECTANGLE UPDATE */}
                 <Link to={`/day/${currentRelease.day}`} className="flex-shrink-0">
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded overflow-hidden border-2 hover:scale-105 transition-transform"
+                  <div 
+                    className="w-20 h-12 rounded overflow-hidden border-2 hover:scale-105 transition-transform"
                     style={{ borderColor: `${primary}60` }}
                   >
                     <CoverImage 
+                      key={currentRelease.day} // Fix: Forces re-render on track change
                       day={currentRelease.day}
                       title={currentRelease.title}
                       mood={currentRelease.mood}
                       energy={currentRelease.energy}
                       valence={currentRelease.valence}
                       tempo={currentRelease.tempo}
-coverUrl={getCoverUrl(currentRelease.day, currentRelease.storageTitle || currentRelease.title)}
-                      className="w-full h-full"
+                      coverUrl={getCoverUrl(currentRelease.day, currentRelease.storageTitle || currentRelease.title)}
+                      className="w-full h-full object-cover"
                       showColorVeil 
                     />
                   </div>

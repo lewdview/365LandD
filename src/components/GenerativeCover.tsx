@@ -40,6 +40,10 @@ export function GenerativeCover({
   const { currentTheme } = useThemeStore();
   const { primary, accent } = currentTheme.colors;
 
+  // RECTANGLE UPDATE: Using 16:9 aspect ratio (160x90 units)
+  const width = 160;
+  const height = 90;
+
   const coverData = useMemo(() => {
     const seed = hashString(`${day}-${title}`);
     const rand = (offset: number) => seededRandom(seed + offset);
@@ -56,18 +60,18 @@ export function GenerativeCover({
     // Generate geometric elements
     const numShapes = 3 + Math.floor(energy * 5);
     const shapes = Array.from({ length: numShapes }, (_, i) => ({
-      x: rand(10 + i) * 100,
-      y: rand(20 + i) * 100,
-      size: 10 + rand(30 + i) * 40,
+      x: rand(10 + i) * width,
+      y: rand(20 + i) * height,
+      size: 10 + rand(30 + i) * 60, // Larger shapes for wider canvas
       rotation: rand(40 + i) * 360,
       opacity: 0.1 + rand(50 + i) * 0.4,
       type: Math.floor(rand(60 + i) * 3), // 0: circle, 1: rect, 2: triangle
     }));
 
-    // Waveform based on tempo
-    const wavePoints = Array.from({ length: 20 }, (_, i) => {
-      const x = (i / 19) * 100;
-      const y = 50 + Math.sin((i / 19) * Math.PI * (tempo / 60)) * (20 + energy * 20) * rand(70 + i);
+    // Waveform based on tempo (stretched for width)
+    const wavePoints = Array.from({ length: 30 }, (_, i) => {
+      const x = (i / 29) * width;
+      const y = (height / 2) + Math.sin((i / 29) * Math.PI * (tempo / 40)) * (20 + energy * 20) * rand(70 + i);
       return `${x},${y}`;
     }).join(' ');
 
@@ -91,9 +95,10 @@ export function GenerativeCover({
 
   return (
     <svg
-      viewBox="0 0 100 100"
+      viewBox={`0 0 ${width} ${height}`}
       className={className}
       style={{ background: '#0a0a0f' }}
+      preserveAspectRatio="xMidYMid slice"
     >
       <defs>
         {/* Gradient based on mood */}
@@ -119,7 +124,7 @@ export function GenerativeCover({
       </defs>
 
       {/* Background gradient */}
-      <rect width="100" height="100" fill={`url(#grad-${seed})`} />
+      <rect width={width} height={height} fill={`url(#grad-${seed})`} />
 
       {/* Grid lines */}
       <g opacity="0.1" stroke={baseColor} strokeWidth="0.2">
@@ -127,32 +132,32 @@ export function GenerativeCover({
           <line
             key={`h-${i}`}
             x1="0"
-            y1={(i + 1) * (100 / (gridLines + 1))}
-            x2="100"
-            y2={(i + 1) * (100 / (gridLines + 1))}
+            y1={(i + 1) * (height / (gridLines + 1))}
+            x2={width}
+            y2={(i + 1) * (height / (gridLines + 1))}
           />
         ))}
         {Array.from({ length: gridLines }, (_, i) => (
           <line
             key={`v-${i}`}
-            x1={(i + 1) * (100 / (gridLines + 1))}
+            x1={(i + 1) * (width / (gridLines + 1))}
             y1="0"
-            x2={(i + 1) * (100 / (gridLines + 1))}
-            y2="100"
+            x2={(i + 1) * (width / (gridLines + 1))}
+            y2={height}
           />
         ))}
       </g>
 
       {/* Pattern based on type */}
       {patternType === 0 && (
-        // Concentric circles
-        <g transform={`rotate(${rotation} 50 50)`}>
+        // Concentric circles (centered)
+        <g transform={`rotate(${rotation} ${width/2} ${height/2})`}>
           {[1, 2, 3, 4].map((i) => (
             <circle
               key={i}
-              cx="50"
-              cy="50"
-              r={10 + i * 12}
+              cx={width/2}
+              cy={height/2}
+              r={10 + i * 15}
               fill="none"
               stroke={i % 2 === 0 ? baseColor : secondaryColor}
               strokeWidth="0.5"
@@ -165,13 +170,13 @@ export function GenerativeCover({
       {patternType === 1 && (
         // Diagonal stripes
         <g opacity="0.2">
-          {Array.from({ length: 10 }, (_, i) => (
+          {Array.from({ length: 15 }, (_, i) => (
             <line
               key={i}
-              x1={i * 15 - 20}
+              x1={i * 20 - 40}
               y1="0"
-              x2={i * 15 + 20}
-              y2="100"
+              x2={i * 20 + 20}
+              y2={height}
               stroke={i % 2 === 0 ? baseColor : secondaryColor}
               strokeWidth="1"
             />
@@ -181,14 +186,14 @@ export function GenerativeCover({
 
       {patternType === 2 && (
         // Radial burst
-        <g transform="translate(50 50)" opacity="0.3">
-          {Array.from({ length: 12 }, (_, i) => (
+        <g transform={`translate(${width/2} ${height/2})`} opacity="0.3">
+          {Array.from({ length: 16 }, (_, i) => (
             <line
               key={i}
               x1="0"
               y1="0"
-              x2={Math.cos((i * 30 * Math.PI) / 180) * 50}
-              y2={Math.sin((i * 30 * Math.PI) / 180) * 50}
+              x2={Math.cos((i * 22.5 * Math.PI) / 180) * 80}
+              y2={Math.sin((i * 22.5 * Math.PI) / 180) * 80}
               stroke={baseColor}
               strokeWidth="0.5"
             />
@@ -199,33 +204,18 @@ export function GenerativeCover({
       {patternType === 3 && (
         // Hexagon grid
         <g opacity="0.15">
-          {[0, 1, 2].map((row) =>
-            [0, 1, 2].map((col) => (
+          {[0, 1, 2, 3].map((row) =>
+            [0, 1, 2, 3, 4].map((col) => (
               <polygon
                 key={`${row}-${col}`}
                 points="10,0 20,5 20,15 10,20 0,15 0,5"
-                transform={`translate(${col * 25 + (row % 2) * 12.5 + 10} ${row * 20 + 20})`}
+                transform={`translate(${col * 35 + (row % 2) * 17.5} ${row * 25})`}
                 fill="none"
                 stroke={baseColor}
                 strokeWidth="0.5"
               />
             ))
           )}
-        </g>
-      )}
-
-      {patternType === 4 && (
-        // Wave pattern
-        <g opacity="0.2">
-          {[0, 1, 2].map((i) => (
-            <path
-              key={i}
-              d={`M 0 ${50 + i * 10} Q 25 ${40 + i * 10} 50 ${50 + i * 10} T 100 ${50 + i * 10}`}
-              fill="none"
-              stroke={baseColor}
-              strokeWidth="0.5"
-            />
-          ))}
         </g>
       )}
 
@@ -287,11 +277,11 @@ export function GenerativeCover({
 
       {/* Day number - large, subtle */}
       <text
-        x="50"
-        y="55"
+        x={width / 2}
+        y={height / 2 + 10}
         textAnchor="middle"
         dominantBaseline="middle"
-        fontSize="40"
+        fontSize="60"
         fontWeight="900"
         fill={baseColor}
         opacity="0.08"
@@ -304,34 +294,22 @@ export function GenerativeCover({
       <rect
         x="2"
         y="2"
-        width="96"
-        height="96"
+        width={width - 4}
+        height={height - 4}
         fill="none"
         stroke={baseColor}
         strokeWidth="0.5"
         opacity="0.3"
       />
 
-      {/* Corner accents */}
-      <g stroke={secondaryColor} strokeWidth="1" opacity="0.5">
-        <line x1="2" y1="2" x2="12" y2="2" />
-        <line x1="2" y1="2" x2="2" y2="12" />
-        <line x1="88" y1="2" x2="98" y2="2" />
-        <line x1="98" y1="2" x2="98" y2="12" />
-        <line x1="2" y1="88" x2="2" y2="98" />
-        <line x1="2" y1="98" x2="12" y2="98" />
-        <line x1="88" y1="98" x2="98" y2="98" />
-        <line x1="98" y1="88" x2="98" y2="98" />
-      </g>
-
       {/* Scanlines overlay */}
       <g opacity="0.03">
-        {Array.from({ length: 50 }, (_, i) => (
+        {Array.from({ length: 45 }, (_, i) => (
           <line
             key={i}
             x1="0"
             y1={i * 2}
-            x2="100"
+            x2={width}
             y2={i * 2}
             stroke="white"
             strokeWidth="1"
@@ -369,54 +347,40 @@ export function CoverImage({
   const { currentTheme } = useThemeStore();
   const veilColor = mood === 'light' ? currentTheme.colors.accent : currentTheme.colors.primary;
   
-  // Initialize state with the prop URL immediately
   const [currentSrc, setCurrentSrc] = useState<string | null>(coverUrl || null);
   const [failed, setFailed] = useState(false);
 
-  // Sync state if prop changes later
   useEffect(() => {
     setCurrentSrc(coverUrl || null);
     setFailed(false);
   }, [coverUrl]);
 
-  // Handle image load error - try next extension
   const handleError = () => {
     if (!currentSrc) return;
     
-    // Extensions to try in order
-    // CHANGED: Order is now png -> jpg -> jpeg -> gif
+    // Fallback order: png -> jpg -> jpeg -> gif
     const extensions = ['png', 'jpg', 'jpeg', 'gif'];
-    
-    // Attempt to parse current extension from URL
     const match = currentSrc.match(/\.(png|jpg|jpeg|gif)(?=\?|$)/i);
     
     if (match && match.index !== undefined) {
       const currentExt = match[1].toLowerCase();
       const currentIndex = extensions.indexOf(currentExt);
       
-      // If we found the extension and it's not the last one to try
       if (currentIndex !== -1 && currentIndex < extensions.length - 1) {
         const nextExt = extensions[currentIndex + 1];
-        
-        // Replace the extension in the URL
         const prefix = currentSrc.substring(0, match.index);
         const suffix = currentSrc.substring(match.index + match[0].length);
         const nextSrc = `${prefix}.${nextExt}${suffix}`;
-        
-        // Update source to retry
         setCurrentSrc(nextSrc);
         return;
       }
     }
-    
-    // If we're here, we've run out of options
     setFailed(true);
   };
 
-  // If no URL provided, or all attempts failed, show GenerativeCover
   if (!coverUrl || failed || !currentSrc) {
     return (
-      <div className={`relative ${className}`}>
+      <div className={`relative ${className} overflow-hidden`}>
         <GenerativeCover
           day={day}
           title={title}
@@ -424,7 +388,7 @@ export function CoverImage({
           energy={energy}
           valence={valence}
           tempo={tempo}
-          className="w-full h-full"
+          className="w-full h-full object-cover"
         />
         {showColorVeil && (
           <div 
@@ -439,9 +403,8 @@ export function CoverImage({
     );
   }
 
-  // Try to load actual cover with generative fallback underneath
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className} overflow-hidden`}>
       <GenerativeCover
         day={day}
         title={title}
@@ -449,14 +412,14 @@ export function CoverImage({
         energy={energy}
         valence={valence}
         tempo={tempo}
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full object-cover"
       />
       <img
         src={currentSrc}
         alt={`${title} cover`}
         className="relative z-10 w-full h-full object-cover"
         onError={handleError}
-        loading="eager" // Force immediate loading
+        loading="eager"
       />
       {showColorVeil && (
         <div 

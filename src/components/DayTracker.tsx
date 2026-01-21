@@ -1,18 +1,19 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { useAudioStore } from '../store/useAudioStore';
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { 
   ChevronLeft, 
   ChevronRight, 
   Play, 
-  Pause,
+  Pause, 
   Clock, 
   Music, 
   Activity, 
-  Disc} from 'lucide-react';
+  Disc,
+} from 'lucide-react';
 import { CoverImage } from './GenerativeCover';
 import { getCoverUrl } from '../services/releaseStorage';
 
@@ -24,7 +25,15 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-// 2030 "Reactor" Play Button (Duplicated for standalone component use)
+const BOLD_TEXT_STYLE = {
+  textShadow: '3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000'
+};
+
+const BOLD_TEXT_STYLE_SMALL = {
+  textShadow: '2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000'
+};
+
+// 2030 "Reactor" Play Button
 function ReactorPlayButton({ isPlaying, onClick, color }: { isPlaying: boolean, onClick: (e: any) => void, color: string }) {
   return (
     <button 
@@ -32,28 +41,28 @@ function ReactorPlayButton({ isPlaying, onClick, color }: { isPlaying: boolean, 
       className="group relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center focus:outline-none z-30"
     >
       <motion.div 
-        className="absolute inset-0 rounded-full border-2 border-dashed opacity-80"
-        style={{ borderColor: color }}
+        className="absolute inset-0 rounded-full border-2 border-dashed opacity-100"
+        style={{ borderColor: color, filter: 'drop-shadow(0 0 3px black)' }}
         animate={{ rotate: 360 }}
         transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
       />
       <motion.div 
-        className="absolute inset-2 rounded-full opacity-40 blur-md"
+        className="absolute inset-2 rounded-full opacity-60 blur-md"
         style={{ backgroundColor: color }}
         animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       />
       <div 
-        className="absolute inset-3 rounded-full backdrop-blur-xl border border-white/40 shadow-inner flex items-center justify-center transition-transform group-hover:scale-95 group-active:scale-90"
+        className="absolute inset-3 rounded-full backdrop-blur-xl border-2 border-white/60 shadow-inner flex items-center justify-center transition-transform group-hover:scale-95 group-active:scale-90"
         style={{ 
-          background: `linear-gradient(135deg, ${hexToRgba(color, 0.6)}, ${hexToRgba('#000000', 0.8)})`,
+          background: `linear-gradient(135deg, ${hexToRgba(color, 0.8)}, ${hexToRgba('#000000', 0.9)})`,
           boxShadow: `0 0 20px ${hexToRgba(color, 0.5)}, inset 0 0 10px rgba(255,255,255,0.5)`
         }}
       >
         {isPlaying ? (
-          <Pause className="w-8 h-8 md:w-10 md:h-10 text-white fill-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+          <Pause className="w-8 h-8 md:w-10 md:h-10 text-white fill-white drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]" />
         ) : (
-          <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+          <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1 drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]" />
         )}
       </div>
     </button>
@@ -94,7 +103,6 @@ function StatModule({ icon, label, value, color }: { icon: any, label: string, v
   )
 }
 
-// --- Icons ---
 function WaveformIcon({ className = '', color }: { className?: string, color: string }) {
   return (
     <div className={`relative ${className}`} style={{ color }}>
@@ -165,39 +173,103 @@ export function DayTracker() {
   const { currentTheme } = useThemeStore();
   const { loadAndPlay, currentRelease, isPlaying, togglePlay } = useAudioStore();
   const navigate = useNavigate();
-  const [] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  const { primary, secondary, accent, background, text } = currentTheme.colors;
+  // State for the Carousel logic
+  // Default to URL day, but updates if user slides or global player skips
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState(0);
+
+  const { primary, secondary, accent, text } = currentTheme.colors;
   const totalDays = data?.project.totalDays || 365;
   const progress = (currentDay / totalDays) * 100;
 
-  const todaysRelease = data?.releases.find(r => r.day === currentDay);
-  const prevRelease = data?.releases.filter(r => r.day < currentDay).sort((a, b) => b.day - a.day)[0];
-  const nextDay = currentDay + 1;
-  const hasNextRelease = data?.releases.some(r => r.day === nextDay);
-  const isLight = todaysRelease?.mood === 'light';
+  // Initialize focus index once data loads
+  useEffect(() => {
+    if (data?.releases) {
+      // If a song is playing, sync carousel to it initially
+      if (currentRelease) {
+        const idx = data.releases.findIndex(r => r.day === currentRelease.day);
+        if (idx !== -1) setFocusedIndex(idx);
+      } else {
+        // Otherwise sync to page URL (currentDay)
+        const idx = data.releases.findIndex(r => r.day === currentDay);
+        if (idx !== -1) setFocusedIndex(idx);
+      }
+    }
+  }, [data, currentDay]);
+
+  // SYNC: When Global Player changes track, update Carousel focus
+  useEffect(() => {
+    if (currentRelease && data?.releases) {
+      const idx = data.releases.findIndex(r => r.day === currentRelease.day);
+      if (idx !== -1 && idx !== focusedIndex) {
+        setSlideDirection(idx > focusedIndex ? 1 : -1);
+        setFocusedIndex(idx);
+      }
+    }
+  }, [currentRelease, data?.releases]);
+
+  const handleNext = () => {
+    if (!data?.releases) return;
+    if (focusedIndex < data.releases.length - 1) {
+      setSlideDirection(1);
+      setFocusedIndex(prev => prev + 1);
+      loadAndPlay(data.releases[focusedIndex + 1]);
+    }
+  };
+
+  const handlePrev = () => {
+    if (!data?.releases) return;
+    if (focusedIndex > 0) {
+      setSlideDirection(-1);
+      setFocusedIndex(prev => prev - 1);
+      loadAndPlay(data.releases[focusedIndex - 1]);
+    }
+  };
+
+  const activeRelease = data?.releases[focusedIndex];
+  const isLight = activeRelease?.mood === 'light';
+  const moodColor = isLight ? accent : primary;
   
-  // Is this specific day playing?
-  const isThisPlaying = currentRelease?.day === currentDay;
+  const isThisPlaying = currentRelease?.day === activeRelease?.day;
   const isThisReleaseActive = isThisPlaying && isPlaying;
 
   const handlePlayClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isThisPlaying) {
+    if (isThisReleaseActive) {
       togglePlay();
-    } else if (todaysRelease) {
-      loadAndPlay(todaysRelease);
+    } else if (activeRelease) {
+      loadAndPlay(activeRelease);
     }
-  }, [isThisPlaying, togglePlay, todaysRelease, loadAndPlay]);
-
-  const moodColor = isLight ? accent : primary;
+  }, [isThisReleaseActive, togglePlay, activeRelease, loadAndPlay]);
 
   const formatDisplayDate = (dayNum: number) => {
     const startDate = new Date(data?.project.startDate || '2026-01-01');
     const date = new Date(startDate);
     date.setDate(startDate.getDate() + dayNum - 1);
     return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  // Animation variants for the slide effect
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 300 : -300,
+      opacity: 0,
+      scale: 0.9
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 300 : -300,
+      opacity: 0,
+      scale: 0.9
+    })
   };
 
   return (
@@ -245,124 +317,114 @@ export function DayTracker() {
           </motion.div>
         </div>
 
-        {/* MAIN INTERFACE GRID */}
-        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+        {/* CAROUSEL GRID */}
+        <div className="relative h-[500px] flex items-center justify-center">
           
-          {/* LEFT: Previous Log */}
-          <div className="lg:col-span-2 hidden lg:flex flex-col justify-center">
-            {prevRelease && (
-              <motion.button
-                initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
-                onClick={() => navigate(`/day/${prevRelease.day}`)}
-                className="group relative h-48 w-full border backdrop-blur-sm rounded-lg overflow-hidden transition-all"
-                style={{ backgroundColor: hexToRgba(background, 0.5), borderColor: hexToRgba(text, 0.1) }}
-              >
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ backgroundImage: `linear-gradient(135deg, ${primary}20 0%, ${accent}15 100%)` }} />
-                <div className="p-4 h-full flex flex-col justify-between relative z-10">
-                  <ChevronLeft className="w-6 h-6 transition-colors" style={{ color: hexToRgba(text, 0.4) }} />
-                  <div>
-                    <div className="text-xs font-mono mb-1" style={{ color: hexToRgba(text, 0.3) }}>PREVIOUS_LOG</div>
-                    <div className="font-bold text-sm leading-tight text-left" style={{ color: hexToRgba(text, 0.8) }}>{prevRelease.title}</div>
-                  </div>
-                </div>
-              </motion.button>
-            )}
-          </div>
-
-          {/* CENTER: The "Reactor Card" (Redesigned) */}
-          <motion.div 
-            className="lg:col-span-8 relative group"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+          {/* LEFT BUTTON AREA */}
+          <button 
+            onClick={handlePrev}
+            disabled={focusedIndex === 0}
+            className="absolute left-0 z-20 h-full w-24 md:w-32 flex items-center justify-center group disabled:opacity-0 transition-opacity focus:outline-none"
           >
-             <div 
-               className="relative rounded-xl overflow-hidden border h-[500px] flex flex-col justify-end p-8"
-               style={{ 
-                 borderColor: hexToRgba(text, 0.1),
-                 boxShadow: `0 0 50px -10px ${moodColor}20` 
-               }}
-             >
-                {todaysRelease ? (
-                  <>
-                     {/* FULL BACKGROUND COVER */}
-                     <div className="absolute inset-0 z-0">
-                        <CoverImage
-                          day={todaysRelease.day}
-                          title={todaysRelease.title}
-                          mood={todaysRelease.mood}
-                          energy={todaysRelease.energy}
-                          valence={todaysRelease.valence}
-                          tempo={todaysRelease.tempo}
-                          coverUrl={getCoverUrl(todaysRelease.day, todaysRelease.storageTitle || todaysRelease.title)}
-                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+             <div className="p-4 rounded-full border bg-black/50 backdrop-blur-md group-hover:bg-white/10 transition-colors" style={{ borderColor: hexToRgba(text, 0.2) }}>
+                <ChevronLeft className="w-8 h-8 text-white" />
+             </div>
+          </button>
+
+          {/* RIGHT BUTTON AREA */}
+          <button 
+            onClick={handleNext}
+            disabled={!data?.releases || focusedIndex === data.releases.length - 1}
+            className="absolute right-0 z-20 h-full w-24 md:w-32 flex items-center justify-center group disabled:opacity-0 transition-opacity focus:outline-none"
+          >
+             <div className="p-4 rounded-full border bg-black/50 backdrop-blur-md group-hover:bg-white/10 transition-colors" style={{ borderColor: hexToRgba(text, 0.2) }}>
+                <ChevronRight className="w-8 h-8 text-white" />
+             </div>
+          </button>
+
+          {/* CENTER CARD (ANIMATED) */}
+          <div className="relative w-full max-w-4xl h-full overflow-hidden rounded-xl">
+            <AnimatePresence initial={false} custom={slideDirection} mode='popLayout'>
+              {activeRelease ? (
+                <motion.div 
+                  key={activeRelease.day}
+                  custom={slideDirection}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  className="absolute inset-0 w-full h-full rounded-xl overflow-hidden border bg-black"
+                  style={{ 
+                    borderColor: hexToRgba(text, 0.1),
+                    boxShadow: `0 0 50px -10px ${moodColor}20` 
+                  }}
+                >
+                   {/* FULL BACKGROUND COVER */}
+                   <div className="absolute inset-0 z-0">
+                      <CoverImage
+                        key={activeRelease.day}
+                        day={activeRelease.day}
+                        title={activeRelease.title}
+                        mood={activeRelease.mood}
+                        energy={activeRelease.energy}
+                        valence={activeRelease.valence}
+                        tempo={activeRelease.tempo}
+                        coverUrl={getCoverUrl(activeRelease.day, activeRelease.storageTitle || activeRelease.title)}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay" />
+                   </div>
+
+                   {/* REACTOR BUTTON (Centered) */}
+                   <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                      <div className="pointer-events-auto">
+                        <ReactorPlayButton 
+                          isPlaying={isThisReleaseActive} 
+                          onClick={handlePlayClick} 
+                          color={moodColor}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay" />
-                     </div>
+                      </div>
+                   </div>
 
-                     {/* REACTOR BUTTON (Centered) */}
-                     <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                        <div className="pointer-events-auto">
-                          <ReactorPlayButton 
-                            isPlaying={isThisReleaseActive} 
-                            onClick={handlePlayClick} 
-                            color={moodColor}
-                          />
-                        </div>
-                     </div>
+                   {/* CONTENT OVERLAY */}
+                   <div className="absolute bottom-0 left-0 w-full p-8 z-10 pointer-events-none">
+                      <div className="flex items-center gap-3 mb-3">
+                         <span className="px-2 py-0.5 rounded border bg-black/40 border-white/20 text-[10px] font-mono font-bold uppercase text-white backdrop-blur-md">
+                           {activeRelease.mood}
+                         </span>
+                         <span className="text-xs font-mono text-white/70">{formatDisplayDate(activeRelease.day)}</span>
+                      </div>
 
-                     {/* CONTENT OVERLAY */}
-                     <div className="relative z-10 pointer-events-none">
-                        <div className="flex items-center gap-3 mb-2">
-                           <span className="px-2 py-0.5 rounded border bg-black/40 border-white/20 text-[10px] font-mono font-bold uppercase text-white backdrop-blur-md">
-                             {todaysRelease.mood}
-                           </span>
-                           <span className="text-xs font-mono text-white/70">{formatDisplayDate(currentDay)}</span>
-                        </div>
+                      <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-2 leading-none" style={BOLD_TEXT_STYLE}>
+                         {activeRelease.title}
+                      </h3>
 
-                        <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white mb-2 drop-shadow-lg leading-none">
-                           {todaysRelease.title}
-                        </h3>
-
-                        <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-white/80">
-                           <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {todaysRelease.durationFormatted}</span>
-                           <span className="flex items-center gap-1"><Music className="w-3 h-3" /> {todaysRelease.tempo} BPM</span>
-                        </div>
-                        
-                        <div className="mt-6 pointer-events-auto">
-                           <button 
-                             onClick={() => navigate(`/day/${currentDay}`)}
-                             className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-accent transition-colors"
-                           >
-                             Full Transmission Data <ChevronRight className="w-4 h-4" />
-                           </button>
-                        </div>
-                     </div>
-                  </>
-                ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 bg-black/40">
-                     <Disc className="w-12 h-12 mb-4 animate-spin-slow opacity-50" />
-                     <h3 className="text-xl font-bold mb-2">SIGNAL_LOST</h3>
-                     <p className="font-mono text-sm opacity-50">No transmission found for Day {currentDay}</p>
-                  </div>
-                )}
-             </div>
-          </motion.div>
-
-          {/* RIGHT: Next Log */}
-          <div className="lg:col-span-2 hidden lg:flex flex-col justify-center">
-             <div 
-               className="h-48 w-full border rounded-lg p-4 flex flex-col justify-center items-end opacity-50 relative overflow-hidden"
-               style={{ backgroundColor: hexToRgba(background, 0.2), borderColor: hexToRgba(text, 0.05) }}
-             >
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
-                <ChevronRight className="w-6 h-6 mb-auto" style={{ color: hexToRgba(text, 0.2) }} />
-                <div className="text-right">
-                  <div className="text-xs font-mono mb-1" style={{ color: hexToRgba(text, 0.2) }}>INCOMING</div>
-                  <div className="font-bold text-sm" style={{ color: hexToRgba(text, 0.4) }}>{hasNextRelease ? `Day ${nextDay}` : 'END_OF_LINE'}</div>
+                      <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-white/90 font-bold" style={BOLD_TEXT_STYLE_SMALL}>
+                         <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {activeRelease.durationFormatted}</span>
+                         <span className="flex items-center gap-1"><Music className="w-3 h-3" /> {activeRelease.tempo} BPM</span>
+                      </div>
+                      
+                      <div className="mt-6 pointer-events-auto">
+                         <button 
+                           onClick={() => navigate(`/day/${activeRelease.day}`)}
+                           className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-accent transition-colors"
+                           style={BOLD_TEXT_STYLE_SMALL}
+                         >
+                           Full Transmission Data <ChevronRight className="w-4 h-4" />
+                         </button>
+                      </div>
+                   </div>
+                </motion.div>
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12 bg-black/40">
+                   <Disc className="w-12 h-12 mb-4 animate-spin-slow opacity-50" />
+                   <h3 className="text-xl font-bold mb-2">SIGNAL_LOST</h3>
+                   <p className="font-mono text-sm opacity-50">No transmission found.</p>
                 </div>
-             </div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 

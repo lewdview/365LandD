@@ -70,14 +70,15 @@ export function getReleaseAudioUrl(day: number, title: string, month: string = '
 
 /**
  * Get the cover image URL for a release from the releaseready bucket
- * Format: /covers/january/01 - Dream.jpg
+ * Default to .png to match the preferred fallback order
  */
 export function getReleaseCoverUrl(day: number, title: string, month: string = 'january'): string {
   // FIX: Use relative day (1-31)
   const relativeDay = getRelativeDay(day);
   const paddedDay = String(relativeDay).padStart(2, '0');
   
-  const fileName = `${paddedDay} - ${title}.jpg`;
+  // CHANGE: Default to .png so fallback logic (png -> jpg -> jpeg -> gif) works correctly
+  const fileName = `${paddedDay} - ${title}.png`;
   const monthPath = (month || getMonthFromDay(day)).toLowerCase();
   
   return `${STORAGE_BASE}/covers/${monthPath}/${encodeURIComponent(fileName)}`;
@@ -85,7 +86,7 @@ export function getReleaseCoverUrl(day: number, title: string, month: string = '
 
 /**
  * Get alternative cover URLs to try (for fallback)
- * Tries multiple file formats: jpg, jpeg, png
+ * Tries multiple file formats: png, jpg, jpeg, gif
  */
 export function getCoverUrlVariations(day: number, title: string): string[] {
   const month = getMonthFromDay(day);
@@ -93,8 +94,8 @@ export function getCoverUrlVariations(day: number, title: string): string[] {
   const paddedDay = String(relativeDay).padStart(2, '0');
   const monthPath = month.toLowerCase();
   
-  // Priority order: jpg, jpeg, png
-  const extensions = ['jpg', 'jpeg', 'png'];
+  // Priority order: png, jpg, jpeg, gif
+  const extensions = ['png', 'jpg', 'jpeg', 'gif'];
   
   return extensions.map(ext => {
     const fileName = `${paddedDay} - ${title}.${ext}`;
