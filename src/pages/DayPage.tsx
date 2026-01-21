@@ -18,6 +18,7 @@ import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { useAudioStore } from '../store/useAudioStore';
 import { KaraokeLyrics } from '../components/KaraokeLyrics';
+// FIXED IMPORT: Points to components folder
 import { CoverImage } from '../components/GenerativeCover';
 import { Navigation } from '../components/Navigation';
 import { ThemeChanger } from '../components/ThemeChanger';
@@ -281,19 +282,15 @@ export function DayPage() {
         {release ? (
           <>
             {/* --- HERO CARD (Rectangle Encapsulation) --- */}
+            {/* FIX: aspect-video ensures 16:9 rectangle on all screens */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              // CHANGED: Removed aspect-video on mobile, kept on lg screens. 
-              // Added min-h to ensure it's not squashed on small screens.
-              className="relative w-full lg:aspect-video rounded-[2rem] overflow-hidden shadow-2xl border mb-12 group flex flex-col"
+              className="relative w-full aspect-video rounded-[2rem] overflow-hidden shadow-2xl border mb-12 group flex flex-col"
               style={{ borderColor: hexToRgba(text, 0.1) }}
             >
-              {/* FULL BACKGROUND COVER (Absolute on desktop, relative on mobile to push content?) 
-                  Actually, keeping absolute is better for the "Hero Card" look, but we need to ensure aspect ratio.
-                  Updated to aspect-video for ALL screens to force rectangle.
-              */}
+              {/* FULL BACKGROUND COVER */}
               <div className="absolute inset-0 z-0">
                 <CoverImage
                   key={release.day}
@@ -322,8 +319,7 @@ export function DayPage() {
               </div>
 
               {/* HERO CONTENT OVERLAY */}
-              {/* Added min-height to ensure content fits on mobile even if aspect-ratio squashes it */}
-              <div className="relative z-20 flex flex-col justify-between p-6 md:p-12 lg:p-16 h-full min-h-[500px]">
+              <div className="relative z-20 flex flex-col justify-between p-6 md:p-12 lg:p-16 h-full">
                 
                 {/* Top Bar: Breadcrumbs & Log */}
                 <div className="flex justify-between items-start">
@@ -364,7 +360,7 @@ export function DayPage() {
                         {release.title}
                       </motion.h1>
                       
-                      {/* HERO DESCRIPTION */}
+                      {/* ADDED: Description in Hero */}
                       <motion.p
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -472,7 +468,7 @@ export function DayPage() {
               {/* Main Grid: Info & Lyrics */}
               <div className="grid lg:grid-cols-3 gap-8 mb-20">
                 
-                {/* 1. Mission Data (UPDATED: Shows CustomInfo/Intel) */}
+                {/* 1. Mission Data (Shows CustomInfo/Intel) */}
                 <motion.div 
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -484,7 +480,7 @@ export function DayPage() {
                        <Activity className="w-5 h-5 transition-colors duration-300" style={{ color: moodColor }} /> Mission Data
                      </h3>
                      
-                     {/* CUSTOM INFO IS NOW HERE */}
+                     {/* CUSTOM INFO IS HERE */}
                      {release.customInfo ? (
                         <div 
                           className="prose prose-invert prose-sm leading-relaxed opacity-90 mb-6 font-medium text-sm"
