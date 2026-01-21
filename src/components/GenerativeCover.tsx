@@ -390,16 +390,21 @@ export function CoverImage({
     // Looks for .ext before query params or end of string
     const match = currentSrc.match(/\.(jpg|jpeg|png)(?=\?|$)/i);
     
-    if (match) {
+    if (match && match.index !== undefined) {
       const currentExt = match[1].toLowerCase();
       const currentIndex = extensions.indexOf(currentExt);
       
       // If we found the extension and it's not the last one to try
       if (currentIndex !== -1 && currentIndex < extensions.length - 1) {
         const nextExt = extensions[currentIndex + 1];
-        // Replace the extension in the URL
-        // We use the captured group to ensure we replace the exact match
-        const nextSrc = currentSrc.replace(`.${match[1]}`, `.${nextExt}`);
+        
+        // REPLACEMENT FIX:
+        // Instead of currentSrc.replace() which replaces the first occurrence,
+        // we slice the string at the exact index found by the regex.
+        // This ensures we replace the correct extension even if the filename contains ".jpg"
+        const prefix = currentSrc.substring(0, match.index);
+        const suffix = currentSrc.substring(match.index + match[0].length);
+        const nextSrc = `${prefix}.${nextExt}${suffix}`;
         
         // Update source to retry
         setCurrentSrc(nextSrc);
