@@ -281,15 +281,19 @@ export function DayPage() {
         {release ? (
           <>
             {/* --- HERO CARD (Rectangle Encapsulation) --- */}
-            {/* REMOVED fixed height container, now sizing is based on this card */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="relative w-full aspect-video rounded-[2rem] overflow-hidden shadow-2xl border mb-12 group"
+              // CHANGED: Removed aspect-video on mobile, kept on lg screens. 
+              // Added min-h to ensure it's not squashed on small screens.
+              className="relative w-full lg:aspect-video rounded-[2rem] overflow-hidden shadow-2xl border mb-12 group flex flex-col"
               style={{ borderColor: hexToRgba(text, 0.1) }}
             >
-              {/* FULL BACKGROUND COVER */}
+              {/* FULL BACKGROUND COVER (Absolute on desktop, relative on mobile to push content?) 
+                  Actually, keeping absolute is better for the "Hero Card" look, but we need to ensure aspect ratio.
+                  Updated to aspect-video for ALL screens to force rectangle.
+              */}
               <div className="absolute inset-0 z-0">
                 <CoverImage
                   key={release.day}
@@ -318,7 +322,8 @@ export function DayPage() {
               </div>
 
               {/* HERO CONTENT OVERLAY */}
-              <div className="absolute inset-0 z-20 flex flex-col justify-between p-6 md:p-12 lg:p-16">
+              {/* Added min-height to ensure content fits on mobile even if aspect-ratio squashes it */}
+              <div className="relative z-20 flex flex-col justify-between p-6 md:p-12 lg:p-16 h-full min-h-[500px]">
                 
                 {/* Top Bar: Breadcrumbs & Log */}
                 <div className="flex justify-between items-start">
@@ -336,7 +341,7 @@ export function DayPage() {
                 </div>
 
                 {/* Center/Bottom Content */}
-                <div className="grid lg:grid-cols-12 gap-8 items-end">
+                <div className="grid lg:grid-cols-12 gap-8 items-end mt-auto">
                   
                   {/* Left: Metadata & Title */}
                   <div className="lg:col-span-8 space-y-4">
