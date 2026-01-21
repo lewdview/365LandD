@@ -281,6 +281,7 @@ export function DayPage() {
         {release ? (
           <>
             {/* --- HERO CARD (Rectangle Encapsulation) --- */}
+            {/* REMOVED fixed height container, now sizing is based on this card */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -338,7 +339,7 @@ export function DayPage() {
                 <div className="grid lg:grid-cols-12 gap-8 items-end">
                   
                   {/* Left: Metadata & Title */}
-                  <div className="lg:col-span-8 space-y-6">
+                  <div className="lg:col-span-8 space-y-4">
                     <div className="flex items-center gap-3">
                        <div className="px-3 py-1 rounded border backdrop-blur-md bg-black/60 border-white/30 flex items-center gap-2 shadow-lg">
                          <span className="w-2 h-2 rounded-full animate-pulse transition-colors duration-300" style={{ backgroundColor: moodColor, boxShadow: `0 0 10px ${moodColor}` }} />
@@ -347,15 +348,28 @@ export function DayPage() {
                        <span className="text-xs font-mono text-white font-bold bg-black/40 px-2 py-1 rounded" style={BOLD_TEXT_STYLE_SMALL}>{release.date}</span>
                     </div>
 
-                    <motion.h1 
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="text-5xl md:text-7xl lg:text-9xl font-black uppercase leading-[0.85] tracking-tighter text-white break-words drop-shadow-2xl"
-                      style={BOLD_TEXT_STYLE}
-                    >
-                      {release.title}
-                    </motion.h1>
+                    <div>
+                      <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-5xl md:text-7xl lg:text-9xl font-black uppercase leading-[0.85] tracking-tighter text-white break-words drop-shadow-2xl mb-4"
+                        style={BOLD_TEXT_STYLE}
+                      >
+                        {release.title}
+                      </motion.h1>
+                      
+                      {/* HERO DESCRIPTION */}
+                      <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="text-white/90 text-lg md:text-xl font-medium max-w-2xl leading-relaxed"
+                        style={BOLD_TEXT_STYLE_SMALL}
+                      >
+                        {release.description}
+                      </motion.p>
+                    </div>
 
                     <div className="flex flex-wrap gap-4 pt-2">
                       <TechBadge color={moodColor} label="TEMPO">
@@ -453,7 +467,7 @@ export function DayPage() {
               {/* Main Grid: Info & Lyrics */}
               <div className="grid lg:grid-cols-3 gap-8 mb-20">
                 
-                {/* 1. Description & Stats (NEW INFO SECTION) */}
+                {/* 1. Mission Data (UPDATED: Shows CustomInfo/Intel) */}
                 <motion.div 
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -462,11 +476,19 @@ export function DayPage() {
                 >
                    <div className="p-6 rounded-xl border bg-white/5 backdrop-blur-sm transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
                      <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                       <Activity className="w-5 h-5 transition-colors duration-300" style={{ color: moodColor }} /> Mission Brief
+                       <Activity className="w-5 h-5 transition-colors duration-300" style={{ color: moodColor }} /> Mission Data
                      </h3>
-                     <p className="text-sm leading-relaxed opacity-80 mb-6 font-medium">
-                       {release.description}
-                     </p>
+                     
+                     {/* CUSTOM INFO IS NOW HERE */}
+                     {release.customInfo ? (
+                        <div 
+                          className="prose prose-invert prose-sm leading-relaxed opacity-90 mb-6 font-medium text-sm"
+                          dangerouslySetInnerHTML={{ __html: release.customInfo }}
+                        />
+                     ) : (
+                        <p className="text-sm opacity-50 mb-6 italic">No additional mission intel available.</p>
+                     )}
+
                      <div className="flex flex-wrap gap-2">
                        {release.tags.map(tag => (
                          <span key={tag} className="px-2 py-1 text-[10px] font-mono border rounded bg-black/20 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
