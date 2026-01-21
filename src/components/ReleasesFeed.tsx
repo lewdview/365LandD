@@ -10,7 +10,9 @@ import { getCoverUrl } from '../services/releaseStorage';
 import type { Release } from '../types';
 
 const INITIAL_ITEMS = 12;
-const ITEMS_PER_PAGE = 30;
+const ITEMS_PER_PAGE = 6; // Updated to 6 per page
+
+// Helper to convert hex to rgba
 
 export function ReleasesFeed() {
   const { data, currentDay, selectedRelease, setSelectedRelease } = useStore();
@@ -27,7 +29,7 @@ export function ReleasesFeed() {
       // Initial view: show first 12 with animations
       return allReleases.slice(0, INITIAL_ITEMS);
     }
-    // Paginated view: show current page with 30 per page
+    // Paginated view: show current page with 6 per page
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     return allReleases.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   }, [allReleases, isPaginated, currentPage]);
@@ -187,11 +189,6 @@ export function ReleasesFeed() {
   );
 }
 
-// Custom hook or constant for the "Bold Border" text style
-const BOLD_TEXT_STYLE = {
-  textShadow: '3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000'
-};
-
 // Full animated card for initial view
 function ReleaseCard({
   release,
@@ -204,6 +201,8 @@ function ReleaseCard({
   isSelected: boolean;
   onSelect: () => void;
 }) {
+  const { currentTheme } = useThemeStore();
+  const { primary } = currentTheme.colors;
   const isLight = release.mood === 'light';
 
   return (
@@ -214,16 +213,43 @@ function ReleaseCard({
       transition={{ duration: 0.6, delay: index * 0.1 }}
       whileHover={{ y: -10 }}
       onClick={onSelect}
-      className={`relative group cursor-pointer overflow-hidden rounded-xl transition-all duration-500 h-[500px] ${
+      className={`relative group cursor-pointer overflow-hidden transition-all duration-500 ${
         isSelected ? 'ring-2 ring-neon-yellow' : ''
       }`}
       style={{
-        boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: 'linear-gradient(135deg, rgba(45,48,72,0.6) 0%, rgba(26,28,46,0.8) 100%)',
+        backdropFilter: 'blur(12px)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2)',
+        border: '1px solid rgba(255,255,255,0.08)',
       }}
     >
-      {/* FULL BACKGROUND COVER */}
-      <div className="absolute inset-0 z-0">
+      {/* Mood indicator bar */}
+      <div
+        className={`absolute top-0 left-0 w-full h-1 ${
+          isLight
+            ? 'bg-gradient-to-r from-neon-yellow to-neon-orange'
+            : 'bg-gradient-to-r from-neon-red to-neon-red-dark'
+        }`}
+      />
+
+      {/* Day badge */}
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+        {release.storedAudioUrl && (
+          <span className={`p-1.5 ${isLight ? 'bg-neon-yellow text-void-black' : 'bg-neon-red text-light-cream'}`}>
+            <Volume2 className="w-3 h-3" />
+          </span>
+        )}
+        <span
+          className={`px-3 py-1 text-xs font-mono font-bold ${
+            isLight ? 'bg-neon-yellow text-void-black' : 'bg-neon-red text-light-cream'
+          }`}
+        >
+          DAY {String(release.day).padStart(3, '0')}
+        </span>
+      </div>
+
+      {/* Cover art with generative fallback */}
+      <div className="relative w-full aspect-video overflow-hidden">
         <CoverImage
           day={release.day}
           title={release.title}
@@ -234,90 +260,70 @@ function ReleaseCard({
           coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
           className="w-full h-full object-cover"
         />
-        {/* Dark gradient overlay for readability at bottom, but keeping image visible */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80" />
         
-        {/* Play overlay - centered */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-           <div className={`w-20 h-20 rounded-full flex items-center justify-center backdrop-blur-md ${isLight ? 'bg-neon-yellow/80' : 'bg-neon-red/80'}`}>
-              <Play className="w-10 h-10 text-void-black ml-1" />
-           </div>
-        </div>
-      </div>
+        {/* THEME COLOR INJECTION OVERLAY */}
+        <div 
+          className="absolute inset-0 z-10 mix-blend-overlay opacity-40 pointer-events-none transition-colors duration-500"
+          style={{ backgroundColor: primary }} 
+        />
 
-      {/* Mood indicator bar - Top */}
-      <div
-        className={`absolute top-0 left-0 w-full h-1 z-20 ${
-          isLight
-            ? 'bg-gradient-to-r from-neon-yellow to-neon-orange'
-            : 'bg-gradient-to-r from-neon-red to-neon-red-dark'
-        }`}
-      />
-
-      {/* Day badge - Top Right */}
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-        {release.storedAudioUrl && (
-          <span className={`p-1.5 shadow-lg ${isLight ? 'bg-neon-yellow text-void-black' : 'bg-neon-red text-light-cream'}`}>
-            <Volume2 className="w-4 h-4" />
-          </span>
-        )}
-        <span
-          className={`px-3 py-1 text-sm font-mono font-bold shadow-lg ${
-            isLight ? 'bg-neon-yellow text-void-black' : 'bg-neon-red text-light-cream'
-          }`}
+        {/* Play overlay */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileHover={{ opacity: 1 }}
+          className="absolute inset-0 z-20 flex items-center justify-center bg-void-black/50"
         >
-          DAY {String(release.day).padStart(3, '0')}
-        </span>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className={`w-16 h-16 rounded-full flex items-center justify-center ${
+              isLight ? 'bg-neon-yellow' : 'bg-neon-red'
+            }`}
+          >
+            <Play className="w-8 h-8 text-void-black ml-1" />
+          </motion.div>
+        </motion.div>
       </div>
 
-      {/* Content - Bottom Overlay */}
-      <div className="absolute bottom-0 left-0 w-full p-6 z-20 flex flex-col justify-end h-full pointer-events-none">
-        <div className="transform transition-transform duration-500 group-hover:translate-y-[-10px]">
-          <h3 
-            className="text-3xl font-black text-white mb-2 uppercase leading-tight tracking-tight"
-            style={BOLD_TEXT_STYLE}
-          >
-            {release.title}
-          </h3>
-          
-          <div className="flex items-center gap-4 text-xs font-mono text-white mb-3" style={{ textShadow: '1px 1px 2px black' }}>
-            <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3 text-neon-yellow" />
-              {release.durationFormatted}
-            </span>
-            <span className="flex items-center gap-1">
-              <Music className="w-3 h-3 text-neon-yellow" />
-              {release.tempo} BPM
-            </span>
-            <span className="text-neon-yellow">{release.key}</span>
-          </div>
+      {/* Content */}
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-light-cream mb-2 group-hover:text-neon-yellow transition-colors">
+          {release.title}
+        </h3>
+        <p className="text-light-cream/50 text-sm mb-4 line-clamp-2">{release.description}</p>
 
-          <p className="text-white/90 text-sm mb-4 line-clamp-2 font-medium" style={{ textShadow: '1px 1px 2px black' }}>
-            {release.description}
-          </p>
+        {/* Meta info */}
+        <div className="flex items-center gap-4 text-xs font-mono text-light-cream/40">
+          <span className="flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            {release.durationFormatted}
+          </span>
+          <span className="flex items-center gap-1">
+            <Music className="w-3 h-3" />
+            {release.tempo} BPM
+          </span>
+          <span>{release.key}</span>
+        </div>
 
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {release.tags.slice(0, 3).map((tag) => (
-              <span
-                key={tag}
-                className={`px-2 py-1 text-xs font-bold backdrop-blur-sm ${
-                  isLight
-                    ? 'bg-neon-yellow/20 text-neon-yellow border border-neon-yellow/50'
-                    : 'bg-neon-red/20 text-neon-red border border-neon-red/50'
-                }`}
-                style={{ textShadow: '1px 1px 0 #000' }}
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2 mt-4">
+          {release.tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className={`px-2 py-1 text-xs ${
+                isLight
+                  ? 'bg-neon-yellow/10 text-neon-yellow border border-neon-yellow/30'
+                  : 'bg-neon-red/10 text-neon-red border border-neon-red/30'
+              }`}
+            >
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
 
       {/* Hover border effect */}
       <motion.div
-        className={`absolute inset-0 border-2 z-30 rounded-xl ${
+        className={`absolute inset-0 border-2 ${
           isLight ? 'border-neon-yellow' : 'border-neon-red'
         } opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none`}
       />
@@ -335,21 +341,50 @@ function ReleaseCardSimple({
   isSelected: boolean;
   onSelect: () => void;
 }) {
+  const { currentTheme } = useThemeStore();
+  const { primary, accent } = currentTheme.colors;
   const isLight = release.mood === 'light';
 
   return (
     <article
       onClick={onSelect}
-      className={`relative group cursor-pointer overflow-hidden rounded-xl transition-all duration-300 hover:-translate-y-2 h-[500px] ${
+      className={`relative group cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-2 ${
         isSelected ? 'ring-2 ring-neon-yellow' : ''
       }`}
       style={{
-        boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: `linear-gradient(135deg, ${primary}20 0%, ${accent}15 100%)`,
+        backdropFilter: 'blur(12px)',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.2)',
+        border: '1px solid rgba(255,255,255,0.08)',
       }}
     >
-      {/* FULL BACKGROUND COVER */}
-      <div className="absolute inset-0 z-0">
+      {/* Mood indicator bar */}
+      <div
+        className={`absolute top-0 left-0 w-full h-1 ${
+          isLight
+            ? 'bg-gradient-to-r from-neon-yellow to-neon-orange'
+            : 'bg-gradient-to-r from-neon-red to-neon-red-dark'
+        }`}
+      />
+
+      {/* Day badge */}
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+        {release.storedAudioUrl && (
+          <span className={`p-1.5 ${isLight ? 'bg-neon-yellow text-void-black' : 'bg-neon-red text-light-cream'}`}>
+            <Volume2 className="w-3 h-3" />
+          </span>
+        )}
+        <span
+          className={`px-3 py-1 text-xs font-mono font-bold ${
+            isLight ? 'bg-neon-yellow text-void-black' : 'bg-neon-red text-light-cream'
+          }`}
+        >
+          DAY {String(release.day).padStart(3, '0')}
+        </span>
+      </div>
+
+      {/* Cover art with generative fallback */}
+      <div className="relative w-full aspect-video overflow-hidden">
         <CoverImage
           day={release.day}
           title={release.title}
@@ -360,81 +395,65 @@ function ReleaseCardSimple({
           coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80" />
-      </div>
+        
+        {/* THEME COLOR INJECTION OVERLAY */}
+        <div 
+          className="absolute inset-0 z-10 mix-blend-overlay opacity-40 pointer-events-none transition-colors duration-500"
+          style={{ backgroundColor: primary }} 
+        />
 
-      {/* Mood indicator bar */}
-      <div
-        className={`absolute top-0 left-0 w-full h-1 z-20 ${
-          isLight
-            ? 'bg-gradient-to-r from-neon-yellow to-neon-orange'
-            : 'bg-gradient-to-r from-neon-red to-neon-red-dark'
-        }`}
-      />
-
-      {/* Day badge */}
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-        {release.storedAudioUrl && (
-          <span className={`p-1.5 shadow-lg ${isLight ? 'bg-neon-yellow text-void-black' : 'bg-neon-red text-light-cream'}`}>
-            <Volume2 className="w-4 h-4" />
-          </span>
-        )}
-        <span
-          className={`px-3 py-1 text-sm font-mono font-bold shadow-lg ${
-            isLight ? 'bg-neon-yellow text-void-black' : 'bg-neon-red text-light-cream'
-          }`}
-        >
-          DAY {String(release.day).padStart(3, '0')}
-        </span>
-      </div>
-
-      {/* Content Overlay */}
-      <div className="absolute bottom-0 left-0 w-full p-6 z-20 flex flex-col justify-end h-full pointer-events-none">
-        <div>
-          <h3 
-            className="text-3xl font-black text-white mb-2 uppercase leading-tight tracking-tight group-hover:text-neon-yellow transition-colors"
-            style={BOLD_TEXT_STYLE}
+        {/* Play overlay */}
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-void-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div
+            className={`w-16 h-16 rounded-full flex items-center justify-center transition-transform group-hover:scale-110 ${
+              isLight ? 'bg-neon-yellow' : 'bg-neon-red'
+            }`}
           >
-            {release.title}
-          </h3>
-          
-          <div className="flex items-center gap-4 text-xs font-mono text-white mb-3" style={{ textShadow: '1px 1px 2px black' }}>
-            <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3 text-neon-yellow" />
-              {release.durationFormatted}
-            </span>
-            <span className="flex items-center gap-1">
-              <Music className="w-3 h-3 text-neon-yellow" />
-              {release.tempo} BPM
-            </span>
-            <span className="text-neon-yellow">{release.key}</span>
+            <Play className="w-8 h-8 text-void-black ml-1" />
           </div>
+        </div>
+      </div>
 
-          <p className="text-white/90 text-sm mb-4 line-clamp-2 font-medium" style={{ textShadow: '1px 1px 2px black' }}>
-            {release.description}
-          </p>
+      {/* Content */}
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-light-cream mb-2 group-hover:text-neon-yellow transition-colors">
+          {release.title}
+        </h3>
+        <p className="text-light-cream/50 text-sm mb-4 line-clamp-2">{release.description}</p>
 
-          <div className="flex flex-wrap gap-2">
-            {release.tags.slice(0, 3).map((tag) => (
-              <span
-                key={tag}
-                className={`px-2 py-1 text-xs font-bold backdrop-blur-sm ${
-                  isLight
-                    ? 'bg-neon-yellow/20 text-neon-yellow border border-neon-yellow/50'
-                    : 'bg-neon-red/20 text-neon-red border border-neon-red/50'
-                }`}
-                style={{ textShadow: '1px 1px 0 #000' }}
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
+        {/* Meta info */}
+        <div className="flex items-center gap-4 text-xs font-mono text-light-cream/40">
+          <span className="flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            {release.durationFormatted}
+          </span>
+          <span className="flex items-center gap-1">
+            <Music className="w-3 h-3" />
+            {release.tempo} BPM
+          </span>
+          <span>{release.key}</span>
+        </div>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2 mt-4">
+          {release.tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className={`px-2 py-1 text-xs ${
+                isLight
+                  ? 'bg-neon-yellow/10 text-neon-yellow border border-neon-yellow/30'
+                  : 'bg-neon-red/10 text-neon-red border border-neon-red/30'
+              }`}
+            >
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
 
       {/* Hover border effect */}
       <div
-        className={`absolute inset-0 border-2 z-30 rounded-xl ${
+        className={`absolute inset-0 border-2 ${
           isLight ? 'border-neon-yellow' : 'border-neon-red'
         } opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none`}
       />

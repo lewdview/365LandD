@@ -41,19 +41,19 @@ function ReactorPlayButton({ isPlaying, onClick, color }: { isPlaying: boolean, 
       className="group relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center focus:outline-none z-30"
     >
       <motion.div 
-        className="absolute inset-0 rounded-full border-2 border-dashed opacity-100"
+        className="absolute inset-0 rounded-full border-2 border-dashed opacity-100 transition-colors duration-300"
         style={{ borderColor: color, filter: 'drop-shadow(0 0 3px black)' }}
         animate={{ rotate: 360 }}
         transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
       />
       <motion.div 
-        className="absolute inset-2 rounded-full opacity-60 blur-md"
+        className="absolute inset-2 rounded-full opacity-60 blur-md transition-colors duration-300"
         style={{ backgroundColor: color }}
         animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       />
       <div 
-        className="absolute inset-3 rounded-full backdrop-blur-xl border-2 border-white/60 shadow-inner flex items-center justify-center transition-transform group-hover:scale-95 group-active:scale-90"
+        className="absolute inset-3 rounded-full backdrop-blur-xl border-2 border-white/60 shadow-inner flex items-center justify-center transition-transform group-hover:scale-95 group-active:scale-90 duration-300"
         style={{ 
           background: `linear-gradient(135deg, ${hexToRgba(color, 0.8)}, ${hexToRgba('#000000', 0.9)})`,
           boxShadow: `0 0 20px ${hexToRgba(color, 0.5)}, inset 0 0 10px rgba(255,255,255,0.5)`
@@ -81,21 +81,21 @@ function StatModule({ icon, label, value, color }: { icon: any, label: string, v
         borderColor: hexToRgba(text, 0.05)
       }}
     >
-      <div className="absolute top-0 right-0 w-3 h-3 border-t border-r transition-colors" style={{ borderColor: hexToRgba(text, 0.2) }} />
-      <div className="absolute -right-10 -bottom-10 w-24 h-24 rounded-full blur-[40px] opacity-0 group-hover:opacity-20 transition-opacity duration-500" style={{ background: color }} />
+      <div className="absolute top-0 right-0 w-3 h-3 border-t border-r transition-colors duration-300" style={{ borderColor: hexToRgba(text, 0.2) }} />
+      <div className="absolute -right-10 -bottom-10 w-24 h-24 rounded-full blur-[40px] opacity-0 group-hover:opacity-20 transition-all duration-500" style={{ background: color }} />
 
       <div className="flex justify-between items-start mb-4">
-        <div className="p-2 rounded-md border transition-colors" style={{ backgroundColor: hexToRgba(text, 0.05), borderColor: hexToRgba(text, 0.05) }}>
+        <div className="p-2 rounded-md border transition-colors duration-300" style={{ backgroundColor: hexToRgba(text, 0.05), borderColor: hexToRgba(text, 0.05) }}>
           {icon}
         </div>
         <Activity className="w-4 h-4" style={{ color: hexToRgba(text, 0.1) }} />
       </div>
 
       <div>
-        <div className="text-3xl font-black tabular-nums tracking-tight mb-1" style={{ textShadow: `0 0 20px ${color}40`, color: text }}>
+        <div className="text-3xl font-black tabular-nums tracking-tight mb-1 transition-colors duration-300" style={{ textShadow: `0 0 20px ${color}40`, color: text }}>
            {value}
         </div>
-        <div className="text-[10px] font-mono tracking-widest transition-colors" style={{ color: hexToRgba(text, 0.4) }}>
+        <div className="text-[10px] font-mono tracking-widest transition-colors duration-300" style={{ color: hexToRgba(text, 0.4) }}>
           {label}
         </div>
       </div>
@@ -276,13 +276,13 @@ export function DayTracker() {
     <section 
       id="tracker" 
       ref={containerRef}
-      className="py-24 px-6 md:px-12 lg:px-16 relative overflow-hidden min-h-[90vh] flex flex-col justify-center"
+      className="py-24 px-6 md:px-12 lg:px-16 relative overflow-hidden min-h-[90vh] flex flex-col justify-center transition-colors duration-500"
       style={{ color: text }}
     >
       {/* 2030 Background Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
         <div 
-          className="absolute inset-0"
+          className="absolute inset-0 transition-colors duration-500"
           style={{
             backgroundImage: `linear-gradient(${primary}20 1px, transparent 1px), linear-gradient(90deg, ${primary}20 1px, transparent 1px)`,
             backgroundSize: '40px 40px',
@@ -294,15 +294,15 @@ export function DayTracker() {
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         
         {/* Header HUD */}
-        <div className="flex flex-col md:flex-row items-end justify-between mb-12 border-b pb-6" style={{ borderColor: hexToRgba(text, 0.1) }}>
+        <div className="flex flex-col md:flex-row items-end justify-between mb-12 border-b pb-6 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <div className="flex items-center gap-3 mb-2">
-              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: accent }} />
-              <span className="text-xs font-mono tracking-[0.4em]" style={{ color: hexToRgba(text, 0.4) }}>SYSTEM_TRACKER.v3</span>
+              <span className="w-2 h-2 rounded-full animate-pulse transition-colors duration-300" style={{ background: accent }} />
+              <span className="text-xs font-mono tracking-[0.4em] transition-colors duration-300" style={{ color: hexToRgba(text, 0.4) }}>SYSTEM_TRACKER.v3</span>
             </div>
             <div className="flex items-end gap-3 mb-2">
               <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
-                <span className="text-transparent bg-clip-text" style={{ backgroundImage: `linear-gradient(to right, ${text}, ${hexToRgba(text, 0.5)})` }}>
+                <span className="text-transparent bg-clip-text transition-colors duration-500" style={{ backgroundImage: `linear-gradient(to right, ${text}, ${hexToRgba(text, 0.5)})` }}>
                   Daily Transmission
                 </span>
               </h2>
@@ -310,8 +310,8 @@ export function DayTracker() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-right hidden md:block">
-            <div className="text-xs font-mono mb-1" style={{ color: hexToRgba(text, 0.4) }}>GLOBAL_PROGRESS</div>
-            <div className="text-3xl font-mono font-bold" style={{ color: accent }}>
+            <div className="text-xs font-mono mb-1 transition-colors duration-300" style={{ color: hexToRgba(text, 0.4) }}>GLOBAL_PROGRESS</div>
+            <div className="text-3xl font-mono font-bold transition-colors duration-300" style={{ color: accent }}>
               {Math.round(progress)}<span className="text-sm opacity-50">%</span>
             </div>
           </motion.div>
@@ -326,7 +326,7 @@ export function DayTracker() {
             disabled={focusedIndex === 0}
             className="absolute left-0 z-20 h-full w-24 md:w-32 flex items-center justify-center group disabled:opacity-0 transition-opacity focus:outline-none"
           >
-             <div className="p-4 rounded-full border bg-black/50 backdrop-blur-md group-hover:bg-white/10 transition-colors" style={{ borderColor: hexToRgba(text, 0.2) }}>
+             <div className="p-4 rounded-full border bg-black/50 backdrop-blur-md group-hover:bg-white/10 transition-colors duration-300" style={{ borderColor: hexToRgba(text, 0.2) }}>
                 <ChevronLeft className="w-8 h-8 text-white" />
              </div>
           </button>
@@ -337,7 +337,7 @@ export function DayTracker() {
             disabled={!data?.releases || focusedIndex === data.releases.length - 1}
             className="absolute right-0 z-20 h-full w-24 md:w-32 flex items-center justify-center group disabled:opacity-0 transition-opacity focus:outline-none"
           >
-             <div className="p-4 rounded-full border bg-black/50 backdrop-blur-md group-hover:bg-white/10 transition-colors" style={{ borderColor: hexToRgba(text, 0.2) }}>
+             <div className="p-4 rounded-full border bg-black/50 backdrop-blur-md group-hover:bg-white/10 transition-colors duration-300" style={{ borderColor: hexToRgba(text, 0.2) }}>
                 <ChevronRight className="w-8 h-8 text-white" />
              </div>
           </button>
@@ -354,7 +354,7 @@ export function DayTracker() {
                   animate="center"
                   exit="exit"
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  className="absolute inset-0 w-full h-full rounded-xl overflow-hidden border bg-black"
+                  className="absolute inset-0 w-full h-full rounded-xl overflow-hidden border bg-black transition-colors duration-500"
                   style={{ 
                     borderColor: hexToRgba(text, 0.1),
                     boxShadow: `0 0 50px -10px ${moodColor}20` 
@@ -373,8 +373,15 @@ export function DayTracker() {
                         coverUrl={getCoverUrl(activeRelease.day, activeRelease.storageTitle || activeRelease.title)}
                         className="w-full h-full object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-                      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay" />
+                      
+                      {/* THEME COLOR INJECTION OVERLAY */}
+                      <div 
+                        className="absolute inset-0 z-10 mix-blend-overlay opacity-40 pointer-events-none transition-colors duration-500"
+                        style={{ backgroundColor: primary }} 
+                      />
+
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
+                      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay z-10" />
                    </div>
 
                    {/* REACTOR BUTTON (Centered) */}
@@ -409,7 +416,7 @@ export function DayTracker() {
                       <div className="mt-6 pointer-events-auto">
                          <button 
                            onClick={() => navigate(`/day/${activeRelease.day}`)}
-                           className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-accent transition-colors"
+                           className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-accent transition-colors duration-300"
                            style={BOLD_TEXT_STYLE_SMALL}
                          >
                            Full Transmission Data <ChevronRight className="w-4 h-4" />
