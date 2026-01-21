@@ -84,6 +84,25 @@ export function getReleaseCoverUrl(day: number, title: string, month: string = '
 }
 
 /**
+ * Get alternative cover URLs to try (for fallback)
+ * Tries multiple file formats: jpg, jpeg, png
+ */
+export function getCoverUrlVariations(day: number, title: string): string[] {
+  const month = getMonthFromDay(day);
+  const relativeDay = getRelativeDay(day);
+  const paddedDay = String(relativeDay).padStart(2, '0');
+  const monthPath = month.toLowerCase();
+  
+  // Priority order: jpg, jpeg, png
+  const extensions = ['jpg', 'jpeg', 'png'];
+  
+  return extensions.map(ext => {
+    const fileName = `${paddedDay} - ${title}.${ext}`;
+    return `${STORAGE_BASE}/covers/${monthPath}/${encodeURIComponent(fileName)}`;
+  });
+}
+
+/**
  * Get audio URL using day number and title (auto-detects month)
  */
 export function getAudioUrl(day: number, title: string): string {

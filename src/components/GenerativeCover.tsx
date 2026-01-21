@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useThemeStore } from '../store/useThemeStore';
 
 interface GenerativeCoverProps {
@@ -368,9 +368,51 @@ export function CoverImage({
 }: CoverImageProps) {
   const { currentTheme } = useThemeStore();
   const veilColor = mood === 'light' ? currentTheme.colors.accent : currentTheme.colors.primary;
+  
+  // State for fallback logic
+  const [currentSrc, setCurrentSrc] = useState<string | null>(null);
+  const [failed, setFailed] = useState(false);
 
-  // If no cover URL provided, use generative
-  if (!coverUrl) {
+  // Initialize source when coverUrl prop changes
+  useEffect(() => {
+    setCurrentSrc(coverUrl || null);
+    setFailed(false);
+  }, [coverUrl]);
+
+  // Handle image load error - try next extension
+  const handleError = () => {
+    if (!currentSrc) return;
+    
+    // Extensions to try in order
+    const extensions = ['jpg', 'jpeg', 'png'];
+    
+    // Attempt to parse current extension from URL
+    // Looks for .ext before query params or end of string
+    const match = currentSrc.match(/\.(jpg|jpeg|png)(?=\?|$)/i);
+    
+    if (match) {
+      const currentExt = match[1].toLowerCase();
+      const currentIndex = extensions.indexOf(currentExt);
+      
+      // If we found the extension and it's not the last one to try
+      if (currentIndex !== -1 && currentIndex < extensions.length - 1) {
+        const nextExt = extensions[currentIndex + 1];
+        // Replace the extension in the URL
+        // We use the captured group to ensure we replace the exact match
+        const nextSrc = currentSrc.replace(`.${match[1]}`, `.${nextExt}`);
+        
+        // Update source to retry
+        setCurrentSrc(nextSrc);
+        return;
+      }
+    }
+    
+    // If we're here, we've run out of options or couldn't parse the URL
+    setFailed(true);
+  };
+
+  // If no URL provided, or all attempts failed, show GenerativeCover
+  if (!coverUrl || failed || !currentSrc) {
     return (
       <div className={`relative ${className}`}>
         <GenerativeCover
@@ -395,7 +437,7 @@ export function CoverImage({
     );
   }
 
-  // Try to load actual cover with generative fallback
+  // Try to load actual cover with generative fallback underneath
   return (
     <div className={`relative ${className}`}>
       <GenerativeCover
@@ -408,13 +450,10 @@ export function CoverImage({
         className="absolute inset-0 w-full h-full"
       />
       <img
-        src={coverUrl}
+        src={currentSrc}
         alt={`${title} cover`}
         className="relative z-10 w-full h-full object-cover"
-        onError={(e) => {
-          // Hide broken image, show generative underneath
-          (e.target as HTMLImageElement).style.display = 'none';
-        }}
+        onError={handleError}
       />
       {showColorVeil && (
         <div 
