@@ -14,6 +14,7 @@ import {
   Activity, 
   Disc,
 } from 'lucide-react';
+// This import is already correct in DayTracker (same directory)
 import { CoverImage } from './GenerativeCover';
 import { getCoverUrl } from '../services/releaseStorage';
 
@@ -318,7 +319,8 @@ export function DayTracker() {
         </div>
 
         {/* CAROUSEL GRID */}
-        <div className="relative h-[500px] flex items-center justify-center">
+        {/* FIX: Removed fixed height, added aspect-video to enforce rectangle */}
+        <div className="relative w-full max-w-4xl mx-auto aspect-video flex items-center justify-center">
           
           {/* LEFT BUTTON AREA */}
           <button 
@@ -343,7 +345,7 @@ export function DayTracker() {
           </button>
 
           {/* CENTER CARD (ANIMATED) */}
-          <div className="relative w-full max-w-4xl h-full overflow-hidden rounded-xl">
+          <div className="relative w-full h-full overflow-hidden rounded-xl">
             <AnimatePresence initial={false} custom={slideDirection} mode='popLayout'>
               {activeRelease ? (
                 <motion.div 
@@ -407,6 +409,11 @@ export function DayTracker() {
                       <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-2 leading-none" style={BOLD_TEXT_STYLE}>
                          {activeRelease.title}
                       </h3>
+                      
+                      {/* ADDED DESCRIPTION */}
+                      <p className="text-white/90 text-sm md:text-base font-medium mb-4 line-clamp-2 max-w-2xl" style={BOLD_TEXT_STYLE_SMALL}>
+                        {activeRelease.description}
+                      </p>
 
                       <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-white/90 font-bold" style={BOLD_TEXT_STYLE_SMALL}>
                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {activeRelease.durationFormatted}</span>
