@@ -369,11 +369,11 @@ export function CoverImage({
   const { currentTheme } = useThemeStore();
   const veilColor = mood === 'light' ? currentTheme.colors.accent : currentTheme.colors.primary;
   
-  // State for fallback logic
-  const [currentSrc, setCurrentSrc] = useState<string | null>(null);
+  // Initialize state with the prop URL immediately
+  const [currentSrc, setCurrentSrc] = useState<string | null>(coverUrl || null);
   const [failed, setFailed] = useState(false);
 
-  // Initialize source when coverUrl prop changes
+  // Sync state if prop changes later
   useEffect(() => {
     setCurrentSrc(coverUrl || null);
     setFailed(false);
@@ -384,11 +384,11 @@ export function CoverImage({
     if (!currentSrc) return;
     
     // Extensions to try in order
-    const extensions = ['jpg', 'jpeg', 'png'];
+    // CHANGED: Order is now png -> jpg -> jpeg -> gif
+    const extensions = ['png', 'jpg', 'jpeg', 'gif'];
     
     // Attempt to parse current extension from URL
-    // Looks for .ext before query params or end of string
-    const match = currentSrc.match(/\.(jpg|jpeg|png)(?=\?|$)/i);
+    const match = currentSrc.match(/\.(png|jpg|jpeg|gif)(?=\?|$)/i);
     
     if (match && match.index !== undefined) {
       const currentExt = match[1].toLowerCase();
@@ -398,10 +398,7 @@ export function CoverImage({
       if (currentIndex !== -1 && currentIndex < extensions.length - 1) {
         const nextExt = extensions[currentIndex + 1];
         
-        // REPLACEMENT FIX:
-        // Instead of currentSrc.replace() which replaces the first occurrence,
-        // we slice the string at the exact index found by the regex.
-        // This ensures we replace the correct extension even if the filename contains ".jpg"
+        // Replace the extension in the URL
         const prefix = currentSrc.substring(0, match.index);
         const suffix = currentSrc.substring(match.index + match[0].length);
         const nextSrc = `${prefix}.${nextExt}${suffix}`;
@@ -412,7 +409,7 @@ export function CoverImage({
       }
     }
     
-    // If we're here, we've run out of options or couldn't parse the URL
+    // If we're here, we've run out of options
     setFailed(true);
   };
 
@@ -459,6 +456,7 @@ export function CoverImage({
         alt={`${title} cover`}
         className="relative z-10 w-full h-full object-cover"
         onError={handleError}
+        loading="eager" // Force immediate loading
       />
       {showColorVeil && (
         <div 
