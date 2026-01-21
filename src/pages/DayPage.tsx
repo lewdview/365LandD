@@ -12,7 +12,6 @@ import {
   Sparkles, 
   Activity, 
   Maximize2, 
-  Info, 
   Minimize2
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
@@ -278,346 +277,325 @@ export function DayPage() {
         />
       </div>
 
-      {/* --- IMMERSIVE HERO SECTION --- */}
-      <section className="relative h-[85vh] md:h-[90vh] w-full overflow-hidden flex flex-col justify-end pb-12 z-10">
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-8 pt-24">
         {release ? (
           <>
-            {/* FULL BACKGROUND COVER */}
-            <div className="absolute inset-0 z-0">
-              <CoverImage
-                key={release.day} // KEY FIX: Forces component reset on day change
-                day={release.day}
-                title={release.title}
-                mood={release.mood}
-                energy={release.energy}
-                valence={release.valence}
-                tempo={release.tempo}
-                coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
-                className="w-full h-full object-cover"
-              />
-              
-              {/* THEME COLOR INJECTION OVERLAY */}
-              <div 
-                className="absolute inset-0 z-10 mix-blend-overlay opacity-40 pointer-events-none transition-colors duration-500"
-                style={{ backgroundColor: primary }} 
-              />
-
-              {/* Gradient Overlays for readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30 z-10" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 opacity-60 z-10" />
-              
-              {/* Scanline Texture */}
-              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay z-10" />
-            </div>
-
-            {/* BREADCRUMBS & NAVIGATION */}
-            <div className="absolute top-24 md:top-32 left-0 right-0 z-20 px-4 md:px-12 flex justify-between items-start pointer-events-none">
-               {/* Back to Home */}
-               <Link to="/" className="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-black/40 border border-white/20 hover:bg-white/10 transition-colors">
-                  <Home className="w-4 h-4 text-white" />
-                  <span className="text-xs font-mono font-bold text-white tracking-widest" style={BOLD_TEXT_STYLE_SMALL}>HOME</span>
-               </Link>
-
-               {/* Log Number */}
-               <div className="flex flex-col items-end">
-                 <span className="text-[10px] font-mono tracking-[0.3em] uppercase opacity-90 text-white font-bold" style={BOLD_TEXT_STYLE_SMALL}>Transmission Log</span>
-                 <span className="text-4xl font-black text-white tracking-tighter transition-colors duration-300" style={{ textShadow: `0 0 20px ${moodColor}` }}>
-                   {String(dayNum).padStart(3, '0')}
-                 </span>
-               </div>
-            </div>
-
-            {/* MAIN CONTENT OVERLAY */}
-            <div className="relative z-20 w-full max-w-7xl mx-auto px-4 md:px-12 lg:px-16 grid lg:grid-cols-12 gap-8 items-end">
-              
-              {/* Left Column: Title & Info */}
-              <div className="lg:col-span-8 space-y-6">
-                
-                {/* Mood Badge */}
-                <div className="flex items-center gap-3">
-                   <div className="px-3 py-1 rounded border backdrop-blur-md bg-black/60 border-white/30 flex items-center gap-2 shadow-lg">
-                     <span className="w-2 h-2 rounded-full animate-pulse transition-colors duration-300" style={{ backgroundColor: moodColor, boxShadow: `0 0 10px ${moodColor}` }} />
-                     <span className="text-xs font-mono font-bold uppercase text-white tracking-widest">{release.mood}</span>
-                   </div>
-                   <span className="text-xs font-mono text-white font-bold bg-black/40 px-2 py-1 rounded" style={BOLD_TEXT_STYLE_SMALL}>{release.date}</span>
-                </div>
-
-                {/* Title */}
-                <motion.h1 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                  className="text-5xl md:text-7xl lg:text-9xl font-black uppercase leading-[0.85] tracking-tighter text-white break-words drop-shadow-2xl"
-                  style={BOLD_TEXT_STYLE}
-                >
-                  {release.title}
-                </motion.h1>
-
-                {/* Stats Row */}
-                <div className="flex flex-wrap gap-4 pt-2">
-                  <TechBadge color={moodColor} label="TEMPO">
-                    <Clock className="w-3 h-3" /> {release.tempo} BPM
-                  </TechBadge>
-                  <TechBadge color={moodColor} label="KEY">
-                    <Music className="w-3 h-3" /> {release.key}
-                  </TechBadge>
-                  <TechBadge color={moodColor} label="DURATION">
-                    <Maximize2 className="w-3 h-3" /> {release.durationFormatted}
-                  </TechBadge>
-                </div>
-              </div>
-
-              {/* Right Column: Play Button */}
-              <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-center pb-4">
-                 <motion.div
-                   initial={{ scale: 0, opacity: 0 }}
-                   animate={{ scale: 1, opacity: 1 }}
-                   transition={{ delay: 0.3, type: "spring" }}
-                 >
-                   <ReactorPlayButton 
-                      isPlaying={isThisReleaseActive} 
-                      onClick={handlePlay} 
-                      color={moodColor} 
-                   />
-                 </motion.div>
-                 <div className="mt-4 text-xs font-mono text-white font-bold tracking-widest uppercase bg-black/40 px-3 py-1 rounded border border-white/10 backdrop-blur-sm">
-                    {isThisReleaseActive ? 'Sequence Active' : 'Initiate Sequence'}
-                 </div>
-              </div>
-
-            </div>
-
-            {/* Custom Info Panel (if exists) */}
-            {release.customInfo && (
-               <div className="absolute bottom-4 right-4 md:right-12 z-30 hidden lg:block">
-                 <motion.div 
-                   initial={{ opacity: 0, x: 20 }}
-                   animate={{ opacity: 1, x: 0 }}
-                   transition={{ delay: 1 }}
-                   className="p-4 rounded-lg border backdrop-blur-md bg-black/80 border-white/20 max-w-sm shadow-2xl"
-                 >
-                    <div className="flex items-center gap-2 mb-2 text-white/90">
-                      <Info className="w-3 h-3 text-white" />
-                      <span className="text-[10px] font-mono uppercase font-bold text-white">Additional Intel</span>
-                    </div>
-                    <div 
-                      className="prose prose-invert prose-xs leading-snug text-white/90 line-clamp-3 hover:line-clamp-none transition-all cursor-default font-medium"
-                      dangerouslySetInnerHTML={{ __html: release.customInfo }}
-                    />
-                 </motion.div>
-               </div>
-            )}
-          </>
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <p className="font-mono text-xl opacity-50">INITIALIZING_DATA_STREAM...</p>
-          </div>
-        )}
-      </section>
-
-      {/* --- DASHBOARD SECTION --- */}
-      {release && (
-        <div className="max-w-7xl mx-auto px-4 md:px-12 lg:px-16 z-10 relative -mt-12">
-          
-          {/* Audio Player Strip */}
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12 p-6 rounded-xl border backdrop-blur-xl relative overflow-hidden shadow-2xl transition-colors duration-500"
-            style={{ 
-              backgroundColor: hexToRgba(background, 0.8),
-              borderColor: hexToRgba(text, 0.1)
-            }}
-          >
-             {/* Progress Bar Overlay */}
-             <div className="absolute bottom-0 left-0 h-1 bg-white/5 w-full">
-               <motion.div 
-                 className="h-full transition-colors duration-300" 
-                 style={{ backgroundColor: moodColor, width: `${(currentTime / (duration || 1)) * 100}%` }}
-               />
-             </div>
-             
-             <div className="flex items-center justify-between gap-6 relative z-10">
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest">Current Position</span>
-                  <span className="text-xl font-mono font-bold tabular-nums">{isThisPlaying ? formatTime(currentTime) : '0:00'}</span>
-                </div>
-
-                <div className="flex-1 hidden md:block px-8">
-                   <div className="h-12 w-full flex items-center gap-1 opacity-30">
-                      {/* Fake waveform bars */}
-                      {Array.from({ length: 40 }).map((_, i) => (
-                        <div 
-                          key={i} 
-                          className="flex-1 bg-current rounded-full transition-all duration-300"
-                          style={{ 
-                            height: `${20 + Math.random() * 80}%`,
-                            color: isThisPlaying && (i / 40) < (currentTime / (duration || 1)) ? moodColor : text
-                          }} 
-                        />
-                      ))}
-                   </div>
-                </div>
-
-                <div className="flex flex-col items-end">
-                  <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest">Total Duration</span>
-                  <span className="text-xl font-mono font-bold tabular-nums">{formatTime((isThisPlaying && duration) || release.duration)}</span>
-                </div>
-             </div>
-             
-             {/* Seek Input */}
-             <input 
-               type="range" 
-               min={0} 
-               max={duration || 100} 
-               value={currentTime} 
-               onChange={handleSeek} 
-               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" 
-             />
-          </motion.div>
-
-          {/* Main Grid */}
-          <div className="grid lg:grid-cols-3 gap-8 mb-20">
-            
-            {/* 1. Description & Stats */}
+            {/* --- HERO CARD (Rectangle Encapsulation) --- */}
             <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-1 space-y-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="relative w-full aspect-video rounded-[2rem] overflow-hidden shadow-2xl border mb-12 group"
+              style={{ borderColor: hexToRgba(text, 0.1) }}
             >
-               <div className="p-6 rounded-xl border bg-white/5 backdrop-blur-sm transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
-                 <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                   <Activity className="w-5 h-5 transition-colors duration-300" style={{ color: moodColor }} /> Mission Brief
-                 </h3>
-                 <p className="text-sm leading-relaxed opacity-80 mb-6 font-medium">
-                   {release.description}
-                 </p>
-                 <div className="flex flex-wrap gap-2">
-                   {release.tags.map(tag => (
-                     <span key={tag} className="px-2 py-1 text-[10px] font-mono border rounded bg-black/20 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
-                       #{tag}
-                     </span>
-                   ))}
-                 </div>
-               </div>
+              {/* FULL BACKGROUND COVER */}
+              <div className="absolute inset-0 z-0">
+                <CoverImage
+                  key={release.day}
+                  day={release.day}
+                  title={release.title}
+                  mood={release.mood}
+                  energy={release.energy}
+                  valence={release.valence}
+                  tempo={release.tempo}
+                  coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
+                
+                {/* THEME COLOR INJECTION OVERLAY */}
+                <div 
+                  className="absolute inset-0 z-10 mix-blend-overlay opacity-40 pointer-events-none transition-colors duration-500"
+                  style={{ backgroundColor: primary }} 
+                />
 
-               <div className="space-y-3">
-                  <StatModule label="Energy Output" value={release.energy * 100} color={primary} />
-                  <StatModule label="Valence Level" value={release.valence * 100} color={accent} />
-                  <StatModule label="Danceability" value={(release.danceability || 0) * 100} color={secondary} />
-               </div>
+                {/* Gradient Overlays for readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 opacity-60 z-10" />
+                
+                {/* Scanline Texture */}
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay z-10" />
+              </div>
+
+              {/* HERO CONTENT OVERLAY */}
+              <div className="absolute inset-0 z-20 flex flex-col justify-between p-6 md:p-12 lg:p-16">
+                
+                {/* Top Bar: Breadcrumbs & Log */}
+                <div className="flex justify-between items-start">
+                   <Link to="/" className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-black/40 border border-white/20 hover:bg-white/10 transition-colors">
+                      <Home className="w-4 h-4 text-white" />
+                      <span className="text-xs font-mono font-bold text-white tracking-widest" style={BOLD_TEXT_STYLE_SMALL}>HOME</span>
+                   </Link>
+
+                   <div className="flex flex-col items-end">
+                     <span className="text-[10px] font-mono tracking-[0.3em] uppercase opacity-90 text-white font-bold" style={BOLD_TEXT_STYLE_SMALL}>Transmission Log</span>
+                     <span className="text-4xl font-black text-white tracking-tighter transition-colors duration-300" style={{ textShadow: `0 0 20px ${moodColor}` }}>
+                       {String(dayNum).padStart(3, '0')}
+                     </span>
+                   </div>
+                </div>
+
+                {/* Center/Bottom Content */}
+                <div className="grid lg:grid-cols-12 gap-8 items-end">
+                  
+                  {/* Left: Metadata & Title */}
+                  <div className="lg:col-span-8 space-y-6">
+                    <div className="flex items-center gap-3">
+                       <div className="px-3 py-1 rounded border backdrop-blur-md bg-black/60 border-white/30 flex items-center gap-2 shadow-lg">
+                         <span className="w-2 h-2 rounded-full animate-pulse transition-colors duration-300" style={{ backgroundColor: moodColor, boxShadow: `0 0 10px ${moodColor}` }} />
+                         <span className="text-xs font-mono font-bold uppercase text-white tracking-widest">{release.mood}</span>
+                       </div>
+                       <span className="text-xs font-mono text-white font-bold bg-black/40 px-2 py-1 rounded" style={BOLD_TEXT_STYLE_SMALL}>{release.date}</span>
+                    </div>
+
+                    <motion.h1 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="text-5xl md:text-7xl lg:text-9xl font-black uppercase leading-[0.85] tracking-tighter text-white break-words drop-shadow-2xl"
+                      style={BOLD_TEXT_STYLE}
+                    >
+                      {release.title}
+                    </motion.h1>
+
+                    <div className="flex flex-wrap gap-4 pt-2">
+                      <TechBadge color={moodColor} label="TEMPO">
+                        <Clock className="w-3 h-3" /> {release.tempo} BPM
+                      </TechBadge>
+                      <TechBadge color={moodColor} label="KEY">
+                        <Music className="w-3 h-3" /> {release.key}
+                      </TechBadge>
+                      <TechBadge color={moodColor} label="DURATION">
+                        <Maximize2 className="w-3 h-3" /> {release.durationFormatted}
+                      </TechBadge>
+                    </div>
+                  </div>
+
+                  {/* Right: Reactor Play Button */}
+                  <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-center pb-4">
+                     <motion.div
+                       initial={{ scale: 0, opacity: 0 }}
+                       animate={{ scale: 1, opacity: 1 }}
+                       transition={{ delay: 0.3, type: "spring" }}
+                     >
+                       <ReactorPlayButton 
+                          isPlaying={isThisReleaseActive} 
+                          onClick={handlePlay} 
+                          color={moodColor} 
+                       />
+                     </motion.div>
+                     <div className="mt-4 text-xs font-mono text-white font-bold tracking-widest uppercase bg-black/40 px-3 py-1 rounded border border-white/10 backdrop-blur-sm">
+                        {isThisReleaseActive ? 'Sequence Active' : 'Initiate Sequence'}
+                     </div>
+                  </div>
+                </div>
+              </div>
             </motion.div>
 
-            {/* 2. Lyrics / Poetry */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className={`lg:col-span-2 transition-all duration-500 ${lyricsExpanded ? 'fixed inset-0 z-50 bg-black/95 p-6 overflow-hidden flex flex-col' : 'relative h-full'}`}
-            >
-               <div className={`flex items-center justify-between mb-4 ${lyricsExpanded ? 'container mx-auto max-w-4xl pt-12' : ''}`}>
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 transition-colors duration-300" style={{ color: moodColor }} />
-                  <h3 className="font-bold text-lg">Poetry Stream</h3>
-                </div>
-                <button 
-                  onClick={() => setLyricsExpanded(!lyricsExpanded)}
-                  className="p-2 rounded hover:bg-white/5 transition-colors"
-                >
-                  {lyricsExpanded ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
-                </button>
-              </div>
-
-              <div 
-                className={`rounded-xl border relative overflow-hidden transition-all duration-500 ${lyricsExpanded ? 'flex-1 container mx-auto max-w-4xl' : 'min-h-[500px]'}`}
+            {/* --- DASHBOARD SECTION --- */}
+            <div className="relative z-10">
+              
+              {/* Audio Player Strip */}
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="mb-12 p-6 rounded-xl border backdrop-blur-xl relative overflow-hidden shadow-2xl transition-colors duration-500"
                 style={{ 
-                  backgroundColor: hexToRgba(background, 0.3),
+                  backgroundColor: hexToRgba(background, 0.8),
                   borderColor: hexToRgba(text, 0.1)
                 }}
               >
-                {(playingHasPoetryData || hasPoetryData) ? (
-                   <div className="h-full w-full overflow-y-auto custom-scrollbar">
-                     <KaraokeLyrics
-                        words={lyricsWordsToShow || []}
-                        segments={lyricsSegmentsToShow}
-                        currentTime={currentTimeForLyrics}
-                        onWordClick={handleWordClick}
-                        isPlaying={isPlaying}
-                        fullHeight
-                      />
+                 {/* Progress Bar Overlay */}
+                 <div className="absolute bottom-0 left-0 h-1 bg-white/5 w-full">
+                   <motion.div 
+                     className="h-full transition-colors duration-300" 
+                     style={{ backgroundColor: moodColor, width: `${(currentTime / (duration || 1)) * 100}%` }}
+                   />
+                 </div>
+                 
+                 <div className="flex items-center justify-between gap-6 relative z-10">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest">Current Position</span>
+                      <span className="text-xl font-mono font-bold tabular-nums">{isThisPlaying ? formatTime(currentTime) : '0:00'}</span>
+                    </div>
+
+                    <div className="flex-1 hidden md:block px-8">
+                       <div className="h-12 w-full flex items-center gap-1 opacity-30">
+                          {Array.from({ length: 40 }).map((_, i) => (
+                            <div 
+                              key={i} 
+                              className="flex-1 bg-current rounded-full transition-all duration-300"
+                              style={{ 
+                                height: `${20 + Math.random() * 80}%`,
+                                color: isThisPlaying && (i / 40) < (currentTime / (duration || 1)) ? moodColor : text
+                              }} 
+                            />
+                          ))}
+                       </div>
+                    </div>
+
+                    <div className="flex flex-col items-end">
+                      <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest">Total Duration</span>
+                      <span className="text-xl font-mono font-bold tabular-nums">{formatTime((isThisPlaying && duration) || release.duration)}</span>
+                    </div>
+                 </div>
+                 
+                 <input 
+                   type="range" 
+                   min={0} 
+                   max={duration || 100} 
+                   value={currentTime} 
+                   onChange={handleSeek} 
+                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" 
+                 />
+              </motion.div>
+
+              {/* Main Grid: Info & Lyrics */}
+              <div className="grid lg:grid-cols-3 gap-8 mb-20">
+                
+                {/* 1. Description & Stats */}
+                <motion.div 
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="lg:col-span-1 space-y-6"
+                >
+                   <div className="p-6 rounded-xl border bg-white/5 backdrop-blur-sm transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
+                     <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                       <Activity className="w-5 h-5 transition-colors duration-300" style={{ color: moodColor }} /> Mission Brief
+                     </h3>
+                     <p className="text-sm leading-relaxed opacity-80 mb-6 font-medium">
+                       {release.description}
+                     </p>
+                     <div className="flex flex-wrap gap-2">
+                       {release.tags.map(tag => (
+                         <span key={tag} className="px-2 py-1 text-[10px] font-mono border rounded bg-black/20 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
+                           #{tag}
+                         </span>
+                       ))}
+                     </div>
                    </div>
-                ) : (
-                  <div className="p-8 h-full overflow-y-auto custom-scrollbar">
-                     <pre className="font-mono text-sm leading-loose whitespace-pre-wrap opacity-80">
-                       {release.lyrics || "No lyrical data available for this transmission."}
-                     </pre>
+
+                   <div className="space-y-3">
+                      <StatModule label="Energy Output" value={release.energy * 100} color={primary} />
+                      <StatModule label="Valence Level" value={release.valence * 100} color={accent} />
+                      <StatModule label="Danceability" value={(release.danceability || 0) * 100} color={secondary} />
+                   </div>
+                </motion.div>
+
+                {/* 2. Lyrics / Poetry */}
+                <motion.div 
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className={`lg:col-span-2 transition-all duration-500 ${lyricsExpanded ? 'fixed inset-0 z-50 bg-black/95 p-6 overflow-hidden flex flex-col' : 'relative h-full'}`}
+                >
+                   <div className={`flex items-center justify-between mb-4 ${lyricsExpanded ? 'container mx-auto max-w-4xl pt-12' : ''}`}>
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 transition-colors duration-300" style={{ color: moodColor }} />
+                      <h3 className="font-bold text-lg">Poetry Stream</h3>
+                    </div>
+                    <button 
+                      onClick={() => setLyricsExpanded(!lyricsExpanded)}
+                      className="p-2 rounded hover:bg-white/5 transition-colors"
+                    >
+                      {lyricsExpanded ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
+                    </button>
                   </div>
-                )}
-              </div>
-            </motion.div>
-          </div>
 
-          {/* 3. Video Section */}
-          {release.videoUrl && (
-            <motion.section 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mb-20"
-            >
-              <div className="w-full max-w-5xl mx-auto p-1 rounded-2xl bg-gradient-to-br from-white/10 to-transparent">
-                <div className="rounded-xl overflow-hidden shadow-2xl bg-black aspect-video relative group">
-                  <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-black/60 backdrop-blur rounded text-xs font-mono border border-white/10">VISUAL_LOG</div>
-                  {isYouTube(release.videoUrl) ? (
-                      <iframe
-                        src={release.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
-                        className="absolute inset-0 w-full h-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
+                  <div 
+                    className={`rounded-xl border relative overflow-hidden transition-all duration-500 ${lyricsExpanded ? 'flex-1 container mx-auto max-w-4xl' : 'min-h-[500px]'}`}
+                    style={{ 
+                      backgroundColor: hexToRgba(background, 0.3),
+                      borderColor: hexToRgba(text, 0.1)
+                    }}
+                  >
+                    {(playingHasPoetryData || hasPoetryData) ? (
+                       <div className="h-full w-full overflow-y-auto custom-scrollbar">
+                         <KaraokeLyrics
+                            words={lyricsWordsToShow || []}
+                            segments={lyricsSegmentsToShow}
+                            currentTime={currentTimeForLyrics}
+                            onWordClick={handleWordClick}
+                            isPlaying={isPlaying}
+                            fullHeight
+                          />
+                       </div>
                     ) : (
-                      <video className="absolute inset-0 w-full h-full" src={release.videoUrl} controls playsInline />
+                      <div className="p-8 h-full overflow-y-auto custom-scrollbar">
+                         <pre className="font-mono text-sm leading-loose whitespace-pre-wrap opacity-80">
+                           {release.lyrics || "No lyrical data available for this transmission."}
+                         </pre>
+                      </div>
                     )}
-                </div>
+                  </div>
+                </motion.div>
               </div>
-            </motion.section>
-          )}
 
-          {/* Footer Nav */}
-          <div className="border-t pt-8 flex justify-between items-center transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
-             <button 
-               onClick={() => prevDay && goToDay(prevDay.day)} 
-               disabled={!prevDay}
-               className="flex items-center gap-4 group disabled:opacity-30 disabled:cursor-not-allowed"
-             >
-               <div className="w-12 h-12 rounded-full border flex items-center justify-center group-hover:bg-white/5 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.2) }}>
-                 <ChevronLeft className="w-5 h-5" />
-               </div>
-               <div className="text-left hidden md:block">
-                 <div className="text-[10px] font-mono opacity-50 uppercase">Previous Transmission</div>
-                 <div className="font-bold">Day {prevDay?.day || '000'}</div>
-               </div>
-             </button>
+              {/* 3. Video Section */}
+              {release.videoUrl && (
+                <motion.section 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="mb-20"
+                >
+                  <div className="w-full max-w-5xl mx-auto p-1 rounded-2xl bg-gradient-to-br from-white/10 to-transparent">
+                    <div className="rounded-xl overflow-hidden shadow-2xl bg-black aspect-video relative group">
+                      <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-black/60 backdrop-blur rounded text-xs font-mono border border-white/10">VISUAL_LOG</div>
+                      {isYouTube(release.videoUrl) ? (
+                          <iframe
+                            src={release.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
+                            className="absolute inset-0 w-full h-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <video className="absolute inset-0 w-full h-full" src={release.videoUrl} controls playsInline />
+                        )}
+                    </div>
+                  </div>
+                </motion.section>
+              )}
 
-             <button 
-               onClick={() => nextDay && goToDay(nextDay.day)} 
-               disabled={!nextDay}
-               className="flex items-center gap-4 group text-right disabled:opacity-30 disabled:cursor-not-allowed"
-             >
-               <div className="text-right hidden md:block">
-                 <div className="text-[10px] font-mono opacity-50 uppercase">Next Transmission</div>
-                 <div className="font-bold">Day {nextDay?.day || '000'}</div>
-               </div>
-               <div className="w-12 h-12 rounded-full border flex items-center justify-center group-hover:bg-white/5 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.2) }}>
-                 <ChevronRight className="w-5 h-5" />
-               </div>
-             </button>
+              {/* Footer Nav */}
+              <div className="border-t pt-8 flex justify-between items-center transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
+                 <button 
+                   onClick={() => prevDay && goToDay(prevDay.day)} 
+                   disabled={!prevDay}
+                   className="flex items-center gap-4 group disabled:opacity-30 disabled:cursor-not-allowed"
+                 >
+                   <div className="w-12 h-12 rounded-full border flex items-center justify-center group-hover:bg-white/5 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.2) }}>
+                     <ChevronLeft className="w-5 h-5" />
+                   </div>
+                   <div className="text-left hidden md:block">
+                     <div className="text-[10px] font-mono opacity-50 uppercase">Previous Transmission</div>
+                     <div className="font-bold">Day {prevDay?.day || '000'}</div>
+                   </div>
+                 </button>
+
+                 <button 
+                   onClick={() => nextDay && goToDay(nextDay.day)} 
+                   disabled={!nextDay}
+                   className="flex items-center gap-4 group text-right disabled:opacity-30 disabled:cursor-not-allowed"
+                   >
+                   <div className="text-right hidden md:block">
+                     <div className="text-[10px] font-mono opacity-50 uppercase">Next Transmission</div>
+                     <div className="font-bold">Day {nextDay?.day || '000'}</div>
+                   </div>
+                   <div className="w-12 h-12 rounded-full border flex items-center justify-center group-hover:bg-white/5 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.2) }}>
+                     <ChevronRight className="w-5 h-5" />
+                   </div>
+                 </button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="w-full h-[50vh] flex items-center justify-center">
+            <p className="font-mono text-xl opacity-50">INITIALIZING_DATA_STREAM...</p>
           </div>
-
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Modals */}
       <ManifestoModal isOpen={showManifesto} onClose={() => setShowManifesto(false)} />
