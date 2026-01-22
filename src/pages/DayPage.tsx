@@ -12,13 +12,13 @@ import {
   Sparkles, 
   Activity, 
   Maximize2, 
+  Info, 
   Minimize2
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { useAudioStore } from '../store/useAudioStore';
 import { KaraokeLyrics } from '../components/KaraokeLyrics';
-// FIXED IMPORT: Points to components folder
 import { CoverImage } from '../components/GenerativeCover';
 import { Navigation } from '../components/Navigation';
 import { ThemeChanger } from '../components/ThemeChanger';
@@ -282,7 +282,6 @@ export function DayPage() {
         {release ? (
           <>
             {/* --- HERO CARD (Rectangle Encapsulation) --- */}
-            {/* FIX: aspect-video ensures 16:9 rectangle on all screens */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -360,7 +359,7 @@ export function DayPage() {
                         {release.title}
                       </motion.h1>
                       
-                      {/* ADDED: Description in Hero */}
+                      {/* HERO DESCRIPTION */}
                       <motion.p
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -370,6 +369,26 @@ export function DayPage() {
                       >
                         {release.description}
                       </motion.p>
+
+                      {/* HERO CUSTOM INFO (ADDITIONAL INTEL) */}
+                      {release.customInfo && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.4 }}
+                          className="mt-4"
+                        >
+                          <div className="flex items-center gap-2 mb-1">
+                            <Info className="w-4 h-4 text-white/80" />
+                            <span className="text-xs font-mono uppercase font-bold text-white/80">Additional Intel</span>
+                          </div>
+                          <div 
+                            className="prose prose-invert prose-sm leading-relaxed opacity-90 font-medium text-sm max-w-2xl"
+                            style={BOLD_TEXT_STYLE_SMALL}
+                            dangerouslySetInnerHTML={{ __html: release.customInfo }}
+                          />
+                        </motion.div>
+                      )}
                     </div>
 
                     <div className="flex flex-wrap gap-4 pt-2">
@@ -468,7 +487,7 @@ export function DayPage() {
               {/* Main Grid: Info & Lyrics */}
               <div className="grid lg:grid-cols-3 gap-8 mb-20">
                 
-                {/* 1. Mission Data (Shows CustomInfo/Intel) */}
+                {/* 1. Mission Data (Cleaned up) */}
                 <motion.div 
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -480,16 +499,6 @@ export function DayPage() {
                        <Activity className="w-5 h-5 transition-colors duration-300" style={{ color: moodColor }} /> Mission Data
                      </h3>
                      
-                     {/* CUSTOM INFO IS HERE */}
-                     {release.customInfo ? (
-                        <div 
-                          className="prose prose-invert prose-sm leading-relaxed opacity-90 mb-6 font-medium text-sm"
-                          dangerouslySetInnerHTML={{ __html: release.customInfo }}
-                        />
-                     ) : (
-                        <p className="text-sm opacity-50 mb-6 italic">No additional mission intel available.</p>
-                     )}
-
                      <div className="flex flex-wrap gap-2">
                        {release.tags.map(tag => (
                          <span key={tag} className="px-2 py-1 text-[10px] font-mono border rounded bg-black/20 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>

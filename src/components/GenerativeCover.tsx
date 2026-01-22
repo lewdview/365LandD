@@ -40,7 +40,7 @@ export function GenerativeCover({
   const { currentTheme } = useThemeStore();
   const { primary, accent } = currentTheme.colors;
 
-  // RECTANGLE UPDATE: Using 16:9 aspect ratio (160x90 units)
+  // RECTANGLE UPDATE: 16:9 Aspect Ratio (160x90 units)
   const width = 160;
   const height = 90;
 
@@ -57,7 +57,7 @@ export function GenerativeCover({
     const baseColor = mood === 'light' ? accent : primary;
     const secondaryColor = mood === 'light' ? primary : accent;
     
-    // Generate geometric elements
+    // Generate geometric elements (Spread wider for 16:9)
     const numShapes = 3 + Math.floor(energy * 5);
     const shapes = Array.from({ length: numShapes }, (_, i) => ({
       x: rand(10 + i) * width,
@@ -68,7 +68,7 @@ export function GenerativeCover({
       type: Math.floor(rand(60 + i) * 3), // 0: circle, 1: rect, 2: triangle
     }));
 
-    // Waveform based on tempo (stretched for width)
+    // Waveform based on tempo (Stretched X axis)
     const wavePoints = Array.from({ length: 30 }, (_, i) => {
       const x = (i / 29) * width;
       const y = (height / 2) + Math.sin((i / 29) * Math.PI * (tempo / 40)) * (20 + energy * 20) * rand(70 + i);
@@ -89,7 +89,7 @@ export function GenerativeCover({
       gridLines,
       seed,
     };
-  }, [day, title, mood, energy, valence, tempo, primary, accent]);
+  }, [day, title, mood, energy, valence, tempo, primary, accent, width, height]);
 
   const { patternType, rotation, baseColor, secondaryColor, shapes, wavePoints, gridLines, seed } = coverData;
 
@@ -170,7 +170,7 @@ export function GenerativeCover({
       {patternType === 1 && (
         // Diagonal stripes
         <g opacity="0.2">
-          {Array.from({ length: 15 }, (_, i) => (
+          {Array.from({ length: 20 }, (_, i) => (
             <line
               key={i}
               x1={i * 20 - 40}
@@ -205,7 +205,7 @@ export function GenerativeCover({
         // Hexagon grid
         <g opacity="0.15">
           {[0, 1, 2, 3].map((row) =>
-            [0, 1, 2, 3, 4].map((col) => (
+            [0, 1, 2, 3, 4, 5].map((col) => (
               <polygon
                 key={`${row}-${col}`}
                 points="10,0 20,5 20,15 10,20 0,15 0,5"
@@ -278,7 +278,7 @@ export function GenerativeCover({
       {/* Day number - large, subtle */}
       <text
         x={width / 2}
-        y={height / 2 + 10}
+        y={height / 2 + 15}
         textAnchor="middle"
         dominantBaseline="middle"
         fontSize="60"
@@ -301,6 +301,18 @@ export function GenerativeCover({
         strokeWidth="0.5"
         opacity="0.3"
       />
+
+      {/* Corner accents */}
+      <g stroke={secondaryColor} strokeWidth="1" opacity="0.5">
+        <line x1="2" y1="2" x2="15" y2="2" />
+        <line x1="2" y1="2" x2="2" y2="15" />
+        <line x1={width-15} y1="2" x2={width-2} y2="2" />
+        <line x1={width-2} y1="2" x2={width-2} y2="15" />
+        <line x1="2" y1={height-15} x2="2" y2={height-2} />
+        <line x1="2" y1={height-2} x2="15" y2={height-2} />
+        <line x1={width-15} y1={height-2} x2={width-2} y2={height-2} />
+        <line x1={width-2} y1={height-15} x2={width-2} y2={height-2} />
+      </g>
 
       {/* Scanlines overlay */}
       <g opacity="0.03">
