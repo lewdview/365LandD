@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { useAudioStore } from '../store/useAudioStore';
@@ -176,11 +177,10 @@ export function DayTracker() {
   const containerRef = useRef<HTMLDivElement>(null);
   
   // State for the Carousel logic
-  // Default to URL day, but updates if user slides or global player skips
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState(0);
 
-  // FIXED: Removed 'background' which was unused in this scope
+  // REMOVED 'background' to fix TS error
   const { primary, secondary, accent, text } = currentTheme.colors;
   const totalDays = data?.project.totalDays || 365;
   const progress = (currentDay / totalDays) * 100;
@@ -188,12 +188,10 @@ export function DayTracker() {
   // Initialize focus index once data loads
   useEffect(() => {
     if (data?.releases) {
-      // If a song is playing, sync carousel to it initially
       if (currentRelease) {
         const idx = data.releases.findIndex(r => r.day === currentRelease.day);
         if (idx !== -1) setFocusedIndex(idx);
       } else {
-        // Otherwise sync to page URL (currentDay)
         const idx = data.releases.findIndex(r => r.day === currentDay);
         if (idx !== -1) setFocusedIndex(idx);
       }
@@ -319,7 +317,7 @@ export function DayTracker() {
         </div>
 
         {/* CAROUSEL GRID */}
-        {/* FIX: aspect-video enforces rectangle */}
+        {/* Forced Aspect Video (16:9) */}
         <div className="relative w-full max-w-4xl mx-auto aspect-video flex items-center justify-center">
           
           {/* LEFT BUTTON AREA */}
@@ -410,17 +408,17 @@ export function DayTracker() {
                          {activeRelease.title}
                       </h3>
                       
-                      {/* ADDED DESCRIPTION */}
+                      {/* DESCRIPTION */}
                       <p className="text-white/90 text-sm md:text-base font-medium mb-4 line-clamp-2 max-w-2xl" style={BOLD_TEXT_STYLE_SMALL}>
                         {activeRelease.description}
                       </p>
                       
-                      {/* ADDED CUSTOM INFO (Extra Description) */}
+                      {/* CUSTOM INFO (EXTRA DESCRIPTION) - ADDED HERE */}
                       {activeRelease.customInfo && (
                         <div 
                           className="prose prose-invert prose-sm leading-relaxed opacity-90 mb-4 font-medium text-xs md:text-sm line-clamp-2 max-w-xl"
                           style={BOLD_TEXT_STYLE_SMALL}
-                          dangerouslySetInnerHTML={{ __html: activeRelease.customInfo }}
+                          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(activeRelease.customInfo) }}
                         />
                       )}
 

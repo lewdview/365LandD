@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import DOMPurify from 'dompurify';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -370,7 +371,7 @@ export function DayPage() {
                         {release.description}
                       </motion.p>
 
-                      {/* HERO CUSTOM INFO (ADDITIONAL INTEL) - MOVED HERE */}
+                      {/* HERO CUSTOM INFO (ADDITIONAL INTEL) */}
                       {release.customInfo && (
                         <motion.div 
                           initial={{ opacity: 0, y: 10 }}
@@ -385,7 +386,7 @@ export function DayPage() {
                           <div 
                             className="prose prose-invert prose-sm leading-relaxed opacity-90 font-medium text-sm max-w-2xl"
                             style={BOLD_TEXT_STYLE_SMALL}
-                            dangerouslySetInnerHTML={{ __html: release.customInfo }}
+                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(release.customInfo) }}
                           />
                         </motion.div>
                       )}
