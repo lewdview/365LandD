@@ -4,7 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { useStore } from './store/useStore';
 import { Loader } from './components/Loader';
 import { HomePage } from './pages/HomePage';
-import { DayPage } from './pages/DayPage_gated';
+import { DayPage } from './pages/DayPage';
 import { GlobalAudioPlayer } from './components/GlobalAudioPlayer';
 
 function App() {
