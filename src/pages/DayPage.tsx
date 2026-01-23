@@ -370,7 +370,7 @@ export function DayPage() {
                         {release.description}
                       </motion.p>
 
-                      {/* HERO CUSTOM INFO (ADDITIONAL INTEL) */}
+                      {/* HERO CUSTOM INFO (ADDITIONAL INTEL) - MOVED HERE */}
                       {release.customInfo && (
                         <motion.div 
                           initial={{ opacity: 0, y: 10 }}
@@ -380,7 +380,7 @@ export function DayPage() {
                         >
                           <div className="flex items-center gap-2 mb-1">
                             <Info className="w-4 h-4 text-white/80" />
-                            <span className="text-xs font-mono uppercase font-bold text-white/80">Additional Intel</span>
+                            <span className="text-xs font-mono uppercase font-bold text-white/80" style={BOLD_TEXT_STYLE_SMALL}>Additional Intel</span>
                           </div>
                           <div 
                             className="prose prose-invert prose-sm leading-relaxed opacity-90 font-medium text-sm max-w-2xl"
@@ -487,7 +487,7 @@ export function DayPage() {
               {/* Main Grid: Info & Lyrics */}
               <div className="grid lg:grid-cols-3 gap-8 mb-20">
                 
-                {/* 1. Mission Data (Cleaned up) */}
+                {/* 1. Mission Data */}
                 <motion.div 
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}

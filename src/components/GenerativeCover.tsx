@@ -57,7 +57,7 @@ export function GenerativeCover({
     const baseColor = mood === 'light' ? accent : primary;
     const secondaryColor = mood === 'light' ? primary : accent;
     
-    // Generate geometric elements (Spread wider for 16:9)
+    // Generate geometric elements
     const numShapes = 3 + Math.floor(energy * 5);
     const shapes = Array.from({ length: numShapes }, (_, i) => ({
       x: rand(10 + i) * width,
@@ -68,7 +68,7 @@ export function GenerativeCover({
       type: Math.floor(rand(60 + i) * 3), // 0: circle, 1: rect, 2: triangle
     }));
 
-    // Waveform based on tempo (Stretched X axis)
+    // Waveform based on tempo
     const wavePoints = Array.from({ length: 30 }, (_, i) => {
       const x = (i / 29) * width;
       const y = (height / 2) + Math.sin((i / 29) * Math.PI * (tempo / 40)) * (20 + energy * 20) * rand(70 + i);
@@ -150,7 +150,7 @@ export function GenerativeCover({
 
       {/* Pattern based on type */}
       {patternType === 0 && (
-        // Concentric circles (centered)
+        // Concentric circles
         <g transform={`rotate(${rotation} ${width/2} ${height/2})`}>
           {[1, 2, 3, 4].map((i) => (
             <circle

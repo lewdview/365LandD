@@ -14,7 +14,6 @@ import {
   Activity, 
   Disc,
 } from 'lucide-react';
-// This import is already correct in DayTracker (same directory)
 import { CoverImage } from './GenerativeCover';
 import { getCoverUrl } from '../services/releaseStorage';
 
@@ -181,6 +180,7 @@ export function DayTracker() {
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState(0);
 
+  // FIXED: Removed 'background' which was unused in this scope
   const { primary, secondary, accent, text } = currentTheme.colors;
   const totalDays = data?.project.totalDays || 365;
   const progress = (currentDay / totalDays) * 100;
@@ -319,7 +319,7 @@ export function DayTracker() {
         </div>
 
         {/* CAROUSEL GRID */}
-        {/* FIX: Removed fixed height, added aspect-video to enforce rectangle */}
+        {/* FIX: aspect-video enforces rectangle */}
         <div className="relative w-full max-w-4xl mx-auto aspect-video flex items-center justify-center">
           
           {/* LEFT BUTTON AREA */}
@@ -414,6 +414,15 @@ export function DayTracker() {
                       <p className="text-white/90 text-sm md:text-base font-medium mb-4 line-clamp-2 max-w-2xl" style={BOLD_TEXT_STYLE_SMALL}>
                         {activeRelease.description}
                       </p>
+                      
+                      {/* ADDED CUSTOM INFO (Extra Description) */}
+                      {activeRelease.customInfo && (
+                        <div 
+                          className="prose prose-invert prose-sm leading-relaxed opacity-90 mb-4 font-medium text-xs md:text-sm line-clamp-2 max-w-xl"
+                          style={BOLD_TEXT_STYLE_SMALL}
+                          dangerouslySetInnerHTML={{ __html: activeRelease.customInfo }}
+                        />
+                      )}
 
                       <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-white/90 font-bold" style={BOLD_TEXT_STYLE_SMALL}>
                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {activeRelease.durationFormatted}</span>
