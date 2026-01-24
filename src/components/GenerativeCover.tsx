@@ -40,7 +40,7 @@ export function GenerativeCover({
   const { currentTheme } = useThemeStore();
   const { primary, accent } = currentTheme.colors;
 
-  // RECTANGLE UPDATE: 16:9 Aspect Ratio (160x90 units)
+  // 16:9 Aspect Ratio (160x90 units)
   const width = 160;
   const height = 90;
 
@@ -57,18 +57,18 @@ export function GenerativeCover({
     const baseColor = mood === 'light' ? accent : primary;
     const secondaryColor = mood === 'light' ? primary : accent;
     
-    // Generate geometric elements
+    // Generate geometric elements (Distributed across wider width)
     const numShapes = 3 + Math.floor(energy * 5);
     const shapes = Array.from({ length: numShapes }, (_, i) => ({
       x: rand(10 + i) * width,
       y: rand(20 + i) * height,
-      size: 10 + rand(30 + i) * 60, // Larger shapes for wider canvas
+      size: 10 + rand(30 + i) * 60,
       rotation: rand(40 + i) * 360,
       opacity: 0.1 + rand(50 + i) * 0.4,
       type: Math.floor(rand(60 + i) * 3), // 0: circle, 1: rect, 2: triangle
     }));
 
-    // Waveform based on tempo
+    // Waveform based on tempo (Stretched X axis)
     const wavePoints = Array.from({ length: 30 }, (_, i) => {
       const x = (i / 29) * width;
       const y = (height / 2) + Math.sin((i / 29) * Math.PI * (tempo / 40)) * (20 + energy * 20) * rand(70 + i);
@@ -97,7 +97,6 @@ export function GenerativeCover({
     <svg
       viewBox={`0 0 ${width} ${height}`}
       className={className}
-      style={{ background: '#0a0a0f' }}
       preserveAspectRatio="xMidYMid slice"
     >
       <defs>
@@ -150,7 +149,6 @@ export function GenerativeCover({
 
       {/* Pattern based on type */}
       {patternType === 0 && (
-        // Concentric circles
         <g transform={`rotate(${rotation} ${width/2} ${height/2})`}>
           {[1, 2, 3, 4].map((i) => (
             <circle
@@ -168,7 +166,6 @@ export function GenerativeCover({
       )}
 
       {patternType === 1 && (
-        // Diagonal stripes
         <g opacity="0.2">
           {Array.from({ length: 20 }, (_, i) => (
             <line
@@ -185,7 +182,6 @@ export function GenerativeCover({
       )}
 
       {patternType === 2 && (
-        // Radial burst
         <g transform={`translate(${width/2} ${height/2})`} opacity="0.3">
           {Array.from({ length: 16 }, (_, i) => (
             <line
@@ -202,7 +198,6 @@ export function GenerativeCover({
       )}
 
       {patternType === 3 && (
-        // Hexagon grid
         <g opacity="0.15">
           {[0, 1, 2, 3].map((row) =>
             [0, 1, 2, 3, 4, 5].map((col) => (
