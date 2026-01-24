@@ -140,7 +140,6 @@ function ReactorPlayButton({ isPlaying, onClick, color }: { isPlaying: boolean, 
 export function DayPage() {
   const { day } = useParams<{ day: string }>();
   const navigate = useNavigate();
-  // Added currentDay for GATING check
   const { data, fetchData, currentDay } = useStore();
   const { currentTheme } = useThemeStore();
   const { primary, secondary, accent, background, text } = currentTheme.colors;
@@ -187,14 +186,12 @@ export function DayPage() {
     }
   }, [data, dayNum]);
 
-  // --- GATING IMPLEMENTATION ---
+  // GATING LOGIC
   useEffect(() => {
-    // If data is loaded and user tries to access a future day, redirect to current day
     if (data && currentDay && dayNum > currentDay) {
-      navigate(`/day/${currentDay}`);
+       navigate(`/day/${currentDay}`, { replace: true });
     }
   }, [data, currentDay, dayNum, navigate]);
-  // -----------------------------
 
   useEffect(() => {
     const handleOpenManifesto = () => setShowManifesto(true);
@@ -242,7 +239,7 @@ export function DayPage() {
   };
 
   const prevDay = data?.releases.filter(r => r.day < dayNum && r.day >= 1).sort((a, b) => b.day - a.day)[0];
-  const nextDay = data?.releases.filter(r => r.day > dayNum).sort((a, b) => a.day - b.day)[0];
+  const nextDay = data?.releases.filter(r => r.day > dayNum && r.day <= currentDay).sort((a, b) => a.day - b.day)[0];
 
   const moodColor = (release?.mood === 'light') ? accent : primary;
 
@@ -272,8 +269,9 @@ export function DayPage() {
     );
   }
 
+  // UPDATED: Increased top padding (pt-32/40) and bottom padding (pb-64) for navigation visibility
   return (
-    <div className="min-h-screen pb-48 relative overflow-hidden transition-colors duration-500" style={{ backgroundColor: background, color: text }}>
+    <div className="min-h-screen pb-64 relative overflow-hidden transition-colors duration-500" style={{ backgroundColor: background, color: text }}>
       <Navigation />
       <ThemeChanger />
 
@@ -289,7 +287,7 @@ export function DayPage() {
         />
       </div>
 
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-8 pt-24">
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-8 pt-32 md:pt-40">
         {release ? (
           <>
             {/* --- HERO CARD (Rectangle Encapsulation) --- */}

@@ -31,17 +31,23 @@ export const useStore = create<AppState>((set, get) => ({
       // Defined at the top so they apply regardless of data source
       const contentOverrides: Record<number, { title?: string; info?: string }> = {
         1: { 
-          title: "The Beginning", 
-          info: "<p>This is where it all started. <strong>Day 1</strong> of the 365-day challenge.</p>" 
+          title: "We're Going Crazy World", 
+          info: `
+            <div class="p-4 border border-green-500/30 bg-green-500/10 rounded mb-4">
+              <h4 class="font-bold text-green-400 mb-2 font-mono">PRODUCTION INFO</h4>
+              <p>ONE TAKE FREESTYLE. ONE TAKE AD-LIB - Probably the best adlib track I have done.</p>
+            </div>
+            <p><strong>the start.</strong> One Take Freestyle, and a nice one-take adlib track. Conceptually, this is about putting so much emphasis on material that your fear of losing it makes you disconnect from the all-conscious and become a narcissistic being that doesn't question anything other than your planned opposition. Thus, making us all crazy and judgmental.</p>
+          `
         },
         18: { 
           title: "Goods 4 Me", 
           info: `
             <div class="p-4 border border-green-500/30 bg-green-500/10 rounded mb-4">
-              <h4 class="font-bold text-green-400 mb-2 font-mono">PRODUCTION_NOTE</h4>
-              <p>I utilized a new sampling technique here that distorts the vocal chop into a rhythmic element.</p>
+              <h4 class="font-bold text-green-400 mb-2 font-mono">PRODUCTION INFO</h4>
+              <p>ONE TAKE FREESTYLE. ONE TAKE AD-LIB - Probably the best adlib track I have done.</p>
             </div>
-            <p>The energy of this track captures the momentum of the early phase.</p>
+            <p> Conceptually this song is about really understanding how being a people pleaser and not taking care of yourself can lead to resentment, hate, depression - but it takes effort to do well and good to you. Its a struggle - this is what this song is about.</p>
           `
         },
         // Add more days here...

@@ -210,9 +210,14 @@ export function DayTracker() {
 
   const handleNext = () => {
     if (!data?.releases) return;
-    if (focusedIndex < data.releases.length - 1) {
-      setFocusedIndex(prev => prev + 1);
-    }
+    const nextIndex = focusedIndex + 1;
+    // Bounds check
+    if (nextIndex >= data.releases.length) return;
+
+    // GATING Check: Do not proceed if next day is in future
+    if (data.releases[nextIndex].day > currentDay) return;
+
+    setFocusedIndex(nextIndex);
   };
 
   const handlePrev = () => {
@@ -231,7 +236,7 @@ export function DayTracker() {
     return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
   };
 
-  // --- RENDER CARD HELPER ---
+  // Helper to render a single card
   const renderCard = (index: number, position: 'center' | 'left' | 'right') => {
     const release = data?.releases[index];
     if (!release) return null;
@@ -250,7 +255,10 @@ export function DayTracker() {
           loadAndPlay(release);
         }
       } else {
-        setFocusedIndex(index); // Navigate to side card
+        // Gating Check on Click
+        if (release.day <= currentDay) {
+           setFocusedIndex(index);
+        }
       }
     };
 
@@ -260,29 +268,29 @@ export function DayTracker() {
         layout
         initial={false}
         animate={{
-          scale: isCenter ? 1 : 0.9, // Less scaling on sides to keep it visible
-          opacity: isCenter ? 1 : 0.4, // Faded sides
-          x: position === 'left' ? '-110%' : position === 'right' ? '110%' : '0%', // Push sides further out
-          zIndex: isCenter ? 20 : 10,
-          rotateY: position === 'left' ? 10 : position === 'right' ? -10 : 0,
+          scale: isCenter ? 1 : 0.85,
+          opacity: isCenter ? 1 : 0.4,
+          x: position === 'left' ? '-60%' : position === 'right' ? '60%' : '0%',
+          zIndex: isCenter ? 10 : 0,
+          rotateY: position === 'left' ? 15 : position === 'right' ? -15 : 0,
         }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-        // MOBILE VS DESKTOP LAYOUT
-        // lg:absolute = Carousel logic only active on Large screens
-        // Default: Relative block for mobile stacking
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        // MOBILE: Flex column to stack image and text separate.
+        // DESKTOP: Absolute positioning for 3D effect.
         className={`
           w-full rounded-2xl overflow-hidden border shadow-2xl cursor-pointer
-          flex flex-col lg:block lg:absolute lg:max-w-4xl lg:aspect-video
+          flex flex-col
+          lg:absolute lg:max-w-4xl lg:aspect-video lg:block
         `}
         style={{ 
+          // Dynamic background based on theme to ensure readability on mobile stack
           backgroundColor: hexToRgba(background, 0.95),
-          borderColor: hexToRgba(text, isCenter ? 0.3 : 0.1),
-          boxShadow: isCenter ? `0 20px 50px -10px ${moodColor}40` : 'none'
+          borderColor: hexToRgba(text, isCenter ? 0.2 : 0.05),
+          boxShadow: isCenter ? `0 0 50px -10px ${moodColor}30` : 'none'
         }}
         onClick={handleCardClick}
       >
         {/* --- ARTWORK CONTAINER --- */}
-        {/* Mobile: Full width, Aspect Video. Desktop: Absolute Inset 0 */}
         <div className="relative w-full aspect-video lg:absolute lg:inset-0 z-0">
           <CoverImage
             key={release.day}
@@ -295,35 +303,38 @@ export function DayTracker() {
             coverUrl={getCoverUrl(release.day, release.storageTitle || release.title)}
             className="w-full h-full object-cover"
           />
-          {/* Theme Masks */}
+          {/* Theme Mask */}
           <div 
             className="absolute inset-0 z-10 mix-blend-overlay opacity-40 pointer-events-none transition-colors duration-500"
             style={{ backgroundColor: primary }} 
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent z-10 opacity-60 lg:opacity-100" />
           
-          {/* PLAY BUTTON (Floating on Image) */}
-          <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-            <div className="pointer-events-auto transform scale-75 md:scale-100">
-              <ReactorPlayButton 
-                isPlaying={isThisReleaseActive} 
-                onClick={() => isThisReleaseActive ? togglePlay() : loadAndPlay(release)} 
-                color={moodColor}
-                textColor={text}
-              />
+          {/* Desktop Overlay Gradient only */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10 hidden lg:block" />
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay z-10" />
+
+           {/* PLAY BUTTON (Floating on Image) */}
+           <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+              <div className="pointer-events-auto transform scale-75 md:scale-100">
+                <ReactorPlayButton 
+                  isPlaying={isThisReleaseActive} 
+                  onClick={() => isThisReleaseActive ? togglePlay() : loadAndPlay(release)} 
+                  color={moodColor}
+                  textColor={text}
+                />
+              </div>
             </div>
-          </div>
         </div>
 
         {/* --- TEXT CONTENT --- */}
         {/* Mobile: Padded block below image. Desktop: Absolute overlay on image */}
         <div className={`
-           relative z-20 p-6 md:p-8 flex flex-col justify-end h-full
-           lg:absolute lg:bottom-0 lg:left-0 lg:w-full lg:bg-gradient-to-t lg:from-black/90 lg:via-black/50 lg:to-transparent
-           bg-transparent
+           relative z-20 flex flex-col justify-end
+           p-8 pb-12 gap-4
+           lg:absolute lg:bottom-0 lg:left-0 lg:w-full lg:h-full lg:p-8 lg:bg-transparent
         `}>
           {/* Header Row */}
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex items-center gap-3 mb-2">
              <span className="px-2 py-0.5 rounded border text-[10px] font-mono font-bold uppercase backdrop-blur-md"
                    style={{ borderColor: hexToRgba(text, 0.2), backgroundColor: hexToRgba(background, 0.4), color: text }}>
                {release.mood}
@@ -332,48 +343,47 @@ export function DayTracker() {
           </div>
 
           {/* Title */}
-          <h3 className="text-2xl md:text-5xl font-black uppercase tracking-tighter mb-3 leading-none" 
+          <h3 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-2 leading-none" 
               style={{ ...BOLD_TEXT_STYLE, color: text }}>
              {release.title}
           </h3>
           
           {/* Description */}
-          <p className="text-sm md:text-base font-medium mb-4 leading-relaxed opacity-90 line-clamp-3 md:line-clamp-none" 
+          <p className="text-sm md:text-base font-medium mb-3 line-clamp-2 lg:line-clamp-1 max-w-2xl opacity-90" 
              style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}>
             {release.description}
           </p>
 
-          {/* Extra Info */}
+          {/* Custom Info */}
           {release.customInfo && (
-             <div className="mb-4 hidden md:block">
-               <div className="flex items-center gap-2 mb-1 opacity-80">
+             <div className="mb-3 hidden md:block">
+               <div className="flex items-center gap-2 mb-1">
                   <Info className="w-3 h-3" style={{ color: text }} /> 
-                  <span className="text-[10px] font-mono uppercase font-bold" style={{ color: text }}>Intel</span>
+                  <span className="text-[10px] font-mono uppercase font-bold" style={{ color: text }}>Additional Intel</span>
                </div>
                <div 
-                  className="prose prose-invert prose-sm leading-tight opacity-80 font-medium text-xs line-clamp-2"
+                  className="prose prose-invert prose-sm leading-tight opacity-80 font-medium text-xs line-clamp-2 max-w-xl"
                   style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}
                   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(release.customInfo) }}
                />
              </div>
           )}
 
-          {/* Footer Stats & Button */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mt-auto">
-            <div className="flex items-center gap-4 text-xs font-mono font-bold opacity-80" style={{ color: text }}>
-               <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {release.durationFormatted}</span>
-               <span className="flex items-center gap-1"><Music className="w-3 h-3" /> {release.tempo} BPM</span>
-            </div>
-            
-            <button 
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono font-bold opacity-90 mt-auto" style={{ color: text }}>
+             <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {release.durationFormatted}</span>
+             <span className="flex items-center gap-1"><Music className="w-3 h-3" /> {release.tempo} BPM</span>
+          </div>
+          
+          <div className="mt-4 pointer-events-auto">
+             <button 
                onClick={(e) => {
                  e.stopPropagation();
                  navigate(`/day/${release.day}`);
                }}
-               className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-opacity"
-               style={{ color: accent }}
+               className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-colors duration-300"
+               style={{ color: text }}
              >
-               View Full Log <ChevronRight className="w-4 h-4" />
+               Full Transmission Data <ChevronRight className="w-4 h-4" />
              </button>
           </div>
         </div>
@@ -385,7 +395,7 @@ export function DayTracker() {
     <section 
       id="tracker" 
       ref={containerRef}
-      className="py-24 px-4 md:px-12 lg:px-16 relative overflow-hidden min-h-[90vh] flex flex-col justify-center transition-colors duration-500"
+      className="py-24 px-6 md:px-12 lg:px-16 relative overflow-hidden min-h-[90vh] flex flex-col justify-center transition-colors duration-500"
       style={{ color: text }}
     >
       {/* Background Grid */}
@@ -402,92 +412,80 @@ export function DayTracker() {
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
         
-        {/* Header */}
-        <div className="flex flex-col md:flex-row items-end justify-between mb-8 md:mb-16 border-b pb-6" style={{ borderColor: hexToRgba(text, 0.1) }}>
+        {/* Header HUD */}
+        <div className="flex flex-col md:flex-row items-end justify-between mb-12 border-b pb-6 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
           <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <div className="flex items-center gap-3 mb-2">
               <span className="w-2 h-2 rounded-full animate-pulse transition-colors duration-300" style={{ background: accent }} />
-              <span className="text-xs font-mono tracking-[0.4em] transition-colors duration-300" style={{ color: hexToRgba(text, 0.6) }}>SYSTEM_TRACKER.v3</span>
+              <span className="text-xs font-mono tracking-[0.4em] transition-colors duration-300" style={{ color: hexToRgba(text, 0.4) }}>SYSTEM_TRACKER.v3</span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
-              <span className="text-transparent bg-clip-text transition-colors duration-500" style={{ backgroundImage: `linear-gradient(to right, ${text}, ${hexToRgba(text, 0.5)})` }}>
-                Daily Transmission
-              </span>
-            </h2>
+            <div className="flex items-end gap-3 mb-2">
+              <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
+                <span className="text-transparent bg-clip-text transition-colors duration-500" style={{ backgroundImage: `linear-gradient(to right, ${text}, ${hexToRgba(text, 0.5)})` }}>
+                  Daily Transmission
+                </span>
+              </h2>
+            </div>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-right hidden md:block">
-            <div className="text-xs font-mono mb-1 transition-colors duration-300" style={{ color: hexToRgba(text, 0.6) }}>GLOBAL_PROGRESS</div>
+            <div className="text-xs font-mono mb-1 transition-colors duration-300" style={{ color: hexToRgba(text, 0.4) }}>GLOBAL_PROGRESS</div>
             <div className="text-3xl font-mono font-bold transition-colors duration-300" style={{ color: accent }}>
               {Math.round(progress)}<span className="text-sm opacity-50">%</span>
             </div>
           </motion.div>
         </div>
 
-        {/* --- CAROUSEL AREA --- */}
-        <div className="relative w-full min-h-[600px] md:min-h-[500px] flex items-center justify-center lg:perspective-[1500px]">
+        {/* CAROUSEL GRID */}
+        {/* Desktop: h-[60vh] for perspective. 
+            Mobile: Auto height for stacking.
+        */}
+        <div className="relative w-full lg:h-[60vh] min-h-[400px] flex items-center justify-center lg:perspective-[1000px] mb-24 lg:mb-0">
           
           {/* Navigation Buttons (Desktop) */}
-          <div className="hidden lg:flex absolute inset-0 justify-between items-center pointer-events-none z-40 px-4">
-             <button 
-              onClick={handlePrev}
-              disabled={focusedIndex === 0}
-              className="pointer-events-auto p-4 rounded-full border backdrop-blur-md transition-all duration-300 hover:bg-white/10 disabled:opacity-0" 
-              style={{ borderColor: hexToRgba(text, 0.2), backgroundColor: hexToRgba(background, 0.5) }}
-             >
+          <button 
+            onClick={handlePrev}
+            disabled={focusedIndex === 0}
+            className="hidden lg:flex absolute left-0 z-30 h-full w-24 items-center justify-center group disabled:opacity-0 transition-opacity focus:outline-none"
+          >
+             <div className="p-4 rounded-full border backdrop-blur-md transition-colors duration-300 group-hover:bg-white/10" 
+                  style={{ borderColor: hexToRgba(text, 0.2), backgroundColor: hexToRgba(background, 0.5) }}>
                 <ChevronLeft className="w-8 h-8" style={{ color: text }} />
-             </button>
+             </div>
+          </button>
 
-             <button 
-              onClick={handleNext}
-              disabled={!data?.releases || focusedIndex === data.releases.length - 1}
-              className="pointer-events-auto p-4 rounded-full border backdrop-blur-md transition-all duration-300 hover:bg-white/10 disabled:opacity-0"
-              style={{ borderColor: hexToRgba(text, 0.2), backgroundColor: hexToRgba(background, 0.5) }}
-             >
+          <button 
+            onClick={handleNext}
+            // GATING Check here as well for visual disable state
+            disabled={!data?.releases || focusedIndex === data.releases.length - 1 || (data.releases[focusedIndex + 1]?.day > currentDay)}
+            className="hidden lg:flex absolute right-0 z-30 h-full w-24 items-center justify-center group disabled:opacity-0 transition-opacity focus:outline-none"
+          >
+             <div className="p-4 rounded-full border backdrop-blur-md transition-colors duration-300 group-hover:bg-white/10"
+                  style={{ borderColor: hexToRgba(text, 0.2), backgroundColor: hexToRgba(background, 0.5) }}>
                 <ChevronRight className="w-8 h-8" style={{ color: text }} />
-             </button>
-          </div>
+             </div>
+          </button>
 
           {/* Cards Container */}
           <div className="relative w-full max-w-5xl h-full flex items-center justify-center">
-            
-            {/* MOBILE/TABLET STRATEGY:
-               - We only show ONE card (the active one) in a full flex layout.
-               - We add swipe/touch buttons below it.
-               - No AnimatePresence complexity on mobile to avoid stacking issues.
-            */}
-            <div className="lg:hidden w-full">
+            {/* MOBILE: Just show active card stacked */}
+            <div className="lg:hidden w-full space-y-8">
                {renderCard(focusedIndex, 'center')}
                
                {/* Mobile Nav */}
-               <div className="flex justify-between items-center mt-6 px-4">
-                  <button 
-                    onClick={handlePrev}
-                    disabled={focusedIndex === 0}
-                    className="p-3 rounded-full border disabled:opacity-30"
-                    style={{ borderColor: hexToRgba(text, 0.2) }}
-                  >
-                    <ChevronLeft className="w-6 h-6" style={{ color: text }} />
+               <div className="flex justify-between items-center px-4">
+                  <button onClick={handlePrev} disabled={focusedIndex === 0} className="p-3 border rounded-full disabled:opacity-30" style={{ borderColor: text }}>
+                     <ChevronLeft className="w-6 h-6" style={{ color: text }} />
                   </button>
-                  <span className="font-mono text-xs opacity-50">
-                    DAY {String(activeRelease?.day || 0).padStart(3, '0')}
-                  </span>
-                  <button 
-                    onClick={handleNext}
-                    disabled={!data?.releases || focusedIndex === data.releases.length - 1}
-                    className="p-3 rounded-full border disabled:opacity-30"
-                    style={{ borderColor: hexToRgba(text, 0.2) }}
-                  >
-                    <ChevronRight className="w-6 h-6" style={{ color: text }} />
+                  <span className="font-mono text-sm" style={{ color: text }}>DAY {activeRelease?.day}</span>
+                  <button onClick={handleNext} disabled={!data?.releases || focusedIndex === data.releases.length - 1 || (data.releases[focusedIndex + 1]?.day > currentDay)} className="p-3 border rounded-full disabled:opacity-30" style={{ borderColor: text }}>
+                     <ChevronRight className="w-6 h-6" style={{ color: text }} />
                   </button>
                </div>
             </div>
 
-            {/* DESKTOP STRATEGY:
-               - We explicitly render Previous, Current, Next with AnimatePresence.
-               - They have absolute positioning handled by 'renderCard'.
-            */}
-            <div className="hidden lg:flex w-full h-full items-center justify-center">
+            {/* DESKTOP: AnimatePresence 3D Carousel */}
+            <div className="hidden lg:block w-full h-full">
               <AnimatePresence initial={false} mode="popLayout">
                  {/* Left Card (Distance) */}
                  {focusedIndex > 0 && renderCard(focusedIndex - 1, 'left')}
@@ -495,11 +493,14 @@ export function DayTracker() {
                  {/* Center Card (Focus) */}
                  {renderCard(focusedIndex, 'center')}
                  
-                 {/* Right Card (Distance) */}
-                 {data?.releases && focusedIndex < data.releases.length - 1 && renderCard(focusedIndex + 1, 'right')}
+                 {/* Right Card (Distance) - Only if exists AND is allowed (gating) */}
+                 {data?.releases && 
+                  focusedIndex < data.releases.length - 1 && 
+                  data.releases[focusedIndex + 1].day <= currentDay && 
+                  renderCard(focusedIndex + 1, 'right')}
               </AnimatePresence>
             </div>
-
+            
             {/* Fallback for empty/loading state */}
             {!activeRelease && (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-12">
@@ -513,7 +514,7 @@ export function DayTracker() {
 
         {/* STATS MODULES */}
         <motion.div 
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4"
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
