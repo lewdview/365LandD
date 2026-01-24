@@ -37,17 +37,29 @@ export const useStore = create<AppState>((set, get) => ({
               <h4 class="font-bold text-green-400 mb-2 font-mono">PRODUCTION INFO</h4>
               <p>ONE TAKE FREESTYLE. ONE TAKE AD-LIB - Probably the best adlib track I have done.</p>
             </div>
-            <p><strong>the start.</strong> One Take Freestyle, and a nice one-take adlib track. Conceptually, this is about putting so much emphasis on material that your fear of losing it makes you disconnect from the all-conscious and become a narcissistic being that doesn't question anything other than your planned opposition. Thus, making us all crazy and judgmental.</p>
+            <p><strong>the start.</strong> One Take Freestyle, and a nice one-take adlib track. Conceptually, this is about putting so much emphasis on material that your fear of losing it makes you disonnect from the all-conscious and become a narcissistic being that doesn't question anything other than your planned opposition. Thus, making us all crazy and judgmental.</p>
           `
         },
-        18: { 
-          title: "Goods 4 Me", 
+
+        2: { 
+          title: "Shhhhh Bitch feat. Frank", 
           info: `
             <div class="p-4 border border-green-500/30 bg-green-500/10 rounded mb-4">
               <h4 class="font-bold text-green-400 mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>ONE TAKE FREESTYLE. ONE TAKE AD-LIB - Probably the best adlib track I have done.</p>
+              <p>ONE TAKE FREESTYLE. Hit the hook, 2nd verse and some ad libs. Left space for my friend Frank.</p>
             </div>
-            <p> Conceptually this song is about really understanding how being a people pleaser and not taking care of yourself can lead to resentment, hate, depression - but it takes effort to do well and good to you. Its a struggle - this is what this song is about.</p>
+            <p><strong>conceptually</strong> this song is about woman who say the want a bad buy whom often end up unhappy with them. Also to point out that nice guys seems to always finish last so the girls should just listen to the correct way, according to my friend Frank for them to live.
+          `
+        },
+
+        3: { 
+          title: "You Like Steve Earle", 
+          info: `
+            <div class="p-4 border border-green-500/30 bg-green-500/10 rounded mb-4">
+              <h4 class="font-bold text-green-400 mb-2 font-mono">PRODUCTION INFO</h4>
+              <p>One Take cover of You Like Steve Earle by Ronald Meason - my father.</p>
+            </div>
+            <p><strong>cover</strong> When you meet that love of your life late but have some ground rules. A great song penned by my late father Ronald Meason.  I am humbled to try and honor his word a prose.</p>
           `
         },
         // Add more days here...
