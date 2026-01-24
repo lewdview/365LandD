@@ -10,11 +10,13 @@ import {
   Clock, 
   Music, 
   Home, 
-  Sparkles, 
   Activity, 
   Maximize2, 
   Info, 
-  Minimize2
+  Minimize2,
+  Sparkles,
+  SkipBack,
+  SkipForward
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
@@ -30,6 +32,12 @@ import type { Release } from '../types';
 
 function isYouTube(url: string) {
   return /youtube\.com|youtu\.be/.test(url);
+}
+
+// Basic HTML sanitizer
+function sanitizeHtml(html: string) {
+  if (!html) return '';
+  return DOMPurify.sanitize(html);
 }
 
 // Helper to convert hex to rgba
@@ -54,14 +62,14 @@ const BOLD_TEXT_STYLE_SMALL = {
 function TechBadge({ children, color, label }: { children: React.ReactNode, color: string, label?: string }) {
   return (
     <div className="flex flex-col gap-1">
-      {label && <span className="text-[10px] font-mono tracking-wider opacity-90 uppercase text-white font-bold" style={BOLD_TEXT_STYLE_SMALL}>{label}</span>}
+      {label && <span className="text-[10px] font-mono tracking-wider opacity-90 uppercase font-bold" style={{ color: color }}>{label}</span>}
       <div 
         className="px-3 py-1.5 rounded border flex items-center gap-2 font-mono text-xs font-bold backdrop-blur-md transition-colors duration-300"
         style={{ 
           borderColor: hexToRgba(color, 0.5),
-          backgroundColor: 'rgba(0,0,0,0.6)',
+          backgroundColor: hexToRgba(color, 0.1),
           color: color,
-          boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
+          boxShadow: `0 4px 6px ${hexToRgba(color, 0.1)}`
         }}
       >
         {children}
@@ -82,7 +90,7 @@ function StatModule({ label, value, color, max = 100 }: { label: string, value: 
         <span className="text-xs font-mono opacity-50 mb-1">/ {max}</span>
       </div>
       {/* Progress Bar */}
-      <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+      <div className="w-full h-1 rounded-full overflow-hidden" style={{ backgroundColor: hexToRgba(color, 0.2) }}>
         <motion.div 
           initial={{ width: 0 }}
           whileInView={{ width: `${(value / max) * 100}%` }}
@@ -96,17 +104,17 @@ function StatModule({ label, value, color, max = 100 }: { label: string, value: 
   );
 }
 
-// 2030 "Reactor" Play Button
-function ReactorPlayButton({ isPlaying, onClick, color }: { isPlaying: boolean, onClick: () => void, color: string }) {
+// Theme-aware Reactor Button
+function ReactorPlayButton({ isPlaying, onClick, color, textColor }: { isPlaying: boolean, onClick: () => void, color: string, textColor: string }) {
   return (
     <button 
       onClick={onClick}
-      className="group relative w-24 h-24 md:w-32 md:h-32 flex items-center justify-center focus:outline-none z-30"
+      className="group relative w-20 h-20 md:w-32 md:h-32 flex items-center justify-center focus:outline-none z-30"
     >
       {/* Outer Rotating Ring */}
       <motion.div 
         className="absolute inset-0 rounded-full border-2 border-dashed opacity-100 transition-colors duration-300"
-        style={{ borderColor: color, filter: 'drop-shadow(0 0 5px black)' }}
+        style={{ borderColor: color, filter: `drop-shadow(0 0 5px ${color})` }}
         animate={{ rotate: 360 }}
         transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
       />
@@ -119,18 +127,19 @@ function ReactorPlayButton({ isPlaying, onClick, color }: { isPlaying: boolean, 
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       />
       
-      {/* Glass Core */}
+      {/* Core */}
       <div 
-        className="absolute inset-4 rounded-full backdrop-blur-xl border-2 border-white/60 shadow-inner flex items-center justify-center transition-transform group-hover:scale-95 group-active:scale-90 duration-300"
+        className="absolute inset-4 rounded-full backdrop-blur-xl border-2 shadow-inner flex items-center justify-center transition-transform group-hover:scale-95 group-active:scale-90 duration-300"
         style={{ 
-          background: `linear-gradient(135deg, ${hexToRgba(color, 0.8)}, ${hexToRgba('#000000', 0.9)})`,
-          boxShadow: `0 0 30px ${hexToRgba(color, 0.5)}, inset 0 0 10px rgba(255,255,255,0.5)`
+          borderColor: hexToRgba(textColor, 0.6),
+          background: `linear-gradient(135deg, ${hexToRgba(color, 0.8)}, ${hexToRgba(color, 0.4)})`,
+          boxShadow: `0 0 30px ${hexToRgba(color, 0.5)}, inset 0 0 10px ${hexToRgba(textColor, 0.5)}`
         }}
       >
         {isPlaying ? (
-          <Pause className="w-10 h-10 md:w-12 md:h-12 text-white fill-white drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]" />
+          <Pause className="w-8 h-8 md:w-12 md:h-12 drop-shadow-md" style={{ color: textColor, fill: textColor }} />
         ) : (
-          <Play className="w-10 h-10 md:w-12 md:h-12 text-white fill-white ml-2 drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]" />
+          <Play className="w-8 h-8 md:w-12 md:h-12 ml-2 drop-shadow-md" style={{ color: textColor, fill: textColor }} />
         )}
       </div>
     </button>
@@ -163,7 +172,6 @@ export function DayPage() {
   const dayNum = parseInt(day || '1', 10);
   const hasPoetryData = release?.lyricsWords && release.lyricsWords.length > 0;
   
-  // Check if THIS release is the one currently playing
   const isThisPlaying = playingRelease?.day === release?.day && playingRelease?.title === release?.title;
   const isThisReleaseActive = isThisPlaying && isPlaying;
   
@@ -189,7 +197,7 @@ export function DayPage() {
   // GATING LOGIC
   useEffect(() => {
     if (data && currentDay && dayNum > currentDay) {
-       navigate(`/day/${currentDay}`, { replace: true });
+      navigate(`/day/${currentDay}`, { replace: true });
     }
   }, [data, currentDay, dayNum, navigate]);
 
@@ -269,7 +277,6 @@ export function DayPage() {
     );
   }
 
-  // UPDATED: Increased top padding (pt-32/40) and bottom padding (pb-64) for navigation visibility
   return (
     <div className="min-h-screen pb-64 relative overflow-hidden transition-colors duration-500" style={{ backgroundColor: background, color: text }}>
       <Navigation />
@@ -290,16 +297,21 @@ export function DayPage() {
       <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-8 pt-32 md:pt-40">
         {release ? (
           <>
-            {/* --- HERO CARD (Rectangle Encapsulation) --- */}
+            {/* --- HERO CARD (Adaptive Layout) --- */}
+            {/* Mobile: Flex Column. Desktop: Block aspect-video */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="relative w-full aspect-video rounded-[2rem] overflow-hidden shadow-2xl border mb-12 group flex flex-col"
-              style={{ borderColor: hexToRgba(text, 0.1) }}
+              className={`
+                relative w-full rounded-[2rem] overflow-hidden shadow-2xl border mb-12 group
+                flex flex-col lg:block lg:aspect-video
+              `}
+              style={{ borderColor: hexToRgba(text, 0.1), backgroundColor: hexToRgba(background, 0.5) }}
             >
-              {/* FULL BACKGROUND COVER */}
-              <div className="absolute inset-0 z-0">
+              {/* ARTWORK CONTAINER */}
+              {/* Mobile: Full Width Image. Desktop: Absolute Fill */}
+              <div className="relative w-full aspect-video lg:absolute lg:inset-0 z-0">
                 <CoverImage
                   key={release.day}
                   day={release.day}
@@ -312,49 +324,71 @@ export function DayPage() {
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
                 
-                {/* THEME COLOR INJECTION OVERLAY */}
+                {/* Theme Masks */}
                 <div 
                   className="absolute inset-0 z-10 mix-blend-overlay opacity-40 pointer-events-none transition-colors duration-500"
                   style={{ backgroundColor: primary }} 
                 />
-
-                {/* Gradient Overlays for readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-10" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 opacity-60 z-10" />
+                
+                {/* Desktop Overlay Gradient only */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent z-10 opacity-60 lg:opacity-100" />
                 
                 {/* Scanline Texture */}
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay z-10" />
+
+                {/* PLAY BUTTON - CENTERED AND VISIBLE ON ALL SCREENS */}
+                <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                   <div className="pointer-events-auto transform scale-90 md:scale-100">
+                     <ReactorPlayButton 
+                        isPlaying={isThisReleaseActive} 
+                        onClick={handlePlay} 
+                        color={moodColor}
+                        textColor={text}
+                     />
+                   </div>
+                </div>
               </div>
 
-              {/* HERO CONTENT OVERLAY */}
-              <div className="relative z-20 flex flex-col justify-between p-6 md:p-12 lg:p-16 h-full">
+              {/* CONTENT OVERLAY / STACK */}
+              <div className={`
+                 relative z-20 flex flex-col justify-between 
+                 p-6 md:p-8 lg:p-16 
+                 lg:absolute lg:inset-0 lg:bg-transparent
+              `}>
                 
                 {/* Top Bar: Breadcrumbs & Log */}
-                <div className="flex justify-between items-start">
-                   <Link to="/" className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-black/40 border border-white/20 hover:bg-white/10 transition-colors">
-                      <Home className="w-4 h-4 text-white" />
-                      <span className="text-xs font-mono font-bold text-white tracking-widest" style={BOLD_TEXT_STYLE_SMALL}>HOME</span>
+                <div className="flex justify-between items-start mb-6 lg:mb-0">
+                   <Link to="/" className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md border hover:bg-white/10 transition-colors"
+                      style={{ backgroundColor: hexToRgba(background, 0.4), borderColor: hexToRgba(text, 0.2) }}
+                   >
+                      <Home className="w-4 h-4" style={{ color: text }} />
+                      <span className="text-xs font-mono font-bold tracking-widest" style={{ color: text }}>HOME</span>
                    </Link>
 
                    <div className="flex flex-col items-end">
-                     <span className="text-[10px] font-mono tracking-[0.3em] uppercase opacity-90 text-white font-bold" style={BOLD_TEXT_STYLE_SMALL}>Transmission Log</span>
-                     <span className="text-4xl font-black text-white tracking-tighter transition-colors duration-300" style={{ textShadow: `0 0 20px ${moodColor}` }}>
+                     <span className="text-[10px] font-mono tracking-[0.3em] uppercase opacity-90 font-bold" style={{ color: text }}>Transmission Log</span>
+                     <span className="text-4xl font-black tracking-tighter transition-colors duration-300" style={{ textShadow: `0 0 20px ${moodColor}`, color: text }}>
                        {String(dayNum).padStart(3, '0')}
                      </span>
                    </div>
                 </div>
 
-                {/* Center/Bottom Content */}
+                {/* Bottom Content Area */}
                 <div className="grid lg:grid-cols-12 gap-8 items-end mt-auto">
                   
-                  {/* Left: Metadata & Title */}
+                  {/* Text Block */}
                   <div className="lg:col-span-8 space-y-4">
                     <div className="flex items-center gap-3">
-                       <div className="px-3 py-1 rounded border backdrop-blur-md bg-black/60 border-white/30 flex items-center gap-2 shadow-lg">
+                       <div className="px-3 py-1 rounded border backdrop-blur-md flex items-center gap-2 shadow-lg"
+                            style={{ backgroundColor: hexToRgba(background, 0.6), borderColor: hexToRgba(text, 0.3) }}
+                       >
                          <span className="w-2 h-2 rounded-full animate-pulse transition-colors duration-300" style={{ backgroundColor: moodColor, boxShadow: `0 0 10px ${moodColor}` }} />
-                         <span className="text-xs font-mono font-bold uppercase text-white tracking-widest">{release.mood}</span>
+                         <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: text }}>{release.mood}</span>
                        </div>
-                       <span className="text-xs font-mono text-white font-bold bg-black/40 px-2 py-1 rounded" style={BOLD_TEXT_STYLE_SMALL}>{release.date}</span>
+                       <span className="text-xs font-mono font-bold px-2 py-1 rounded backdrop-blur-md" 
+                             style={{ color: text, backgroundColor: hexToRgba(background, 0.4) }}>
+                             {release.date}
+                       </span>
                     </div>
 
                     <div>
@@ -362,24 +396,24 @@ export function DayPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-5xl md:text-7xl lg:text-9xl font-black uppercase leading-[0.85] tracking-tighter text-white break-words drop-shadow-2xl mb-4"
-                        style={BOLD_TEXT_STYLE}
+                        className="text-4xl md:text-7xl lg:text-9xl font-black uppercase leading-[0.9] tracking-tighter break-words drop-shadow-2xl mb-4"
+                        style={{ ...BOLD_TEXT_STYLE, color: text }}
                       >
                         {release.title}
                       </motion.h1>
                       
-                      {/* HERO DESCRIPTION */}
+                      {/* DESCRIPTION */}
                       <motion.p
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
-                        className="text-white/90 text-lg md:text-xl font-medium max-w-2xl leading-relaxed"
-                        style={BOLD_TEXT_STYLE_SMALL}
+                        className="text-lg md:text-xl font-medium max-w-2xl leading-relaxed"
+                        style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}
                       >
                         {release.description}
                       </motion.p>
 
-                      {/* HERO CUSTOM INFO (ADDITIONAL INTEL) */}
+                      {/* ADDITIONAL INTEL */}
                       {release.customInfo && (
                         <motion.div 
                           initial={{ opacity: 0, y: 10 }}
@@ -388,19 +422,19 @@ export function DayPage() {
                           className="mt-4"
                         >
                           <div className="flex items-center gap-2 mb-1">
-                            <Info className="w-4 h-4 text-white/80" />
-                            <span className="text-xs font-mono uppercase font-bold text-white/80" style={BOLD_TEXT_STYLE_SMALL}>Additional Intel</span>
+                            <Info className="w-4 h-4" style={{ color: text }} />
+                            <span className="text-xs font-mono uppercase font-bold" style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}>Additional Intel</span>
                           </div>
                           <div 
                             className="prose prose-invert prose-sm leading-relaxed opacity-90 font-medium text-sm max-w-2xl"
-                            style={BOLD_TEXT_STYLE_SMALL}
-                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(release.customInfo) }}
+                            style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}
+                            dangerouslySetInnerHTML={{ __html: sanitizeHtml(release.customInfo) }}
                           />
                         </motion.div>
                       )}
                     </div>
 
-                    <div className="flex flex-wrap gap-4 pt-2">
+                    <div className="flex flex-wrap gap-4 pt-4">
                       <TechBadge color={moodColor} label="TEMPO">
                         <Clock className="w-3 h-3" /> {release.tempo} BPM
                       </TechBadge>
@@ -413,20 +447,11 @@ export function DayPage() {
                     </div>
                   </div>
 
-                  {/* Right: Reactor Play Button */}
-                  <div className="lg:col-span-4 flex flex-col items-center lg:items-end justify-center pb-4">
-                     <motion.div
-                       initial={{ scale: 0, opacity: 0 }}
-                       animate={{ scale: 1, opacity: 1 }}
-                       transition={{ delay: 0.3, type: "spring" }}
+                  {/* Status Label (Desktop Only - Mobile handles play button differently) */}
+                  <div className="hidden lg:flex lg:col-span-4 flex-col items-end justify-center pb-4">
+                     <div className="mt-4 text-xs font-mono font-bold tracking-widest uppercase px-3 py-1 rounded border backdrop-blur-sm"
+                          style={{ borderColor: hexToRgba(text, 0.1), backgroundColor: hexToRgba(background, 0.4), color: text }}
                      >
-                       <ReactorPlayButton 
-                          isPlaying={isThisReleaseActive} 
-                          onClick={handlePlay} 
-                          color={moodColor} 
-                       />
-                     </motion.div>
-                     <div className="mt-4 text-xs font-mono text-white font-bold tracking-widest uppercase bg-black/40 px-3 py-1 rounded border border-white/10 backdrop-blur-sm">
                         {isThisReleaseActive ? 'Sequence Active' : 'Initiate Sequence'}
                      </div>
                   </div>
@@ -449,7 +474,7 @@ export function DayPage() {
                 }}
               >
                  {/* Progress Bar Overlay */}
-                 <div className="absolute bottom-0 left-0 h-1 bg-white/5 w-full">
+                 <div className="absolute bottom-0 left-0 h-1 w-full" style={{ backgroundColor: hexToRgba(text, 0.1) }}>
                    <motion.div 
                      className="h-full transition-colors duration-300" 
                      style={{ backgroundColor: moodColor, width: `${(currentTime / (duration || 1)) * 100}%` }}
@@ -467,10 +492,10 @@ export function DayPage() {
                           {Array.from({ length: 40 }).map((_, i) => (
                             <div 
                               key={i} 
-                              className="flex-1 bg-current rounded-full transition-all duration-300"
+                              className="flex-1 rounded-full transition-all duration-300"
                               style={{ 
                                 height: `${20 + Math.random() * 80}%`,
-                                color: isThisPlaying && (i / 40) < (currentTime / (duration || 1)) ? moodColor : text
+                                backgroundColor: isThisPlaying && (i / 40) < (currentTime / (duration || 1)) ? moodColor : text
                               }} 
                             />
                           ))}
@@ -503,14 +528,16 @@ export function DayPage() {
                   viewport={{ once: true }}
                   className="lg:col-span-1 space-y-6"
                 >
-                   <div className="p-6 rounded-xl border bg-white/5 backdrop-blur-sm transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
+                   <div className="p-6 rounded-xl border backdrop-blur-sm transition-colors duration-500" 
+                        style={{ borderColor: hexToRgba(text, 0.1), backgroundColor: hexToRgba(background, 0.4) }}
+                   >
                      <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                        <Activity className="w-5 h-5 transition-colors duration-300" style={{ color: moodColor }} /> Mission Data
                      </h3>
-
                      <div className="flex flex-wrap gap-2">
                        {release.tags.map(tag => (
-                         <span key={tag} className="px-2 py-1 text-[10px] font-mono border rounded bg-black/20 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
+                         <span key={tag} className="px-2 py-1 text-[10px] font-mono border rounded transition-colors duration-500" 
+                               style={{ borderColor: hexToRgba(text, 0.1), backgroundColor: hexToRgba(background, 0.6) }}>
                            #{tag}
                          </span>
                        ))}
@@ -599,8 +626,8 @@ export function DayPage() {
                 </motion.section>
               )}
 
-              {/* Footer Nav */}
-              <div className="border-t pt-8 flex justify-between items-center transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
+              {/* Footer Nav (Desktop) */}
+              <div className="hidden lg:flex border-t pt-8 justify-between items-center transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
                  <button 
                    onClick={() => prevDay && goToDay(prevDay.day)} 
                    disabled={!prevDay}
@@ -637,6 +664,37 @@ export function DayPage() {
           </div>
         )}
       </div>
+
+      {/* --- STICKY MOBILE FOOTER (Dynamic Skip) --- */}
+      {release && (
+        <div className="lg:hidden fixed bottom-0 left-0 w-full z-50 p-4 border-t backdrop-blur-xl transition-transform duration-300"
+             style={{ backgroundColor: hexToRgba(background, 0.9), borderColor: hexToRgba(text, 0.1) }}>
+           <div className="flex items-center justify-between gap-4">
+              <button 
+                onClick={() => prevDay && goToDay(prevDay.day)} 
+                disabled={!prevDay}
+                className="flex flex-col items-center gap-1 p-2 disabled:opacity-30"
+              >
+                <SkipBack className="w-6 h-6" style={{ color: text }} />
+                <span className="text-[10px] font-mono font-bold">PREV</span>
+              </button>
+
+              <div className="flex flex-col items-center">
+                 <span className="text-xs font-mono font-bold opacity-60">DAY {release.day}</span>
+                 <div className="text-sm font-bold truncate max-w-[150px]">{release.title}</div>
+              </div>
+
+              <button 
+                onClick={() => nextDay && goToDay(nextDay.day)} 
+                disabled={!nextDay}
+                className="flex flex-col items-center gap-1 p-2 disabled:opacity-30"
+              >
+                <SkipForward className="w-6 h-6" style={{ color: text }} />
+                <span className="text-[10px] font-mono font-bold">NEXT</span>
+              </button>
+           </div>
+        </div>
+      )}
 
       {/* Modals */}
       <ManifestoModal isOpen={showManifesto} onClose={() => setShowManifesto(false)} />
