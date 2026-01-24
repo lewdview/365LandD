@@ -180,7 +180,6 @@ export function DayTracker() {
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState(0);
 
-  // REMOVED 'background' to fix TS error
   const { primary, secondary, accent, text } = currentTheme.colors;
   const totalDays = data?.project.totalDays || 365;
   const progress = (currentDay / totalDays) * 100;
@@ -408,12 +407,12 @@ export function DayTracker() {
                          {activeRelease.title}
                       </h3>
                       
-                      {/* DESCRIPTION */}
+                      {/* ADDED DESCRIPTION */}
                       <p className="text-white/90 text-sm md:text-base font-medium mb-4 line-clamp-2 max-w-2xl" style={BOLD_TEXT_STYLE_SMALL}>
                         {activeRelease.description}
                       </p>
                       
-                      {/* CUSTOM INFO (EXTRA DESCRIPTION) - ADDED HERE */}
+                      {/* ADDED CUSTOM INFO (Extra Description) */}
                       {activeRelease.customInfo && (
                         <div 
                           className="prose prose-invert prose-sm leading-relaxed opacity-90 mb-4 font-medium text-xs md:text-sm line-clamp-2 max-w-xl"

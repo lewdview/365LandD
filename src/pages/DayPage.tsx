@@ -283,6 +283,7 @@ export function DayPage() {
         {release ? (
           <>
             {/* --- HERO CARD (Rectangle Encapsulation) --- */}
+            {/* FIX: aspect-video ensures 16:9 rectangle on all screens */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -499,7 +500,7 @@ export function DayPage() {
                      <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                        <Activity className="w-5 h-5 transition-colors duration-300" style={{ color: moodColor }} /> Mission Data
                      </h3>
-                     
+
                      <div className="flex flex-wrap gap-2">
                        {release.tags.map(tag => (
                          <span key={tag} className="px-2 py-1 text-[10px] font-mono border rounded bg-black/20 transition-colors duration-500" style={{ borderColor: hexToRgba(text, 0.1) }}>
