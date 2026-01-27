@@ -336,8 +336,8 @@ export function DayPage() {
                 {/* Scanline Texture */}
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay z-10" />
 
-                {/* PLAY BUTTON - CENTERED AND VISIBLE ON ALL SCREENS */}
-                <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                {/* PLAY BUTTON - MOBILE: CENTER / DESKTOP: BOTTOM RIGHT */}
+                <div className="absolute inset-0 flex items-center justify-center lg:items-end lg:justify-end z-20 pointer-events-none lg:p-16">
                    <div className="pointer-events-auto transform scale-90 md:scale-100">
                      <ReactorPlayButton 
                         isPlaying={isThisReleaseActive} 
@@ -354,10 +354,11 @@ export function DayPage() {
                  relative z-20 flex flex-col justify-between 
                  p-6 md:p-8 lg:p-16 
                  lg:absolute lg:inset-0 lg:bg-transparent
+                 pointer-events-none
               `}>
                 
                 {/* Top Bar: Breadcrumbs & Log */}
-                <div className="flex justify-between items-start mb-6 lg:mb-0">
+                <div className="flex justify-between items-start mb-6 lg:mb-0 pointer-events-auto">
                    <Link to="/" className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md border hover:bg-white/10 transition-colors"
                       style={{ backgroundColor: hexToRgba(background, 0.4), borderColor: hexToRgba(text, 0.2) }}
                    >
@@ -374,87 +375,89 @@ export function DayPage() {
                 </div>
 
                 {/* Bottom Content Area */}
-                <div className="grid lg:grid-cols-12 gap-8 items-end mt-auto">
-                  
-                  {/* Text Block */}
-                  <div className="lg:col-span-8 space-y-4">
-                    <div className="flex items-center gap-3">
-                       <div className="px-3 py-1 rounded border backdrop-blur-md flex items-center gap-2 shadow-lg"
-                            style={{ backgroundColor: hexToRgba(background, 0.6), borderColor: hexToRgba(text, 0.3) }}
-                       >
-                         <span className="w-2 h-2 rounded-full animate-pulse transition-colors duration-300" style={{ backgroundColor: moodColor, boxShadow: `0 0 10px ${moodColor}` }} />
-                         <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: text }}>{release.mood}</span>
-                       </div>
-                       <span className="text-xs font-mono font-bold px-2 py-1 rounded backdrop-blur-md" 
-                             style={{ color: text, backgroundColor: hexToRgba(background, 0.4) }}>
-                             {release.date}
-                       </span>
-                    </div>
+                <div className="flex flex-col justify-end mt-auto">
+                  <div className="grid lg:grid-cols-12 gap-8 items-end pointer-events-auto">
+                    
+                    {/* Text Block */}
+                    <div className="lg:col-span-8 space-y-4">
+                      <div className="flex items-center gap-3">
+                        <div className="px-3 py-1 rounded border backdrop-blur-md flex items-center gap-2 shadow-lg"
+                              style={{ backgroundColor: hexToRgba(background, 0.6), borderColor: hexToRgba(text, 0.3) }}
+                        >
+                          <span className="w-2 h-2 rounded-full animate-pulse transition-colors duration-300" style={{ backgroundColor: moodColor, boxShadow: `0 0 10px ${moodColor}` }} />
+                          <span className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: text }}>{release.mood}</span>
+                        </div>
+                        <span className="text-xs font-mono font-bold px-2 py-1 rounded backdrop-blur-md" 
+                              style={{ color: text, backgroundColor: hexToRgba(background, 0.4) }}>
+                              {release.date}
+                        </span>
+                      </div>
 
-                    <div>
-                      <motion.h1 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-4xl md:text-7xl lg:text-9xl font-black uppercase leading-[0.9] tracking-tighter break-words drop-shadow-2xl mb-4"
-                        style={{ ...BOLD_TEXT_STYLE, color: text }}
-                      >
-                        {release.title}
-                      </motion.h1>
-                      
-                      {/* DESCRIPTION */}
-                      <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="text-lg md:text-xl font-medium max-w-2xl leading-relaxed"
-                        style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}
-                      >
-                        {release.description}
-                      </motion.p>
-
-                      {/* ADDITIONAL INTEL */}
-                      {release.customInfo && (
-                        <motion.div 
+                      <div>
+                        <motion.h1 
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 }}
+                          className="text-4xl md:text-7xl lg:text-9xl font-black uppercase leading-[0.9] tracking-tighter break-words drop-shadow-2xl mb-4"
+                          style={{ ...BOLD_TEXT_STYLE, color: text }}
+                        >
+                          {release.title}
+                        </motion.h1>
+                        
+                        {/* DESCRIPTION */}
+                        <motion.p
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.4 }}
-                          className="mt-4"
+                          transition={{ delay: 0.3 }}
+                          className="text-lg md:text-xl font-medium max-w-2xl leading-relaxed"
+                          style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}
                         >
-                          <div className="flex items-center gap-2 mb-1">
-                            <Info className="w-4 h-4" style={{ color: text }} />
-                            <span className="text-xs font-mono uppercase font-bold" style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}>Additional Intel</span>
-                          </div>
-                          <div 
-                            className="prose prose-invert prose-sm leading-relaxed opacity-90 font-medium text-sm max-w-2xl"
-                            style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}
-                            dangerouslySetInnerHTML={{ __html: sanitizeHtml(release.customInfo) }}
-                          />
-                        </motion.div>
-                      )}
+                          {release.description}
+                        </motion.p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-4 pt-4">
+                        <TechBadge color={moodColor} label="TEMPO">
+                          <Clock className="w-3 h-3" /> {release.tempo} BPM
+                        </TechBadge>
+                        <TechBadge color={moodColor} label="KEY">
+                          <Music className="w-3 h-3" /> {release.key}
+                        </TechBadge>
+                        <TechBadge color={moodColor} label="DURATION">
+                          <Maximize2 className="w-3 h-3" /> {release.durationFormatted}
+                        </TechBadge>
+                      </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-4 pt-4">
-                      <TechBadge color={moodColor} label="TEMPO">
-                        <Clock className="w-3 h-3" /> {release.tempo} BPM
-                      </TechBadge>
-                      <TechBadge color={moodColor} label="KEY">
-                        <Music className="w-3 h-3" /> {release.key}
-                      </TechBadge>
-                      <TechBadge color={moodColor} label="DURATION">
-                        <Maximize2 className="w-3 h-3" /> {release.durationFormatted}
-                      </TechBadge>
+                    {/* Status Label (Desktop Only - Mobile handles play button differently) */}
+                    <div className="hidden lg:flex lg:col-span-4 flex-col items-end justify-center pb-4">
+                      <div className="mt-4 text-xs font-mono font-bold tracking-widest uppercase px-3 py-1 rounded border backdrop-blur-sm"
+                            style={{ borderColor: hexToRgba(text, 0.1), backgroundColor: hexToRgba(background, 0.4), color: text }}
+                      >
+                          {isThisReleaseActive ? 'Sequence Active' : 'Initiate Sequence'}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Status Label (Desktop Only - Mobile handles play button differently) */}
-                  <div className="hidden lg:flex lg:col-span-4 flex-col items-end justify-center pb-4">
-                     <div className="mt-4 text-xs font-mono font-bold tracking-widest uppercase px-3 py-1 rounded border backdrop-blur-sm"
-                          style={{ borderColor: hexToRgba(text, 0.1), backgroundColor: hexToRgba(background, 0.4), color: text }}
-                     >
-                        {isThisReleaseActive ? 'Sequence Active' : 'Initiate Sequence'}
-                     </div>
-                  </div>
+                  {/* ADDITIONAL INTEL - FULL WIDTH ROW */}
+                  {release.customInfo && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="mt-8 pointer-events-auto w-full"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <Info className="w-4 h-4" style={{ color: text }} />
+                        <span className="text-xs font-mono uppercase font-bold" style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}>Additional Intel</span>
+                      </div>
+                      <div 
+                        className="prose prose-invert prose-sm leading-relaxed opacity-90 font-medium text-sm w-full max-w-none"
+                        style={{ ...BOLD_TEXT_STYLE_SMALL, color: text }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(release.customInfo) }}
+                      />
+                    </motion.div>
+                  )}
                 </div>
               </div>
             </motion.div>
