@@ -439,13 +439,13 @@ export function DayPage() {
                     </div>
                   </div>
 
-                  {/* ADDITIONAL INTEL - FULL WIDTH ROW */}
+                  {/* ADDITIONAL INTEL - LIMITED WIDTH TO AVOID PLAY BUTTON */}
                   {release.customInfo && (
                     <motion.div 
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="mt-8 pointer-events-auto w-full"
+                      className="mt-8 pointer-events-auto w-full lg:w-3/4"
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <Info className="w-4 h-4" style={{ color: text }} />
