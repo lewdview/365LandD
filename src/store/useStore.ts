@@ -33,12 +33,12 @@ export const useStore = create<AppState>((set, get) => ({
         1: { 
           title: "We're Going Crazy World", 
           info: `
-            <div class="p-4 border border-green-500/30 bg-green-500/10 rounded mb-4">
-              <h4 class="font-bold text-green-400 mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>ONE TAKE FREESTYLE. ONE TAKE AD-LIB - Probably the best adlib track I have done.</p>
+            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
+              <p>ONE TAKE FREESTYLE. ONE TAKE AD-LIB .</p>
             </div>
-            <div class="p-4 border border-RED-500/30 bg-green-500/10 rounded mb-4">
-              <h4 class="font-bold text-RED-400 mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
+            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
               <p>The lyrics express a sense of confusion and chaos in the world, reflecting on the shared experience of feeling ′crazy′ and ′hazy.′ The narrator grapples with their emotions, questioning the reasons behind human behavior and the desire for negativity. There is a longing for clarity amidst the madness, as they encourage self-reflection and the pursuit of truth. The song captures a mix of frustration and hope, suggesting that despite the chaos, there is a light within that can guide us. It resonates with listeners who feel overwhelmed by the complexities of life and society.</p>
             </div>
         `
@@ -47,12 +47,12 @@ export const useStore = create<AppState>((set, get) => ({
         2: { 
           title: "Shhhhh Bitch feat. Frank", 
           info: `
-            <div class="p-4 border border-green-500/30 bg-green-500/10 rounded mb-4">
-              <h4 class="font-bold text-green-400 mb-2 font-mono">PRODUCTION INFO</h4>
+            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
               <p>ONE TAKE FREESTYLE. Hit the hook, 2nd verse and some ad libs. Left space for my friend Frank.</p>
             </div>
-            <div class="p-4 border border-RED-500/30 bg-green-500/10 rounded mb-4">
-              <h4 class="font-bold text-RED-400 mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
+            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
               <p>The lyrics depict a tumultuous relationship marked by violence and emotional turmoil. The narrator addresses a woman caught in a cycle of abuse, urging her to recognize her worth and the toxic nature of her partner. The repeated phrase emphasizes the need for her to listen and reflect on her situation. The song conveys feelings of frustration, anger, and a desire for empowerment, as it highlights the struggles faced by those in abusive relationships. Ultimately, it serves as a call to break free from harmful dynamics and seek a healthier path</p>
             </div>
             <p>this song is about woman who say the want a bad buy whom often end up unhappy with them. Also to point out that nice guys seems to always finish last so the girls should just listen to the correct way, according to my friend Frank for them to live.
@@ -62,12 +62,12 @@ export const useStore = create<AppState>((set, get) => ({
         3: { 
           title: "You Like Steve Earle", 
           info: `
-            <div class="p-4 border border-green-500/30 bg-green-500/10 rounded mb-4">
-              <h4 class="font-bold text-green-400 mb-2 font-mono">PRODUCTION INFO</h4>
+            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
               <p>One Take cover of You Like Steve Earle by Ronald Meason - my father.</p>
             </div>
-            <div class="p-4 border border-RED-500/30 bg-green-500/10 rounded mb-4">
-              <h4 class="font-bold text-RED-400 mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
+            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
               <p>The lyrics convey a sense of longing and introspection, as the narrator grapples with feelings of connection and the complexities of relationships. The speaker expresses a desire for clarity and understanding, addressing a significant other with sincerity. There is a juxtaposition of joy and melancholy, as the narrator reflects on shared experiences and the importance of companionship. The mention of seeking happiness and the metaphor of a brewery suggests a search for solace in simple pleasures. Overall, the song captures the essence of navigating love and friendship amidst life′s challenges.</p>
             </div>
             <p> When you meet that love of your life late but have some ground rules. A great song penned by my late father Ronald Meason.  I am humbled to try and honor his word and prose.</p>
@@ -76,12 +76,12 @@ export const useStore = create<AppState>((set, get) => ({
         4: { 
           title: "We're Only Human by Zillick feat.th3scr1b3", 
           info: `
-            <div class="p-4 border border-green-500/30 bg-green-500/10 rounded mb-4">
-              <h4 class="font-bold text-green-400 mb-2 font-mono">PRODUCTION INFO</h4>
+            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
               <p>Brought to my doorstep by my longtime contributing partner Zillick. Structure hook, z, h, z, h, t h. Zillick's parts we're written and required one take when putting them down, my verse and ad-libs freestyle one take, hook purchased with beat.</p>
             </div>
-            <div class="p-4 border border-RED-500/30 bg-green-500/10 rounded mb-4">
-              <h4 class="font-bold text-RED-400 mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
+            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
               <p>The lyrics explore themes of vulnerability and resilience in the face of adversity. The narrator expresses gratitude for a supportive figure who acts as a safety net during difficult times. They reflect on the pain and struggles of life, including feelings of anxiety and judgment from others. The song conveys a sense of longing for understanding and forgiveness, while also acknowledging the harsh realities of human existence. The emotional weight of heartache and the desire for connection are palpable, as the narrator grapples with their own experiences and the impact of others′ words.</p>
             </div>
           `
