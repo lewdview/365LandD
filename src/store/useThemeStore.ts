@@ -1,5 +1,5 @@
 // type: uploaded file
-// fileName: src/store/useThemeStore.ts
+// fileName: lewdview/365landd/365LandD-62f69d1dd5592916f7d38da52afeb83e19d604ed/src/store/useThemeStore.ts
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -21,7 +21,7 @@ export interface Theme {
   colors: ThemeColors;
 }
 
-// --- THEME DATABASE (59 Themes) ---
+// --- THEME DATABASE (74 Themes) ---
 export const themes: Theme[] = [
   // --- PRESETS (15) ---
   {
@@ -115,7 +115,7 @@ export const themes: Theme[] = [
     colors: { primary: '#a0522d', secondary: '#cd853f', accent: '#d2691e', background: '#1c1410', text: '#f5deb3' },
   },
 
-  // --- CUSTOM THEMES (Restored 29) ---
+  // --- CUSTOM THEMES (29) ---
   {
     id: 'tuscan-sunset',
     name: 'Tuscan Sunset',
@@ -291,7 +291,7 @@ export const themes: Theme[] = [
     colors: { primary: '#ffa552', secondary: '#ba5624', accent: '#c4d6b0', background: '#381d2a', text: '#fcde9c' },
   },
 
-  // --- NEW ADDITIONS (15) ---
+  // --- NEW ADDITIONS BATCH 1 (15) ---
   {
     id: 'vintage-rose-silk',
     name: 'Almond Silk',
@@ -381,6 +381,98 @@ export const themes: Theme[] = [
     name: 'Berry Teal',
     category: 'Vibrant',
     colors: { primary: '#f45b69', secondary: '#028090', accent: '#e4fde1', background: '#114b5f', text: '#ffffff' },
+  },
+
+  // --- NEW ADDITIONS BATCH 2 (15) ---
+  {
+    id: 'pale-sky-neon',
+    name: 'Neon Ice',
+    category: 'Vibrant',
+    colors: { primary: '#03f7eb', secondary: '#00b295', accent: '#c9daea', background: '#191516', text: '#ab2346' },
+  },
+  {
+    id: 'charcoal-olive',
+    name: 'Spicy Olive',
+    category: 'Nature',
+    colors: { primary: '#de541e', secondary: '#d6d6b1', accent: '#878472', background: '#3f3f37', text: '#d6d6b1' },
+  },
+  {
+    id: 'bright-sky-graphite',
+    name: 'Bright Sky',
+    category: 'Vibrant',
+    colors: { primary: '#30bced', secondary: '#fc5130', accent: '#fffaff', background: '#303036', text: '#fffaff' },
+  },
+  {
+    id: 'honeydew-grape',
+    name: 'Vintage Grape',
+    category: 'Pastel',
+    colors: { primary: '#9792e3', secondary: '#61e786', accent: '#edffec', background: '#48435c', text: '#edffec' },
+  },
+  {
+    id: 'tuscan-sun-grey',
+    name: 'Tuscan Sun',
+    category: 'Nature',
+    colors: { primary: '#e8c547', secondary: '#5c80bc', accent: '#cdd1c4', background: '#30323d', text: '#cdd1c4' },
+  },
+  {
+    id: 'graphite-turquoise',
+    name: 'Graphite Turquoise',
+    category: 'Dark',
+    colors: { primary: '#48e5c2', secondary: '#f3d3bd', accent: '#fcfaf9', background: '#333333', text: '#fcfaf9' },
+  },
+  {
+    id: 'shadow-steel',
+    name: 'Steel Blue',
+    category: 'Monochrome',
+    colors: { primary: '#4d7ea8', secondary: '#9e90a2', accent: '#b6c2d9', background: '#272932', text: '#b6c2d9' },
+  },
+  {
+    id: 'olive-bark-bronze',
+    name: 'Honey Bronze',
+    category: 'Nature',
+    colors: { primary: '#eec670', secondary: '#f58549', accent: '#f2a65a', background: '#585123', text: '#eec170' },
+  },
+  {
+    id: 'amber-earth-neon',
+    name: 'Amber Neon',
+    category: 'Vibrant',
+    colors: { primary: '#ffae03', secondary: '#fe4e00', accent: '#ff0f80', background: '#e9190f', text: '#ffffff' }, // High contrast text
+  },
+  {
+    id: 'raspberry-graphite',
+    name: 'Raspberry Graphite',
+    category: 'Dark',
+    colors: { primary: '#d81e5b', secondary: '#f0544f', accent: '#fdf0d5', background: '#3a3335', text: '#c6d8d3' },
+  },
+  {
+    id: 'rosewood-indigo',
+    name: 'Electric Rosewood',
+    category: 'Vibrant',
+    colors: { primary: '#56eef4', secondary: '#5438dc', accent: '#32e875', background: '#b24c63', text: '#ffffff' },
+  },
+  {
+    id: 'night-neon',
+    name: 'Night Neon',
+    category: 'Vibrant',
+    colors: { primary: '#03f7eb', secondary: '#ab2346', accent: '#00b295', background: '#191516', text: '#c9daea' },
+  },
+  {
+    id: 'retro-khaki',
+    name: 'Retro Khaki',
+    category: 'Nature',
+    colors: { primary: '#de541e', secondary: '#d6d6b1', accent: '#878472', background: '#494331', text: '#d6d6b1' },
+  },
+  {
+    id: 'soft-periwinkle-dark',
+    name: 'Soft Periwinkle',
+    category: 'Pastel',
+    colors: { primary: '#9792e3', secondary: '#61e786', accent: '#edffec', background: '#5a5766', text: '#edffec' },
+  },
+  {
+    id: 'glaucous-ash',
+    name: 'Glaucous Ash',
+    category: 'Dark',
+    colors: { primary: '#5c80bc', secondary: '#e8c547', accent: '#cdd1c4', background: '#4d5061', text: '#cdd1c4' },
   },
 ];
 
