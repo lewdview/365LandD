@@ -1,5 +1,5 @@
 // type: uploaded file
-// fileName: lewdview/365landd/365LandD-657774efec22dd782c8f194232bdbbff026eade4/src/components/MonthThemes.tsx
+// fileName: src/components/MonthThemes.tsx
 
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { motion, LayoutGroup, AnimatePresence } from 'framer-motion';
@@ -78,12 +78,16 @@ const sphereVertexShader = `
   void main() {
     vNormal = normal;
     vec3 pos = position;
+    // Enhanced fracture distortion
     float noise = snoise(pos * (1.0 + (uFracture * 2.0)) + uTime * 0.5) * (uDistort + (uFracture * 0.5));
+    
+    // Hard Glitch Geometry Displacement
     if (uFracture > 0.5) {
        float spike = step(0.85, sin(uTime * 15.0 + pos.y * 8.0));
        pos += normal * spike * 0.4;
        pos.x += spike * 0.1 * sin(uTime * 50.0);
     }
+    
     pos += normal * noise;
     vPosition = pos;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
@@ -102,14 +106,24 @@ const sphereFragmentShader = `
     vec3 viewDir = normalize(cameraPosition - vPosition);
     float fresnel = pow(1.0 - max(0.0, dot(vNormal, viewDir)), 2.0);
     float noisePattern = sin(vPosition.x * 5.0 + uTime) * 0.5 + 0.5;
+    
+    // Base gradient between Primary and Accent
     vec3 color = mix(uColorA, uColorB, noisePattern);
+    
+    // Rim lighting (Fresnel) - strictly uses Accent color, not white
     color += uColorB * fresnel;
     
+    // Fracture / Glitch Bands
     if (uFracture > 0.5) {
        float glitch = step(0.9, sin(vPosition.y * 50.0 + uTime * 20.0));
-       vec3 glitchColor = vec3(1.0) - color; 
+       
+       // UPDATED: Instead of inverting to white (1.0 - color), we swap channels or use the opposing theme color
+       // This ensures the glitch remains strictly within the theme palette
+       vec3 glitchColor = uColorB; // Force Accent color on glitch strips
+       
        color = mix(color, glitchColor, glitch);
     }
+    
     gl_FragColor = vec4(color, 0.9);
   }
 `;
@@ -197,10 +211,12 @@ const BubblingBackground = ({ primary, secondary, background }: { primary: strin
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+      {/* Reduced overlay opacity so bubbles are more visible */}
       <div 
         className="absolute inset-0 z-10" 
         style={{ backgroundColor: hexToRgba(background, 0.5) }} 
       /> 
+      
       <motion.div
         variants={blobVariants}
         animate="animate"
@@ -225,17 +241,17 @@ const SYSTEM_CONFIG: Record<number, {
   stability: 'stable' | 'unstable' | 'critical' | 'corrupted';
   fracture?: boolean;
 }> = {
-  1: { tagline: 'Boot Sequence: Light Online', synopsis: 'Hope initializes. Everything feels possible because nothing has failed yet.', stability: 'stable' },
-  2: { tagline: 'Desire Compiles', synopsis: 'Connection, longing, and projection accelerate. Want is mistaken for truth.', stability: 'stable' },
-  3: { tagline: 'Velocity Without Direction', synopsis: 'Momentum replaces intention. Movement feels like purpose.', stability: 'stable' },
+  1: { tagline: 'Boot Sequence: Light Online', synopsis: 'Hope initializes. Everything feels possible because nothing has failed yet. The system believes itself.', stability: 'stable' },
+  2: { tagline: 'Desire Compiles', synopsis: 'Connection, longing, and projection accelerate. Want is mistaken for truth. The system leans outward.', stability: 'stable' },
+  3: { tagline: 'Velocity Without Direction', synopsis: 'Momentum replaces intention. Movement feels like purpose. Cracks are ignored because speed feels alive.', stability: 'stable' },
   4: { tagline: 'First Contact With the Self', synopsis: 'Reflection enters. Identity questions surface. Light still dominates, but doubt now exists.', stability: 'unstable' },
-  5: { tagline: 'Overclocked Heart', synopsis: 'Emotion exceeds capacity. Love, ambition, and belief push past safe limits.', stability: 'unstable' },
-  6: { tagline: 'Instability Detected', synopsis: '—\n(No synopsis. This absence is intentional.)', stability: 'unstable', fracture: true },
-  7: { tagline: 'Heat Without Shelter', synopsis: 'Survival mode. The system adapts instead of heals. Joy appears briefly.', stability: 'unstable' },
-  8: { tagline: 'Corruption Event', synopsis: '—\n(No synopsis. This month resists explanation.)', stability: 'critical', fracture: true },
-  9: { tagline: 'Memory Leak', synopsis: 'Past and present blur. Old truths resurface distorted.', stability: 'unstable' },
-  10: { tagline: 'Rituals of Repair', synopsis: 'Patterns form. Repetition becomes grounding.', stability: 'stable' },
-  11: { tagline: 'Acceptance Without Resolution', synopsis: 'Peace arrives unevenly. The system no longer fights its scars.', stability: 'stable' },
+  5: { tagline: 'Overclocked Heart', synopsis: 'Emotion exceeds capacity. Love, ambition, and belief push past safe limits. Warning signs flicker.', stability: 'unstable' },
+  6: { tagline: 'ERROR', synopsis: '(silence)', stability: 'unstable', fracture: true },
+  7: { tagline: 'Heat Without Shelter', synopsis: 'Survival mode. The system adapts instead of heals. Joy appears briefly, but it burns fast.', stability: 'unstable' },
+  8: { tagline: 'ERROR', synopsis: '(silence)', stability: 'critical', fracture: true },
+  9: { tagline: 'Memory Leak', synopsis: 'Past and present blur. Old truths resurface distorted. The system attempts repair by remembering.', stability: 'unstable' },
+  10: { tagline: 'Rituals of Repair', synopsis: 'Patterns form. Repetition becomes grounding. Meaning is rebuilt from fragments, not certainty.', stability: 'stable' },
+  11: { tagline: 'Acceptance Without Resolution', synopsis: 'Peace arrives unevenly. The system no longer fights its scars. Stability is provisional, but real.', stability: 'stable' },
   12: { tagline: 'SYSTEM RESET (Incomplete)', synopsis: '—\n(Silence again. The listener must decide what reset means.)', stability: 'corrupted', fracture: true },
 };
 
@@ -310,7 +326,6 @@ const ThemeCard = ({
   const sheenVariants = {
     hover: {
       x: ['-100%', '200%'],
-      // FIX: Added 'as const' to ease property to satisfy TypeScript
       transition: { duration: 1.5, ease: "easeInOut" as const, repeat: Infinity, repeatDelay: 1 }
     }
   };
@@ -322,21 +337,18 @@ const ThemeCard = ({
       onClick={onClick}
       initial="idle"
       whileHover="hover"
-      animate={isActive ? "hover" : "idle"} // Active card always has subtle sheen
-      // UPDATED SIZING: auto-rows-[60px] in grid, active is row-span-5 (~320px)
+      animate={isActive ? "hover" : "idle"}
       className={`relative w-full overflow-hidden border cursor-pointer group ${
         isActive 
           ? 'row-span-5 md:col-span-2 md:row-span-5 z-20 h-full min-h-[320px] rounded-2xl' 
           : 'col-span-1 h-[60px] z-0 rounded-lg hover:opacity-100'
       }`}
       style={{ 
-        // 3D BORDER LOGIC: Deep borders with shadow interaction
         borderColor: isActive ? accent : 'rgba(255,255,255,0.05)',
         backgroundColor: isActive 
           ? hexToRgba(background, 0.90) 
           : hexToRgba(background, 0.40),
         backdropFilter: 'blur(12px)',
-        // Deep 3D Shadow/Bevel effect
         boxShadow: isActive 
           ? `0 0 0 1px ${accent}40, 0 10px 40px -10px ${primary}60, inset 0 1px 0 rgba(255,255,255,0.2)`
           : `0 4px 6px -1px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.05)`,
@@ -359,6 +371,7 @@ const ThemeCard = ({
       <AnimatePresence>
         {isActive && (
           <motion.div 
+             key={`orb-${index}`}
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
              exit={{ opacity: 0 }}
@@ -419,9 +432,19 @@ const ThemeCard = ({
             transition={{ delay: 0.2 }}
             className="mt-auto"
           >
-            <p className="text-sm leading-relaxed max-w-lg mb-4 whitespace-pre-line font-medium" style={{ color: text, opacity: 0.9 }}>
-              {config.synopsis}
-            </p>
+            {/* Conditional Rendering: Hide if synopsis is just "(silence)" */}
+            {config.synopsis !== '(silence)' && (
+                <p className="text-sm leading-relaxed max-w-lg mb-4 whitespace-pre-line font-medium" style={{ color: text, opacity: 0.9 }}>
+                {config.synopsis}
+                </p>
+            )}
+            
+            {/* Visual spacer for silence */}
+            {config.synopsis === '(silence)' && (
+                <div className="mb-4 h-8 flex items-center">
+                    <span className="font-mono text-xs opacity-30 animate-pulse">{'>'} SILENCE DETECTED</span>
+                </div>
+            )}
 
             <div className="flex items-end justify-between border-t border-white/10 pt-3">
                <div>
@@ -535,7 +558,6 @@ export function MonthThemes() {
         <LayoutGroup>
           <motion.div 
             layout 
-            // UPDATED GRID: auto-rows-[60px] -> compact
             className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 auto-rows-[60px] grid-flow-dense"
           >
             {processedMonths.map((item, index) => (
