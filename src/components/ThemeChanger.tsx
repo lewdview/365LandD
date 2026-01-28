@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useThemeStore, themes } from '../store/useThemeStore';
+import { useAudioStore } from '../store/useAudioStore';
 import { Palette, Check, X } from 'lucide-react';
 
 export function ThemeChanger() {
   const { currentTheme, setTheme } = useThemeStore();
+  const { currentRelease } = useAudioStore();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  // Check if player is active to adjust position
+  const isPlayerActive = !!currentRelease;
 
   function hexToRgba(hex: string, alpha: number): string {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -24,7 +29,6 @@ export function ThemeChanger() {
 
   const ColorSwatch = ({ color }: { color: string }) => (
     <div 
-      // UPDATED: Much bigger swatches, slightly squaricle
       className="w-8 h-8 rounded-md border shadow-sm transition-transform hover:scale-110" 
       style={{ backgroundColor: color, borderColor: 'rgba(255,255,255,0.1)' }} 
     />
@@ -32,14 +36,17 @@ export function ThemeChanger() {
 
   return (
     <>
-      {/* Floating Toggle Button - UPDATED Z-INDEX to 9999 to sit above player */}
+      {/* Floating Toggle Button */}
       <motion.button
+        layout
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 z-[9999] p-4 rounded-full shadow-2xl backdrop-blur-md border transition-all duration-300 group"
+        className="fixed left-1/2 transform -translate-x-1/2 z-[9999] p-4 rounded-full shadow-2xl backdrop-blur-md border transition-all duration-500 group"
         style={{ 
-          backgroundColor: hexToRgba(currentTheme.colors.background, 0.6), // More transparent
+          // Dynamic Position: Shifts up when player is active
+          bottom: isPlayerActive ? '5.5rem' : '1.5rem', 
+          backgroundColor: hexToRgba(currentTheme.colors.background, 0.6),
           borderColor: currentTheme.colors.primary,
           boxShadow: `0 8px 32px ${hexToRgba(currentTheme.colors.primary, 0.3)}`
         }}
@@ -47,7 +54,7 @@ export function ThemeChanger() {
         <Palette size={28} style={{ color: currentTheme.colors.primary }} />
       </motion.button>
 
-      {/* Modal Overlay - UPDATED Z-INDEX to 10000 */}
+      {/* Modal Overlay */}
       <AnimatePresence>
         {isOpen && (
           <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
@@ -66,10 +73,10 @@ export function ThemeChanger() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               className="relative w-full max-w-6xl h-[85vh] flex flex-col rounded-3xl shadow-2xl border overflow-hidden"
-              // UPDATED: Stronger Glassmorphism (Lower Opacity, Higher Blur)
               style={{ 
-                backgroundColor: hexToRgba(currentTheme.colors.background, 0.45), // Very transparent
-                backdropFilter: 'blur(40px)', // Heavy blur
+                // Glassmorphism Styles
+                backgroundColor: hexToRgba(currentTheme.colors.background, 0.45),
+                backdropFilter: 'blur(40px)',
                 borderColor: hexToRgba(currentTheme.colors.text, 0.1),
                 color: currentTheme.colors.text,
                 boxShadow: `0 40px 80px -20px rgba(0, 0, 0, 0.6)`
@@ -129,11 +136,10 @@ export function ThemeChanger() {
                       onClick={() => setTheme(theme.id)}
                       whileHover={{ scale: 1.02, y: -4 }}
                       whileTap={{ scale: 0.98 }}
-                      // UPDATED: Card styles for Glassmorphism
                       className="relative group p-5 rounded-2xl border text-left transition-all flex flex-col gap-4 overflow-hidden"
                       style={{ 
-                        backgroundColor: hexToRgba(theme.colors.background, 0.2), // Very low opacity
-                        backdropFilter: 'blur(10px)', // Frosted glass cards
+                        backgroundColor: hexToRgba(theme.colors.background, 0.2),
+                        backdropFilter: 'blur(10px)',
                         borderColor: currentTheme.id === theme.id ? theme.colors.accent : hexToRgba(theme.colors.text, 0.05),
                         boxShadow: currentTheme.id === theme.id 
                           ? `0 0 0 2px ${theme.colors.accent}, 0 20px 40px -10px ${hexToRgba(theme.colors.primary, 0.3)}` 
@@ -155,7 +161,7 @@ export function ThemeChanger() {
                         )}
                       </div>
 
-                      {/* Swatches - Bigger and clearer */}
+                      {/* Swatches */}
                       <div className="flex items-center gap-3 z-10 mt-2">
                         <ColorSwatch color={theme.colors.primary} />
                         <ColorSwatch color={theme.colors.secondary} />

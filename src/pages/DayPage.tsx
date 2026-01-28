@@ -668,10 +668,17 @@ export function DayPage() {
         )}
       </div>
 
-      {/* --- STICKY MOBILE FOOTER (Dynamic Skip) --- */}
+      {/* --- STICKY MOBILE FOOTER (Aware of Global Player) --- */}
       {release && (
-        <div className="lg:hidden fixed bottom-0 left-0 w-full z-50 p-4 border-t backdrop-blur-xl transition-transform duration-300"
-             style={{ backgroundColor: hexToRgba(background, 0.9), borderColor: hexToRgba(text, 0.1) }}>
+        <div 
+          className="lg:hidden fixed left-0 w-full z-50 p-4 border-t backdrop-blur-xl transition-all duration-300"
+          style={{ 
+            backgroundColor: hexToRgba(background, 0.9), 
+            borderColor: hexToRgba(text, 0.1),
+            // UPDATED: Reduced jump height (5rem vs 6rem)
+            bottom: playingRelease ? '5rem' : '0' 
+          }}
+        >
            <div className="flex items-center justify-between gap-4">
               <button 
                 onClick={() => prevDay && goToDay(prevDay.day)} 

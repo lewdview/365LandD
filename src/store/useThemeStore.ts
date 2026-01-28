@@ -1,5 +1,5 @@
 // type: uploaded file
-// fileName: lewdview/365landd/365LandD-62f69d1dd5592916f7d38da52afeb83e19d604ed/src/store/useThemeStore.ts
+// fileName: src/store/useThemeStore.ts
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -21,7 +21,7 @@ export interface Theme {
   colors: ThemeColors;
 }
 
-// --- THEME DATABASE (74 Themes) ---
+// --- THEME DATABASE (85 Themes) ---
 export const themes: Theme[] = [
   // --- PRESETS (15) ---
   {
@@ -436,7 +436,7 @@ export const themes: Theme[] = [
     id: 'amber-earth-neon',
     name: 'Amber Neon',
     category: 'Vibrant',
-    colors: { primary: '#ffae03', secondary: '#fe4e00', accent: '#ff0f80', background: '#e9190f', text: '#ffffff' }, // High contrast text
+    colors: { primary: '#ffae03', secondary: '#fe4e00', accent: '#ff0f80', background: '#e9190f', text: '#ffffff' },
   },
   {
     id: 'raspberry-graphite',
@@ -473,6 +473,74 @@ export const themes: Theme[] = [
     name: 'Glaucous Ash',
     category: 'Dark',
     colors: { primary: '#5c80bc', secondary: '#e8c547', accent: '#cdd1c4', background: '#4d5061', text: '#cdd1c4' },
+  },
+
+  // --- NEW ADDITIONS BATCH 3 (11) ---
+  {
+    id: 'frosted-blue-obsidian',
+    name: 'Frosted Obsidian',
+    category: 'Monochrome',
+    colors: { primary: '#92dce5', secondary: '#d64933', accent: '#eee5e9', background: '#000000', text: '#eee5e9' },
+  },
+  {
+    id: 'mauve-mint-shadow',
+    name: 'Mauve Mint',
+    category: 'Pastel',
+    colors: { primary: '#ca6680', secondary: '#63a375', accent: '#edc79b', background: '#713e5a', text: '#edc79b' },
+  },
+  {
+    id: 'ultrasonic-blue',
+    name: 'Ultrasonic Blue',
+    category: 'Vibrant',
+    colors: { primary: '#0008e6', secondary: '#ff1aec', accent: '#cd8fff', background: '#000d24', text: '#cd8fff' },
+  },
+  {
+    id: 'midnight-violet-peach',
+    name: 'Midnight Peach',
+    category: 'Dark',
+    colors: { primary: '#ecce8e', secondary: '#dbcf96', accent: '#9ac2c5', background: '#270722', text: '#f7f7f2' },
+  },
+  {
+    id: 'oxblood-spice',
+    name: 'Oxblood Spice',
+    category: 'Dark',
+    colors: { primary: '#941b0c', secondary: '#bc3908', accent: '#f6aa1c', background: '#220901', text: '#f6aa1c' },
+  },
+  {
+    id: 'amethyst-flame',
+    name: 'Amethyst Flame',
+    category: 'Vibrant',
+    colors: { primary: '#ff470f', secondary: '#e2ff61', accent: '#ffc847', background: '#370042', text: '#e2ff61' },
+  },
+  {
+    id: 'molten-walnut',
+    name: 'Molten Walnut',
+    category: 'Dark',
+    colors: { primary: '#ffa114', secondary: '#6bdaff', accent: '#fff8db', background: '#421f00', text: '#fff8db' },
+  },
+  {
+    id: 'aquamarine-mist',
+    name: 'Aquamarine Mist',
+    category: 'Vibrant',
+    colors: { primary: '#4dffe1', secondary: '#00fa64', accent: '#ff94c4', background: '#0085ad', text: '#ffc2c8' },
+  },
+  {
+    id: 'banana-coral',
+    name: 'Banana Coral',
+    category: 'Light',
+    colors: { primary: '#f25757', secondary: '#61e8e1', accent: '#f2cd60', background: '#eaf2e3', text: '#1a1a1a' },
+  },
+  {
+    id: 'caramel-ash',
+    name: 'Caramel Ash',
+    category: 'Pastel',
+    colors: { primary: '#fcb97d', secondary: '#edd892', accent: '#aaba9e', background: '#b5b8a3', text: '#2b2d42' },
+  },
+  {
+    id: 'razzmatazz-plum',
+    name: 'Razzmatazz Plum',
+    category: 'Vibrant',
+    colors: { primary: '#ec0072', secondary: '#e8003e', accent: '#d52193', background: '#ae3792', text: '#ffffff' },
   },
 ];
 
@@ -542,4 +610,4 @@ export const useThemeStore = create<ThemeState>()(
       },
     }
   )
-);
+);  
