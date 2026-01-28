@@ -87,6 +87,86 @@ export const useStore = create<AppState>((set, get) => ({
           `
         },
         // Add more days here...
+          5: { 
+          title: "Swoop Coupe Phenomenom", 
+          info: `
+            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
+              <p>ONE TAKE Freestyle. ONE TAKE AD-LIB.</p>
+            </div>
+            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
+              <p>The lyrics depict a vibrant and energetic atmosphere, where the narrator expresses a sense of confidence and excitement. The recurring theme of ′swooping′ suggests a carefree attitude towards life and relationships, with imagery of glitter and dancing. The narrator interacts with various characters, emphasizing a playful and flirtatious vibe. Emotions of joy and freedom are prevalent, as the narrator navigates through social situations with ease. The lyrics convey a celebration of individuality and self-expression, inviting listeners to embrace their own unique experiences and enjoy the moment.</p>
+            </div>
+          `
+        },
+          6: { 
+          title: "Silent Suffocation", 
+          info: `
+            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
+              <p>One Take Freestyle Foundation, witrh layered takes of my late father Ron Meason's guitar for a song he wrwote called "Somebody Besides You"</p>
+            </div>
+            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
+              <p>The lyrics convey a deep sense of longing and emotional turmoil in a relationship. The narrator reflects on past encounters, expressing an overwhelming desire for connection despite the challenges faced. There is a struggle between intense feelings and the fear of losing the other person, leading to a sense of desperation. The imagery of dreams and fire symbolizes passion and the pain of unfulfilled desires. The narrator grapples with the idea of suffocating their wants to cope with the situation, ultimately revealing a complex mix of love, regret, and the hope for reconciliation.</p>
+            </div>
+          `
+        },
+          7: { 
+          title: "Devour", 
+          info: `
+            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
+              <p>ONE TAKE Freestyle. ONE TAKE AD-LIB X2.</p>
+            </div>
+            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
+              <p>The lyrics convey a sense of euphoric longing and emotional turmoil, exploring themes of desire and the complexities of love. The narrator expresses a deep yearning for connection, feeling both exhilarated and lost in the intensity of their emotions. The imagery of tasting and devouring suggests a passionate relationship that is both fulfilling and consuming. Despite the highs of love, there is an underlying sense of isolation and confusion, as the narrator grapples with their identity and the passage of time. The song captures the duality of pleasure and pain in romantic entanglements.</p>
+            </div>
+          `
+        },
+          8: { 
+          title: "Poetry", 
+          info: `
+            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
+              <p>ONE TAKE Freestyle</p>
+            </div>
+            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
+              <p>The lyrics explore the transformative power of poetry as a means of self-expression and connection. They emphasize the importance of articulating one′s thoughts and emotions, suggesting that poetry can bridge gaps in understanding and foster empathy among individuals. The song reflects on the struggles of conveying inner experiences, highlighting the contrast between personal narratives and external perceptions. It acknowledges the challenges faced in life, including the influence of substances, while advocating for authenticity and vulnerability in sharing one′s story. Ultimately, it celebrates the unifying nature of poetry as a shared human experience.</p>
+            </div>
+          `
+        },
+         9: { 
+          title: "Without You", 
+          info: `
+            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
+              <p>ONE TAKE FREESTYLE. ONE TAKE AD-LIB.</p>
+            </div>
+            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
+              <p>The lyrics convey a deep sense of loss and longing for someone who has been a crucial part of the narrator′s life. The emotional weight of missing this person is palpable, as the narrator struggles to find brightness in their days and feels incomplete without them. Memories flood in, but they are tinged with sadness, highlighting the impact of the absence. The recurring theme of needing support to overcome personal demons emphasizes vulnerability and the struggle to cope with grief. Ultimately, the song captures the profound emptiness and emotional turmoil that accompanies losing a significant connection.</p>
+            </div>
+          `
+        },
+         10: { 
+          title: "Long Haul", 
+          info: `
+            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
+              <p>ONE TAKE FREESTYLE</p>
+            </div>
+            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
+              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
+              <p>The lyrics explore the complexities of relationships and the struggles of life, emphasizing that nothing worthwhile comes easily. The narrator expresses a commitment to support a friend through challenges, highlighting themes of resilience and camaraderie. There is a sense of urgency to break free from societal constraints and superficiality, urging the listener to embrace authenticity and connection. The emotional tone oscillates between determination and vulnerability, reflecting the desire for understanding and companionship amidst life′s chaos. Ultimately, the message is one of solidarity and the importance of being there for one another in difficult times.</p>
+            </div>
+          `
+        },
+
+
       };
 
       // --- 2. LOAD DATA SOURCES ---
