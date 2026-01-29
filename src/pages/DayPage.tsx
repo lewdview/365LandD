@@ -559,7 +559,8 @@ export function DayPage() {
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  className={`lg:col-span-2 transition-all duration-500 ${lyricsExpanded ? 'fixed inset-0 z-50 bg-black/95 p-6 overflow-hidden flex flex-col' : 'relative h-full'}`}
+                  // UPDATED: High Z-index (z-[10002]) to be Top Z when expanded
+                  className={`lg:col-span-2 transition-all duration-500 ${lyricsExpanded ? 'fixed inset-0 z-[10002] bg-black/95 p-6 overflow-hidden flex flex-col' : 'relative h-full'}`}
                 >
                    <div className={`flex items-center justify-between mb-4 ${lyricsExpanded ? 'container mx-auto max-w-4xl pt-12' : ''}`}>
                     <div className="flex items-center gap-2">
@@ -675,7 +676,7 @@ export function DayPage() {
           style={{ 
             backgroundColor: hexToRgba(background, 0.9), 
             borderColor: hexToRgba(text, 0.1),
-            // UPDATED: Reduced vertical jump to 3.5rem (56px) for tighter fit
+            // UPDATED: Reduced jump height (3.5rem vs 5rem)
             bottom: playingRelease ? '3.5rem' : '0' 
           }}
         >

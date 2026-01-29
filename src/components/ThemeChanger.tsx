@@ -42,7 +42,8 @@ export function ThemeChanger() {
         onClick={() => setIsOpen(true)}
         className="fixed left-1/2 transform -translate-x-1/2 z-[9999] p-4 rounded-full shadow-2xl backdrop-blur-md border transition-all duration-500 group"
         style={{ 
-          bottom: isPlayerActive ? '4.5rem' : '1.5rem', 
+          // UPDATED: Raised position to clear navigation footer
+          bottom: isPlayerActive ? '7.5rem' : '2.5rem', 
           backgroundColor: hexToRgba(currentTheme.colors.background, 0.6),
           borderColor: currentTheme.colors.primary,
           boxShadow: `0 8px 32px ${hexToRgba(currentTheme.colors.primary, 0.3)}`
@@ -92,7 +93,6 @@ export function ThemeChanger() {
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    {/* TOGGLE LOCK/RANDOM BUTTON */}
                     <button
                       onClick={toggleLock}
                       className="flex items-center gap-2 px-4 py-2 rounded-full border transition-all"
