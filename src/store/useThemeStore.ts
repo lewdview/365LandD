@@ -21,9 +21,9 @@ export interface Theme {
   colors: ThemeColors;
 }
 
-// --- THEME DATABASE (85 Themes) ---
+// --- THEME DATABASE (100 Themes) ---
 export const themes: Theme[] = [
-  // --- PRESETS (15) ---
+  // --- 1. PRESETS (15) ---
   {
     id: 'neon-nights',
     name: 'Neon Nights',
@@ -115,7 +115,7 @@ export const themes: Theme[] = [
     colors: { primary: '#a0522d', secondary: '#cd853f', accent: '#d2691e', background: '#1c1410', text: '#f5deb3' },
   },
 
-  // --- CUSTOM THEMES (29) ---
+  // --- 2. LEGACY CUSTOM THEMES (29) ---
   {
     id: 'tuscan-sunset',
     name: 'Tuscan Sunset',
@@ -291,54 +291,55 @@ export const themes: Theme[] = [
     colors: { primary: '#ffa552', secondary: '#ba5624', accent: '#c4d6b0', background: '#381d2a', text: '#fcde9c' },
   },
 
-  // --- NEW ADDITIONS BATCH 1 (15) ---
+  // --- 3. REFACTORED CSV IMPORTS (30) ---
+  // Using ALL 5 source colors for these mappings
   {
     id: 'vintage-rose-silk',
     name: 'Almond Silk',
     category: 'Pastel',
-    colors: { primary: '#cc7e85', secondary: '#c5afa4', accent: '#cf4d6f', background: '#2d2a2e', text: '#f5f0e8' },
+    colors: { primary: '#cc7e85', secondary: '#cf4d6f', accent: '#a36d90', background: '#76818e', text: '#c5afa4' },
   },
   {
     id: 'amber-blaze',
     name: 'Amber Blaze',
     category: 'Vibrant',
-    colors: { primary: '#fb5607', secondary: '#ff006e', accent: '#ffbe0b', background: '#050505', text: '#ffffff' },
+    colors: { primary: '#fb5607', secondary: '#ff006e', accent: '#ffbe0b', background: '#8338ec', text: '#3a86ff' },
   },
   {
     id: 'midnight-violet-gold',
     name: 'Midnight Violet',
     category: 'Dark',
-    colors: { primary: '#ecce8e', secondary: '#dbcf96', accent: '#9ac2c5', background: '#270722', text: '#f7f7f2' },
+    colors: { primary: '#ecce8e', secondary: '#dbcf96', accent: '#9ac2c5', background: '#270722', text: '#c2c6a7' },
   },
   {
     id: 'gunmetal-ops',
     name: 'Gunmetal Ops',
     category: 'Monochrome',
-    colors: { primary: '#819595', secondary: '#696773', accent: '#b1b6a6', background: '#000000', text: '#e5e5e5' },
+    colors: { primary: '#819595', secondary: '#696773', accent: '#363946', background: '#000000', text: '#b1b6a6' },
   },
   {
     id: 'pastel-sky-blue',
     name: 'Pastel Sky',
     category: 'Pastel',
-    colors: { primary: '#64a6bd', secondary: '#90a8c3', accent: '#d7b9d5', background: '#2b2d42', text: '#f4cae0' },
+    colors: { primary: '#64a6bd', secondary: '#90a8c3', accent: '#d7b9d5', background: '#ada7c9', text: '#f4cae0' },
   },
   {
     id: 'scarlet-fire',
     name: 'Scarlet Fire',
     category: 'Dark',
-    colors: { primary: '#ff220c', secondary: '#d33e43', accent: '#9b7874', background: '#1c1f33', text: '#ffffff' },
+    colors: { primary: '#ff220c', secondary: '#d33e43', accent: '#9b7874', background: '#1c1f33', text: '#666370' },
   },
   {
     id: 'lavender-veil',
     name: 'Lavender Veil',
     category: 'Light',
-    colors: { primary: '#3590f3', secondary: '#62bfed', accent: '#c2bbf0', background: '#f1e3f3', text: '#1c1f33' },
+    colors: { primary: '#3590f3', secondary: '#62bfed', accent: '#8fb8ed', background: '#f1e3f3', text: '#c2bbf0' },
   },
   {
     id: 'electric-aqua',
     name: 'Electric Aqua',
     category: 'Vibrant',
-    colors: { primary: '#44ffd2', secondary: '#87f6ff', accent: '#ffbfa0', background: '#616163', text: '#ffffff' },
+    colors: { primary: '#44ffd2', secondary: '#87f6ff', accent: '#ffbfa0', background: '#616163', text: '#daf5ff' },
   },
   {
     id: 'princeton-orange',
@@ -350,7 +351,7 @@ export const themes: Theme[] = [
     id: 'clean-minimal',
     name: 'Clean Minimal',
     category: 'Light',
-    colors: { primary: '#db5461', secondary: '#8aa29e', accent: '#e3f2fd', background: '#fafafa', text: '#333333' },
+    colors: { primary: '#db5461', secondary: '#8aa29e', accent: '#e3f2fd', background: '#fafafa', text: '#686963' },
   },
   {
     id: 'ocean-dark',
@@ -359,84 +360,83 @@ export const themes: Theme[] = [
     colors: { primary: '#3c91e6', secondary: '#a2d729', accent: '#fa824c', background: '#342e37', text: '#fafffd' },
   },
   {
-    id: 'earth-tone',
-    name: 'Earth Tone',
+    id: 'lime-coffee',
+    name: 'Lime Coffee',
     category: 'Nature',
     colors: { primary: '#c5d86d', secondary: '#e4e6c3', accent: '#f05d23', background: '#261c15', text: '#f7f7f2' },
   },
   {
-    id: 'cyber-pop',
-    name: 'Cyber Pop',
+    id: 'cyber-indigo',
+    name: 'Cyber Indigo',
     category: 'Vibrant',
     colors: { primary: '#e86a92', secondary: '#41e2ba', accent: '#f7e733', background: '#2b2d42', text: '#f7f7f9' },
   },
   {
-    id: 'muted-silver',
-    name: 'Muted Silver',
+    id: 'iron-mint',
+    name: 'Iron Mint',
     category: 'Monochrome',
-    colors: { primary: '#b5ffe9', secondary: '#c5e0d8', accent: '#ceabb1', background: '#444545', text: '#ffffff' },
+    colors: { primary: '#b5ffe9', secondary: '#c5e0d8', accent: '#ceabb1', background: '#444545', text: '#c9c9c9' },
   },
   {
-    id: 'berry-teal',
-    name: 'Berry Teal',
-    category: 'Vibrant',
-    colors: { primary: '#f45b69', secondary: '#028090', accent: '#e4fde1', background: '#114b5f', text: '#ffffff' },
+    id: 'dark-teal-pink',
+    name: 'Dark Teal Pink',
+    category: 'Dark',
+    colors: { primary: '#f45b69', secondary: '#028090', accent: '#e4fde1', background: '#114b5f', text: '#456990' },
   },
-
-  // --- NEW ADDITIONS BATCH 2 (15) ---
+  // Batch 2 Refactored
   {
-    id: 'pale-sky-neon',
+    id: 'neon-ice-vibrant',
     name: 'Neon Ice',
     category: 'Vibrant',
-    colors: { primary: '#03f7eb', secondary: '#00b295', accent: '#c9daea', background: '#191516', text: '#ab2346' },
+    colors: { primary: '#03f7eb', secondary: '#00b295', accent: '#ab2346', background: '#191516', text: '#c9daea' },
   },
   {
-    id: 'charcoal-olive',
+    id: 'spicy-olive',
     name: 'Spicy Olive',
     category: 'Nature',
-    colors: { primary: '#de541e', secondary: '#d6d6b1', accent: '#878472', background: '#3f3f37', text: '#d6d6b1' },
+    colors: { primary: '#de541e', secondary: '#878472', accent: '#d6d6b1', background: '#3f3f37', text: '#494331' },
   },
   {
     id: 'bright-sky-graphite',
     name: 'Bright Sky',
     category: 'Vibrant',
-    colors: { primary: '#30bced', secondary: '#fc5130', accent: '#fffaff', background: '#303036', text: '#fffaff' },
+    colors: { primary: '#30bced', secondary: '#fc5130', accent: '#fffaff', background: '#050401', text: '#303036' },
   },
   {
-    id: 'honeydew-grape',
+    id: 'vintage-grape',
     name: 'Vintage Grape',
     category: 'Pastel',
-    colors: { primary: '#9792e3', secondary: '#61e786', accent: '#edffec', background: '#48435c', text: '#edffec' },
+    colors: { primary: '#9792e3', secondary: '#61e786', accent: '#edffec', background: '#48435c', text: '#5a5766' },
   },
   {
-    id: 'tuscan-sun-grey',
-    name: 'Tuscan Sun',
+    id: 'tuscan-sun-graphite',
+    name: 'Tuscan Graphite',
     category: 'Nature',
-    colors: { primary: '#e8c547', secondary: '#5c80bc', accent: '#cdd1c4', background: '#30323d', text: '#cdd1c4' },
+    colors: { primary: '#e8c547', secondary: '#5c80bc', accent: '#cdd1c4', background: '#30323d', text: '#4d5061' },
   },
   {
     id: 'graphite-turquoise',
     name: 'Graphite Turquoise',
     category: 'Dark',
-    colors: { primary: '#48e5c2', secondary: '#f3d3bd', accent: '#fcfaf9', background: '#333333', text: '#fcfaf9' },
+    colors: { primary: '#48e5c2', secondary: '#f3d3bd', accent: '#fcfaf9', background: '#333333', text: '#5e5e5e' },
   },
   {
-    id: 'shadow-steel',
-    name: 'Steel Blue',
+    id: 'steel-blue-shadow',
+    name: 'Steel Shadow',
     category: 'Monochrome',
-    colors: { primary: '#4d7ea8', secondary: '#9e90a2', accent: '#b6c2d9', background: '#272932', text: '#b6c2d9' },
+    colors: { primary: '#4d7ea8', secondary: '#9e90a2', accent: '#b6c2d9', background: '#272932', text: '#828489' },
   },
   {
-    id: 'olive-bark-bronze',
+    id: 'honey-bronze',
     name: 'Honey Bronze',
     category: 'Nature',
-    colors: { primary: '#eec670', secondary: '#f58549', accent: '#f2a65a', background: '#585123', text: '#eec170' },
+    colors: { primary: '#eec670', secondary: '#f58549', accent: '#f2a65a', background: '#585123', text: '#772f1a' },
   },
   {
-    id: 'amber-earth-neon',
+    id: 'amber-neon',
     name: 'Amber Neon',
     category: 'Vibrant',
-    colors: { primary: '#ffae03', secondary: '#fe4e00', accent: '#ff0f80', background: '#e9190f', text: '#ffffff' },
+    colors: { primary: '#ffae03', secondary: '#fe4e00', accent: '#ff0f80', background: '#e9190f', text: '#e67f0d' },
   },
   {
     id: 'raspberry-graphite',
@@ -445,78 +445,48 @@ export const themes: Theme[] = [
     colors: { primary: '#d81e5b', secondary: '#f0544f', accent: '#fdf0d5', background: '#3a3335', text: '#c6d8d3' },
   },
   {
-    id: 'rosewood-indigo',
+    id: 'electric-rosewood',
     name: 'Electric Rosewood',
     category: 'Vibrant',
-    colors: { primary: '#56eef4', secondary: '#5438dc', accent: '#32e875', background: '#b24c63', text: '#ffffff' },
+    colors: { primary: '#56eef4', secondary: '#5438dc', accent: '#32e875', background: '#b24c63', text: '#357ded' },
   },
   {
-    id: 'night-neon',
-    name: 'Night Neon',
-    category: 'Vibrant',
-    colors: { primary: '#03f7eb', secondary: '#ab2346', accent: '#00b295', background: '#191516', text: '#c9daea' },
-  },
-  {
-    id: 'retro-khaki',
-    name: 'Retro Khaki',
-    category: 'Nature',
-    colors: { primary: '#de541e', secondary: '#d6d6b1', accent: '#878472', background: '#494331', text: '#d6d6b1' },
-  },
-  {
-    id: 'soft-periwinkle-dark',
-    name: 'Soft Periwinkle',
-    category: 'Pastel',
-    colors: { primary: '#9792e3', secondary: '#61e786', accent: '#edffec', background: '#5a5766', text: '#edffec' },
-  },
-  {
-    id: 'glaucous-ash',
-    name: 'Glaucous Ash',
-    category: 'Dark',
-    colors: { primary: '#5c80bc', secondary: '#e8c547', accent: '#cdd1c4', background: '#4d5061', text: '#cdd1c4' },
-  },
-
-  // --- NEW ADDITIONS BATCH 3 (11) ---
-  {
-    id: 'frosted-blue-obsidian',
+    id: 'frosted-obsidian',
     name: 'Frosted Obsidian',
     category: 'Monochrome',
-    colors: { primary: '#92dce5', secondary: '#d64933', accent: '#eee5e9', background: '#000000', text: '#eee5e9' },
+    colors: { primary: '#92dce5', secondary: '#d64933', accent: '#eee5e9', background: '#000000', text: '#7c7c7c' },
   },
   {
-    id: 'mauve-mint-shadow',
+    id: 'mauve-mint',
     name: 'Mauve Mint',
     category: 'Pastel',
-    colors: { primary: '#ca6680', secondary: '#63a375', accent: '#edc79b', background: '#713e5a', text: '#edc79b' },
+    colors: { primary: '#ca6680', secondary: '#63a375', accent: '#edc79b', background: '#713e5a', text: '#d57a66' },
   },
   {
     id: 'ultrasonic-blue',
     name: 'Ultrasonic Blue',
     category: 'Vibrant',
-    colors: { primary: '#0008e6', secondary: '#ff1aec', accent: '#cd8fff', background: '#000d24', text: '#cd8fff' },
-  },
-  {
-    id: 'midnight-violet-peach',
-    name: 'Midnight Peach',
-    category: 'Dark',
-    colors: { primary: '#ecce8e', secondary: '#dbcf96', accent: '#9ac2c5', background: '#270722', text: '#f7f7f2' },
+    colors: { primary: '#0008e6', secondary: '#ff1aec', accent: '#cd8fff', background: '#000d24', text: '#003f9e' },
   },
   {
     id: 'oxblood-spice',
     name: 'Oxblood Spice',
     category: 'Dark',
-    colors: { primary: '#941b0c', secondary: '#bc3908', accent: '#f6aa1c', background: '#220901', text: '#f6aa1c' },
+    colors: { primary: '#941b0c', secondary: '#bc3908', accent: '#f6aa1c', background: '#220901', text: '#621708' },
   },
+
+  // --- 4. NEW ADDITIONS BATCH 3 (12) ---
   {
     id: 'amethyst-flame',
     name: 'Amethyst Flame',
     category: 'Vibrant',
-    colors: { primary: '#ff470f', secondary: '#e2ff61', accent: '#ffc847', background: '#370042', text: '#e2ff61' },
+    colors: { primary: '#ff470f', secondary: '#e2ff61', accent: '#ffc847', background: '#370042', text: '#753700' },
   },
   {
     id: 'molten-walnut',
     name: 'Molten Walnut',
     category: 'Dark',
-    colors: { primary: '#ffa114', secondary: '#6bdaff', accent: '#fff8db', background: '#421f00', text: '#fff8db' },
+    colors: { primary: '#ffa114', secondary: '#6bdaff', accent: '#fff8db', background: '#421f00', text: '#751600' },
   },
   {
     id: 'aquamarine-mist',
@@ -528,19 +498,141 @@ export const themes: Theme[] = [
     id: 'banana-coral',
     name: 'Banana Coral',
     category: 'Light',
-    colors: { primary: '#f25757', secondary: '#61e8e1', accent: '#f2cd60', background: '#eaf2e3', text: '#1a1a1a' },
+    colors: { primary: '#f25757', secondary: '#61e8e1', accent: '#f2cd60', background: '#eaf2e3', text: '#f2e863' },
   },
   {
     id: 'caramel-ash',
     name: 'Caramel Ash',
     category: 'Pastel',
-    colors: { primary: '#fcb97d', secondary: '#edd892', accent: '#aaba9e', background: '#b5b8a3', text: '#2b2d42' },
+    colors: { primary: '#fcb97d', secondary: '#edd892', accent: '#aaba9e', background: '#b5b8a3', text: '#c6b89e' },
   },
   {
     id: 'razzmatazz-plum',
     name: 'Razzmatazz Plum',
     category: 'Vibrant',
-    colors: { primary: '#ec0072', secondary: '#e8003e', accent: '#d52193', background: '#ae3792', text: '#ffffff' },
+    colors: { primary: '#ec0072', secondary: '#e8003e', accent: '#d52193', background: '#ae3792', text: '#b32787' },
+  },
+  {
+    id: 'pearl-tea-green',
+    name: 'Pearl Tea',
+    category: 'Pastel',
+    colors: { primary: '#ffb0d7', secondary: '#c5e8d2', accent: '#ffdcc4', background: '#d993a9', text: '#a7d4c4' },
+  },
+  {
+    id: 'electric-berry',
+    name: 'Electric Berry',
+    category: 'Vibrant',
+    colors: { primary: '#4dffed', secondary: '#5fff59', accent: '#ff36a1', background: '#8c385e', text: '#ffffff' },
+  },
+  {
+    id: 'glacial-ice',
+    name: 'Glacial Ice',
+    category: 'Light',
+    colors: { primary: '#bae6fd', secondary: '#dbeafe', accent: '#7dd3fc', background: '#082f49', text: '#f0f9ff' },
+  },
+  {
+    id: 'emerald-forest',
+    name: 'Emerald Forest',
+    category: 'Nature',
+    colors: { primary: '#10b981', secondary: '#059669', accent: '#6ee7b7', background: '#022c22', text: '#ecfdf5' },
+  },
+  {
+    id: 'solar-flare',
+    name: 'Solar Flare',
+    category: 'Vibrant',
+    colors: { primary: '#fb923c', secondary: '#f97316', accent: '#fdba74', background: '#431407', text: '#fff7ed' },
+  },
+  {
+    id: 'royal-velvet',
+    name: 'Royal Velvet',
+    category: 'Dark',
+    colors: { primary: '#a855f7', secondary: '#7e22ce', accent: '#d8b4fe', background: '#3b0764', text: '#faf5ff' },
+  },
+
+  // --- 5. FINAL BATCH TO REACH 100 (14) ---
+  {
+    id: 'slate-concrete',
+    name: 'Slate Concrete',
+    category: 'Monochrome',
+    colors: { primary: '#94a3b8', secondary: '#64748b', accent: '#cbd5e1', background: '#0f172a', text: '#f1f5f9' },
+  },
+  {
+    id: 'cotton-candy',
+    name: 'Cotton Candy',
+    category: 'Pastel',
+    colors: { primary: '#f9a8d4', secondary: '#f472b6', accent: '#fbcfe8', background: '#831843', text: '#fff1f2' },
+  },
+  {
+    id: 'cyber-punk-city',
+    name: 'Cyber City',
+    category: 'Vibrant',
+    colors: { primary: '#d946ef', secondary: '#e879f9', accent: '#fae8ff', background: '#4a044e', text: '#f5d0fe' },
+  },
+  {
+    id: 'deep-sea-diver',
+    name: 'Deep Sea',
+    category: 'Dark',
+    colors: { primary: '#0ea5e9', secondary: '#0284c7', accent: '#7dd3fc', background: '#0c4a6e', text: '#f0f9ff' },
+  },
+  {
+    id: 'apricot-glow',
+    name: 'Apricot Glow',
+    category: 'Pastel',
+    colors: { primary: '#fdba74', secondary: '#fb923c', accent: '#ffedd5', background: '#7c2d12', text: '#fff7ed' },
+  },
+  {
+    id: 'graphite-mono',
+    name: 'Graphite Mono',
+    category: 'Monochrome',
+    colors: { primary: '#525252', secondary: '#404040', accent: '#737373', background: '#171717', text: '#e5e5e5' },
+  },
+  {
+    id: 'toxic-lime',
+    name: 'Toxic Lime',
+    category: 'Vibrant',
+    colors: { primary: '#84cc16', secondary: '#65a30d', accent: '#bef264', background: '#1a2e05', text: '#f7fee7' },
+  },
+  {
+    id: 'ruby-red',
+    name: 'Ruby Red',
+    category: 'Dark',
+    colors: { primary: '#e11d48', secondary: '#be123c', accent: '#fda4af', background: '#881337', text: '#fff1f2' },
+  },
+  {
+    id: 'golden-sand',
+    name: 'Golden Sand',
+    category: 'Nature',
+    colors: { primary: '#d97706', secondary: '#b45309', accent: '#fcd34d', background: '#451a03', text: '#fffbeb' },
+  },
+  {
+    id: 'midnight-indigo',
+    name: 'Midnight Indigo',
+    category: 'Dark',
+    colors: { primary: '#6366f1', secondary: '#4f46e5', accent: '#a5b4fc', background: '#1e1b4b', text: '#eef2ff' },
+  },
+  {
+    id: 'teal-wave',
+    name: 'Teal Wave',
+    category: 'Nature',
+    colors: { primary: '#14b8a6', secondary: '#0d9488', accent: '#5eead4', background: '#134e4a', text: '#f0fdfa' },
+  },
+  {
+    id: 'rose-gold-lux',
+    name: 'Rose Gold',
+    category: 'Light',
+    colors: { primary: '#fb7185', secondary: '#f43f5e', accent: '#fda4af', background: '#881337', text: '#fff1f2' },
+  },
+  {
+    id: 'cyber-yellow',
+    name: 'Cyber Yellow',
+    category: 'Vibrant',
+    colors: { primary: '#eab308', secondary: '#ca8a04', accent: '#fef08a', background: '#422006', text: '#fefce8' },
+  },
+  {
+    id: 'storm-cloud',
+    name: 'Storm Cloud',
+    category: 'Monochrome',
+    colors: { primary: '#64748b', secondary: '#475569', accent: '#94a3b8', background: '#0f172a', text: '#f8fafc' },
   },
 ];
 
@@ -610,4 +702,4 @@ export const useThemeStore = create<ThemeState>()(
       },
     }
   )
-);  
+);
