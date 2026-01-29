@@ -42,8 +42,8 @@ export function ThemeChanger() {
         onClick={() => setIsOpen(true)}
         className="fixed left-1/2 transform -translate-x-1/2 z-[9999] p-4 rounded-full shadow-2xl backdrop-blur-md border transition-all duration-500 group"
         style={{ 
-          // UPDATED: Raised position to clear navigation footer
-          bottom: isPlayerActive ? '7.5rem' : '2.5rem', 
+          // UPDATED: Raised even higher to clear footer elements significantly
+          bottom: isPlayerActive ? '7rem' : '3.5rem', 
           backgroundColor: hexToRgba(currentTheme.colors.background, 0.6),
           borderColor: currentTheme.colors.primary,
           boxShadow: `0 8px 32px ${hexToRgba(currentTheme.colors.primary, 0.3)}`
