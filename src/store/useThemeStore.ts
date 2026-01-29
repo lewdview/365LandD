@@ -1,6 +1,3 @@
-// type: uploaded file
-// fileName: src/store/useThemeStore.ts
-
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -638,7 +635,9 @@ export const themes: Theme[] = [
 
 interface ThemeState {
   currentTheme: Theme;
+  isLocked: boolean; // Controls if theme is preserved across reloads
   setTheme: (themeId: string) => void;
+  toggleLock: () => void;
   applyTheme: () => void;
 }
 
@@ -646,14 +645,20 @@ export const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
       currentTheme: themes[1], // Default to Garden Dusk
+      isLocked: false, // Default to Random on Load
 
       setTheme: (themeId: string) => {
         const theme = themes.find((t) => t.id === themeId);
         if (theme) {
+          // Setting a theme manually implies locking it for this session, 
+          // but let's stick to the explicit toggle for the 'isLocked' persistence.
+          // Or we can just set the theme.
           set({ currentTheme: theme });
           get().applyTheme();
         }
       },
+
+      toggleLock: () => set((state) => ({ isLocked: !state.isLocked })),
 
       applyTheme: () => {
         const { currentTheme } = get();
@@ -697,6 +702,12 @@ export const useThemeStore = create<ThemeState>()(
       name: 'theme-storage',
       onRehydrateStorage: () => (state) => {
         if (state) {
+          // If NOT locked, randomize on load
+          if (!state.isLocked) {
+            const randomIndex = Math.floor(Math.random() * themes.length);
+            state.setTheme(themes[randomIndex].id);
+          }
+          // Apply whichever theme ended up being selected
           setTimeout(() => state.applyTheme(), 0);
         }
       },

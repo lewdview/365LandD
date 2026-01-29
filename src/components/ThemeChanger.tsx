@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useThemeStore, themes } from '../store/useThemeStore';
 import { useAudioStore } from '../store/useAudioStore';
-import { Palette, Check, X } from 'lucide-react';
+import { Palette, Check, X, Lock, Shuffle } from 'lucide-react';
 
 export function ThemeChanger() {
-  const { currentTheme, setTheme } = useThemeStore();
+  const { currentTheme, setTheme, isLocked, toggleLock } = useThemeStore();
   const { currentRelease } = useAudioStore();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -40,10 +40,8 @@ export function ThemeChanger() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
-        // UPDATED: Centered horizontally
         className="fixed left-1/2 transform -translate-x-1/2 z-[9999] p-4 rounded-full shadow-2xl backdrop-blur-md border transition-all duration-500 group"
         style={{ 
-          // UPDATED: Reduced vertical jump (4.5rem for active, 1.5rem for idle)
           bottom: isPlayerActive ? '4.5rem' : '1.5rem', 
           backgroundColor: hexToRgba(currentTheme.colors.background, 0.6),
           borderColor: currentTheme.colors.primary,
@@ -92,12 +90,31 @@ export function ThemeChanger() {
                       </p>
                     </div>
                   </div>
-                  <button 
-                    onClick={() => setIsOpen(false)}
-                    className="p-3 rounded-full hover:bg-white/10 transition-colors"
-                  >
-                    <X size={24} />
-                  </button>
+                  
+                  <div className="flex items-center gap-2">
+                    {/* TOGGLE LOCK/RANDOM BUTTON */}
+                    <button
+                      onClick={toggleLock}
+                      className="flex items-center gap-2 px-4 py-2 rounded-full border transition-all"
+                      style={{ 
+                        backgroundColor: isLocked ? currentTheme.colors.primary : 'rgba(255,255,255,0.05)',
+                        borderColor: isLocked ? currentTheme.colors.primary : 'rgba(255,255,255,0.1)',
+                        color: isLocked ? currentTheme.colors.background : currentTheme.colors.text
+                      }}
+                    >
+                      {isLocked ? <Lock size={16} /> : <Shuffle size={16} />}
+                      <span className="text-xs font-bold uppercase tracking-wider">
+                        {isLocked ? 'Saved' : 'Random'}
+                      </span>
+                    </button>
+
+                    <button 
+                      onClick={() => setIsOpen(false)}
+                      className="p-3 rounded-full hover:bg-white/10 transition-colors"
+                    >
+                      <X size={24} />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
