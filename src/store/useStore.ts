@@ -1,3 +1,6 @@
+// type: uploaded file
+// fileName: src/store/useStore.ts
+
 import { create } from 'zustand';
 import type { ReleaseData, Release } from '../types';
 import { buildReleaseData } from '../services/supabase';
@@ -27,147 +30,19 @@ export const useStore = create<AppState>((set, get) => ({
     try {
       set({ loading: true, error: null });
 
-      // --- 1. DEFINE CONTENT OVERRIDES (TITLES & INFO) ---
-      // Defined at the top so they apply regardless of data source
-      const contentOverrides: Record<number, { title?: string; info?: string }> = {
-        1: { 
-          title: "We're Going Crazy World", 
-          info: `
-            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>ONE TAKE FREESTYLE. ONE TAKE AD-LIB .</p>
-            </div>
-            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
-              <p>The lyrics express a sense of confusion and chaos in the world, reflecting on the shared experience of feeling ′crazy′ and ′hazy.′ The narrator grapples with their emotions, questioning the reasons behind human behavior and the desire for negativity. There is a longing for clarity amidst the madness, as they encourage self-reflection and the pursuit of truth. The song captures a mix of frustration and hope, suggesting that despite the chaos, there is a light within that can guide us. It resonates with listeners who feel overwhelmed by the complexities of life and society.</p>
-            </div>
-        `
-        },
-
-        2: { 
-          title: "Shhhhh Bitch feat. Frank", 
-          info: `
-            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>ONE TAKE FREESTYLE. Hit the hook, 2nd verse and some ad libs. Left space for my friend Frank.</p>
-            </div>
-            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
-              <p>The lyrics depict a tumultuous relationship marked by violence and emotional turmoil. The narrator addresses a woman caught in a cycle of abuse, urging her to recognize her worth and the toxic nature of her partner. The repeated phrase emphasizes the need for her to listen and reflect on her situation. The song conveys feelings of frustration, anger, and a desire for empowerment, as it highlights the struggles faced by those in abusive relationships. Ultimately, it serves as a call to break free from harmful dynamics and seek a healthier path</p>
-            </div>
-            <p>this song is about woman who say the want a bad buy whom often end up unhappy with them. Also to point out that nice guys seems to always finish last so the girls should just listen to the correct way, according to my friend Frank for them to live.
-          `
-        },
-
-        3: { 
-          title: "You Like Steve Earle", 
-          info: `
-            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>One Take cover of You Like Steve Earle by Ronald Meason - my father.</p>
-            </div>
-            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
-              <p>The lyrics convey a sense of longing and introspection, as the narrator grapples with feelings of connection and the complexities of relationships. The speaker expresses a desire for clarity and understanding, addressing a significant other with sincerity. There is a juxtaposition of joy and melancholy, as the narrator reflects on shared experiences and the importance of companionship. The mention of seeking happiness and the metaphor of a brewery suggests a search for solace in simple pleasures. Overall, the song captures the essence of navigating love and friendship amidst life′s challenges.</p>
-            </div>
-            <p> When you meet that love of your life late but have some ground rules. A great song penned by my late father Ronald Meason.  I am humbled to try and honor his word and prose.</p>
-          `
-        },
-        4: { 
-          title: "We're Only Human by Zillick feat.th3scr1b3", 
-          info: `
-            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>Brought to my doorstep by my longtime contributing partner Zillick. Structure hook, z, h, z, h, t h. Zillick's parts we're written and required one take when putting them down, my verse and ad-libs freestyle one take, hook purchased with beat.</p>
-            </div>
-            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
-              <p>The lyrics explore themes of vulnerability and resilience in the face of adversity. The narrator expresses gratitude for a supportive figure who acts as a safety net during difficult times. They reflect on the pain and struggles of life, including feelings of anxiety and judgment from others. The song conveys a sense of longing for understanding and forgiveness, while also acknowledging the harsh realities of human existence. The emotional weight of heartache and the desire for connection are palpable, as the narrator grapples with their own experiences and the impact of others′ words.</p>
-            </div>
-          `
-        },
-        // Add more days here...
-          5: { 
-          title: "Swoop Coupe Phenomenom", 
-          info: `
-            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>ONE TAKE Freestyle. ONE TAKE AD-LIB.</p>
-            </div>
-            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
-              <p>The lyrics depict a vibrant and energetic atmosphere, where the narrator expresses a sense of confidence and excitement. The recurring theme of ′swooping′ suggests a carefree attitude towards life and relationships, with imagery of glitter and dancing. The narrator interacts with various characters, emphasizing a playful and flirtatious vibe. Emotions of joy and freedom are prevalent, as the narrator navigates through social situations with ease. The lyrics convey a celebration of individuality and self-expression, inviting listeners to embrace their own unique experiences and enjoy the moment.</p>
-            </div>
-          `
-        },
-          6: { 
-          title: "Silent Suffocation", 
-          info: `
-            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>One Take Freestyle Foundation, witrh layered takes of my late father Ron Meason's guitar for a song he wrwote called "Somebody Besides You"</p>
-            </div>
-            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
-              <p>The lyrics convey a deep sense of longing and emotional turmoil in a relationship. The narrator reflects on past encounters, expressing an overwhelming desire for connection despite the challenges faced. There is a struggle between intense feelings and the fear of losing the other person, leading to a sense of desperation. The imagery of dreams and fire symbolizes passion and the pain of unfulfilled desires. The narrator grapples with the idea of suffocating their wants to cope with the situation, ultimately revealing a complex mix of love, regret, and the hope for reconciliation.</p>
-            </div>
-          `
-        },
-          7: { 
-          title: "Devour", 
-          info: `
-            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>ONE TAKE Freestyle. ONE TAKE AD-LIB X2.</p>
-            </div>
-            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
-              <p>The lyrics convey a sense of euphoric longing and emotional turmoil, exploring themes of desire and the complexities of love. The narrator expresses a deep yearning for connection, feeling both exhilarated and lost in the intensity of their emotions. The imagery of tasting and devouring suggests a passionate relationship that is both fulfilling and consuming. Despite the highs of love, there is an underlying sense of isolation and confusion, as the narrator grapples with their identity and the passage of time. The song captures the duality of pleasure and pain in romantic entanglements.</p>
-            </div>
-          `
-        },
-          8: { 
-          title: "Poetry", 
-          info: `
-            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>ONE TAKE Freestyle</p>
-            </div>
-            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
-              <p>The lyrics explore the transformative power of poetry as a means of self-expression and connection. They emphasize the importance of articulating one′s thoughts and emotions, suggesting that poetry can bridge gaps in understanding and foster empathy among individuals. The song reflects on the struggles of conveying inner experiences, highlighting the contrast between personal narratives and external perceptions. It acknowledges the challenges faced in life, including the influence of substances, while advocating for authenticity and vulnerability in sharing one′s story. Ultimately, it celebrates the unifying nature of poetry as a shared human experience.</p>
-            </div>
-          `
-        },
-         9: { 
-          title: "Without You", 
-          info: `
-            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>ONE TAKE FREESTYLE. ONE TAKE AD-LIB.</p>
-            </div>
-            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
-              <p>The lyrics convey a deep sense of loss and longing for someone who has been a crucial part of the narrator′s life. The emotional weight of missing this person is palpable, as the narrator struggles to find brightness in their days and feels incomplete without them. Memories flood in, but they are tinged with sadness, highlighting the impact of the absence. The recurring theme of needing support to overcome personal demons emphasizes vulnerability and the struggle to cope with grief. Ultimately, the song captures the profound emptiness and emotional turmoil that accompanies losing a significant connection.</p>
-            </div>
-          `
-        },
-         10: { 
-          title: "Long Haul", 
-          info: `
-            <div class="p-4 border border-[var(--color-neon-yellow)]/30 bg-[var(--color-neon-yellow)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-yellow)] mb-2 font-mono">PRODUCTION INFO</h4>
-              <p>ONE TAKE FREESTYLE</p>
-            </div>
-            <div class="p-4 border border-[var(--color-neon-red)]/30 bg-[var(--color-neon-red)]/10 rounded mb-4">
-              <h4 class="font-bold text-[var(--color-neon-red)] mb-2 font-mono">SONOTELLER.AI lyrical Analysis</h4>
-              <p>The lyrics explore the complexities of relationships and the struggles of life, emphasizing that nothing worthwhile comes easily. The narrator expresses a commitment to support a friend through challenges, highlighting themes of resilience and camaraderie. There is a sense of urgency to break free from societal constraints and superficiality, urging the listener to embrace authenticity and connection. The emotional tone oscillates between determination and vulnerability, reflecting the desire for understanding and companionship amidst life′s chaos. Ultimately, the message is one of solidarity and the importance of being there for one another in difficult times.</p>
-            </div>
-          `
-        },
-
-
-      };
+      // --- 1. FETCH CONTENT OVERRIDES ---
+      // Loaded from JSON to keep code clean. Includes Video URLs, Titles, and Custom HTML.
+      let contentOverrides: Record<number, { title?: string; info?: string; videoUrl?: string }> = {};
+      
+      try {
+        const overridesRes = await fetch('/content-overrides.json');
+        if (overridesRes.ok) {
+          contentOverrides = await overridesRes.json();
+          console.log('[Store] Loaded content overrides successfully.');
+        }
+      } catch (e) {
+        console.warn('[Store] Failed to load content overrides:', e);
+      }
 
       // --- 2. LOAD DATA SOURCES ---
       
@@ -598,7 +473,6 @@ export const useStore = create<AppState>((set, get) => ({
       }
 
       // --- 3. FINAL PROCESSING: APPLY OVERRIDES ---
-      // This runs regardless of where the data came from (Manifest, Supabase, or Local JSON)
       if (dataToUse) {
         dataToUse.releases = dataToUse.releases.map(release => {
           const overrides = contentOverrides[release.day];
@@ -607,6 +481,8 @@ export const useStore = create<AppState>((set, get) => ({
               ...release,
               title: overrides.title || release.title,
               customInfo: overrides.info || release.customInfo,
+              // VIDEO OVERRIDE LOGIC:
+              videoUrl: overrides.videoUrl || release.videoUrl, 
             };
           }
           return release;
