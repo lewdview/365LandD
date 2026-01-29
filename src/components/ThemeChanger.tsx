@@ -10,7 +10,6 @@ export function ThemeChanger() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  // Check if player is active to adjust position
   const isPlayerActive = !!currentRelease;
 
   function hexToRgba(hex: string, alpha: number): string {
@@ -20,7 +19,6 @@ export function ThemeChanger() {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
 
-  // Get unique categories
   const categories = ['All', ...Array.from(new Set(themes.map(t => t.category || 'Vibrant')))];
 
   const filteredThemes = selectedCategory === 'All' 
@@ -42,10 +40,11 @@ export function ThemeChanger() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
+        // UPDATED: Centered horizontally
         className="fixed left-1/2 transform -translate-x-1/2 z-[9999] p-4 rounded-full shadow-2xl backdrop-blur-md border transition-all duration-500 group"
         style={{ 
-          // Dynamic Position: Shifts up when player is active
-          bottom: isPlayerActive ? '5.5rem' : '1.5rem', 
+          // UPDATED: Reduced vertical jump (4.5rem for active, 1.5rem for idle)
+          bottom: isPlayerActive ? '4.5rem' : '1.5rem', 
           backgroundColor: hexToRgba(currentTheme.colors.background, 0.6),
           borderColor: currentTheme.colors.primary,
           boxShadow: `0 8px 32px ${hexToRgba(currentTheme.colors.primary, 0.3)}`
@@ -58,7 +57,6 @@ export function ThemeChanger() {
       <AnimatePresence>
         {isOpen && (
           <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-            {/* Transparent Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -74,7 +72,6 @@ export function ThemeChanger() {
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               className="relative w-full max-w-6xl h-[85vh] flex flex-col rounded-3xl shadow-2xl border overflow-hidden"
               style={{ 
-                // Glassmorphism Styles
                 backgroundColor: hexToRgba(currentTheme.colors.background, 0.45),
                 backdropFilter: 'blur(40px)',
                 borderColor: hexToRgba(currentTheme.colors.text, 0.1),
@@ -82,7 +79,6 @@ export function ThemeChanger() {
                 boxShadow: `0 40px 80px -20px rgba(0, 0, 0, 0.6)`
               }}
             >
-              {/* Header */}
               <div className="p-8 border-b shrink-0 flex flex-col gap-6" style={{ borderColor: hexToRgba(currentTheme.colors.text, 0.1) }}>
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-4">
@@ -104,7 +100,6 @@ export function ThemeChanger() {
                   </button>
                 </div>
 
-                {/* Categories Tabs */}
                 <div className="flex flex-wrap gap-2">
                   {categories.map(cat => (
                     <button
@@ -127,7 +122,6 @@ export function ThemeChanger() {
                 </div>
               </div>
 
-              {/* Scrollable Grid */}
               <div className="flex-1 overflow-y-auto p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {filteredThemes.map((theme) => (
@@ -146,7 +140,6 @@ export function ThemeChanger() {
                           : 'none'
                       }}
                     >
-                      {/* Theme Preview Header */}
                       <div className="flex justify-between items-start z-10 w-full">
                         <div>
                           <h3 className="font-bold text-lg leading-tight" style={{ color: theme.colors.text }}>{theme.name}</h3>
@@ -161,7 +154,6 @@ export function ThemeChanger() {
                         )}
                       </div>
 
-                      {/* Swatches */}
                       <div className="flex items-center gap-3 z-10 mt-2">
                         <ColorSwatch color={theme.colors.primary} />
                         <ColorSwatch color={theme.colors.secondary} />
@@ -171,7 +163,6 @@ export function ThemeChanger() {
                         <ColorSwatch color={theme.colors.text} />
                       </div>
 
-                      {/* Hover Gradient Overlay */}
                       <div 
                         className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500"
                         style={{ background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})` }}

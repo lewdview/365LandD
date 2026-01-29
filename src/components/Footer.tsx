@@ -1,12 +1,17 @@
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { GlitchText } from './GlitchText';
+import { useAudioStore } from '../store/useAudioStore';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+
+  // Detect if player is active to adjust padding
+  const { currentRelease } = useAudioStore();
+  const isPlayerActive = !!currentRelease;
 
   const handleNavClick = (section: string) => {
     if (section === 'manifesto') {
@@ -21,7 +26,12 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative py-16 px-6 md:px-12 lg:px-16 border-t border-void-lighter overflow-hidden">
+    <footer 
+      // UPDATED: Dynamic padding logic
+      // Base: pb-32 to clear the floating Theme Button
+      // Active: pb-64 to clear the Theme Button + Global Player stack
+      className={`relative pt-16 px-6 md:px-12 lg:px-16 border-t border-void-lighter overflow-hidden transition-all duration-500 ease-in-out ${isPlayerActive ? 'pb-64' : 'pb-32'}`}
+    >
       {/* Glitch lines decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {Array.from({ length: 5 }).map((_, i) => (
@@ -192,7 +202,7 @@ export function Footer() {
           </p>
         </div>
 
-        {/* Large decorative text - barely visible, ghostly */}
+        {/* Large decorative text */}
         <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
           <motion.p
             initial={{ x: '100%' }}

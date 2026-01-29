@@ -675,8 +675,8 @@ export function DayPage() {
           style={{ 
             backgroundColor: hexToRgba(background, 0.9), 
             borderColor: hexToRgba(text, 0.1),
-            // UPDATED: Reduced jump height (5rem vs 6rem)
-            bottom: playingRelease ? '5rem' : '0' 
+            // UPDATED: Reduced vertical jump to 3.5rem (56px) for tighter fit
+            bottom: playingRelease ? '3.5rem' : '0' 
           }}
         >
            <div className="flex items-center justify-between gap-4">
